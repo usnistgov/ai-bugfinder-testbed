@@ -24,12 +24,11 @@ RUN cd /tmp \
     && wget ${JOERN_LIB_REPO} \
     && tar xfzv ${JOERN_LIB_TARBALL} \
     && ant \
-    && mv ./bin/joern.jar /usr/local/bin \
+    && mv ./bin/joern.jar /usr/local/bin/ \
     && rm -rf /tmp/*
+
+COPY convert.sh /usr/local/bin/
 
 # Setup the workir and entrypoint
 WORKDIR /code
-ENTRYPOINT [ \
-  "java", "-Xmx4G", "-jar", "/usr/local/bin/joern.jar", \
-  "-outdir", "/code/joern.db", "/code" \
-]
+ENTRYPOINT [ "/usr/local/bin/convert.sh" ]
