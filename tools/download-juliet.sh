@@ -18,7 +18,7 @@ NPROC=$(nproc)
 # Download, extract Juliet and move to a separate folder
 echo "Extracting Juliet...."
 
-mkdir -p ${DATA_PATH}/${DATASET_PATH}
+mkdir -p ${DATASET_PATH}
 
 if [[ ! -f "${DATA_PATH}/${JULIET_FILE}" ]]
 then
