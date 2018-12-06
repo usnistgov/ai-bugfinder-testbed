@@ -1,11 +1,11 @@
 """ Script building all docker images for the project
 """
 from os import listdir
-from time import time
 
 import docker
 
 from settings import ROOT_DIR, DIRS, LOGGER
+from utils.statistics import get_time
 
 if __name__ == "__main__":
     LOGGER.info("Building docker images...")
@@ -35,12 +35,12 @@ if __name__ == "__main__":
             else ":latest"
 
         # Using docker for building
-        beg_time = int(round(time() * 1000))
+        beg_time = get_time()
         docker_cli.images.build(
             path=img_path,
             tag=img_tag
         )
-        end_time = int(round(time() * 1000))
+        end_time = get_time()
 
         total_time = end_time - beg_time
         LOGGER.info(
