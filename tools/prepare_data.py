@@ -29,32 +29,6 @@ def list_files_from(directory):
     return file_list
 
 
-# def _clean(directory):
-#     for path, subdir, files in walk(directory):
-#         for filename in files:
-#             filepath = join(path, filename)
-#             outlines = []
-#             count_s = 0
-#
-#             with open(filepath, 'r') as infile, \
-#                     open("%s.out" % filepath, 'w+') as outfile:
-#                 for line in infile:
-#                     for src, dest in replacements.items():
-#                         if re.match(src, line):
-#                             count_s += 1
-#                             line = re.sub(src, dest, line)
-#
-#                     outlines.append(line)
-#
-#                 outfile.writelines(outlines)
-#
-#             # Replace the old file by the new one
-#             move("%s.out" % filepath, filepath)
-#
-#             if count_s > 0:
-#                 print("%s replacements performed on %s" % (count_s, filepath))
-
-
 def clean(file_list):
     current_file_list = file_list
     iteration = 0

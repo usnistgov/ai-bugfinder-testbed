@@ -15,7 +15,7 @@ Once the Python environment is setup, run `pip install -r requirements.txt`
 
 ### Download the Juliet dataset
 
-Using the `download-juliet.sh` located in the **tools/** folder, download the 
+Using the `download_juliet.sh` located in the **tools/** folder, download the 
 [Juliet Dataset for C/C++](https://samate.nist.gov/SRD/testsuite.php). The 
 testcases will be split between healthy (good) and buggy (bad) code. The 
 dataset is stored in the **data/cwe121_orig/** folder and the annotated data are 
