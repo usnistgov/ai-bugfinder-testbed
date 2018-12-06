@@ -4,7 +4,7 @@
 
 * Docker: https://docs.docker.com/install/#supported-platforms
 * Python 2.7: https://www.python.org/download/releases/2.7/
-* Virtual environment
+* Virtual environment:
 	* With `venv`: https://virtualenv.pypa.io/en/stable/installation/
 	* With `conda`: https://conda.io/docs/user-guide/install/index.html
 	
@@ -13,10 +13,12 @@ Once the Python environment is setup, run `pip install -r requirements.txt`
 
 ## Installation
 
-Start by downloading the [Juliet Dataset for C/C++](https://samate.nist.gov/SRD/testsuite.php) 
-using the `download-juliet.sh` script. The testcases will be split between 
-healthy (good) and buggy (bad) code. The dataset is stored in the 
-*data/testcases* folder, the annotated data are stored in *data/annot/*.
+Using the `download-juliet.sh` located in the **tools/** folder, download the 
+[Juliet Dataset for C/C++](https://samate.nist.gov/SRD/testsuite.php).
+
+The testcases will be split between healthy (good) and buggy (bad) code. The 
+dataset is stored in the *data/cwe121_orig/* folder and the annotated data are 
+stored in *data/cwe121_annot/*.
 
 [Joern](http://mlsec.org/joern/index.shtml) then needs to be executed with the 
 script `run-joern.sh`. Once the execution is done, the  *.joernIndex* is moved 
