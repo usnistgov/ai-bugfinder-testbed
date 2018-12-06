@@ -18,8 +18,15 @@ Once the Python environment is setup, run `pip install -r requirements.txt`
 Using the `download-juliet.sh` located in the **tools/** folder, download the 
 [Juliet Dataset for C/C++](https://samate.nist.gov/SRD/testsuite.php). The 
 testcases will be split between healthy (good) and buggy (bad) code. The 
-dataset is stored in the *data/cwe121_orig/* folder and the annotated data are 
-stored in *data/cwe121_annot/*.
+dataset is stored in the **data/cwe121_orig/** folder and the annotated data are 
+stored in **data/cwe121_annot/**.
+
+### Prepare the dataset
+
+*Joern* is not able to perfectly parse the C samples from *Juliet*. To remedy 
+this issue, please use `python tools/prepare_data.py ${DATA_DIR}`. It replaces
+instances of the code left unparsed by an equivalent code line that Joern is 
+able to parse.
 
 ### Build the docker images
 
