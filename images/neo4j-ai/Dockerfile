@@ -1,4 +1,4 @@
-FROM neo4j:3.5.0
+FROM neo4j:3.4.10
 
 ARG ZIP_FILE="/tmp/neo4j-shell-tools.zip"
 ARG LIB_FOLDER="/var/lib/neo4j/lib"
