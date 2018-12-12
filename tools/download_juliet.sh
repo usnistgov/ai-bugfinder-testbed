@@ -9,7 +9,7 @@ JULIET_PATH="${SARD_WEBSITE}/testsuites/juliet/${JULIET_FILE}"
 JULIET_EXTRACT_PATH="C/testcases/CWE121_Stack_Based_Buffer_Overflow"
 
 CURRENT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-DATA_PATH="${CURRENT_PATH}/data"
+DATA_PATH="${CURRENT_PATH}/../data"
 DATASET_PATH="${DATA_PATH}/cwe121_orig"
 
 NPROC=$(nproc)
@@ -32,10 +32,30 @@ then
     rm -rf "${DATA_PATH}/$(basename ${JULIET_EXTRACT_PATH})/"
 fi
 
+if [[ -d "${DATASET_PATH}" ]]
+then
+    echo "Removing cwe121_orig..."
+    rm -rf "${DATASET_PATH}"
+fi
+
+if [[ -d "${DATA_PATH}/cwe121_annot" ]]
+then
+    echo "Removing cwe121_annot..."
+    rm -rf "${DATA_PATH}/cwe121_annot"
+fi
+
 mv ${DATA_PATH}/$(dirname ${JULIET_EXTRACT_PATH})/* ${DATASET_PATH}
 rm -rf ${DATA_PATH}/C
 
-echo "Juliet extracted. Processing test cases..."
+echo "Juliet extracted. Flattening test suite..."
+
+for d in $(ls ${DATASET_PATH})
+do
+    mv ${DATASET_PATH}/${d}/* -t ${DATASET_PATH}
+    rm -rf ${DATASET_PATH}/${d}
+done
+
+echo "Juliet flattened. Processing test cases..."
 
 # Read Juliet test cases line by line and separate good, bad and common code
 # into directories “good” and “bad”
