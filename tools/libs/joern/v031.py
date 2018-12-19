@@ -1,7 +1,6 @@
 """ Execute code analysis with Joern v0.3.1
 """
-from os.path import join, exists
-from shutil import rmtree, copytree
+from os.path import join
 
 from libs.joern.common import run_joern_lite, enhance_joern_markup
 from libs.neo4j.v23 import start_container as run_neo4j_v2
