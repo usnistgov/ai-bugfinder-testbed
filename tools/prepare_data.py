@@ -1,3 +1,5 @@
+""" Script cleaning literals from the code.
+"""
 from os import walk
 from os.path import join, isdir, basename
 
