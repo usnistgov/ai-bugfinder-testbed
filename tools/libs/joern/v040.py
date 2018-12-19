@@ -4,7 +4,7 @@ import os
 from os import makedirs
 from os.path import splitext, join, exists
 
-from libs.joern.common import run_joern_lite
+from libs.joern.common import run_joern_lite, enhance_joern_markup
 from libs.neo4j.ai import import_csv_files
 from settings import LOGGER
 
@@ -80,6 +80,8 @@ def main(code_path):
     makedirs(db_path)
 
     LOGGER.info("Import to Neo4j 3.5 ready. Importing...")
-    import_csv_files(db_path, import_dir)
+    joern040_container = import_csv_files(db_path, import_dir)
 
     LOGGER.info("Successful import to Neo4j 3.5.")
+    enhance_joern_markup(joern040_container)
+

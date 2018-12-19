@@ -4,15 +4,15 @@ from time import sleep
 import docker
 
 from settings import LOGGER
+from utils.docker import wait_log_display
 from utils.rand import get_rand_string
 
 START_STRING = "Remote interface ready"
 
 
-def main(db_path):
+def start_container(db_path):
     docker_cli = docker.from_env()
     cname = "neo4j-v2-%s" % get_rand_string(5, special=False)
-    # neo4j_v2_db_path = join(code_path, "neo4j_v2.db")
 
     LOGGER.info("Starting %s container..." % cname)
 
@@ -32,8 +32,9 @@ def main(db_path):
         detach=True
     )
 
-    while START_STRING not in neo4j2_container.logs(tail=100):
-        sleep(1)
+    wait_log_display(neo4j2_container, START_STRING)
 
     LOGGER.info("%s fully converted." % cname)
     neo4j2_container.stop()
+
+    return cname

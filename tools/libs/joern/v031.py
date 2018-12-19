@@ -3,8 +3,8 @@
 from os.path import join, exists
 from shutil import rmtree, copytree
 
-from libs.joern.common import run_joern_lite
-from libs.neo4j.v23 import main as run_neo4j_v2
+from libs.joern.common import run_joern_lite, enhance_joern_markup
+from libs.neo4j.v23 import start_container as run_neo4j_v2
 from libs.neo4j.ai import start_container as run_neo4j_v3
 from settings import LOGGER
 from utils.dirs import copy_dir
@@ -30,4 +30,6 @@ def main(code_path):
     copy_dir(src, dest)
 
     LOGGER.info("Database ready. Updating to Neo4j 3.5...")
-    run_neo4j_v3(dest)
+    joern031_container = run_neo4j_v3(dest)
+
+    enhance_joern_markup(joern031_container)

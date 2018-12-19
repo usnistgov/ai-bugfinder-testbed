@@ -3,6 +3,7 @@ from time import sleep
 import docker
 
 from settings import LOGGER
+from utils.docker import wait_log_display
 from utils.rand import get_rand_string
 
 START_STRING = "Remote interface available"
@@ -34,8 +35,7 @@ def import_csv_files(db_path, import_dir):
         detach=True
     )
 
-    while START_STRING not in container.logs(tail=100):
-        sleep(1)
+    wait_log_display(container, START_STRING)
 
     LOGGER.info("%s fully started." % cname)
 
@@ -49,14 +49,15 @@ def import_csv_files(db_path, import_dir):
     LOGGER.info("%s fully imported." % cname)
     container.stop()
 
+    return cname
+
 
 def start_container(db_path):
     docker_cli = docker.from_env()
-    # neo_db_path = join(code_path, "neo4j_v3.db")
     cname = "neo4j-v3-%s" % get_rand_string(5, special=False)
     LOGGER.info("Starting %s..." % cname)
 
-    container = docker_cli.containers.run(
+    neo4j3_container = docker_cli.containers.run(
         "neo4j-ai:latest",
         name=cname,
         environment={
@@ -76,8 +77,9 @@ def start_container(db_path):
         detach=True
     )
 
-    while START_STRING not in container.logs(tail=100):
-        sleep(1)
+    wait_log_display(neo4j3_container, START_STRING)
 
     LOGGER.info("%s fully started." % cname)
-    container.stop()
+    neo4j3_container.stop()
+
+    return cname
