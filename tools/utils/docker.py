@@ -4,5 +4,5 @@ from time import sleep
 
 
 def wait_log_display(container, log_string):
-    while log_string not in container.logs(tail=100):
+    while log_string not in container.logs(tail=10):
         sleep(1)
