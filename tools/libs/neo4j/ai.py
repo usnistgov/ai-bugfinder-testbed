@@ -131,7 +131,7 @@ def enhance_markup(db_path):
     return cname
 
 
-def start_container(db_path):
+def start_container(db_path, stop_after_execution=True):
     docker_cli = docker.from_env()
     cname = "neo4j-v3-%s" % get_rand_string(5, special=False)
     LOGGER.info("Starting %s..." % cname)
@@ -159,6 +159,8 @@ def start_container(db_path):
     wait_log_display(neo4j3_container, START_STRING)
 
     LOGGER.info("%s fully started." % cname)
-    neo4j3_container.stop()
+
+    if stop_after_execution:
+        neo4j3_container.stop()
 
     return cname
