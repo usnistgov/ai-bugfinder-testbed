@@ -1,10 +1,13 @@
 from os.path import join
 
+import sys
 from py2neo import Graph
 
 from libs.neo4j.ai import start_container as neo4j_v3_run
 from settings import LOGGER, ROOT_DIR
 from utils.containers import stop_container_by_name
+
+USAGE = "python ./tools/ast_markup.py ${DB_DIR}"
 
 find_ids = """
 MATCH (m)-[:FLOWS_TO]->(n) 
@@ -39,11 +42,6 @@ def retrieve_children(_node):
 
     for n in nodes:
         current_node = n['n']
-
-        # if current_node.get('type') in children.keys():
-        #     LOGGER.warning("Overwriting tree...")
-
-        # children[current_node.get('type')] = retrieve_children(current_node)
         children.append(
             (current_node.get('type'), retrieve_children(current_node))
         )
@@ -56,35 +54,20 @@ def flatten_dict(ast):
         return ast[0]
 
     return "%s(%s)" % (ast[0], ",".join([flatten_dict(i) for i in ast[1]]))
-    # if ast is None:
-    #     return ""
-    #
-    # s = ""
-    # for k, v in ast.items():
-    #     ast_v = flatten_dict(v)
-    #
-    #     if len(ast_v) == 0:
-    #         s += "%s" % k
-    #     else:
-    #         s += "%s%s" % (k, ast_v)
-    #
-    #     s += ","
-    #
-    # return "(%s)" % s[:-1]
 
 
 def get_tree(_node):
-    # graph_tree = OrderedDict()
-    # graph_tree[_node.get('type')] = retrieve_children(_node)
     graph_tree = (_node.get('type'), retrieve_children(_node))
 
     return flatten_dict(graph_tree)
 
 
 if __name__ == "__main__":
-    arg_db_path = "./data/cwe121_0500a/neo4j_v3.db"
+    if len(sys.argv) != 2:
+        LOGGER.error("Illegal number of arguments. Usage: %s." % USAGE)
+        exit(1)
 
-    db_path = join(ROOT_DIR, arg_db_path)
+    db_path = join(ROOT_DIR, sys.argv[1])
 
     neo4j_container = neo4j_v3_run(db_path, stop_after_execution=False)
 
@@ -106,7 +89,7 @@ if __name__ == "__main__":
 
         neo4j_db.run(ast_set % (node_id['nodes'].identity, ast_prop))
         total_nodes -= 1
-        LOGGER.info("Node %d processed. %d nodes left." %
-                    (node_id['nodes'].identity, total_nodes))
+        LOGGER.debug("Node %d processed. %d nodes left." %
+                     (node_id['nodes'].identity, total_nodes))
 
     stop_container_by_name(neo4j_container)
