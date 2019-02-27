@@ -14,8 +14,8 @@ from utils.statistics import get_time
 USAGE = "./prepare_data.py ${DATA_DIR}"
 
 replacements = {
-    r'(.*)L\'([^\']*)\'(.*)': "\g<1>L('\g<2>')\g<3>",
-    r'(.*)L"([^"]*)"(.*)': "\g<1>L(\"\g<2>\")\g<3>",
+    r'(.*)L\'([^\']*)\'(.*)': "\\g<1>L('\\g<2>')\\g<3>",
+    r'(.*)L"([^"]*)"(.*)': "\\g<1>L(\"\\g<2>\")\\g<3>",
 }
 
 MAX_ITERATIONS = 500
