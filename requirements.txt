@@ -1,4 +1,5 @@
 docker==3.5.1
+numpy==1.15.3
 py2neo==4.1.0
 scipy==1.1.0
 tensorflow==1.11.0
