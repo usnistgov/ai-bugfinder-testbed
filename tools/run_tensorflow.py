@@ -85,18 +85,20 @@ def create_model(dataset, layers):
     return _logits, _cost, _optimizer
 
 
-def test_model(dataset, input, output, model):
-    # Test model
+def test_model(dataset, input_data, output_data, model):
     dataset.set_mode("testing")
 
+    # Run testing
     y_, x_, t_ = dataset.get_whole_set()
-    correct_prediction = tf.equal(tf.argmax(model, 1), tf.argmax(output, 1))
+    correct_prediction = tf.equal(
+        tf.argmax(model, 1), tf.argmax(output_data, 1)
+    )
 
     dataset.set_mode("training")
 
     # Calculate accuracy
     _accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
-    return _accuracy.eval({input: x_, output: y_})
+    return _accuracy.eval({input_data: x_, output_data: y_})
 
 
 if __name__ == "__main__":
