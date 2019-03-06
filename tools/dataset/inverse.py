@@ -5,7 +5,7 @@ from os import listdir, mkdir
 from os.path import exists, isdir, join
 from shutil import rmtree, copytree
 
-from settings import LOGGER
+from settings import LOGGER, ROOT_DIR
 
 USAGE = "python ./tools/dataset/inverse.py ${DATASET1} ${DATASET2} ${DATASET3}"
 
@@ -14,26 +14,28 @@ if __name__ == "__main__":
         LOGGER.error("Illegal number of arguments. Usage: %s." % USAGE)
         exit(1)
 
-    if not(exists(sys.argv[1])) or not isdir(sys.argv[1]):
+    base_dir = join(ROOT_DIR, sys.argv[1])
+    if not(exists(base_dir)) or not isdir(base_dir):
         LOGGER.error("Base directory does not exist. Usage: %s." % USAGE)
         exit(1)
 
-    if not(exists(sys.argv[2])) or not isdir(sys.argv[2]):
+    derived_dir = join(ROOT_DIR, sys.argv[2])
+    if not(exists(derived_dir)) or not isdir(derived_dir):
         LOGGER.error("Derived directory does not exist. Usage: %s." % USAGE)
         exit(1)
 
-    derived_sample_list = listdir(join(sys.argv[2], "bad"))
+    derived_sample_list = listdir(join(derived_dir, "bad"))
     inverse_sample_list = [
-        sample for sample in listdir(join(sys.argv[1], "bad"))
+        sample for sample in listdir(join(base_dir, "bad"))
         if sample not in derived_sample_list
     ]
 
-    output_dirpath = sys.argv[3]
+    output_dirpath = join(ROOT_DIR, sys.argv[3])
     output_dirpath_bad = join(output_dirpath, "bad")
     output_dirpath_good = join(output_dirpath, "good")
 
-    input_dirpath_bad = join(sys.argv[1], "bad")
-    input_dirpath_good = join(sys.argv[1], "good")
+    input_dirpath_bad = join(base_dir, "bad")
+    input_dirpath_good = join(base_dir, "good")
 
     if exists(output_dirpath):
         rmtree(output_dirpath)
