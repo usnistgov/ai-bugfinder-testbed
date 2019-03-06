@@ -6,7 +6,7 @@ from random import shuffle
 
 
 class Dataset(object):
-    def __init__(self, feature_filename, label_filename, ratio=0.8,
+    def __init__(self, feature_filename, label_filename, train_ratio=0.8,
                  batch_size=1):
 
         # Loading label and features
@@ -26,8 +26,17 @@ class Dataset(object):
         # Prepare indexes to get random sets for training and test
         shufidx = range(self.features.shape[0])
         shuffle(shufidx)
-        self.training_index = shufidx[:int(ratio * len(shufidx))]
-        self.testing_index = shufidx[int(ratio * len(shufidx)):]
+
+        if 0 < train_ratio < 1:
+            self.training_index = shufidx[:int(train_ratio * len(shufidx))]
+            self.testing_index = shufidx[int(train_ratio * len(shufidx)):]
+        elif train_ratio == 0:
+            self.training_index = list()
+            self.testing_index = shufidx
+        elif train_ratio == 1:
+            self.training_index = shufidx
+            self.testing_index = list()
+
         self.last_index = 0
 
         # Assume training mode per default

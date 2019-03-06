@@ -102,40 +102,53 @@ def test_model(dataset, input_data, output_data, model):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
+    if len(sys.argv) != 8:
         LOGGER.error(
             "Illegal number of parameters. Usage: %s." % USAGE
         )
         exit(1)
 
-    # Input Parameters
-    learning_rate = 0.000100
-    BATCH_SIZE = 100
-    NUM_EPOCH = 75
-    hidden_layers = [512, 128]
-    dataset_path = join(ROOT_DIR, sys.argv[1], "features")
-    neural_net_path = join(ROOT_DIR, sys.argv[1], "neural_net")
+    # Parsing input Parameters
+    training_set_path = join(ROOT_DIR, sys.argv[1], "features")
+    test_set_path = join(ROOT_DIR, sys.argv[2], "features")
+    neural_net_path = join(ROOT_DIR, sys.argv[3])
 
-    LOGGER.info("Loading dataset...")
+    hidden_layers = [int(h) for h in sys.argv[4].split('|')]
+    learning_rate = float(sys.argv[5])
+    batch_size = int(sys.argv[6])
+    epoch_nb = int(sys.argv[7])
+
+    LOGGER.info("Loading trainging dataset...")
     # Load data
-    ds = Dataset(
-        '%s/features.mtx' % dataset_path,
-        '%s/labels.txt' % dataset_path,
-        batch_size=BATCH_SIZE
+    training_data_set = Dataset(
+        '%s/features.mtx' % training_set_path,
+        '%s/labels.txt' % training_set_path,
+        train_ratio=1,
+        batch_size=batch_size
     )
 
     LOGGER.info(
-        "Loaded dataset at %s in %dms. Creating model..." %
-        (dataset_path, 1000)
+        "Loaded training dataset in %dms. Loading test dataset..." % 1000
     )
 
-    X = tf.placeholder("float32", [None, ds.input])
-    Y = tf.placeholder("float32", [None, ds.output])
-    logits, cost, optimizer = create_model(ds, hidden_layers)
+    test_data_set = Dataset(
+        '%s/features.mtx' % test_set_path,
+        '%s/labels.txt' % test_set_path,
+        train_ratio=0,
+        batch_size=batch_size
+    )
+
+    LOGGER.info(
+        "Loaded test dataset in %dms. Creating model..." % 1000
+    )
+
+    X = tf.placeholder("float32", [None, training_data_set.input])
+    Y = tf.placeholder("float32", [None, training_data_set.output])
+    logits, cost, optimizer = create_model(training_data_set, hidden_layers)
 
     LOGGER.info("Model created. Starting training...")
-    LOGGER.debug("%d batches" % ds.get_batch_count())
-    LOGGER.debug("%d epochs" % NUM_EPOCH)
+    LOGGER.debug("%d batches" % training_data_set.get_batch_count())
+    LOGGER.debug("%d epochs" % epoch_nb)
     LOGGER.debug("Learning rate: %.06f" % learning_rate)
 
     # Initializing the variables
@@ -145,14 +158,14 @@ if __name__ == "__main__":
         session.run(init)
         session.run(tf.local_variables_initializer())
 
-        for epoch in range(NUM_EPOCH):
-            ds.reset_index()
+        for epoch in range(epoch_nb):
+            training_data_set.reset_index()
             avg_cost = 0.0
             cum_cost = 0.0
 
             while True:
                 try:
-                    y, x, t = ds.get_next_batch()
+                    y, x, t = training_data_set.get_next_batch()
 
                     # Run optimization op (backprop) and cost op (to get loss
                     # value)
@@ -166,11 +179,11 @@ if __name__ == "__main__":
 
             disp_avg_cost = 999.99 if avg_cost > 999.99 else avg_cost
 
-            accuracy = test_model(ds, X, Y, logits)
+            accuracy = test_model(test_data_set, X, Y, logits)
 
             LOGGER.info(
                 "Epoch %03d/%03d [%06.2f%%]=(Loss: %06.2f; Test: %.05f)" %
-                (epoch+1, NUM_EPOCH, (epoch+1)*100/NUM_EPOCH, disp_avg_cost,
+                (epoch+1, epoch_nb, (epoch+1)*100/epoch_nb, disp_avg_cost,
                  accuracy)
             )
 
@@ -188,5 +201,5 @@ if __name__ == "__main__":
 
         LOGGER.info("Training finished. Starting testing...")
 
-        accuracy = test_model(ds, X, Y, logits)
+        accuracy = test_model(test_data_set, X, Y, logits)
         LOGGER.info("Accuracy: %.05f", accuracy)
