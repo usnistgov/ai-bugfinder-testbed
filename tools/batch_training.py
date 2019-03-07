@@ -3,7 +3,7 @@
 import csv
 import sys
 from multiprocessing import Pool
-from os.path import isfile
+from os.path import isfile, join
 
 from run_tensorflow import run_tensorflow
 from settings import LOGGER
@@ -14,6 +14,10 @@ USAGE = "./tools/batch_training.py ${batch_csv_file} ${processes}"
 def launch_training(input_list):
     LOGGER.info("Launching training rounds with parameters %s" %
                 str(input_list))
+
+    input_list.append(
+        join(input_list[2], "training.log")
+    )
 
     try:
         run_tensorflow(*input_list)

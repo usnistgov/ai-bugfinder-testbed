@@ -10,6 +10,7 @@ import tensorflow as tf
 
 from settings import LOGGER, ROOT_DIR
 from utils.dataset import Dataset
+from utils.logger import add_logfile
 
 USAGE = "./run_tensorflow.py ${DATA_DIR}"
 
@@ -102,19 +103,34 @@ def test_model(dataset, input_data, output_data, model):
     return _accuracy.eval({input_data: x_, output_data: y_})
 
 
+def save_neural_net(session, neural_net_path):
+    LOGGER.debug("Saving the neural net to disk...")
+    tf.train.Saver().save(session, "%s/nn" % neural_net_path)
+
+
 def run_tensorflow(training_set_path, test_set_path, neural_net_path,
-                   hidden_layers, learning_rate, batch_size, epoch_nb):
+                   hidden_layers, learning_rate, batch_size, epoch_nb,
+                   logfile=None):
+
     # Parsing input Parameters
     training_set_path = join(ROOT_DIR, training_set_path, "features")
     test_set_path = join(ROOT_DIR, test_set_path, "features")
     neural_net_path = join(ROOT_DIR, neural_net_path)
+
+    if not os.path.exists(neural_net_path):
+        os.mkdir(neural_net_path)
 
     hidden_layers = [int(h) for h in hidden_layers.split('|')]
     learning_rate = float(learning_rate)
     batch_size = int(batch_size)
     epoch_nb = int(epoch_nb)
 
-    LOGGER.info("Loading training dataset...")
+    if logfile is not None:
+        logger = add_logfile(LOGGER, logfile)
+    else:
+        logger = LOGGER
+
+    logger.info("Loading training dataset...")
     # Load data
     training_data_set = Dataset(
         '%s/features.mtx' % training_set_path,
@@ -123,7 +139,7 @@ def run_tensorflow(training_set_path, test_set_path, neural_net_path,
         batch_size=batch_size
     )
 
-    LOGGER.info(
+    logger.info(
         "Loaded training dataset in %dms. Loading test dataset..." % 1000
     )
 
@@ -134,7 +150,7 @@ def run_tensorflow(training_set_path, test_set_path, neural_net_path,
         batch_size=batch_size
     )
 
-    LOGGER.info(
+    logger.info(
         "Loaded test dataset in %dms. Creating model..." % 1000
     )
 
@@ -143,10 +159,10 @@ def run_tensorflow(training_set_path, test_set_path, neural_net_path,
     logits, cost, optimizer = create_model(training_data_set, hidden_layers,
                                            x_vector, y_vector, learning_rate)
 
-    LOGGER.info("Model created. Starting training...")
-    LOGGER.debug("%d batches" % training_data_set.get_batch_count())
-    LOGGER.debug("%d epochs" % epoch_nb)
-    LOGGER.debug("Learning rate: %.06f" % learning_rate)
+    logger.info("Model created. Starting training...")
+    logger.debug("%d batches" % training_data_set.get_batch_count())
+    logger.debug("%d epochs" % epoch_nb)
+    logger.debug("Learning rate: %.06f" % learning_rate)
 
     # Initializing the variables
     init = tf.global_variables_initializer()
@@ -179,7 +195,7 @@ def run_tensorflow(training_set_path, test_set_path, neural_net_path,
 
             accuracy = test_model(test_data_set, x_vector, y_vector, logits)
 
-            LOGGER.info(
+            logger.info(
                 "Epoch %03d/%03d [%06.2f%%]=(Loss: %06.2f; Test: %.05f)" %
                 (epoch + 1, epoch_nb, (epoch + 1) * 100 / epoch_nb,
                  disp_avg_cost,
@@ -191,17 +207,12 @@ def run_tensorflow(training_set_path, test_set_path, neural_net_path,
                 break
 
         # Save the model
-        LOGGER.info("Saving the neural net to disk...")
+        save_neural_net(session, neural_net_path)
 
-        if not os.path.exists(neural_net_path):
-            os.mkdir(neural_net_path)
-
-        tf.train.Saver().save(session, "%s/nn" % neural_net_path)
-
-        LOGGER.info("Training finished. Starting testing...")
+        logger.info("Training finished. Starting testing...")
 
         accuracy = test_model(test_data_set, x_vector, y_vector, logits)
-        LOGGER.info("Accuracy: %.05f", accuracy)
+        logger.info("Accuracy: %.05f", accuracy)
 
 
 if __name__ == "__main__":
