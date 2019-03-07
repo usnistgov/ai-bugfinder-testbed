@@ -29,7 +29,7 @@ def multilayer_perceptron(_x, _weights, _biases):
     return prev_layer
 
 
-def create_model(dataset, layers):
+def create_model(dataset, layers, input_vec, output_vec, learning_rate):
 
     # Store layers weight & bias
     weights = list()
@@ -73,10 +73,11 @@ def create_model(dataset, layers):
         exit(1)
 
     # Build model
-    _logits = multilayer_perceptron(X, weights, biases)
+    _logits = multilayer_perceptron(input_vec, weights, biases)
 
     _cost = tf.reduce_mean(
-        tf.nn.softmax_cross_entropy_with_logits_v2(logits=_logits, labels=Y)
+        tf.nn.softmax_cross_entropy_with_logits_v2(logits=_logits,
+                                                   labels=output_vec)
     )
     _optimizer = tf.train.AdamOptimizer(
         learning_rate=learning_rate
@@ -101,24 +102,19 @@ def test_model(dataset, input_data, output_data, model):
     return _accuracy.eval({input_data: x_, output_data: y_})
 
 
-if __name__ == "__main__":
-    if len(sys.argv) != 8:
-        LOGGER.error(
-            "Illegal number of parameters. Usage: %s." % USAGE
-        )
-        exit(1)
-
+def run_tensorflow(training_set_path, test_set_path, neural_net_path,
+                   hidden_layers, learning_rate, batch_size, epoch_nb):
     # Parsing input Parameters
-    training_set_path = join(ROOT_DIR, sys.argv[1], "features")
-    test_set_path = join(ROOT_DIR, sys.argv[2], "features")
-    neural_net_path = join(ROOT_DIR, sys.argv[3])
+    training_set_path = join(ROOT_DIR, training_set_path, "features")
+    test_set_path = join(ROOT_DIR, test_set_path, "features")
+    neural_net_path = join(ROOT_DIR, neural_net_path)
 
-    hidden_layers = [int(h) for h in sys.argv[4].split('|')]
-    learning_rate = float(sys.argv[5])
-    batch_size = int(sys.argv[6])
-    epoch_nb = int(sys.argv[7])
+    hidden_layers = [int(h) for h in hidden_layers.split('|')]
+    learning_rate = float(learning_rate)
+    batch_size = int(batch_size)
+    epoch_nb = int(epoch_nb)
 
-    LOGGER.info("Loading trainging dataset...")
+    LOGGER.info("Loading training dataset...")
     # Load data
     training_data_set = Dataset(
         '%s/features.mtx' % training_set_path,
@@ -142,9 +138,10 @@ if __name__ == "__main__":
         "Loaded test dataset in %dms. Creating model..." % 1000
     )
 
-    X = tf.placeholder("float32", [None, training_data_set.input])
-    Y = tf.placeholder("float32", [None, training_data_set.output])
-    logits, cost, optimizer = create_model(training_data_set, hidden_layers)
+    x_vector = tf.placeholder("float32", [None, training_data_set.input])
+    y_vector = tf.placeholder("float32", [None, training_data_set.output])
+    logits, cost, optimizer = create_model(training_data_set, hidden_layers,
+                                           x_vector, y_vector, learning_rate)
 
     LOGGER.info("Model created. Starting training...")
     LOGGER.debug("%d batches" % training_data_set.get_batch_count())
@@ -161,7 +158,7 @@ if __name__ == "__main__":
         for epoch in range(epoch_nb):
             training_data_set.reset_index()
             avg_cost = 0.0
-            cum_cost = 0.0
+            # cum_cost = 0.0
 
             while True:
                 try:
@@ -170,7 +167,8 @@ if __name__ == "__main__":
                     # Run optimization op (backprop) and cost op (to get loss
                     # value)
                     _, cum_cost = session.run([optimizer, cost],
-                                              feed_dict={X: x, Y: y})
+                                              feed_dict={x_vector: x,
+                                                         y_vector: y})
 
                     # Compute average loss
                     avg_cost += cum_cost
@@ -179,11 +177,12 @@ if __name__ == "__main__":
 
             disp_avg_cost = 999.99 if avg_cost > 999.99 else avg_cost
 
-            accuracy = test_model(test_data_set, X, Y, logits)
+            accuracy = test_model(test_data_set, x_vector, y_vector, logits)
 
             LOGGER.info(
                 "Epoch %03d/%03d [%06.2f%%]=(Loss: %06.2f; Test: %.05f)" %
-                (epoch+1, epoch_nb, (epoch+1)*100/epoch_nb, disp_avg_cost,
+                (epoch + 1, epoch_nb, (epoch + 1) * 100 / epoch_nb,
+                 disp_avg_cost,
                  accuracy)
             )
 
@@ -201,5 +200,16 @@ if __name__ == "__main__":
 
         LOGGER.info("Training finished. Starting testing...")
 
-        accuracy = test_model(test_data_set, X, Y, logits)
+        accuracy = test_model(test_data_set, x_vector, y_vector, logits)
         LOGGER.info("Accuracy: %.05f", accuracy)
+
+
+if __name__ == "__main__":
+    if len(sys.argv) != 8:
+        LOGGER.error(
+            "Illegal number of parameters. Usage: %s." % USAGE
+        )
+        exit(1)
+
+    run_tensorflow(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4],
+                   sys.argv[5], sys.argv[6], sys.argv[7])
