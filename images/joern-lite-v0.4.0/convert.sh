@@ -1,16 +1,16 @@
 #!/bin/sh
 CHOWN_IDS=$(stat -c "%u:%g" /code)
-TMP_DB_FOLDER="/tmp/joerndb"
-FINAL_DB_FOLDER="/code/joerndb"
+TMP_DB_FOLDER="/tmp/joern.db"
+FINAL_DB_FOLDER="/code/joern.db"
 
-if [ -d ${TMP_DB_FOLDER} ]
+if [[ -d ${TMP_DB_FOLDER} ]]
 then
   echo "Temp DB directory already exists. Cleaning before execution..."
   rm -rf ${TMP_DB_FOLDER}
   echo "Temp DB directory removed."
 fi
 
-if [ -d ${FINAL_DB_FOLDER} ]
+if [[ -d ${FINAL_DB_FOLDER} ]]
 then
   echo "Directory joerndb already exists in /code. Remove or rename it before execution."
   exit 1
