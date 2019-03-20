@@ -134,6 +134,7 @@ def run_tensorflow(training_set_path, test_set_path, neural_net_path,
     # Load data
     training_data_set = Dataset(
         '%s/features.mtx' % training_set_path,
+        '%s/graphs.txt' % test_set_path,
         '%s/labels.txt' % training_set_path,
         train_ratio=1,
         batch_size=batch_size
@@ -145,13 +146,22 @@ def run_tensorflow(training_set_path, test_set_path, neural_net_path,
 
     test_data_set = Dataset(
         '%s/features.mtx' % test_set_path,
+        '%s/graphs.txt' % test_set_path,
         '%s/labels.txt' % test_set_path,
         train_ratio=0,
         batch_size=batch_size
     )
 
+    # Fix dataset so that the created model will have the same number of inputs
     logger.info(
-        "Loaded test dataset in %dms. Creating model..." % 1000
+        "Loaded test dataset in %dms. Reshaping features matrix..." % 1000
+    )
+
+    training_data_set.enhance_dataset(test_data_set)
+    test_data_set.enhance_dataset(training_data_set)
+
+    logger.info(
+        "Matrix reshaped in %dms. Creating model..." % 1000
     )
 
     x_vector = tf.placeholder("float32", [None, training_data_set.input])
