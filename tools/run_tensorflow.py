@@ -161,7 +161,8 @@ def run_tensorflow(training_set_path, test_set_path, neural_net_path,
     test_data_set.enhance_dataset(training_data_set)
 
     logger.info(
-        "Matrix reshaped in %dms. Creating model..." % 1000
+        "Matrix reshaped in %dms. Creating model with %d input features..." %
+        (1000, training_data_set.input)
     )
 
     x_vector = tf.placeholder("float32", [None, training_data_set.input])
