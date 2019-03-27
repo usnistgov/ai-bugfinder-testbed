@@ -123,4 +123,5 @@ class Dataset(object):
 
         self.feature_names = np.array(new_feature_names)
         self.features = new_features.tocsr()
+        self.input = self.features.shape[1]
         return True
