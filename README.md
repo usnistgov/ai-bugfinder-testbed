@@ -4,7 +4,7 @@
 
 * Docker: https://docs.docker.com/install/#supported-platforms
 * Python 2.7: https://www.python.org/download/releases/2.7/
-* Virtual environment
+* Virtual environment:
 	* With `venv`: https://virtualenv.pypa.io/en/stable/installation/
 	* With `conda`: https://conda.io/docs/user-guide/install/index.html
 	
@@ -13,14 +13,36 @@ Once the Python environment is setup, run `pip install -r requirements.txt`
 
 ## Installation
 
-Start by downloading the [Juliet Dataset for C/C++](https://samate.nist.gov/SRD/testsuite.php) 
-using the `download-juliet.sh` script. The testcases will be split between 
-healthy (good) and buggy (bad) code. The dataset is stored in the 
-*data/testcases* folder, the annotated data are stored in *data/annot/*.
+### Download the Juliet dataset
+
+Using the `download_juliet.sh` located in the **tools/** folder, download the 
+[Juliet Dataset for C/C++](https://samate.nist.gov/SRD/testsuite.php). The 
+testcases will be split between healthy (good) and buggy (bad) code. The 
+dataset is stored in the **data/cwe121_orig/** folder and the annotated data are 
+stored in **data/cwe121_annot/**.
+
+### Prepare the dataset
+
+*Joern* is not able to perfectly parse the C samples from *Juliet*. To remedy 
+this issue, please use `python tools/prepare_data.py ${DATA_DIR}`. It replaces
+instances of the code left unparsed by an equivalent code line that Joern is 
+able to parse.
+
+### Build the docker images
+
+The necessary docker images can be built using `python tools/build_images.py`.
+Three images should be built:
+* *joern-lite:0.3.1*: The latest release of Joern (released on 11/21/2011).
+* *joern-lite:0.4.0*: The latest code from Joern (pushed on 04/12/2017).
+* *neo4j-ai:latest*: A Neo4J v3 image package with additional shell tools.
+
+### Run Joern
 
 [Joern](http://mlsec.org/joern/index.shtml) then needs to be executed with the 
 script `run-joern.sh`. Once the execution is done, the  *.joernIndex* is moved 
 to *data/graph.db*. A Neo4j DB then loads the data for further processing.
+
+### Enhance the dataset
 
 At this point, use the neo4j shell (`docker exec -it neo4j-ai bin/neo4j-shell`)
 or connect to the web interface listening on **port 7474** to run the following
@@ -46,6 +68,8 @@ $ match ()-[:FLOWS_TO|REACHES|CONTROLS]->(root2:GenericNode)
 	'GotoStatement', 'Statement', 'UnaryExpression' ]
   set root2:DownstreamNode
 ```
+
+### Extract the feature and run Tensorflow
 
 The features need to be extracted using `python extract-features-from-db.py`. 
 Resulting features will be stored in *data/features*. Lastly, execute 
