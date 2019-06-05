@@ -37,4 +37,4 @@ def start_container(db_path):
     LOGGER.info("%s fully converted." % cname)
     neo4j2_container.stop()
 
-    return cname
+    return neo4j2_container, cname

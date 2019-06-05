@@ -1,8 +1,11 @@
+from os.path import join
+
 import docker
 from docker.errors import APIError
+from py2neo import Graph
 
 from settings import LOGGER, NEO4J_V3_MEMORY
-from utils.containers import wait_log_display
+from utils.containers import wait_log_display, stop_container_by_name
 from utils.rand import get_rand_string
 from utils.statistics import get_time
 
@@ -37,13 +40,16 @@ COMMANDS = [
 
 
 def import_csv_files(db_path, import_dir):
-    neo4j3_container, cname = start_container(db_path, import_dir=import_dir)
+    db_path_import = "neo4j_v3.db"
+    neo4j3_container, cname = start_container(db_path, db_bind_path=db_path_import,
+                                              import_dir=import_dir)
 
     neo4j3_container.exec_run(
         """
-        ./bin/neo4j-admin import --database=neo4j_v3.db --delimiter='TAB'
-            --nodes=./import/nodes.csv --relationships=./import/edges.csv    
-        """
+        ./bin/neo4j-admin import --database=%s --delimiter='TAB'
+            --nodes=/var/lib/neo4j/import/nodes.csv 
+            --relationships=/var/lib/neo4j/import/edges.csv    
+        """ % db_path_import
     )
 
     LOGGER.info("CSV file imported.")
@@ -56,10 +62,18 @@ def enhance_markup(db_path):
     neo4j3_container, cname = start_container(db_path)
 
     LOGGER.info("Running commands...")
+
+    neo4j_db = Graph(
+        scheme="http",
+        host="0.0.0.0",
+        port="7474"
+    )
+
     for cmd in COMMANDS:
         try:
             start = get_time()
-            neo4j3_container.exec_run("./bin/neo4j-shell -c \"%s\"" % cmd)
+            # neo4j3_container.exec_run("./bin/neo4j-shell -c \"%s\"" % cmd)
+            neo4j_db.run(cmd)
             end = get_time()
 
             LOGGER.info(
@@ -74,18 +88,18 @@ def enhance_markup(db_path):
             break
 
     LOGGER.info("%s fully converted." % cname)
-    neo4j3_container.stop()
+    stop_container_by_name(cname)
 
     return cname
 
 
-def start_container(db_path, import_dir=None, stop_after_execution=False):
+def start_container(db_path, db_bind_path="graph.db", import_dir=None, stop_after_execution=False):
     docker_cli = docker.from_env()
     cname = "neo4j-v3-%s" % get_rand_string(5, special=False)
     LOGGER.info("Starting %s..." % cname)
 
     neo4j3_container_volumes = {
-        db_path: {"bind": "/data/databases/graph.db", "mode": "rw"}
+        db_path: {"bind": join("/data/databases", db_bind_path), "mode": "rw"}
     }
 
     if import_dir is not None:

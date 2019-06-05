@@ -88,7 +88,7 @@ def main(db_path):
        SET n.ast = data.ast
    """
 
-    neo4j_container = run_neo4j_v3(db_path, stop_after_execution=False)
+    neo4j_container_obj, neo4j_container_name = run_neo4j_v3(db_path, stop_after_execution=False)
 
     neo4j_db = Graph(
         scheme="http",
@@ -144,4 +144,4 @@ def main(db_path):
             LOGGER.info(e.message)
 
     LOGGER.info("Processing completed...")
-    stop_container_by_name(neo4j_container)
+    stop_container_by_name(neo4j_container_name)
