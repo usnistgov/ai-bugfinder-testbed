@@ -12,7 +12,10 @@ from settings import LOGGER, ROOT_DIR
 from utils.dataset import Dataset
 from utils.logger import add_logfile
 
-USAGE = "./run_tensorflow.py ${DATA_DIR}"
+USAGE = """
+    python ./tools/run_tensorflow.py ${TRAINING_SET_DIR} ${TEST_SET_PATH} ${NEURAL_NET_PATH}
+        ${HIDDEN_LAYERS} ${LEARNING_RATE} ${BATCH_SIZE} ${EPOCH_NB}
+"""
 
 
 def multilayer_perceptron(_x, _weights, _biases):
