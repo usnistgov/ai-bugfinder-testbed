@@ -16,7 +16,7 @@ from libs.neo4j.ai import start_container as run_neo4j_v3
 from settings import ROOT_DIR, LOGGER
 from utils.containers import stop_container_by_name
 
-USAGE = "./extract_features.py ${DATA_DIR} ${DATA_VERSION}"
+USAGE = "python ./extract_features.py ${DATA_DIR} ${DATA_VERSION}"
 
 COMMANDS = {
     "0.3.1": extract_features_v31,
