@@ -1,11 +1,18 @@
 """
 """
 import os
+import pickle
 from os.path import join
 
 import numpy
 from scipy.io import mmwrite
 from scipy.sparse import lil_matrix, vstack, hstack
+
+FLOWS = {
+    "CONTROLS": 0,
+    "FLOWS_TO": 1,
+    "REACHES": 2,
+}
 
 COMMANDS = {
     "list_testcases": """
@@ -27,16 +34,9 @@ COMMANDS = {
 
 
 def extract_features(neo4j_db, data_dir):
-    # Dictionary taking a flattened flow graph as key and an index as value for
-    # reverse-lookup
-    unique_graph_lookup = {}
-
-    # A sparse matrix to store the number of occurrences of each flow graph for
-    # each test case
-    features = lil_matrix((8, 8))
-
-    # A list keeping track of whether a test case is good or bad
-    labels = []
+    # Get feature info calculated earlier
+    with open("./features.bin", "r") as features_file:
+        features_refs = pickle.load(features_file)
 
     # Test case index
     testcase_index = 0
@@ -47,16 +47,22 @@ def extract_features(neo4j_db, data_dir):
     testcase_list = neo4j_db.run(COMMANDS["list_testcases"]).data()
     print "%d test cases to process..." % len(testcase_list)
 
+    # A sparse matrix to store the number of occurrences of each flow graph for
+    # each test case
+    features = lil_matrix((len(testcase_list), len(features_refs)))
+
+    # A list keeping track of whether a test case is good or bad
+    labels = []
+
     # For each test case, extract interesting flow graphs
     for testcase in testcase_list:
-        print "Processing test case %d/%d (%d%%)\t" \
-              "Matrix size: %dx%d\tTestcase: %s\t(%s)" % \
+        print "Processing %d/%d (%d%%)\t" \
+              "Matrix: %dx%d\tTestcase: %s" % \
               (
                   testcase_index + 1, len(testcase_list),
                   100 * (testcase_index + 1) / len(testcase_list),
                   features.shape[0], features.shape[1],
-                  testcase['filepath'].split('/')[-1],
-                  testcase['filepath'].split('/')[3] + "." + testcase["name"]
+                  testcase["name"]
               )
 
         # Keep track of whether the current test case is good or bad, along with
@@ -65,16 +71,6 @@ def extract_features(neo4j_db, data_dir):
             testcase['filepath'].split('/')[2] == 'good',
             testcase['filepath'].split('/')[-1]
         ])
-
-        # Increase the height of the vector matrix if necessary
-        # (to store more test case features)
-        if features.shape[0] <= testcase_index:
-            features = lil_matrix(
-                vstack([
-                    features,
-                    lil_matrix((features.shape[0], features.shape[1]))
-                ])
-            )
 
         # To speed things up, collect the entry points
         entrypoint_list = neo4j_db.run(
@@ -92,40 +88,22 @@ def extract_features(neo4j_db, data_dir):
 
                 source = flowgraph["source"]
                 sink = flowgraph["sink"]
-                flow = ':'.join(flowgraph["flow"])
+                flow = flowgraph["flow"]
 
-                key = "%s-[%s]->%s" % (source, flow, sink)
+                feature_ref = "%s-%s-%s" % (source, flow, sink)
 
                 # Add the current graph to the books if it's new
-                if key not in unique_graph_lookup.keys():
-                    # Increase the width of the vector matrix if necessary
-                    # (to store counts for more types of graphs)
-                    if features.shape[1] <= len(unique_graph_lookup):
-                        features = lil_matrix(hstack([
-                            features,
-                            lil_matrix((features.shape[0], features.shape[1]))
-                        ]))
-
-                    # Add the new graph
-                    unique_graph_lookup[key] = len(unique_graph_lookup)
+                if feature_ref not in features_refs:
+                    raise KeyError("Feature %s never seen before" % feature_ref)
 
                 # Increment the count for the current graph in the current test
                 # case's vector
-                features[testcase_index, unique_graph_lookup[key]] += 1
+                features[testcase_index, features_refs.index(feature_ref)] += 1
 
         # Increment the test case index
         testcase_index += 1
 
-    # Reduce the vector matrix to its useful size
-    features = features[:testcase_index, :len(unique_graph_lookup)]
-
-    # Reverse the flow graph dictionary for storage
-    graphs = [""] * len(unique_graph_lookup.keys())
-    for unique_graph in unique_graph_lookup.keys():
-        graphs[unique_graph_lookup[unique_graph]] = unique_graph
-
-    print "Summary: analyzed %d test cases, extracting %d unique features" % \
-          (testcase_index, len(unique_graph_lookup))
+    print("Analyzed %d test cases" % testcase_index)
 
     # Create feature directory
     features_dir = join(data_dir, "features")
@@ -136,10 +114,6 @@ def extract_features(neo4j_db, data_dir):
     # Write data to disk in sparse format (Matrix Market)
     mmwrite(join(features_dir, "features.mtx"), features, field="integer")
 
-    # Write data to disk in dense format
-    numpy.savetxt(
-        join(features_dir, "graphs.txt"), graphs, delimiter="\n", fmt="%s"
-    )
     numpy.savetxt(
         join(features_dir, "labels.txt"), labels, delimiter=",", fmt="%s"
     )
