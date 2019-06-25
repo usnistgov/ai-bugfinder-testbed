@@ -6,7 +6,9 @@ from os.path import join
 
 import numpy
 from scipy.io import mmwrite
-from scipy.sparse import lil_matrix, vstack, hstack
+from scipy.sparse import lil_matrix
+
+from settings import LOGGER
 
 FLOWS = {
     "CONTROLS": 0,
@@ -26,9 +28,9 @@ COMMANDS = {
         RETURN entry.functionId AS id
     """,
     "get_flowgraphs": """
-        MATCH (root1:UpstreamNode)-[rel:FLOWS_TO|REACHES|CONTROLS]->(root2:DownstreamNode)
+        MATCH p = (root1:UpstreamNode)-[rel:FLOWS_TO|:REACHES|:CONTROLS]->(root2:DownstreamNode)
         WHERE root1.functionId="%s"
-        RETURN distinct root1.ast AS source, root2.ast AS sink, type(rel) AS flow
+        RETURN distinct root1.ast AS source, root2.ast AS sink, type(rel) AS flow, count(p) AS count
     """
 }
 
@@ -41,11 +43,11 @@ def extract_features(neo4j_db, data_dir):
     # Test case index
     testcase_index = 0
 
-    print "Retrieving test cases from the database..."
+    LOGGER.info("Retrieving test cases from the database...")
 
     # Get a list of all test cases in the database
     testcase_list = neo4j_db.run(COMMANDS["list_testcases"]).data()
-    print "%d test cases to process..." % len(testcase_list)
+    LOGGER.info("%d test cases to process..." % len(testcase_list))
 
     # A sparse matrix to store the number of occurrences of each flow graph for
     # each test case
@@ -56,14 +58,15 @@ def extract_features(neo4j_db, data_dir):
 
     # For each test case, extract interesting flow graphs
     for testcase in testcase_list:
-        print "Processing %d/%d (%d%%)\t" \
-              "Matrix: %dx%d\tTestcase: %s" % \
-              (
-                  testcase_index + 1, len(testcase_list),
-                  100 * (testcase_index + 1) / len(testcase_list),
-                  features.shape[0], features.shape[1],
-                  testcase["name"]
-              )
+        LOGGER.info(
+            "Processing %d/%d (%d%%)\tMatrix: %dx%d\tTestcase: %s" %
+            (
+                testcase_index + 1, len(testcase_list),
+                100 * (testcase_index + 1) / len(testcase_list),
+                features.shape[0], features.shape[1],
+                testcase["name"]
+            )
+        )
 
         # Keep track of whether the current test case is good or bad, along with
         # the test case name
@@ -98,12 +101,12 @@ def extract_features(neo4j_db, data_dir):
 
                 # Increment the count for the current graph in the current test
                 # case's vector
-                features[testcase_index, features_refs.index(feature_ref)] += 1
+                features[testcase_index, features_refs.index(feature_ref)] += flowgraph["count"]
 
         # Increment the test case index
         testcase_index += 1
 
-    print("Analyzed %d test cases" % testcase_index)
+    LOGGER.info("Analyzed %d test cases." % testcase_index)
 
     # Create feature directory
     features_dir = join(data_dir, "features")
