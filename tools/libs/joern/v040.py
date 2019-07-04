@@ -84,5 +84,5 @@ def main(code_path):
     import_csv_files(db_path, import_dir)
 
     LOGGER.info("Successful import to Neo4j 3.5.")
-    run_neo4j_v3(db_path)
+    run_neo4j_v3(db_path, stop_after_execution=True)
     enhance_markup(db_path)

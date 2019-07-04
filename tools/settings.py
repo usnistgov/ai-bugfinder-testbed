@@ -40,5 +40,7 @@ LOGGER_CONFIG = {
     },
 }
 
+NEO4J_V3_MEMORY = "4G"
+
 logging.config.dictConfig(LOGGER_CONFIG)
 LOGGER = logging.getLogger("app")
