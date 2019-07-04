@@ -29,5 +29,5 @@ def main(code_path):
     copy_dir(src, dest)
 
     LOGGER.info("Database ready. Updating to Neo4j 3.5...")
-    run_neo4j_v3(dest)
+    run_neo4j_v3(dest, stop_after_execution=True)
     enhance_markup(dest)
