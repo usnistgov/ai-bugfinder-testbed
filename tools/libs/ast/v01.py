@@ -1,3 +1,7 @@
+from __future__ import division
+from builtins import str
+from builtins import range
+from past.utils import old_div
 import re
 
 from py2neo import Graph
@@ -41,7 +45,7 @@ def main(db_path):
     cmd_list = []
     limit = 2000
 
-    for i in xrange(len(ast_list) / limit + 1):
+    for i in range(old_div(len(ast_list), limit) + 1):
         lower = i*limit
         upper = (i+1)*limit
 

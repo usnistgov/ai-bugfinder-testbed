@@ -49,7 +49,7 @@ def clean(file_list):
                     open("%s.out" % filename, 'w+') as outfile:
 
                 for line in infile:
-                    for src, dest in replacements.items():
+                    for src, dest in list(replacements.items()):
                         if re.match(src, line):
                             count_sub += 1
                             line = re.sub(src, dest, line)

@@ -1,3 +1,7 @@
+from __future__ import division
+from builtins import str
+from builtins import range
+from past.utils import old_div
 import re
 
 from py2neo import Graph
@@ -56,8 +60,8 @@ def get_query(neo4j_db, node_list):
 
     LOGGER.info("Links info retrieved. Building tree...")
 
-    for root in roots.keys():
-        if root not in links.keys():
+    for root in list(roots.keys()):
+        if root not in list(links.keys()):
             continue
 
         root_children = list()
@@ -106,7 +110,7 @@ def main(db_path):
     ast_update_dict_raw = get_query(neo4j_db, nodes_id)
     ast_update_dict_raw = [
         {"id": root_id, "ast": ast_repr}
-        for root_id, ast_repr in ast_update_dict_raw.items()
+        for root_id, ast_repr in list(ast_update_dict_raw.items())
     ]
 
     LOGGER.info(
@@ -118,7 +122,7 @@ def main(db_path):
     cmd_list = []
     limit = 2000
 
-    for i in xrange(len(ast_update_dict_raw) / limit + 1):
+    for i in range(old_div(len(ast_update_dict_raw), limit) + 1):
         lower = i * limit
         upper = (i + 1) * limit
 

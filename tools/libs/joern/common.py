@@ -21,10 +21,11 @@ def run_joern_lite(version, code_path):
             },
             remove=True
         )
-    except APIError as ae:
+    except Exception as exc:
         LOGGER.error(
             "An error occured while running %s: %s" %
-            (joern_lite_cname, ae.message)
+            (joern_lite_cname, str(exc))
         )
+        exit(1)
 
     LOGGER.info("Joern execution finished.")

@@ -1,5 +1,7 @@
 """
 """
+from __future__ import division
+from past.utils import old_div
 import os
 import pickle
 from os.path import join
@@ -37,7 +39,7 @@ COMMANDS = {
 
 def extract_features(neo4j_db, data_dir):
     # Get feature info calculated earlier
-    with open("./features.bin", "r") as features_file:
+    with open("./features.bin", "rb") as features_file:
         features_refs = pickle.load(features_file)
 
     # Test case index
@@ -62,7 +64,7 @@ def extract_features(neo4j_db, data_dir):
             "Processing %d/%d (%d%%)\tMatrix: %dx%d\tTestcase: %s" %
             (
                 testcase_index + 1, len(testcase_list),
-                100 * (testcase_index + 1) / len(testcase_list),
+                old_div(100 * (testcase_index + 1), len(testcase_list)),
                 features.shape[0], features.shape[1],
                 testcase["name"]
             )

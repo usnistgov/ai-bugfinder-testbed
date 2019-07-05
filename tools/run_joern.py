@@ -1,5 +1,6 @@
 """ Script running Joern and providing a Neo4j v3 DB
 """
+from builtins import str
 from os.path import join
 import sys
 
@@ -21,9 +22,9 @@ if __name__ == "__main__":
 
     code_path = join(ROOT_DIR, sys.argv[1])
 
-    if sys.argv[2] not in joern_versions.keys():
+    if sys.argv[2] not in list(joern_versions.keys()):
         LOGGER.error(
-            "Illegal argument: 'version' not in %s" % str(joern_versions.keys())
+            "Illegal argument: 'version' not in %s" % str(list(joern_versions.keys()))
         )
         exit(1)
 

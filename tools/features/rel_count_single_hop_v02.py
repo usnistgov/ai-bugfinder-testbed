@@ -39,7 +39,7 @@ COMMANDS = {
 
 def extract_features(neo4j_db, data_dir):
     # Get feature info calculated earlier
-    with open("./features.bin", "r") as features_file:
+    with open("./features.bin", "rb") as features_file:
         features_refs = pickle.load(features_file)
 
     # Test case index
@@ -84,7 +84,7 @@ def extract_features(neo4j_db, data_dir):
 
         # Get the interesting flow graphs for each function
         for entrypoint in entrypoint_list:
-            for flow in FLOWS.keys():
+            for flow in list(FLOWS.keys()):
                 features_info = dict()
                 total_flow = 0
 
@@ -106,13 +106,13 @@ def extract_features(neo4j_db, data_dir):
 
                     # Increment the count for the current graph in the current test
                     # case's vector
-                    if features_refs not in features_info.keys():
+                    if features_refs not in list(features_info.keys()):
                         features_info[feature_ref] = 0
 
                     features_info[feature_ref] += flowgraph["count"]
                     total_flow += flowgraph["count"]
 
-                for feature_ref, feature_count in features_info.items():
+                for feature_ref, feature_count in list(features_info.items()):
                     features[testcase_index, features_refs.index(feature_ref)] = \
                         float(feature_count) / float(total_flow)
 

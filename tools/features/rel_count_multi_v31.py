@@ -1,6 +1,8 @@
 """
 """
 from __future__ import print_function
+from __future__ import division
+from past.utils import old_div
 import os
 from os.path import join
 
@@ -60,7 +62,7 @@ def extract_features(neo4j_db, data_dir):
             "Processing test case %d/%d (%d%%)\t"
             "Matrix size: %dx%d\tTestcase: %s\t(%s)" % (
                 testcase_index + 1, len(testcase_list),
-                100 * (testcase_index + 1) / len(testcase_list),
+                old_div(100 * (testcase_index + 1), len(testcase_list)),
                 features.shape[0], features.shape[1],
                 testcase['filepath'].split('/')[-1],
                 testcase['filepath'].split('/')[3] + "." + testcase["name"]
@@ -105,7 +107,7 @@ def extract_features(neo4j_db, data_dir):
                 key = "%s-[%s]->%s" % (source, flow, sink)
 
                 # Add the current graph to the books if it's new
-                if key not in unique_graph_lookup.keys():
+                if key not in list(unique_graph_lookup.keys()):
                     # Increase the width of the vector matrix if necessary
                     # (to store counts for more types of graphs)
                     if features.shape[1] <= len(unique_graph_lookup):
@@ -128,8 +130,8 @@ def extract_features(neo4j_db, data_dir):
     features = features[:testcase_index, :len(unique_graph_lookup)]
 
     # Reverse the flow graph dictionary for storage
-    graphs = [""] * len(unique_graph_lookup.keys())
-    for unique_graph in unique_graph_lookup.keys():
+    graphs = [""] * len(list(unique_graph_lookup.keys()))
+    for unique_graph in list(unique_graph_lookup.keys()):
         graphs[unique_graph_lookup[unique_graph]] = unique_graph
 
     print("Summary: analyzed %d test cases, extracting %d unique features" % (
