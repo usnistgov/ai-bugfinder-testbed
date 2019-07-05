@@ -1,16 +1,22 @@
 """
 """
 import numpy as np
+from scipy import sparse
 from scipy.io import mmread
 from random import shuffle
 
+from scipy.sparse import csr_matrix
+
 
 class Dataset(object):
-    def __init__(self, feature_filename, label_filename, train_ratio=0.8,
-                 batch_size=1):
+    def __init__(self, feature_filename, feature_label_filename, label_filename,
+                 train_ratio=0.8, batch_size=1):
 
         # Loading label and features
         self.labels = np.genfromtxt(label_filename, delimiter=',', dtype=None)
+        self.feature_names = np.genfromtxt(feature_label_filename,
+                                           delimiter='\n', dtype=None)
+
         self.features = mmread(feature_filename).tocsr()
 
         # Check if we have as many labels as features
@@ -71,7 +77,8 @@ class Dataset(object):
 
             label, testcase = self.labels[self.index[self.last_index]]
             features[_offset] = self.features[
-                self.index[self.last_index]].todense()
+                self.index[self.last_index]
+            ].todense()
 
             # Need to use this trick to use softmax in the NN
             labels[_offset] = [label, 1 - label]
@@ -91,3 +98,30 @@ class Dataset(object):
         self.last_index = last_index
 
         return labels, features, testcases
+
+    def enhance_dataset(self, extra_dataset):
+        local_features = self.feature_names.tolist()
+        extra_features = extra_dataset.feature_names.tolist()
+
+        # if local_features == extra_features:
+        #     return False
+
+        # Missing features in the local set will be removed
+        new_feature_names = sorted(list(
+            set(local_features) & set(extra_features)
+        ))
+        new_features = csr_matrix(
+            (self.features.shape[0], 0)
+        )
+
+        for feature_name in new_feature_names:
+            feature_index = list(local_features).index(feature_name)
+
+            new_features = sparse.hstack(
+                (new_features, self.features.getcol(feature_index))
+            )
+
+        self.feature_names = np.array(new_feature_names)
+        self.features = new_features.tocsr()
+        self.input = self.features.shape[1]
+        return True

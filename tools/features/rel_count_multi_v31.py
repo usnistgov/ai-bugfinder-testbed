@@ -35,14 +35,14 @@ COMMANDS = {
 def extract_features(neo4j_db, data_dir):
     # Dictionary taking a flattened flow graph as key and an index as value for
     # reverse-lookup
-    unique_graph_lookup = {}
+    unique_graph_lookup = dict()
 
     # A sparse matrix to store the number of occurrences of each flow graph for
     # each test case
     features = lil_matrix((8, 8))
 
     # A list keeping track of whether a test case is good or bad
-    labels = []
+    labels = list()
 
     # Test case index
     testcase_index = 0
@@ -126,9 +126,9 @@ def extract_features(neo4j_db, data_dir):
     features = features[:testcase_index, :len(unique_graph_lookup)]
 
     # Reverse the flow graph dictionary for storage
-    graphs = [None] * len(unique_graph_lookup.keys())
-    for graph in unique_graph_lookup.keys():
-        graphs[unique_graph_lookup[graph]] = graph
+    graphs = [""] * len(unique_graph_lookup.keys())
+    for unique_graph in unique_graph_lookup.keys():
+        graphs[unique_graph_lookup[unique_graph]] = unique_graph
 
     print "Summary: analyzed %d test cases, extracting %d unique features" % \
           (testcase_index, len(unique_graph_lookup))
