@@ -6,7 +6,7 @@ import docker
 
 
 def wait_log_display(container, log_string):
-    while log_string not in container.logs(tail=10):
+    while log_string.encode("utf-8") not in container.logs(tail=10):
         sleep(1)
 
 

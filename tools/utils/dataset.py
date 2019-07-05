@@ -1,5 +1,9 @@
 """
 """
+from __future__ import division
+from builtins import range
+from builtins import object
+from past.utils import old_div
 import numpy as np
 from scipy import sparse
 from scipy.io import mmread
@@ -30,7 +34,7 @@ class Dataset(object):
         self.batch_size = batch_size
 
         # Prepare indexes to get random sets for training and test
-        shufidx = range(self.features.shape[0])
+        shufidx = list(range(self.features.shape[0]))
         shuffle(shufidx)
 
         if 0 < train_ratio < 1:
@@ -64,7 +68,7 @@ class Dataset(object):
         self.last_index = 0
 
     def get_batch_count(self):
-        return int(len(self.index) / self.batch_size)
+        return int(old_div(len(self.index), self.batch_size))
 
     def get_next_batch(self):
         labels = np.zeros((self.batch_size, self.output))

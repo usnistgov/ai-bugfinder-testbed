@@ -1,6 +1,7 @@
 """
 """
 from __future__ import division
+from builtins import range
 import os
 
 import sys
@@ -23,7 +24,7 @@ def multilayer_perceptron(_x, _weights, _biases):
         "Weights and biases should have the same length."
 
     prev_layer = _x
-    for i in xrange(len(_weights)):
+    for i in range(len(_weights)):
         layer = tf.add(
             tf.matmul(prev_layer, _weights[i]), _biases[i]
         )

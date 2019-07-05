@@ -1,5 +1,6 @@
 """ Utilities using random generators
 """
+from builtins import range
 import string
 from random import choice
 
@@ -16,4 +17,4 @@ def get_rand_string(length, lower=True, upper=True, numbers=True, special=True):
     chars += nb if numbers else ""
     chars += sp if special else ""
 
-    return "".join(choice(chars) for _ in xrange(length))
+    return "".join(choice(chars) for _ in range(length))
