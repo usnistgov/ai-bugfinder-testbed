@@ -1,0 +1,120 @@
+"""
+"""
+from os import listdir, walk
+from os.path import exists, isdir, join, dirname
+
+from tools.settings import LOGGER
+from tools.utils.statistics import get_time
+
+USAGE = "python ./tools/dataset/duplicate.py ${DATASET1} ${DATASET2}"
+
+
+class CWEClassificationDataset(object):
+    def _index_dataset(self):
+        LOGGER.debug("Start indexing dataset...")
+
+        if not exists(self.path):
+            msg = "%s does not exists" % self.path
+            LOGGER.error(msg)
+            raise FileNotFoundError(msg)
+
+        if not isdir(self.path):
+            msg = "%s is not a directory"
+            LOGGER.error(msg)
+            raise NotADirectoryError(msg)
+
+        # If the path exists, browse directory
+        for item in listdir(self.path):
+            item_path = join(self.path, item)
+
+            # If item is not a directory, get the next item
+            if not isdir(item_path):
+                continue
+
+            # Add item name as new class
+            self.classes.append(item)
+
+            # Retrieve the list of files in the directory
+            for root, dirs, files in walk(item_path):
+                for f in files:
+                    self.test_cases.add(
+                        dirname(join(root, f).replace(self.path, ""))
+                    )
+
+            # Compute stats
+            self.stats.append(len(self.test_cases) - sum(self.stats))
+
+    def __init__(self, dataset_path):
+        self.path = join(dataset_path, "")
+
+        self.classes = list()
+        self.test_cases = set()
+        self.stats = list()
+        self.ops_queue = list()
+
+        self.rebuild_index()
+
+    def rebuild_index(self):
+        LOGGER.debug("Rebuilding index...")
+        _time = get_time()
+
+        self.classes = list()
+        self.test_cases = set()
+        self.stats = list()
+
+        self._index_dataset()
+
+        self.stats = [st / len(self.test_cases) for st in self.stats]
+
+        _time = get_time() - _time
+        LOGGER.info(
+            "Dataset index build in %dms. %d test_cases, %d classes." %
+            (_time, len(self.test_cases), len(self.classes))
+        )
+
+    def queue_operation(self, op_class, op_args=None):
+        self.ops_queue.append(
+            {
+                "class": op_class,
+                "args": op_args
+            }
+        )
+
+    def process(self):
+        _time = get_time()
+        LOGGER.debug("Processing ops queue...")
+        total_op = len(self.ops_queue)
+        current_op = 0
+
+        # Exit if the queue is empty.
+        if total_op == 0:
+            LOGGER.info("No operation in queue.")
+            return
+
+        # Process operation while the queue is not empty.
+        while len(self.ops_queue) != 0:
+            operation = self.ops_queue.pop(0)  # Get the first op in the queue
+            operation_class = operation["class"](self)
+            current_op += 1
+
+            LOGGER.info(
+                "Running operation %d/%d (%s)..." %
+                (current_op, total_op, operation_class.__class__.__name__)
+            )
+
+            try:
+                # If args are defined, pass them to execute command
+                if operation["args"] is not None:
+                    operation["class"](self).execute(**operation["args"])
+                else:
+                    operation["class"](self).execute()
+            except Exception as e:
+                LOGGER.error(
+                    "Operation %d/%d failed: %s." %
+                    (current_op, total_op, str(e))
+                )
+                return
+
+        LOGGER.info(
+            "%d operations run in %dms." % (total_op, get_time() - _time)
+        )
