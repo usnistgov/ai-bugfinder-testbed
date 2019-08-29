@@ -49,7 +49,7 @@ class ReplaceLitterals(DatasetProcessing):
                         repl_count += 1
                         line = re.sub(src, dest, line)
 
-                out_lines.append(cleaned_dataset_pathline)
+                out_lines.append(line)
 
         # If replacement were performed, we save them to the new file and
         # replace the old file by the new one.
