@@ -9,9 +9,9 @@ from os.path import join
 
 import tensorflow as tf
 
-from settings import LOGGER, ROOT_DIR
-from utils.dataset import Dataset
-from utils.logger import add_logfile
+from tools.settings import LOGGER, ROOT_DIR
+from tools.utils.dataset import Dataset
+from tools.utils.logger import add_logfile
 
 USAGE = """
     python ./tools/run_tensorflow.py ${TRAINING_SET_DIR} ${TEST_SET_PATH} ${NEURAL_NET_PATH}

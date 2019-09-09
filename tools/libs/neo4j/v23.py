@@ -3,9 +3,9 @@ from time import sleep
 
 import docker
 
-from settings import LOGGER
-from utils.containers import wait_log_display
-from utils.rand import get_rand_string
+from tools.settings import LOGGER
+from tools.utils.containers import wait_log_display
+from tools.utils.rand import get_rand_string
 
 START_STRING = "Remote interface ready"
 

@@ -4,10 +4,10 @@ import os
 from os import makedirs
 from os.path import splitext, join, exists
 
-from libs.joern.common import run_joern_lite
-from libs.neo4j.ai import import_csv_files, start_container as run_neo4j_v3, \
+from tools.libs.joern.common import run_joern_lite
+from tools.libs.neo4j.ai import import_csv_files, start_container as run_neo4j_v3, \
     enhance_markup
-from settings import LOGGER
+from tools.settings import LOGGER
 
 
 def csv_packer(db_path):
@@ -46,7 +46,7 @@ def csv_packer(db_path):
 
                     for line in csv_file.readlines()[1:]:
                         if "\tDirectory\t" in line:
-                            LOGGER.info(
+                            LOGGER.debug(
                                 "Ignoring '%s'" %
                                 line[:-1].replace("\t", " ").strip()
                             )

@@ -6,8 +6,8 @@ import sys
 from multiprocessing import Pool
 from os.path import isfile, join
 
-from run_tensorflow import run_tensorflow
-from settings import LOGGER
+from tools.run_tensorflow import run_tensorflow
+from tools.settings import LOGGER
 
 USAGE = "./tools/batch_training.py ${batch_csv_file} ${processes}"
 

@@ -4,10 +4,10 @@ import docker
 from docker.errors import APIError
 from py2neo import Graph
 
-from settings import LOGGER, NEO4J_V3_MEMORY
-from utils.containers import wait_log_display, stop_container_by_name
-from utils.rand import get_rand_string
-from utils.statistics import get_time
+from tools.settings import LOGGER, NEO4J_V3_MEMORY
+from tools.utils.containers import wait_log_display, stop_container_by_name
+from tools.utils.rand import get_rand_string
+from tools.utils.statistics import get_time
 
 
 START_STRING = "Remote interface available"

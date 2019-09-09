@@ -6,9 +6,9 @@ import re
 
 from py2neo import Graph
 
-from libs.neo4j.ai import start_container as run_neo4j_v3
-from settings import LOGGER
-from utils.containers import stop_container_by_name
+from tools.libs.neo4j.ai import start_container as run_neo4j_v3
+from tools.settings import LOGGER
+from tools.utils.containers import stop_container_by_name
 
 
 def sort_by_child_num(item):

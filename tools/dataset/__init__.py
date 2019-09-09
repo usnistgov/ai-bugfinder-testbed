@@ -10,6 +10,8 @@ USAGE = "python ./tools/dataset/duplicate.py ${DATASET1} ${DATASET2}"
 
 
 class CWEClassificationDataset(object):
+    ignored_dirs = ["joern.db", "neo4j_v3.db", "features"]
+
     def _index_dataset(self):
         LOGGER.debug("Start indexing dataset...")
 
@@ -27,8 +29,8 @@ class CWEClassificationDataset(object):
         for item in listdir(self.path):
             item_path = join(self.path, item)
 
-            # If item is not a directory, get the next item
-            if not isdir(item_path):
+            # If item is not a directory or should be ignored, get the next item
+            if not isdir(item_path) or item in self.ignored_dirs:
                 continue
 
             # Add item name as new class

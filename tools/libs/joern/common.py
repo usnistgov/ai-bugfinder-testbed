@@ -2,8 +2,8 @@
 """
 import docker
 from docker.errors import APIError
-from settings import LOGGER
-from utils.rand import get_rand_string
+from tools.settings import LOGGER
+from tools.utils.rand import get_rand_string
 
 
 def run_joern_lite(version, code_path):

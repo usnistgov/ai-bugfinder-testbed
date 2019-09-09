@@ -3,9 +3,9 @@ from os.path import join
 
 import sys
 
-from libs.ast.v01 import main as ast_v01
-from libs.ast.v02 import main as ast_v02
-from settings import ROOT_DIR, LOGGER
+from tools.libs.ast.v01 import main as ast_v01
+from tools.libs.ast.v02 import main as ast_v02
+from tools.settings import ROOT_DIR, LOGGER
 
 USAGE = "python ./tools/ast_markup.py ${DB_DIR} ${AST_VERSION}"
 

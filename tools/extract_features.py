@@ -6,17 +6,17 @@ from os.path import join, dirname
 
 from py2neo import Graph
 
-from features.rel_count_multi_v31 import extract_features as \
+from tools.features.rel_count_multi_v31 import extract_features as \
     extract_features_v31
-from features.rel_count_multi_v40 import extract_features as \
+from tools.features.rel_count_multi_v40 import extract_features as \
     extract_features_v40
-from features.rel_count_single_hop_v01 import extract_features as \
+from tools.features.rel_count_single_hop_v01 import extract_features as \
     extract_features_v41
-from features.rel_count_single_hop_v02 import extract_features as \
+from tools.features.rel_count_single_hop_v02 import extract_features as \
     extract_features_v42
-from libs.neo4j.ai import start_container as run_neo4j_v3
-from settings import ROOT_DIR, LOGGER
-from utils.containers import stop_container_by_name
+from tools.libs.neo4j.ai import start_container as run_neo4j_v3
+from tools.settings import ROOT_DIR, LOGGER
+from tools.utils.containers import stop_container_by_name
 
 USAGE = "python ./extract_features.py ${DATA_DIR} ${DATA_VERSION}"
 

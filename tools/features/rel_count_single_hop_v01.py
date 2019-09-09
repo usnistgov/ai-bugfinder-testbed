@@ -10,7 +10,7 @@ import numpy
 from scipy.io import mmwrite
 from scipy.sparse import lil_matrix
 
-from settings import LOGGER
+from tools.settings import LOGGER
 
 FLOWS = {
     "CONTROLS": 0,

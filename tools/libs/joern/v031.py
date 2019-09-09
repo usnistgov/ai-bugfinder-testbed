@@ -2,11 +2,11 @@
 """
 from os.path import join
 
-from libs.joern.common import run_joern_lite
-from libs.neo4j.v23 import start_container as run_neo4j_v2
-from libs.neo4j.ai import start_container as run_neo4j_v3, enhance_markup
-from settings import LOGGER
-from utils.dirs import copy_dir
+from tools.libs.joern.common import run_joern_lite
+from tools.libs.neo4j.v23 import start_container as run_neo4j_v2
+from tools.libs.neo4j.ai import start_container as run_neo4j_v3, enhance_markup
+from tools.settings import LOGGER
+from tools.utils.dirs import copy_dir
 
 
 def main(code_path):

@@ -4,8 +4,8 @@ from os import listdir
 
 import docker
 
-from settings import ROOT_DIR, DIRS, LOGGER
-from utils.statistics import get_time
+from tools.settings import ROOT_DIR, DIRS, LOGGER
+from tools.utils.statistics import get_time
 
 if __name__ == "__main__":
     LOGGER.info("Building docker images...")

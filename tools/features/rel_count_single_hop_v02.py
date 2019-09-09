@@ -10,7 +10,7 @@ import numpy
 from scipy.io import mmwrite
 from scipy.sparse import lil_matrix
 
-from settings import LOGGER
+from tools.settings import LOGGER
 
 FLOWS = {
     "CONTROLS": 0,
@@ -49,7 +49,10 @@ def extract_features(neo4j_db, data_dir):
 
     # Get a list of all test cases in the database
     testcase_list = neo4j_db.run(COMMANDS["list_testcases"]).data()
-    LOGGER.info("%d test cases to process..." % len(testcase_list))
+    LOGGER.info(
+        "%d test cases to process (%d features)..." %
+        (len(testcase_list), len(features_refs))
+    )
 
     # A sparse matrix to store the number of occurrences of each flow graph for
     # each test case
@@ -57,18 +60,18 @@ def extract_features(neo4j_db, data_dir):
 
     # A list keeping track of whether a test case is good or bad
     labels = []
+    last_progress = 0
 
     # For each test case, extract interesting flow graphs
     for testcase in testcase_list:
-        LOGGER.info(
-            "Processing %d/%d (%d%%)\tMatrix: %dx%d\tTestcase: %s" %
-            (
-                testcase_index + 1, len(testcase_list),
-                100 * (testcase_index + 1) / len(testcase_list),
-                features.shape[0], features.shape[1],
-                testcase["name"]
-            )
-        )
+        progress = int(100 * (testcase_index + 1) / len(testcase_list))
+
+        if progress > 0 and progress % 10 == 0:
+            if progress > last_progress:
+                LOGGER.info(
+                    "Processed %d%% of the dataset." % progress
+                )
+                last_progress = progress
 
         # Keep track of whether the current test case is good or bad, along with
         # the test case name
