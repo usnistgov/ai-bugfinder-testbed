@@ -1,17 +1,15 @@
 """
 """
-from os.path import realpath
 import logging
-from tools.settings import LOGGER
-from tools.dataset import CWEClassificationDataset as Dataset
-from tools.dataset.processing.dataset_ops import *
-from tools.dataset.processing.file_ops import *
-from tools.dataset.processing.content_ops import *
+
 import numpy as np
 import pandas as pd
+import tensorflow as tf
 from scipy.io import mmread
 from sklearn.model_selection import train_test_split
-import tensorflow as tf
+
+from tools.dataset import CWEClassificationDataset as Dataset
+from tools.dataset.processing.dataset_ops import *
 
 LOGGER.setLevel(logging.INFO)
 

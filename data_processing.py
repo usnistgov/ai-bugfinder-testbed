@@ -1,18 +1,19 @@
 """
 """
-from os.path import realpath
 import logging
-from tools.settings import LOGGER
+from os.path import realpath
+
+from py2neo import Graph
+
 from tools.dataset import CWEClassificationDataset as Dataset
+from tools.dataset.processing.content_ops import *
 from tools.dataset.processing.dataset_ops import *
 from tools.dataset.processing.file_ops import *
-from tools.dataset.processing.content_ops import *
-from tools.libs.joern.v040 import main as run_joern_v040
-from tools.libs.ast.v02 import main as ast_v02
 from tools.features.rel_count_single_hop_v02 import extract_features
+from tools.libs.ast.v02 import main as ast_v02
+from tools.libs.joern.v040 import main as run_joern_v040
 from tools.libs.neo4j.ai import start_container as run_neo4j_v3
 from tools.utils.containers import stop_container_by_name
-from py2neo import Graph
 
 LOGGER.setLevel(logging.INFO)
 
