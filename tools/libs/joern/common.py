@@ -1,7 +1,7 @@
 """ Common functions to run Joern code analysis
 """
 import docker
-from docker.errors import APIError
+
 from tools.settings import LOGGER
 from tools.utils.rand import get_rand_string
 

@@ -5,13 +5,11 @@ from os.path import join
 import sys
 
 from tools.settings import ROOT_DIR, LOGGER
-from tools.libs.joern.v031 import main as run_joern_v031
 from tools.libs.joern.v040 import main as run_joern_v040
 
 USAGE = "python ./tools/run_joern.py ${DATA_DIR} ${VERSION}"
 
 joern_versions = {
-    "0.3.1": run_joern_v031,
     "0.4.0": run_joern_v040
 }
 

@@ -18,7 +18,7 @@ COMMANDS = [
     "create index on :GenericNode(filepath);",
     """
     match (root1:GenericNode)-[:FLOWS_TO|REACHES|CONTROLS]->()
-    where root1.type in [ 
+    where root1l.type in [ 
         'Condition', 'ForInit', 'IncDecOp',
         'ExpressionStatement', 'IdentifierDeclStatement', 'CFGEntryNode',
         'BreakStatement', 'Parameter', 'ReturnStatement', 'Label',
