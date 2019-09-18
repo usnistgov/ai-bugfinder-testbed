@@ -1,14 +1,12 @@
 from os.path import join
 
-import docker
 from docker.errors import APIError
 from py2neo import Graph
 
 from tools.settings import LOGGER, NEO4J_V3_MEMORY
-from tools.utils.containers import wait_log_display, stop_container_by_name
+from tools.utils.containers import wait_log_display, stop_container_by_name, start_container
 from tools.utils.rand import get_rand_string
 from tools.utils.statistics import get_time
-
 
 START_STRING = "Remote interface available"
 
@@ -41,8 +39,9 @@ COMMANDS = [
 
 def import_csv_files(db_path, import_dir):
     db_path_import = "neo4j_v3.db"
-    neo4j3_container, cname = start_container(db_path, db_bind_path=db_path_import,
-                                              import_dir=import_dir)
+    neo4j3_container, cname = start_neo4j_container(
+        db_path, db_bind_path=db_path_import, import_dir=import_dir
+    )
 
     neo4j3_container.exec_run(
         """
@@ -53,13 +52,13 @@ def import_csv_files(db_path, import_dir):
     )
 
     LOGGER.info("CSV file imported.")
-    neo4j3_container.stop()
+    stop_container_by_name(cname)
 
     return cname
 
 
 def enhance_markup(db_path):
-    neo4j3_container, cname = start_container(db_path)
+    neo4j3_container, cname = start_neo4j_container(db_path)
 
     LOGGER.info("Running commands...")
 
@@ -72,7 +71,6 @@ def enhance_markup(db_path):
     for cmd in COMMANDS:
         try:
             start = get_time()
-            # neo4j3_container.exec_run("./bin/neo4j-shell -c \"%s\"" % cmd)
             neo4j_db.run(cmd)
             end = get_time()
 
@@ -83,7 +81,7 @@ def enhance_markup(db_path):
         except APIError as error:
             LOGGER.info(
                 "An error occured while executing command: %s" %
-                error.message
+                str(error)
             )
             break
 
@@ -93,24 +91,21 @@ def enhance_markup(db_path):
     return cname
 
 
-def start_container(db_path, db_bind_path="graph.db", import_dir=None, stop_after_execution=False):
-    docker_cli = docker.from_env()
+def start_neo4j_container(db_path, db_bind_path="graph.db", import_dir=None,
+                          stop_after_execution=False):
     cname = "neo4j-v3-%s" % get_rand_string(5, special=False)
     LOGGER.info("Starting %s..." % cname)
 
     neo4j3_container_volumes = {
-        db_path: {"bind": join("/data/databases", db_bind_path), "mode": "rw"}
+        db_path: join("/data/databases", db_bind_path)
     }
 
     if import_dir is not None:
-        neo4j3_container_volumes[import_dir] = {
-            "bind": "/var/lib/neo4j/import",
-            "mode": "rw"
-        }
+        neo4j3_container_volumes[import_dir] = "/var/lib/neo4j/import"
 
-    neo4j3_container = docker_cli.containers.run(
-        "neo4j-ai:latest",
-        name=cname,
+    neo4j3_container = start_container(
+        image_name="neo4j-ai:latest",
+        container_name=cname,
         environment={
             "NEO4J_dbms_memory_pagecache_size": NEO4J_V3_MEMORY,
             "NEO4J_dbms_memory_heap_max__size": NEO4J_V3_MEMORY,

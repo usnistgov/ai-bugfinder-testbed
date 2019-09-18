@@ -3,6 +3,7 @@
 import docker
 
 from tools.settings import LOGGER
+from tools.utils.containers import start_container
 from tools.utils.rand import get_rand_string
 
 
@@ -12,14 +13,11 @@ def run_joern_lite(version, code_path):
     LOGGER.info("Starting joern-lite:%s (%s)..." % (version, joern_lite_cname))
 
     try:
-        docker_cli = docker.from_env()
-        docker_cli.containers.run(
-            "joern-lite:%s" % version,
-            name=joern_lite_cname,
-            volumes={
-                code_path: {"bind": "/code", "mode": "rw"}
-            },
-            remove=True
+        start_container(
+            image_name="joern-lite:%s" % version,
+            container_name=joern_lite_cname,
+            volumes={code_path: "/code"},
+            detach=False
         )
     except Exception as exc:
         LOGGER.error(

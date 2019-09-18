@@ -7,6 +7,7 @@ import pickle
 from os.path import join
 
 import numpy
+from pandas import DataFrame
 from scipy.io import mmwrite
 from scipy.sparse import lil_matrix
 
@@ -56,7 +57,8 @@ def extract_features(neo4j_db, data_dir):
 
     # A sparse matrix to store the number of occurrences of each flow graph for
     # each test case
-    features = lil_matrix((len(testcase_list), len(features_refs)), dtype=float)
+    # features = lil_matrix((len(testcase_list), len(features_refs)), dtype=float)
+    features = DataFrame()
 
     # A list keeping track of whether a test case is good or bad
     labels = []

@@ -3,10 +3,10 @@
 from os import listdir, walk
 from os.path import exists, isdir, join, dirname
 
+import pandas as pd
+
 from tools.settings import LOGGER
 from tools.utils.statistics import get_time
-
-USAGE = "python ./tools/dataset/duplicate.py ${DATASET1} ${DATASET2}"
 
 
 class CWEClassificationDataset(object):
@@ -46,11 +46,22 @@ class CWEClassificationDataset(object):
             # Compute stats
             self.stats.append(len(self.test_cases) - sum(self.stats))
 
+    def _index_features(self):
+        LOGGER.debug("Start loading feature dataframe...")
+        features_filename = "%s/features.csv" % self.path
+
+        if not exists(features_filename):
+            LOGGER.info("Features file does not exist yet.")
+            return
+
+        self.features = pd.read_csv(features_filename)
+
     def __init__(self, dataset_path):
         self.path = join(dataset_path, "")
 
         self.classes = list()
         self.test_cases = set()
+        self.features = pd.DataFrame()
         self.stats = list()
         self.ops_queue = list()
 
@@ -65,13 +76,17 @@ class CWEClassificationDataset(object):
         self.stats = list()
 
         self._index_dataset()
+        self._index_features()
 
         self.stats = [st / len(self.test_cases) for st in self.stats]
 
         _time = get_time() - _time
         LOGGER.info(
-            "Dataset index build in %dms. %d test_cases, %d classes." %
-            (_time, len(self.test_cases), len(self.classes))
+            "Dataset index build in %dms. %d test_cases, %d classes, "
+            "%d features." % (
+                _time, len(self.test_cases), len(self.classes),
+                self.features.shape[1]
+            )
         )
 
     def queue_operation(self, op_class, op_args=None):

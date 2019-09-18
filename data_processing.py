@@ -20,8 +20,8 @@ LOGGER.setLevel(logging.INFO)
 if __name__ == "__main__":
     extracted_dataset_path = "./data/cwe121_annot"
     cleaned_dataset_path = "./data/cwe121_dataset"
-    cwe121_1000_ref_dataset_path = "./data/cwe121_1000"
-    cwe121_1000_dataset_path = "./data/cwe121_1000a"
+    cwe121_1000_ref_dataset_path = "./data/cwe121_0200"
+    cwe121_1000_dataset_path = "./data/cwe121_0200a"
 
     # Create a copy of the annotated dataset to avoid overwriting
     extracted_dataset = Dataset(extracted_dataset_path)
@@ -45,7 +45,7 @@ if __name__ == "__main__":
         ExtractSampleDataset,
         {
             "to_path": cwe121_1000_ref_dataset_path,
-            "sample_nb": 1000,
+            "sample_nb": 200,
             "force": True
         }
     )

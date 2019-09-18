@@ -73,12 +73,14 @@ if __name__ == "__main__":
         x=X_train, y=y_train, shuffle=True, batch_size=100, num_epochs=100
     )
 
-    lin_cls_model = tf.estimator.LinearClassifier(
-        feature_columns=feat_cols, n_classes=2
+    deep_cls_model = tf.estimator.DNNClassifier(
+        hidden_units=[10, 10, 10],
+        feature_columns=feat_cols,
+        n_classes=2
     )
 
     LOGGER.info("Training classifier...")
-    lin_cls_model.train(input_fn=input_train_fn, steps=100)
+    deep_cls_model.train(input_fn=input_train_fn, steps=1000)
 
     # Test the model
     LOGGER.info("Testing classifier...")
@@ -89,7 +91,7 @@ if __name__ == "__main__":
         num_epochs=1,
         shuffle=False
     )
-    results = lin_cls_model.evaluate(input_test_fn)
+    results = deep_cls_model.evaluate(input_test_fn)
 
     print(results)
 
