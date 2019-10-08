@@ -42,5 +42,10 @@ LOGGER_CONFIG = {
 
 NEO4J_V3_MEMORY = "4G"
 
+DATASET_DIRS = {
+    "joern": "joern.db",
+    "neo4j_v3": "neo4j_v3.db"
+}
+
 logging.config.dictConfig(LOGGER_CONFIG)
 LOGGER = logging.getLogger("app")

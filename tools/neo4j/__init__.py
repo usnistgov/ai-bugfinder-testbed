@@ -1,0 +1,25 @@
+from tools.dataset.processing import DatasetProcessingWithContainer
+from tools.settings import NEO4J_V3_MEMORY
+from tools.utils.containers import wait_log_display
+
+
+class Neo4J3Processing(DatasetProcessingWithContainer):
+    DB_PATH = "neo4j_v3.db"
+    START_STRING = "Remote interface available"
+
+    def configure_container(self):
+        self.image_name = "neo4j-ai:latest"
+        self.environment = {
+            "NEO4J_dbms_memory_pagecache_size": NEO4J_V3_MEMORY,
+            "NEO4J_dbms_memory_heap_max__size": NEO4J_V3_MEMORY,
+            "NEO4J_dbms_allow__upgrade": "true",
+            "NEO4J_dbms_shell_enabled": "true",
+            "NEO4J_AUTH": "none"
+        }
+        self.ports = {
+            "7474": "7474",
+            "7687": "7687",
+        }
+
+    def send_commands(self):
+        wait_log_display(self.container, self.START_STRING)

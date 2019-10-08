@@ -1,13 +1,13 @@
 from os.path import exists, isdir
 from shutil import rmtree, copytree
 
-from settings import LOGGER
+from tools.settings import LOGGER
 
 
 def copy_dir(src, dest):
     LOGGER.debug("Copying %s into %s..." % (src, dest))
     if not exists(src) or not isdir(src):
-        LOGGER.error("%s is not a proper directory path. Copy failed.")
+        LOGGER.error("%s is not a proper directory path. Copy failed." % src)
         return False
 
     if exists(dest):

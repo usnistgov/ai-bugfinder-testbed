@@ -1,8 +1,11 @@
 import random
+import os
 from os.path import exists, join, isdir
 from shutil import rmtree, copytree
 
+from tools.dataset import CWEClassificationDataset as Dataset
 from tools.dataset.processing import DatasetProcessing
+from tools.neo4j.converter import RightFixer
 from tools.settings import LOGGER
 from tools.utils.statistics import get_time
 
@@ -18,7 +21,14 @@ class CopyDataset(DatasetProcessing):
         # Cleanup directory if it exists or remove
         if exists(to_path):
             if force:
-                rmtree(to_path)
+                try:
+                    dest_dataset = Dataset(to_path)
+                    dest_dataset.queue_operation(RightFixer, {
+                        "command_args": ". %s %s" % (os.getuid(), os.getgid())
+                    })
+                    dest_dataset.process()
+                finally:
+                    rmtree(to_path)
             else:
                 raise FileExistsError(
                     "%s already exists. Run with force=True to overwrite the "

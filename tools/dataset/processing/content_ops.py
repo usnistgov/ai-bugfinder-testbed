@@ -90,8 +90,3 @@ class RemoveMainFunction(DatasetFileProcessing):
             out_file.writelines(out_lines)
 
         move(tmp_filepath, filepath)
-
-
-
-
-

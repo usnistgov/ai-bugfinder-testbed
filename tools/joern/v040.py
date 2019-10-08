@@ -1,23 +1,20 @@
-from os import walk, makedirs
-from os.path import realpath, join, splitext, exists
+from os import makedirs, walk
+from os.path import realpath, join, exists, splitext
 
-from tools.dataset.processing import DatasetProcessingWithContainer
+from tools.joern import JoernDefaultDatasetProcessing
 from tools.settings import LOGGER
-from tools.utils.rand import get_rand_string
 
 
-class JoernDatasetProcessing(DatasetProcessingWithContainer):
+class JoernDatasetProcessing(JoernDefaultDatasetProcessing):
     def configure_container(self):
         self.image_name = "joern-lite:0.4.0"
-        self.container_name = "joern-%s" % get_rand_string(
-            6, special=False, upper=False
-        )
-        self.volumes = {realpath(self.dataset.path): "/code"}
+        self.container_name = "joern040"
+        self.volumes = {
+            realpath(self.dataset.path): "/code"
+        }
         self.detach = False
 
     def send_commands(self):
-        db_path = "%s/joern.db" % self.dataset.path
-
         content = {
             "edges": [],
             "nodes": []
@@ -25,8 +22,8 @@ class JoernDatasetProcessing(DatasetProcessingWithContainer):
 
         warn_count = 0
 
-        in_path = join(db_path, "code")
-        out_path = join(db_path, "import")
+        in_path = join(self.dataset.joern_dir, "code")
+        out_path = join(self.dataset.joern_dir, "import")
 
         if not exists(out_path):
             makedirs(out_path)

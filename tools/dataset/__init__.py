@@ -5,12 +5,12 @@ from os.path import exists, isdir, join, dirname
 
 import pandas as pd
 
-from tools.settings import LOGGER
+from tools.settings import LOGGER, DATASET_DIRS
 from tools.utils.statistics import get_time
 
 
 class CWEClassificationDataset(object):
-    ignored_dirs = ["joern.db", "neo4j_v3.db", "features"]
+    ignored_dirs = DATASET_DIRS.values() + ["features"]
 
     def _index_dataset(self):
         LOGGER.debug("Start indexing dataset...")
@@ -58,6 +58,8 @@ class CWEClassificationDataset(object):
 
     def __init__(self, dataset_path):
         self.path = join(dataset_path, "")
+        self.joern_dir = join(self.path, DATASET_DIRS["joern"])
+        self.neo4j_v3_dir = join(self.path, DATASET_DIRS["neo4j_v3"])
 
         self.classes = list()
         self.test_cases = set()
@@ -130,6 +132,9 @@ class CWEClassificationDataset(object):
                     "Operation %d/%d failed: %s." %
                     (current_op, total_op, str(e))
                 )
+
+                # Clear the operation queue and exit
+                self.ops_queue.clear()
                 return
 
         LOGGER.info(

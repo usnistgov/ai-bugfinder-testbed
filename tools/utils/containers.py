@@ -6,7 +6,7 @@ import docker
 
 
 def start_container(image_name, container_name, ports=None, volumes=None,
-                    environment=None, detach=True):
+                    environment=None, command=None, detach=True):
     if volumes is None:
         volumes = {}
 
@@ -17,6 +17,11 @@ def start_container(image_name, container_name, ports=None, volumes=None,
         environment = {}
 
     docker_cli = docker.from_env()
+
+    extra_args = dict()
+    if command is not None:
+        extra_args["command"] = command
+
     container = docker_cli.containers.run(
         image_name,
         name=container_name,
@@ -27,7 +32,8 @@ def start_container(image_name, container_name, ports=None, volumes=None,
             for local_dir, cont_dir in volumes.items()
         },
         detach=detach,
-        remove=not detach
+        remove=not detach,
+        **extra_args
     )
 
     return container

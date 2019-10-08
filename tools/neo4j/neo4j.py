@@ -18,9 +18,7 @@ class Neo4JImporter(DatasetProcessingWithContainer):
 
     def configure_container(self):
         self.image_name = "neo4j-ai:latest"
-        self.container_name = "neo-importer-%s" % get_rand_string(
-            6, special=False, upper=False
-        )
+        self.container_name = "neo3-importer"
         self.environment = {
             "NEO4J_dbms_memory_pagecache_size": NEO4J_V3_MEMORY,
             "NEO4J_dbms_memory_heap_max__size": NEO4J_V3_MEMORY,
@@ -56,36 +54,34 @@ class Neo4JImporter(DatasetProcessingWithContainer):
 class Neo4JAnnotations(DatasetProcessingWithContainer):
     START_STRING = "Remote interface available"
     COMMANDS = [
-        "match (n) set n:GenericNode;",
-        "create index on :GenericNode(type);",
-        "create index on :GenericNode(filepath);",
+        "MATCH (n) SET n:GenericNode;",
+        "CREATE INDEX ON :GenericNode(type);",
+        "CREATE INDEX ON :GenericNode(filepath);",
         """
-        match (root1:GenericNode)-[:FLOWS_TO|REACHES|CONTROLS]->()
-        where root1.type in [ 
+        MATCH (root1:GenericNode)-[:FLOWS_TO|REACHES|CONTROLS]->()
+        WHERE root1.type IN [ 
             'Condition', 'ForInit', 'IncDecOp',
             'ExpressionStatement', 'IdentifierDeclStatement', 'CFGEntryNode',
             'BreakStatement', 'Parameter', 'ReturnStatement', 'Label',
             'GotoStatement', 'Statement', 'UnaryExpression' 
         ]
-        set root1:UpstreamNode;  
+        SET root1:UpstreamNode;  
         """,
         """
-        match ()-[:FLOWS_TO|REACHES|CONTROLS]->(root2:GenericNode)
-        where root2.type in [
+        MATCH ()-[:FLOWS_TO|REACHES|CONTROLS]->(root2:GenericNode)
+        WHERE root2.type IN [
             'CFGExitNode', 'IncDecOp', 'Condition',
             'ExpressionStatement', 'ForInit', 'IdentifierDeclStatement',
             'BreakStatement', 'Parameter', 'ReturnStatement', 'Label',
             'GotoStatement', 'Statement', 'UnaryExpression' 
         ]
-        set root2:DownstreamNode;
+        SET root2:DownstreamNode;
         """,
     ]
 
     def configure_container(self):
         self.image_name = "neo4j-ai:latest"
-        self.container_name = "neo4j-annot-%s" % get_rand_string(
-            6, special=False, upper=False
-        )
+        self.container_name = "neo3-annot"
         self.environment = {
             "NEO4J_dbms_memory_pagecache_size": NEO4J_V3_MEMORY,
             "NEO4J_dbms_memory_heap_max__size": NEO4J_V3_MEMORY,
@@ -133,7 +129,7 @@ class Neo4JAnnotations(DatasetProcessingWithContainer):
                 )
                 break
 
-        LOGGER.info("Database fully improved.")
+        LOGGER.info("Database annotated.")
 
 
 class Neo4JASTMarkup(DatasetProcessingWithContainer):
@@ -141,9 +137,7 @@ class Neo4JASTMarkup(DatasetProcessingWithContainer):
 
     def configure_container(self):
         self.image_name = "neo4j-ai:latest"
-        self.container_name = "neo4j-ast-markup-%s" % get_rand_string(
-            6, special=False, upper=False
-        )
+        self.container_name = "neo3-ast-markup"
         self.environment = {
             "NEO4J_dbms_memory_pagecache_size": NEO4J_V3_MEMORY,
             "NEO4J_dbms_memory_heap_max__size": NEO4J_V3_MEMORY,
@@ -294,4 +288,4 @@ class Neo4JASTMarkup(DatasetProcessingWithContainer):
             except Exception as e:
                 LOGGER.info(str(e))
 
-        LOGGER.info("Processing completed...")
+        LOGGER.info("Processing completed.")

@@ -1,7 +1,7 @@
 """
 """
 from os import remove, listdir
-from os.path import basename, dirname, splitext, join
+from os.path import basename, dirname, splitext
 from shutil import rmtree
 
 from tools.dataset.processing import DatasetFileProcessing
