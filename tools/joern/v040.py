@@ -7,12 +7,10 @@ from tools.settings import LOGGER
 
 class JoernDatasetProcessing(JoernDefaultDatasetProcessing):
     def configure_container(self):
+        super().configure_container()
+
         self.image_name = "joern-lite:0.4.0"
         self.container_name = "joern040"
-        self.volumes = {
-            realpath(self.dataset.path): "/code"
-        }
-        self.detach = False
 
     def send_commands(self):
         content = {
