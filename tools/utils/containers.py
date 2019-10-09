@@ -1,5 +1,6 @@
 """ Utility for Docker containers
 """
+from os.path import realpath
 from time import sleep
 
 import docker
@@ -9,6 +10,14 @@ def start_container(image_name, container_name, ports=None, volumes=None,
                     environment=None, command=None, detach=True):
     if volumes is None:
         volumes = {}
+
+    # Get absolute path for volumes
+    volumes_realpath = dict()
+    for vol_key, vol_value in volumes.items():
+        volumes_realpath[
+            realpath(vol_key)
+        ] = vol_value
+    volumes = volumes_realpath
 
     if ports is None:
         ports = {}
