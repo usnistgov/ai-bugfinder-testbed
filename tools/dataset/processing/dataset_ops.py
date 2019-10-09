@@ -4,8 +4,8 @@ from os.path import exists, join, isdir
 from shutil import rmtree, copytree
 
 from tools.dataset import CWEClassificationDataset as Dataset
-from tools.dataset.processing import DatasetProcessing
-from tools.neo4j.converter import RightFixer
+from tools.dataset.processing import DatasetProcessing, \
+    DatasetProcessingWithContainer
 from tools.settings import LOGGER
 from tools.utils.statistics import get_time
 
@@ -129,3 +129,19 @@ class InverseDataset(DatasetProcessing):
             copytree(orig_test_case, dest_test_case)
 
         LOGGER.debug("Dataset created in %dms" % (get_time() - _time))
+
+
+class RightFixer(DatasetProcessingWithContainer):
+    def configure_container(self):
+        self.image_name = "right-fixer:latest"
+        self.container_name = "right-fixer"
+        self.volumes = {
+            self.dataset.path: "/data"
+        }
+
+    def configure_command(self, command):
+        self.command = join("/data", command)
+        LOGGER.debug("Input command: %s." % self.command)
+
+    def send_commands(self):
+        LOGGER.debug("Right fixed for Neo4j DB.")

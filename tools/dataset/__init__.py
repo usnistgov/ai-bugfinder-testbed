@@ -10,7 +10,7 @@ from tools.utils.statistics import get_time
 
 
 class CWEClassificationDataset(object):
-    ignored_dirs = DATASET_DIRS.values() + ["features"]
+    ignored_dirs = list(DATASET_DIRS.values())
 
     def _index_dataset(self):
         LOGGER.debug("Start indexing dataset...")
@@ -59,7 +59,8 @@ class CWEClassificationDataset(object):
     def __init__(self, dataset_path):
         self.path = join(dataset_path, "")
         self.joern_dir = join(self.path, DATASET_DIRS["joern"])
-        self.neo4j_v3_dir = join(self.path, DATASET_DIRS["neo4j_v3"])
+        self.neo4j_dir = join(self.path, DATASET_DIRS["neo4j"])
+        self.feats_dir = join(self.path, DATASET_DIRS["feats"])
 
         self.classes = list()
         self.test_cases = set()
