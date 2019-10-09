@@ -1,118 +1,58 @@
-from os.path import realpath
 import re
 
 from docker.errors import APIError
 from past.utils import old_div
-from py2neo import Graph
 
-from tools.dataset.processing import DatasetProcessingWithContainer
-from tools.settings import NEO4J_V3_MEMORY, LOGGER
-from tools.utils.containers import wait_log_display
-from tools.utils.rand import get_rand_string
+from tools.neo4j import Neo4J3Processing
+from tools.settings import LOGGER
 from tools.utils.statistics import get_time
 
 
-class Neo4JImporter(DatasetProcessingWithContainer):
-    db_path = "neo4j_v3.db"
-    START_STRING = "Remote interface available"
-
-    def configure_container(self):
-        self.image_name = "neo4j-ai:latest"
-        self.container_name = "neo3-importer"
-        self.environment = {
-            "NEO4J_dbms_memory_pagecache_size": NEO4J_V3_MEMORY,
-            "NEO4J_dbms_memory_heap_max__size": NEO4J_V3_MEMORY,
-            "NEO4J_dbms_allow__upgrade": "true",
-            "NEO4J_dbms_shell_enabled": "true",
-            "NEO4J_AUTH": "none"
-        }
-        self.ports = {
-            "7474": "7474",
-            "7687": "7687",
-        }
-        self.volumes = {
-            realpath("%s/%s" % (self.dataset.path, self.db_path)):
-                "/data/databases/%s" % self.db_path,
-            realpath("%s/joern.db/import" % self.dataset.path):
-                "/var/lib/neo4j/import"
-        }
-
-    def send_commands(self):
-        wait_log_display(self.container, self.START_STRING)
-
-        self.container.exec_run(
-            """
-            ./bin/neo4j-admin import --database=%s --delimiter='TAB'
-                --nodes=/var/lib/neo4j/import/nodes.csv
-                --relationships=/var/lib/neo4j/import/edges.csv
-            """ % self.db_path
-        )
-
-        LOGGER.info("CSV file imported.")
-
-
-class Neo4JAnnotations(DatasetProcessingWithContainer):
-    START_STRING = "Remote interface available"
+class Neo4JAnnotations(Neo4J3Processing):
     COMMANDS = [
         "MATCH (n) SET n:GenericNode;",
         "CREATE INDEX ON :GenericNode(type);",
         "CREATE INDEX ON :GenericNode(filepath);",
         """
-        MATCH (root1:GenericNode)-[:FLOWS_TO|REACHES|CONTROLS]->()
-        WHERE root1.type IN [ 
-            'Condition', 'ForInit', 'IncDecOp',
-            'ExpressionStatement', 'IdentifierDeclStatement', 'CFGEntryNode',
-            'BreakStatement', 'Parameter', 'ReturnStatement', 'Label',
-            'GotoStatement', 'Statement', 'UnaryExpression' 
-        ]
-        SET root1:UpstreamNode;  
+            MATCH (root1:GenericNode)-[:FLOWS_TO|REACHES|CONTROLS]->()
+            WHERE root1.type IN [ 
+                'Condition', 'ForInit', 'IncDecOp',
+                'ExpressionStatement', 'IdentifierDeclStatement', 'CFGEntryNode',
+                'BreakStatement', 'Parameter', 'ReturnStatement', 'Label',
+                'GotoStatement', 'Statement', 'UnaryExpression' 
+            ]
+            SET root1:UpstreamNode;  
         """,
         """
-        MATCH ()-[:FLOWS_TO|REACHES|CONTROLS]->(root2:GenericNode)
-        WHERE root2.type IN [
-            'CFGExitNode', 'IncDecOp', 'Condition',
-            'ExpressionStatement', 'ForInit', 'IdentifierDeclStatement',
-            'BreakStatement', 'Parameter', 'ReturnStatement', 'Label',
-            'GotoStatement', 'Statement', 'UnaryExpression' 
-        ]
-        SET root2:DownstreamNode;
+            MATCH ()-[:FLOWS_TO|REACHES|CONTROLS]->(root2:GenericNode)
+            WHERE root2.type IN [
+                'CFGExitNode', 'IncDecOp', 'Condition',
+                'ExpressionStatement', 'ForInit', 'IdentifierDeclStatement',
+                'BreakStatement', 'Parameter', 'ReturnStatement', 'Label',
+                'GotoStatement', 'Statement', 'UnaryExpression' 
+            ]
+            SET root2:DownstreamNode;
         """,
+        """
+            MATCH (n {type:"Function"}) 
+            WHERE EXISTS(n.name)
+            SET n.code=n.name
+        """
     ]
 
     def configure_container(self):
-        self.image_name = "neo4j-ai:latest"
+        super().configure_container()
+
         self.container_name = "neo3-annot"
-        self.environment = {
-            "NEO4J_dbms_memory_pagecache_size": NEO4J_V3_MEMORY,
-            "NEO4J_dbms_memory_heap_max__size": NEO4J_V3_MEMORY,
-            "NEO4J_dbms_allow__upgrade": "true",
-            "NEO4J_dbms_shell_enabled": "true",
-            "NEO4J_AUTH": "none"
-        }
-        self.ports = {
-            "7474": "7474",
-            "7687": "7687",
-        }
-        self.volumes = {
-            realpath("%s/neo4j_v3.db" % self.dataset.path):
-                "/data/databases/graph.db",
-        }
 
     def send_commands(self):
-        wait_log_display(self.container, self.START_STRING)
+        super().send_commands()
 
         LOGGER.info("Running commands...")
-
-        neo4j_db = Graph(
-            scheme="http",
-            host="0.0.0.0",
-            port="7474"
-        )
-
         for cmd in self.COMMANDS:
             try:
                 start = get_time()
-                neo4j_db.run(cmd)
+                self.neo4j_db.run(cmd)
 
                 LOGGER.info(
                     "Command %d out of %d run in %dms" %
@@ -132,27 +72,12 @@ class Neo4JAnnotations(DatasetProcessingWithContainer):
         LOGGER.info("Database annotated.")
 
 
-class Neo4JASTMarkup(DatasetProcessingWithContainer):
-    START_STRING = "Remote interface available"
+class Neo4JASTMarkup(Neo4J3Processing):
 
     def configure_container(self):
-        self.image_name = "neo4j-ai:latest"
+        super().configure_container()
+
         self.container_name = "neo3-ast-markup"
-        self.environment = {
-            "NEO4J_dbms_memory_pagecache_size": NEO4J_V3_MEMORY,
-            "NEO4J_dbms_memory_heap_max__size": NEO4J_V3_MEMORY,
-            "NEO4J_dbms_allow__upgrade": "true",
-            "NEO4J_dbms_shell_enabled": "true",
-            "NEO4J_AUTH": "none"
-        }
-        self.ports = {
-            "7474": "7474",
-            "7687": "7687",
-        }
-        self.volumes = {
-            realpath("%s/neo4j_v3.db" % self.dataset.path):
-                "/data/databases/graph.db",
-        }
 
     def build_tree(self, node, links):
         if node["id"] not in links:
@@ -218,7 +143,7 @@ class Neo4JASTMarkup(DatasetProcessingWithContainer):
         return roots
 
     def send_commands(self):
-        wait_log_display(self.container, self.START_STRING)
+        super().send_commands()
 
         find_ids = """
             MATCH (m)-[:FLOWS_TO]->(n) 
@@ -235,20 +160,14 @@ class Neo4JASTMarkup(DatasetProcessingWithContainer):
            SET n.ast = data.ast
         """
 
-        neo4j_db = Graph(
-            scheme="http",
-            host="0.0.0.0",
-            port="7474"
-        )
-
         LOGGER.info("Connected to Neo4j. Retrieving nodes...")
 
-        nodes_id = [n["id"] for n in neo4j_db.run(find_ids).data()]
+        nodes_id = [n["id"] for n in self.neo4j_db.run(find_ids).data()]
         total_nodes = len(nodes_id)
 
         LOGGER.info("%d nodes found. Processing..." % total_nodes)
 
-        ast_update_dict_raw = self.get_query(neo4j_db, nodes_id)
+        ast_update_dict_raw = self.get_query(self.neo4j_db, nodes_id)
         ast_update_dict_raw = [
             {"id": root_id, "ast": ast_repr}
             for root_id, ast_repr in list(ast_update_dict_raw.items())
@@ -284,7 +203,7 @@ class Neo4JASTMarkup(DatasetProcessingWithContainer):
 
             LOGGER.info("Updating AST...")
             try:
-                neo4j_db.run(set_ast_cmd % ast_update_dict)
+                self.neo4j_db.run(set_ast_cmd % ast_update_dict)
             except Exception as e:
                 LOGGER.info(str(e))
 
