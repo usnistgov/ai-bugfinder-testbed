@@ -1,4 +1,7 @@
+import json
+import pickle
 import re
+from os.path import join
 
 from docker.errors import APIError
 from past.utils import old_div
@@ -36,7 +39,17 @@ class Neo4JAnnotations(Neo4J3Processing):
         """
             MATCH (n {type:"Function"}) 
             WHERE EXISTS(n.name)
-            SET n.code=n.name
+            SET n.code=n.name;
+        """,
+        """
+            MATCH (n {type:"File"}) 
+            WHERE EXISTS(n.filepath)
+            SET n.code=n.filepath;
+        """,
+        """
+            MATCH (node)
+            WHERE EXISTS(node.functionId)
+            SET node.functionId=toString(node.functionId);
         """
     ]
 
@@ -172,6 +185,12 @@ class Neo4JASTMarkup(Neo4J3Processing):
             {"id": root_id, "ast": ast_repr}
             for root_id, ast_repr in list(ast_update_dict_raw.items())
         ]
+
+        with open(join(self.dataset.path, "ast.bin"), "wb") as ast_file:
+            pickle.dump(
+                [ast_item["ast"] for ast_item in ast_update_dict_raw],
+                ast_file
+            )
 
         LOGGER.info(
             "Update dict generated (%d entries). Uploading..." %

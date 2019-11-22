@@ -1,12 +1,32 @@
 """
 """
-from tools.models import DatasetClassifier
+from os.path import join
+
+import tensorflow as tf
+from tools.models import ClassifierModel
+from tools.settings import LOGGER
 
 
-class DNNClassifier(DatasetClassifier):
+class DNNClassifierTraining(ClassifierModel):
     def __init__(self, dataset):
-        self.model
         super().__init__(dataset)
+        self.model_cls = tf.estimator.DNNClassifier
+        self.model_dir = join(
+            self.dataset.feats_dir, "models", "dnn_classifier"
+        )
 
-    def execute(self, network_path, is_training=False):
-        pass
+    def train(self):
+        model = self.model_cls(
+            hidden_units=[10, 10, 10],
+            feature_columns=[
+                tf.feature_column.numeric_column(col)
+                for col in self.columns
+            ],
+            n_classes=2,
+            model_dir=self.model_dir
+        )
+
+        model.train(input_fn=self.train_fn, steps=100)
+        results = model.evaluate(self.test_fn)
+
+        LOGGER.debug(results)

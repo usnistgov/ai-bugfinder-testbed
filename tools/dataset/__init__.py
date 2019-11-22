@@ -1,5 +1,6 @@
 """
 """
+import logging
 from os import listdir, walk
 from os.path import exists, isdir, join, dirname
 
@@ -48,13 +49,14 @@ class CWEClassificationDataset(object):
 
     def _index_features(self):
         LOGGER.debug("Start loading feature dataframe...")
-        features_filename = "%s/features.csv" % self.path
+        features_filename = join(self.feats_dir, "features.csv")
 
         if not exists(features_filename):
-            LOGGER.info("Features file does not exist yet.")
+            LOGGER.debug("Features file does not exist yet.")
             return
 
         self.features = pd.read_csv(features_filename)
+        self.feats_ver = 0
 
     def __init__(self, dataset_path):
         self.path = join(dataset_path, "")
@@ -65,6 +67,7 @@ class CWEClassificationDataset(object):
         self.classes = list()
         self.test_cases = set()
         self.features = pd.DataFrame()
+        self.feats_ver = 0
         self.stats = list()
         self.ops_queue = list()
 
@@ -86,10 +89,31 @@ class CWEClassificationDataset(object):
         _time = get_time() - _time
         LOGGER.info(
             "Dataset index build in %dms. %d test_cases, %d classes, "
-            "%d features." % (
+            "%d features (v%d)." % (
                 _time, len(self.test_cases), len(self.classes),
-                self.features.shape[1]
+                self.features.shape[1], self.feats_ver
             )
+        )
+
+    def get_features_info(self):
+        LOGGER.info(
+            "Analyzing features (%dx%d matrix)..." %
+            (self.features.shape[0], self.features.shape[1] - 2)
+        )
+
+        non_empty_cols = 0
+
+        for col in self.features:
+            for item in self.features[col]:
+                if item != 0:
+                    non_empty_cols += 1
+                    break
+
+        empty_cols = self.features.shape[1] - non_empty_cols
+
+        LOGGER.info(
+            "Features contain %d empty columns, %d non-empty columns." %
+            (empty_cols, non_empty_cols - 2)
         )
 
     def queue_operation(self, op_class, op_args=None):
