@@ -28,4 +28,9 @@ class LinearClassifierTraining(ClassifierModel):
         model.train(input_fn=self.train_fn, steps=100)
         results = model.evaluate(self.test_fn)
 
-        LOGGER.debug("Training accuracy: %f" % results["accuracy"])
+        pr = results["precision"]
+        rc = results["recall"]
+        fs = 2 * pr * rc / (pr + rc)
+
+        LOGGER.debug("Precision: %d%%; Recall: %d%%; F-score: %d%%" %
+                     (pr, rc, fs))
