@@ -1,10 +1,10 @@
 """
 """
-from __future__ import division
-from __future__ import print_function
-
+import csv
 import os
 from os.path import join
+
+from hashlib import sha256
 
 import numpy
 from past.utils import old_div
@@ -25,11 +25,11 @@ class ExtractorRelCountMulti(Neo4J3Processing):
         "list_entrypoint": """
             MATCH (f)-[:IS_FUNCTION_OF_CFG]->(entry {type:'CFGEntryNode'})
             WHERE id(f)=%d
-            RETURN id(entry) AS id
+            RETURN entry.functionId AS id
         """,
         "get_flowgraphs": """
             MATCH (entry)-[:FLOWS_TO|REACHES|CONTROLS*0..5]->(root1:UpstreamNode)
-            WHERE id(entry)=%d
+            WHERE entry.functionId="%s"
             WITH distinct root1
             MATCH 
                 p=(root1)-[:FLOWS_TO|REACHES|CONTROLS*1..3]->(root2:DownstreamNode)
@@ -47,8 +47,6 @@ class ExtractorRelCountMulti(Neo4J3Processing):
     def send_commands(self):
         super().send_commands()
 
-        LOGGER.info("Running commands...")
-
         # Dictionary taking a flattened flow graph as key and an index as value for
         # reverse-lookup
         unique_graph_lookup = {}
@@ -56,6 +54,7 @@ class ExtractorRelCountMulti(Neo4J3Processing):
         # A sparse matrix to store the number of occurrences of each flow graph for
         # each test case
         features = lil_matrix((8, 8))
+        # features = list()
 
         # A list keeping track of whether a test case is good or bad
         labels = []
@@ -63,23 +62,35 @@ class ExtractorRelCountMulti(Neo4J3Processing):
         # Test case index
         testcase_index = 0
 
-        print("Retrieving test cases from the database...")
-
         # Get a list of all test cases in the database
-        testcase_list = self.neo4j_db.run(self.COMMANDS["list_testcases"]).data()
-        print("%d test cases to process..." % len(testcase_list))
+        testcase_list = self.neo4j_db.run(
+            self.COMMANDS["list_testcases"]
+        ).data()
+
+        # Keep track of the progress made
+        last_progress = 0
 
         # For each test case, extract interesting flow graphs
         for testcase in testcase_list:
-            print("Processing test case %d/%d (%d%%)\t" \
-                  "Matrix size: %dx%d\tTestcase: %s\t(%s)" % \
-                  (
-                      testcase_index + 1, len(testcase_list),
-                      old_div(100 * (testcase_index + 1), len(testcase_list)),
-                      features.shape[0], features.shape[1],
-                      testcase['filepath'].split('/')[-1],
-                      testcase['filepath'].split('/')[3] + "." + testcase["name"]
-                  ))
+            progress = int(100 * (testcase_index + 1) / len(testcase_list))
+
+            if progress > 0 and progress % 10 == 0:
+                if progress > last_progress:
+                    LOGGER.info(
+                        "Processed %d%% of the dataset (%d test cases)." %
+                        (progress, len(testcase_list))
+                    )
+                    last_progress = progress
+            # LOGGER.info(
+            #     "Processing test case %d/%d (%d%%)\tMatrix size: %dx%d\t"
+            #     "Testcase: %s\t(%s)" % (
+            #         testcase_index + 1, len(testcase_list),
+            #         old_div(100 * (testcase_index + 1), len(testcase_list)),
+            #         features.shape[0], features.shape[1],
+            #         testcase['filepath'].split('/')[-1],
+            #         testcase['filepath'].split('/')[3] + "." + testcase["name"]
+            #         )
+            # )
 
             # Keep track of whether the current test case is good or bad, along with
             # the test case name
@@ -146,19 +157,36 @@ class ExtractorRelCountMulti(Neo4J3Processing):
         for unique_graph in list(unique_graph_lookup.keys()):
             graphs[unique_graph_lookup[unique_graph]] = unique_graph
 
-        print("Summary: analyzed %d test cases, extracting %d unique features" % \
-              (testcase_index, len(unique_graph_lookup)))
+        LOGGER.info(
+            "Summary: analyzed %d test cases, extracting %d unique features" % (
+                testcase_index, len(unique_graph_lookup)
+            )
+        )
 
         if not os.path.exists(self.dataset.feats_dir):
             os.mkdir(self.dataset.feats_dir)
 
-        # Write data to disk in sparse format (Matrix Market)
-        mmwrite(join(self.dataset.feats_dir, "features.mtx"), features, field="integer")
+        # # Write data to disk in sparse format (Matrix Market)
+        # mmwrite(join(self.dataset.feats_dir, "features.mtx"), features, field="integer")
+        #
+        # # Write data to disk in dense format
+        # numpy.savetxt(
+        #     join(self.dataset.feats_dir, "graphs.txt"), graphs, delimiter="\n", fmt="%s"
+        # )
+        # numpy.savetxt(
+        #     join(self.dataset.feats_dir, "labels.txt"), labels, delimiter=",", fmt="%s"
+        # )
 
-        # Write data to disk in dense format
-        numpy.savetxt(
-            join(self.dataset.feats_dir, "graphs.txt"), graphs, delimiter="\n", fmt="%s"
-        )
-        numpy.savetxt(
-            join(self.dataset.feats_dir, "labels.txt"), labels, delimiter=",", fmt="%s"
-        )
+        with open(join(self.dataset.feats_dir, "features.csv"), "w") as csv_file:
+            csv_writer = csv.writer(csv_file)
+
+            csv_writer.writerow(["result", "name"] + [
+                "f.%s" % sha256(feat.encode("utf-8")).hexdigest()
+                for feat in graphs
+            ])
+            csv_writer.writerows(
+                numpy.hstack((
+                    numpy.array(labels),
+                    features.toarray()
+                ))
+            )
