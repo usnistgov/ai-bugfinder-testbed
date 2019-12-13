@@ -141,6 +141,7 @@ coverage.xml
 
 # Django stuff:
 /data
+/feature_maps
 *.log
 *.log*
 logfile*
@@ -208,13 +209,6 @@ install/*
 
 # Apache deployment
 apache
-
-# mongodb
-conf/my-mongodb.conf
-
-# tests
-curate/tests/data/parser/schema/namespace/results*
-curate/tests/data/parser/extension/explicit-implicit/results*
 
 # redis server
 *.rdb
