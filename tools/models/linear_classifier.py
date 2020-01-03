@@ -3,8 +3,8 @@
 from os.path import join
 
 import tensorflow as tf
+
 from tools.models import ClassifierModel
-from tools.settings import LOGGER
 
 
 class LinearClassifierTraining(ClassifierModel):
@@ -12,11 +12,11 @@ class LinearClassifierTraining(ClassifierModel):
         super().__init__(dataset)
         self.model_cls = tf.estimator.LinearClassifier
         self.model_dir = join(
-            self.dataset.feats_dir, "models", "dnn_classifier"
+            self.dataset.feats_dir, "models", "linear_classifier"
         )
 
-    def train(self):
-        model = self.model_cls(
+    def init_model(self):
+        return self.model_cls(
             feature_columns=[
                 tf.feature_column.numeric_column(col)
                 for col in self.columns
@@ -24,13 +24,3 @@ class LinearClassifierTraining(ClassifierModel):
             n_classes=2,
             model_dir=self.model_dir
         )
-
-        model.train(input_fn=self.train_fn, steps=100)
-        results = model.evaluate(self.test_fn)
-
-        pr = results["precision"]
-        rc = results["recall"]
-        fs = 2 * pr * rc / (pr + rc)
-
-        LOGGER.debug("Precision: %d%%; Recall: %d%%; F-score: %d%%" %
-                     (pr, rc, fs))

@@ -1,6 +1,5 @@
 """
 """
-import logging
 from os import listdir, walk
 from os.path import exists, isdir, join, dirname
 

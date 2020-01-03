@@ -1,11 +1,12 @@
 """
 """
 from abc import abstractmethod
-from os.path import join
-import pandas as pd
+
 import tensorflow as tf
-from tools.dataset.processing import DatasetProcessing
 from sklearn.model_selection import train_test_split
+
+from tools.dataset.processing import DatasetProcessing
+from tools.settings import LOGGER
 
 
 class ClassifierModel(DatasetProcessing):
@@ -18,7 +19,7 @@ class ClassifierModel(DatasetProcessing):
         self.columns = None
 
     @abstractmethod
-    def train(self):
+    def init_model(self):
         raise NotImplementedError()
 
     def execute(self, network_path=None):
@@ -27,6 +28,12 @@ class ClassifierModel(DatasetProcessing):
 
         output_data = self.dataset.features["result"]
         input_data = self.dataset.features.drop(["result", "name"], axis=1)
+
+        # Renaming input columns to avoid forbidden characters
+        input_data.columns = [
+            "feat%03d" % feature_nb
+            for feature_nb in range(len(input_data.columns))
+        ]
 
         input_train, input_test, output_train, output_test = train_test_split(
             input_data, output_data, test_size=0.33, random_state=101
@@ -43,4 +50,14 @@ class ClassifierModel(DatasetProcessing):
             num_epochs=1
         )
 
-        self.train()
+        model = self.init_model()
+
+        model.train(input_fn=self.train_fn, steps=100)
+        results = model.evaluate(self.test_fn)
+
+        pr = results["precision"]
+        rc = results["recall"]
+        fs = 2 * pr * rc / (pr + rc)
+
+        LOGGER.info("Precision: %f%%; Recall: %f%%; F-score: %f%%" %
+                     (pr, rc, fs))
