@@ -1,6 +1,5 @@
 """ Utilities using random generators
 """
-from builtins import range
 import string
 from random import choice
 
