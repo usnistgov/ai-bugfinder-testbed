@@ -1,5 +1,6 @@
 """
 """
+import re
 from abc import abstractmethod
 from os import remove, listdir
 from os.path import basename, dirname, splitext
@@ -7,7 +8,6 @@ from shutil import rmtree
 
 from tools.dataset.processing import DatasetFileProcessing
 from tools.settings import LOGGER
-import re
 
 
 class DatasetFileRemover(DatasetFileProcessing):

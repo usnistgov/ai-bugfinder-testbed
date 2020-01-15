@@ -1,5 +1,5 @@
 from os import makedirs, walk
-from os.path import realpath, join, exists, splitext
+from os.path import join, exists, splitext
 
 from tools.joern import JoernDefaultDatasetProcessing
 from tools.settings import LOGGER

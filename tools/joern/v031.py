@@ -1,5 +1,3 @@
-from os.path import realpath
-
 from tools.joern import JoernDefaultDatasetProcessing
 from tools.settings import LOGGER
 

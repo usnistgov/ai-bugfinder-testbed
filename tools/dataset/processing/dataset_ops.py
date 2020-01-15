@@ -1,5 +1,5 @@
-import random
 import os
+import random
 from os.path import exists, join, isdir
 from shutil import rmtree, copytree
 
