@@ -6,7 +6,7 @@ from tools.features import FlowGraphFeatureExtractor
 class FeatureExtractor(FlowGraphFeatureExtractor):
     def configure_container(self):
         super().configure_container()
-        self.container_name = "fe-rel-count-multi"
+        self.container_name = "fext-any-hop-all-flows"
 
     def get_flowgraph_list_for_entrypoint(self, entrypoint):
         flowgraph_command = """
