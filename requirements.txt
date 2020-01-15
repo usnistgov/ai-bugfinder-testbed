@@ -1,7 +1,7 @@
-docker==3.5.1
-future==0.17.1
-numpy==1.15.3
-py2neo==4.1.0
-scipy==1.1.0
-tensorflow==1.11.0
-
+docker==4.0.2
+numpy==1.17.2
+py2neo==4.3.0
+scipy==1.3.1
+pandas==0.24.2
+scikit-learn==0.21.3
+tensorflow==1.14.0

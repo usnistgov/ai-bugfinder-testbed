@@ -6,7 +6,7 @@ import pickle
 import sys
 from os.path import exists, isdir
 
-from settings import LOGGER
+from tools.settings import LOGGER
 
 USAGE = "python ./tools/csv_importer.py ${CSV_AST_LIST}"
 
