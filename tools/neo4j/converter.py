@@ -1,9 +1,9 @@
-from os import makedirs, chown, walk, remove
-from os.path import realpath, join, splitext
+from os import makedirs, walk, remove
+from os.path import join, splitext
 
 from tools.dataset.processing import DatasetProcessingWithContainer
 from tools.neo4j import Neo4J3Processing
-from tools.settings import NEO4J_V3_MEMORY, LOGGER
+from tools.settings import LOGGER
 from tools.utils.containers import wait_log_display
 from tools.utils.dirs import copy_dir
 

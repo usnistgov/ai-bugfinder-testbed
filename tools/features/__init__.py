@@ -5,12 +5,7 @@ import pickle
 from abc import abstractmethod
 from os import mkdir
 from os.path import join, exists, basename, dirname
-from shutil import copy
 
-import pandas as pd
-from sklearn.decomposition import TruncatedSVD
-
-from tools.dataset.processing import DatasetProcessing
 from tools.neo4j import Neo4J3Processing
 from tools.settings import LOGGER, ROOT_DIR
 

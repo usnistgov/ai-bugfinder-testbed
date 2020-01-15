@@ -8,7 +8,7 @@ class FeatureExtractor(FlowGraphFeatureExtractor):
 
     def configure_container(self):
         super().configure_container()
-        self.container_name = "fe-rel-count-single-v02"
+        self.container_name = "fext-any-hop-single-flow"
 
     def get_flowgraph_list_for_entrypoint(self, entrypoint):
         flowgraph_command = """

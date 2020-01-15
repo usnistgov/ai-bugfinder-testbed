@@ -1,14 +1,12 @@
 """
 """
+import re
 from abc import abstractmethod
 from os.path import exists, join
-
-from tools.neo4j import Neo4J3Processing
 from pickle import dump, load
 
+from tools.neo4j import Neo4J3Processing
 from tools.settings import ROOT_DIR, LOGGER
-
-import re
 
 
 class AbstractASTMarkup(Neo4J3Processing):
