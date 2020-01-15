@@ -1,3 +1,5 @@
+from abc import abstractmethod
+
 from py2neo import Graph
 
 from tools.dataset.processing import DatasetProcessingWithContainer
@@ -9,6 +11,7 @@ class Neo4J3Processing(DatasetProcessingWithContainer):
     start_string = "Remote interface available"
     neo4j_db = None
 
+    @abstractmethod
     def configure_container(self):
         self.image_name = "neo4j-ai:latest"
         self.environment = {
