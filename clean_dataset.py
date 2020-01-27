@@ -32,7 +32,7 @@ if __name__ == "__main__":
     dataset = Dataset(args["dataset_path"])
 
     for option_name, option_class in options.items():
-        if args["option_name"]:
+        if args[option_name]:
             dataset.queue_operation(option_class)
 
     dataset.process()
