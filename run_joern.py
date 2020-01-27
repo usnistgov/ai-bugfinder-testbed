@@ -9,27 +9,9 @@ from tools.joern.v040 import JoernDatasetProcessing as Joern040DatasetProcessing
 from tools.neo4j.annot import Neo4JAnnotations
 from tools.neo4j.converter import Neo4J2Converter, Neo4J3Converter
 from tools.neo4j.importer import Neo4J3Importer
+from tools.utils.processing import is_processsing_stack_valid
 
 if __name__ == "__main__":
-    def is_operation_valid(processing_operation):
-        if isinstance(processing_operation, dict):
-            assert "class" in processing_operation.keys() and \
-                   "args" in processing_operation.keys()
-            assert issubclass(processing_operation["class"], DatasetProcessing)
-            assert isinstance(processing_operation["args"], dict)
-        else:  # operation should be a sublass of dataset operation
-            assert isclass(processing_operation)
-            assert issubclass(processing_operation, DatasetProcessing)
-
-    def is_processsing_stack_valid(operation_list):
-        for processing_operation in operation_list:
-            try:
-                is_operation_valid(processing_operation)
-            except AssertionError:
-                return False
-
-        return True
-
     options = {  # Dictionary linking input arguments to processing classes
         "0.3.1": [
             Joern031DatasetProcessing,
