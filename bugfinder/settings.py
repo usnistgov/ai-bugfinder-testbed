@@ -5,10 +5,6 @@ from os.path import dirname, abspath
 
 ROOT_DIR = "%s/.." % dirname(abspath(__file__))
 
-DIRS = {
-    "docker-images": "./images"
-}
-
 LOGGER_CONFIG = {
     "version": 1,
     "formatters": {

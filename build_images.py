@@ -4,14 +4,14 @@ from os import listdir
 
 import docker
 
-from tools.settings import ROOT_DIR, DIRS, LOGGER
-from tools.utils.statistics import get_time
+from bugfinder.settings import ROOT_DIR, LOGGER
+from bugfinder.utils.statistics import get_time
 
 if __name__ == "__main__":
     LOGGER.info("Building docker images...")
 
     docker_cli = docker.from_env()
-    img_root_dir = "%s/%s" % (ROOT_DIR, DIRS["docker-images"])
+    img_root_dir = "%s/%s" % (ROOT_DIR, "./images")
     img_dirlist = listdir(img_root_dir)
 
     stats = {
