@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM alpine:3.11
 
 # Build parameters
 ARG JOERN_VERSION="fd9d01c"
@@ -20,7 +20,11 @@ RUN apk update \
 RUN cd /tmp \
     && git clone ${JOERN_REPO} \
     && cd ${JOERN_DIR} \
-    && git checkout ${JOERN_VERSION} \
+    && git checkout ${JOERN_VERSION}
+
+COPY build.gradle /tmp/${JOERN_DIR}
+
+RUN cd /tmp/${JOERN_DIR} \
     && gradle build -p ./projects/extensions/joern-fuzzyc -x test \
     && gradle build -p ./projects/extensions/jpanlib -x test \
     && mv ./projects/extensions/joern-fuzzyc/build/libs/joern-fuzzyc.jar /usr/local/lib \
