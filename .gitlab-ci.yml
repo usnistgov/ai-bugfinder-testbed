@@ -3,6 +3,9 @@ image: python:3.6
 stages:
   - tests
 
+before_script:
+  - pip install pytest
+
 tests:
   stage: tests
   script: pytest
