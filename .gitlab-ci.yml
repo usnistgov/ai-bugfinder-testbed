@@ -1,0 +1,10 @@
+image: python:3.6
+
+stages:
+  - tests
+
+tests:
+  stage: tests
+  script: pytest
+
+
