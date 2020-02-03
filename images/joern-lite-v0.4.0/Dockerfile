@@ -1,12 +1,9 @@
-FROM alpine:3.8
+FROM alpine:3.11
 
 # Build parameters
-#ARG JOERN_VERSION="0.3.1"
-ARG JOERN_VERSION="0bcf0c4"
+ARG JOERN_VERSION="fd9d01c"
 ARG JOERN_TARBALL="${JOERN_VERSION}.tar.gz"
-#ARG JOERN_REPO="https://github.com/fabsx00/joern/archive/${JOERN_TARBALL}"
 ARG JOERN_REPO="https://github.com/octopus-platform/joern"
-#ARG JOERN_DIR="joern-${JOERN_VERSION}"
 ARG JOERN_DIR="joern"
 ARG JOERN_LIB_TARBALL="lib.tar.gz"
 ARG JOERN_LIB_REPO="http://mlsec.org/joern/lib/${JOERN_LIB_TARBALL}"
@@ -23,7 +20,11 @@ RUN apk update \
 RUN cd /tmp \
     && git clone ${JOERN_REPO} \
     && cd ${JOERN_DIR} \
-    && git checkout ${JOERN_VERSION} \
+    && git checkout ${JOERN_VERSION}
+
+COPY build.gradle /tmp/${JOERN_DIR}
+
+RUN cd /tmp/${JOERN_DIR} \
     && gradle build -p ./projects/extensions/joern-fuzzyc -x test \
     && gradle build -p ./projects/extensions/jpanlib -x test \
     && mv ./projects/extensions/joern-fuzzyc/build/libs/joern-fuzzyc.jar /usr/local/lib \

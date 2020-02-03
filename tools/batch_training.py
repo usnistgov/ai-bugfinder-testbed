@@ -5,8 +5,7 @@ import sys
 from multiprocessing import Pool
 from os.path import isfile, join
 
-from run_tensorflow import run_tensorflow
-from settings import LOGGER
+from tools.settings import LOGGER
 
 USAGE = "./tools/batch_training.py ${batch_csv_file} ${processes}"
 
@@ -19,10 +18,11 @@ def launch_training(input_list):
         join(input_list[2], "training.log")
     )
 
-    try:
-        run_tensorflow(*input_list)
-    except Exception as exc:
-        LOGGER.error(exc.message)
+    # FIXME update script to use newer functionalities
+    # try:
+    #     run_tensorflow(*input_list)
+    # except Exception as exc:
+    #     LOGGER.error(exc.message)
 
 
 if __name__ == "__main__":
