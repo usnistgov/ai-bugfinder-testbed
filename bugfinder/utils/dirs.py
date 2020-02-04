@@ -1,7 +1,7 @@
 from os.path import exists, isdir
 from shutil import rmtree, copytree
 
-from tools.settings import LOGGER
+from bugfinder.settings import LOGGER
 
 
 def copy_dir(src, dest):
