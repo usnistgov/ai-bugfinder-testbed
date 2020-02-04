@@ -31,7 +31,7 @@ def start_container(image_name, container_name, ports=None, volumes=None,
     if command is not None:
         extra_args["command"] = command
 
-    container = docker_cli.containers.run(
+    return docker_cli.containers.run(
         image_name,
         name=container_name,
         environment=environment,
@@ -45,12 +45,15 @@ def start_container(image_name, container_name, ports=None, volumes=None,
         **extra_args
     )
 
-    return container
 
+def wait_log_display(container, log_string, max_wait_time=300):
+    max_sleep_time = min(max_wait_time - 1, 12)
+    current_wait = 0
 
-def wait_log_display(container, log_string):
-    while log_string.encode("utf-8") not in container.logs(tail=10):
-        sleep(1)
+    while log_string.encode("utf-8") not in container.logs(tail=10)\
+            and current_wait < max_wait_time:
+        current_wait += 1
+        sleep(min(current_wait, max_sleep_time))
 
 
 def stop_container_by_name(container_name):
