@@ -145,11 +145,11 @@ class TestWaitLogDisplay(unittest.TestCase):
         p.start()
 
         # Test if the function is still alive after 2 seconds
-        p.join(2)
+        p.join(1)
         self.assertTrue(p.is_alive())  # Expect function is still running
 
         # Test if the function is still alive after 2 seconds
-        p.join(1)
+        p.join(2)
         self.assertFalse(p.is_alive())  # Expect function has stopped
 
 
