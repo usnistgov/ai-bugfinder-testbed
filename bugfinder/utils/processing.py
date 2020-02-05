@@ -2,7 +2,7 @@
 """
 from inspect import isclass
 
-from tools.dataset.processing import DatasetProcessing
+from bugfinder.dataset.processing import DatasetProcessing
 
 
 def is_operation_valid(processing_operation):

@@ -5,8 +5,8 @@ from os.path import exists, isdir, join, dirname
 
 import pandas as pd
 
-from tools.settings import LOGGER, DATASET_DIRS
-from tools.utils.statistics import get_time
+from bugfinder.settings import LOGGER, DATASET_DIRS
+from bugfinder.utils.statistics import get_time
 
 
 class CWEClassificationDataset(object):

@@ -2,9 +2,9 @@ from abc import ABC, abstractmethod
 from os import listdir
 from os.path import join
 
-from tools.settings import LOGGER
-from tools.utils.containers import start_container, stop_container_by_name
-from tools.utils.rand import get_rand_string
+from bugfinder.settings import LOGGER
+from bugfinder.utils.containers import start_container, stop_container_by_name
+from bugfinder.utils.rand import get_rand_string
 
 
 class DatasetProcessing(ABC):
