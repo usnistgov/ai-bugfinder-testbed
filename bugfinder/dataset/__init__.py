@@ -1,12 +1,21 @@
 """
 """
+from enum import Enum
 from os import listdir, walk
 from os.path import exists, isdir, join, dirname
 
 import pandas as pd
 
 from bugfinder.settings import LOGGER, DATASET_DIRS
+from bugfinder.utils.processing import is_processing_stack_valid
 from bugfinder.utils.statistics import get_time
+
+
+class DatasetQueueRetCode(Enum):
+    OK = 0
+    EMPTY_QUEUE = 1
+    INVALID_QUEUE = 2
+    OPERATION_FAIL = 3
 
 
 class CWEClassificationDataset(object):
@@ -19,11 +28,6 @@ class CWEClassificationDataset(object):
             msg = "%s does not exists" % self.path
             LOGGER.error(msg)
             raise FileNotFoundError(msg)
-
-        if not isdir(self.path):
-            msg = "%s is not a directory"
-            LOGGER.error(msg)
-            raise NotADirectoryError(msg)
 
         # If the path exists, browse directory
         for item in listdir(self.path):
@@ -38,10 +42,13 @@ class CWEClassificationDataset(object):
 
             # Retrieve the list of files in the directory
             for root, dirs, files in walk(item_path):
-                for f in files:
-                    self.test_cases.add(
-                        dirname(join(root, f).replace(self.path, ""))
-                    )
+                # Specify full path for test cases and ignore UNIX hidden files
+                files = [
+                    dirname(join(root, f).replace(self.path, ""))
+                    for f in files if not f.startswith(".")
+                ]
+
+                self.test_cases.update(files)
 
             # Compute stats
             self.stats.append(len(self.test_cases) - sum(self.stats))
@@ -55,6 +62,7 @@ class CWEClassificationDataset(object):
             return
 
         self.features = pd.read_csv(features_filename)
+        self._validate_features()
         self.feats_ver = 0
 
     def __init__(self, dataset_path):
@@ -83,7 +91,8 @@ class CWEClassificationDataset(object):
         self._index_dataset()
         self._index_features()
 
-        self.stats = [st / len(self.test_cases) for st in self.stats]
+        if len(self.test_cases) > 0:
+            self.stats = [st / len(self.test_cases) for st in self.stats]
 
         _time = get_time() - _time
         LOGGER.info(
@@ -94,28 +103,44 @@ class CWEClassificationDataset(object):
             )
         )
 
+    def _validate_features(self):
+        if self.features.shape[1] < 3:
+            raise IndexError("Feature file must contain at least 3 columns")
+
     def get_features_info(self):
         LOGGER.info(
             "Analyzing features (%dx%d matrix)..." %
-            (self.features.shape[0], self.features.shape[1] - 2)
+            (self.features.shape[0], self.features.shape[1])
         )
 
-        non_empty_cols = 0
+        self._validate_features()
+
+        features_info = {
+            "non_empty_cols": 0,
+            "empty_cols": 0
+        }
 
         for col in self.features:
             for item in self.features[col]:
                 if item != 0:
-                    non_empty_cols += 1
+                    features_info["non_empty_cols"] += 1
                     break
 
-        empty_cols = self.features.shape[1] - non_empty_cols
+        features_info["empty_cols"] = \
+            self.features.shape[1] - features_info["non_empty_cols"]
+        features_info["non_empty_cols"] -= 2
 
         LOGGER.info(
             "Features contain %d empty columns, %d non-empty columns." %
-            (empty_cols, non_empty_cols - 2)
+            (features_info["empty_cols"], features_info["non_empty_cols"])
         )
 
+        return features_info
+
     def queue_operation(self, op_class, op_args=None):
+        if op_args is None:
+            op_args = dict()
+
         self.ops_queue.append(
             {
                 "class": op_class,
@@ -126,13 +151,17 @@ class CWEClassificationDataset(object):
     def process(self):
         _time = get_time()
         LOGGER.debug("Processing ops queue...")
+
+        if not is_processing_stack_valid(self.ops_queue):
+            return DatasetQueueRetCode.INVALID_QUEUE
+
         total_op = len(self.ops_queue)
         current_op = 0
 
         # Exit if the queue is empty.
         if total_op == 0:
             LOGGER.info("No operation in queue.")
-            return
+            return DatasetQueueRetCode.EMPTY_QUEUE
 
         # Process operation while the queue is not empty.
         while len(self.ops_queue) != 0:
@@ -159,8 +188,10 @@ class CWEClassificationDataset(object):
 
                 # Clear the operation queue and exit
                 self.ops_queue.clear()
-                return
+                return DatasetQueueRetCode.OPERATION_FAIL
 
         LOGGER.info(
             "%d operations run in %dms." % (total_op, get_time() - _time)
         )
+
+        return DatasetQueueRetCode.OK

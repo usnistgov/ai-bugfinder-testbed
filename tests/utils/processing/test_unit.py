@@ -1,16 +1,9 @@
 """ Utilities for processing classes
 """
 import unittest
-from abc import ABC
-from unittest.mock import Mock, create_autospec
 
-from bugfinder.dataset.processing import DatasetProcessing
-from bugfinder.utils.processing import is_operation_valid, is_processsing_stack_valid
-
-
-class MockDatasetProcessing(DatasetProcessing):
-    def execute(self, *args, **kwargs):
-        return
+from bugfinder.utils.processing import is_operation_valid, is_processing_stack_valid
+from tests import MockDatasetProcessing
 
 
 class TestIsOperationValid(unittest.TestCase):
@@ -78,7 +71,7 @@ class TestIsProcessingStackValid(unittest.TestCase):
             self.operation_class
         ]
 
-        self.assertTrue(is_processsing_stack_valid(operation_list))
+        self.assertTrue(is_processing_stack_valid(operation_list))
 
     def test_invalid_dict_operation_stack(self):
         operation_list = [
@@ -86,7 +79,7 @@ class TestIsProcessingStackValid(unittest.TestCase):
             self.operation_class
         ]
 
-        self.assertFalse(is_processsing_stack_valid(operation_list))
+        self.assertFalse(is_processing_stack_valid(operation_list))
 
     def test_invalid_class_operation_stack(self):
         operation_list = [
@@ -97,5 +90,4 @@ class TestIsProcessingStackValid(unittest.TestCase):
             object
         ]
 
-        self.assertFalse(is_processsing_stack_valid(operation_list))
-
+        self.assertFalse(is_processing_stack_valid(operation_list))

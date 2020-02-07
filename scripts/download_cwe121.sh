@@ -13,7 +13,7 @@ DATA_PATH="${CURRENT_PATH}/../data"
 DATASET_PATH="${DATA_PATH}/cwe121_orig"
 ANNOT_SET_PATH="${DATA_PATH}/cwe121_annot"
 
-NPROC=$(nproc)
+NPROC=20
 #
 # ==============================================================================
 # Download, extract Juliet and move to a separate folder

@@ -16,7 +16,7 @@ def is_operation_valid(processing_operation):
         assert issubclass(processing_operation, DatasetProcessing)
 
 
-def is_processsing_stack_valid(operation_list):
+def is_processing_stack_valid(operation_list):
     for processing_operation in operation_list:
         try:
             is_operation_valid(processing_operation)
