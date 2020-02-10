@@ -3,8 +3,8 @@ from os import listdir
 from os.path import join
 from shutil import move
 
-from tools.dataset.processing import DatasetProcessing, DatasetFileProcessing
-from tools.settings import LOGGER
+from bugfinder.dataset.processing import DatasetProcessing, DatasetFileProcessing
+from bugfinder.settings import LOGGER
 
 
 class ReplaceLitterals(DatasetProcessing):
@@ -21,11 +21,11 @@ class ReplaceLitterals(DatasetProcessing):
         ]
 
         while len(file_processing_list) != 0:
-            LOGGER.debug(
-                "Replacing litterals in file list (%d items)..." %
-                len(file_processing_list)
-            )
             filepath = file_processing_list.pop(0)
+            LOGGER.debug(
+                "Replacing litterals in %s (%d items left)..." %
+                (filepath, len(file_processing_list))
+            )
 
             repl_count = self.process_file(
                 join(self.dataset.path, filepath)
