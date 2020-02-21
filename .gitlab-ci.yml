@@ -6,6 +6,7 @@ stages:
 before_script:
   - pip install -r ./requirements.txt
   - pip install pytest
+  - python ./build_images.py
 
 tests:
   stage: tests
