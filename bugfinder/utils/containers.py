@@ -31,7 +31,7 @@ def start_container(image_name, container_name, ports=None, volumes=None,
     if command is not None:
         extra_args["command"] = command
 
-    return docker_cli.containers.run(
+    run_result = docker_cli.containers.run(
         image_name,
         name=container_name,
         environment=environment,
@@ -44,6 +44,9 @@ def start_container(image_name, container_name, ports=None, volumes=None,
         remove=not detach,
         **extra_args
     )
+
+    docker_cli.close()
+    return run_result
 
 
 def wait_log_display(container, log_string, max_wait_time=300):
@@ -61,3 +64,4 @@ def stop_container_by_name(container_name):
     container = docker_cli.containers.get(container_name)
 
     container.stop()
+    docker_cli.close()

@@ -3,11 +3,11 @@ import random
 from os.path import exists, join, isdir
 from shutil import rmtree, copytree
 
-from tools.dataset import CWEClassificationDataset as Dataset
-from tools.dataset.processing import DatasetProcessing, \
+from bugfinder.dataset import CWEClassificationDataset as Dataset
+from bugfinder.dataset.processing import DatasetProcessing, \
     DatasetProcessingWithContainer
-from tools.settings import LOGGER
-from tools.utils.statistics import get_time
+from bugfinder.settings import LOGGER
+from bugfinder.utils.statistics import get_time
 
 
 class CopyDataset(DatasetProcessing):
@@ -69,7 +69,6 @@ class ExtractSampleDataset(DatasetProcessing):
         for index in range(len(self.dataset.classes)):
             # Retrieve class name and create destination directory
             class_name = self.dataset.classes[index]
-            # makedirs(join(to_path, class_name))
 
             # Retrieve all test cases belonging to the class
             class_test_cases = [
@@ -117,9 +116,10 @@ class InverseDataset(DatasetProcessing):
         if not isdir(from_path):
             raise NotADirectoryError("%s is not a directory" % from_path)
 
+        from_dataset = Dataset(from_path)
         inverse_test_cases = [
             test_case for test_case in self.dataset.test_cases
-            if not exists(join(from_path, test_case))
+            if test_case not in from_dataset.test_cases
         ]
 
         for test_case in inverse_test_cases:
