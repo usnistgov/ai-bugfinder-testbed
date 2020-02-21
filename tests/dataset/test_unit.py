@@ -81,7 +81,10 @@ class TestCWEClassificationDatasetRebuildIndex(TestCase):
             "./tests/dataset/fixtures/dataset01"
         )
 
-        self.assertEqual(dataset.classes, ["class01", "class02", "class03"])
+        self.assertEqual(
+            set(dataset.classes),
+            {"class01", "class02", "class03"}
+        )
 
     def test_indexed_test_cases_are_correct(self):
         dataset = CWEClassificationDataset(
@@ -111,7 +114,7 @@ class TestCWEClassificationDatasetRebuildIndex(TestCase):
             "./tests/dataset/fixtures/dataset01"
         )
 
-        self.assertEqual(dataset.stats, [1/3, 0.5, 1/6])
+        self.assertEqual(set(dataset.stats), {1/3, 0.5, 1/6})
 
     def test_empty_dataset(self):
         dataset = CWEClassificationDataset(
