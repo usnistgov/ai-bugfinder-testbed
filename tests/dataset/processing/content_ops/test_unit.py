@@ -1,4 +1,4 @@
-from os import remove
+from os import remove, listdir
 from os.path import join, exists
 from unittest import TestCase
 from unittest.mock import patch, call
@@ -23,9 +23,14 @@ class TestReplaceLitteralsExecute(TestCase):
 
         dataset_processing.execute()
 
+        test_files = []
+        for test_case in dataset.test_cases:
+            test_case_path = join(dataset_path, test_case)
+            for filename in listdir(test_case_path):
+                test_files.append(join(test_case_path, filename))
+
         mock_process_file_calls = [
-            call(join(dataset_path, test_case, "item.c"))
-            for test_case in dataset.test_cases
+            call(test_file) for test_file in test_files
         ]
 
         mock_process_file.assert_has_calls(mock_process_file_calls, any_order=True)
@@ -107,6 +112,11 @@ class TestRemoveMainFunctionProcessFile(TestCase):
     def tearDown(self) -> None:
         try:
             remove("%s.tmp" % self.file_with_main)
+        except FileNotFoundError:
+            pass  # Ignore FileNotFound errors
+
+        try:
+            remove("%s.tmp" % self.clean_file)
         except FileNotFoundError:
             pass  # Ignore FileNotFound errors
 

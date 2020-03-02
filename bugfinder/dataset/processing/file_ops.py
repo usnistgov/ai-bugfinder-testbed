@@ -3,23 +3,23 @@
 import re
 from abc import abstractmethod
 from os import remove, listdir
-from os.path import basename, dirname, splitext
+from os.path import basename, dirname, splitext, join
 from shutil import rmtree
 
-from tools.dataset.processing import DatasetFileProcessing
-from tools.settings import LOGGER
+from bugfinder.dataset.processing import DatasetFileProcessing
+from bugfinder.settings import LOGGER
 
 
 class DatasetFileRemover(DatasetFileProcessing):
-    @staticmethod
-    def _remove_file(filepath):
+    def _remove_file(self, filepath):
         LOGGER.debug("Removing %s..." % basename(filepath))
         remove(filepath)
 
-        # Inspect directory to check for emptyness
+        # Inspect parent directory to check for emptyness
         dirpath = dirname(filepath)
         for filename in listdir(dirpath):
-            if splitext(filename) != ".h":
+            dir_filepath = join(dirpath, filename)
+            if self.is_needed_file(dir_filepath):
                 return
 
         # If directory is empty (or only contains .h files) it is deleted
@@ -28,17 +28,27 @@ class DatasetFileRemover(DatasetFileProcessing):
         rmtree(dirpath)
 
     @abstractmethod
+    def is_needed_file(self, filepath):
+        raise NotImplementedError("method not implemented")
+
+    @abstractmethod
     def process_file(self, filepath):
         raise NotImplementedError("method not implemented")
 
 
 class RemoveCppFiles(DatasetFileRemover):
+    def is_needed_file(self, filepath):
+        return splitext(filepath)[1] != ".h"
+
     def process_file(self, filepath):
         if basename(filepath).endswith(".cpp"):
             self._remove_file(filepath)
 
 
 class RemoveInterproceduralTestCases(DatasetFileRemover):
+    def is_needed_file(self, filepath):
+        return splitext(filepath)[1] != ".h"
+
     def process_file(self, filepath):
         if len(re.findall(r"[0-9]+[a-e]\.c$", basename(filepath))) > 0:
             self._remove_file(filepath)
