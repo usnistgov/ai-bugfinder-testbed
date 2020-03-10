@@ -2,9 +2,9 @@ from abc import abstractmethod
 
 from py2neo import Graph
 
-from tools.dataset.processing import DatasetProcessingWithContainer
-from tools.settings import NEO4J_V3_MEMORY
-from tools.utils.containers import wait_log_display
+from bugfinder.dataset.processing import DatasetProcessingWithContainer
+from bugfinder.settings import NEO4J_V3_MEMORY
+from bugfinder.utils.containers import wait_log_display
 
 
 class Neo4J3Processing(DatasetProcessingWithContainer):

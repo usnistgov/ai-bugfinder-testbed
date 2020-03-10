@@ -1,6 +1,6 @@
 """
 """
-from tools.ast import AbstractASTMarkup
+from bugfinder.ast import AbstractASTMarkup
 
 
 class Neo4JASTMarkup(AbstractASTMarkup):

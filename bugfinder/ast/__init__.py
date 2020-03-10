@@ -5,8 +5,8 @@ from abc import abstractmethod
 from os.path import exists, join
 from pickle import dump, load
 
-from tools.neo4j import Neo4J3Processing
-from tools.settings import ROOT_DIR, LOGGER
+from bugfinder.neo4j import Neo4J3Processing
+from bugfinder.settings import ROOT_DIR, LOGGER
 
 
 class AbstractASTMarkup(Neo4J3Processing):
@@ -72,7 +72,7 @@ class AbstractASTMarkup(Neo4J3Processing):
         LOGGER.info("AST updated")
 
 
-class ASTSetGenerator(Neo4J3Processing):
+class ASTSetExporter(Neo4J3Processing):
     """ Generate the set of AST retrieved from a Neo4J database
     """
 
