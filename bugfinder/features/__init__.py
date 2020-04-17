@@ -6,8 +6,8 @@ from abc import abstractmethod
 from os import mkdir
 from os.path import join, exists, basename, dirname
 
-from tools.neo4j import Neo4J3Processing
-from tools.settings import LOGGER, ROOT_DIR
+from bugfinder.neo4j import Neo4J3Processing
+from bugfinder.settings import LOGGER, ROOT_DIR
 
 IMPLEMENTATION_ERROR = "%s needs to be implemented."
 
@@ -80,7 +80,7 @@ class GraphFeatureExtractor(Neo4J3Processing):
         else:
             LOGGER.debug("Mapping features...")
             labels = self.map_features()
-            self.save_labels_to_features_map(labels)
+            self.save_labels_to_feature_map(labels)
 
     def check_extraction_inputs(self):
         # Check if features directory exists. Create it if it does not.
@@ -94,14 +94,13 @@ class GraphFeatureExtractor(Neo4J3Processing):
         return join(self.dataset.feats_dir, "features.csv")
 
     def write_extraction_outputs(self, features):
-        # output_file = self.dataset.get_next_feature_filepath()
         output_file = join(self.dataset.feats_dir, "features.csv")
 
         with open(output_file, "w") as csv_file:
             csv_writer = csv.writer(csv_file)
 
             # FIXME developer will not know how to setup its features
-            labels = self.get_labels_from_features_map() + ["result", "name"]
+            labels = self.get_labels_from_feature_map() + ["result", "name"]
 
             # Make sure the number of labels and the number of features are the
             # same.
@@ -115,8 +114,8 @@ class GraphFeatureExtractor(Neo4J3Processing):
             csv_writer.writerow(labels)
             csv_writer.writerows(features)
 
-    def save_labels_to_features_map(self, labels):
-        existing_labels = self.get_labels_from_features_map()
+    def save_labels_to_feature_map(self, labels):
+        existing_labels = self.get_labels_from_feature_map()
         orig_labels_count = len(existing_labels)
 
         LOGGER.debug("Retrieved %d existintg labels. Adding new labels..." %
@@ -135,7 +134,7 @@ class GraphFeatureExtractor(Neo4J3Processing):
                 as feature_map_file:
             pickle.dump(existing_labels, feature_map_file)
 
-    def get_labels_from_features_map(self):
+    def get_labels_from_feature_map(self):
         feature_map_filepath = join(ROOT_DIR, self.feature_map_filepath)
 
         if not exists(feature_map_filepath):
@@ -187,10 +186,14 @@ class FlowGraphFeatureExtractor(GraphFeatureExtractor):
         return features
 
     def extract_features(self):
-        labels = self.get_labels_from_features_map()
+        labels = self.get_labels_from_feature_map()
         entrypoint_list = self._get_entrypoint_list()
         entrypoint_index = 0
         last_progress = 0
+
+        if len(entrypoint_list) == 0:
+            LOGGER.warning("No entrypoint found. Returning None...")
+            return None
 
         LOGGER.info("Retrieved %d entrypoints and %d labels. Querying for "
                     "flowgraphs..." % (len(entrypoint_list), len(labels)))
@@ -200,10 +203,9 @@ class FlowGraphFeatureExtractor(GraphFeatureExtractor):
         for entrypoint in entrypoint_list:
             progress = int(100 * (entrypoint_index + 1) / len(entrypoint_list))
 
-            if progress > 0 and progress % 10 == 0:
-                if progress > last_progress:
-                    LOGGER.info("Processed %d%% of the dataset." % progress)
-                    last_progress = progress
+            if progress > 0 and progress % 10 == 0 and progress > last_progress:
+                LOGGER.info("Processed %d%% of the dataset." % progress)
+                last_progress = progress
 
             features_row_entrypoint = self.initialize_features(
                 entrypoint, labels
@@ -248,12 +250,9 @@ class FlowGraphFeatureExtractor(GraphFeatureExtractor):
         for entrypoint in entrypoint_list:
             progress = int(100 * (entrypoint_index + 1) / len(entrypoint_list))
 
-            if progress > 0 and progress % 10 == 0:
-                if progress > last_progress:
-                    LOGGER.info(
-                        "Processed %d%% of the dataset." % progress
-                    )
-                    last_progress = progress
+            if progress > 0 and progress % 10 == 0 and progress > last_progress:
+                LOGGER.info("Processed %d%% of the dataset." % progress)
+                last_progress = progress
 
             # Record and count each unique flow graph
             for flowgraph in self.get_flowgraph_list_for_entrypoint(entrypoint):

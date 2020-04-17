@@ -1,6 +1,6 @@
 """
 """
-from tools.features import FlowGraphFeatureExtractor
+from bugfinder.features import FlowGraphFeatureExtractor
 
 
 class FeatureExtractor(FlowGraphFeatureExtractor):

@@ -1,6 +1,6 @@
 """
 """
-from tools.features import FlowGraphFeatureExtractor
+from bugfinder.features import FlowGraphFeatureExtractor
 
 
 class FeatureExtractor(FlowGraphFeatureExtractor):
@@ -48,11 +48,13 @@ class FeatureExtractor(FlowGraphFeatureExtractor):
 
         flows = ["CONTROLS", "REACHES", "FLOWS_TO"]
 
+        # Find all labels related to each type of flow
         labels_in_flow = [
             [labels.index(label) for label in labels if flow in label]
             for flow in flows
         ]
 
+        # Determine index of each labels
         labels_index = [0] * len(labels)
         for flow_index in range(len(labels_in_flow) - 1):
             for label_index in labels_in_flow[flow_index + 1]:
@@ -69,9 +71,9 @@ class FeatureExtractor(FlowGraphFeatureExtractor):
             ]
 
             normalized_features.append([
-                                           trimmed_feature_row[i] / summed_row[labels_index[i]]
-                                           if summed_row[labels_index[i]] != 0 else 0
-                                           for i in range(len(trimmed_feature_row))
-                                       ] + feature_row[-2:])
+               trimmed_feature_row[i] / summed_row[labels_index[i]]
+               if summed_row[labels_index[i]] != 0 else 0
+               for i in range(len(trimmed_feature_row))
+            ] + feature_row[-2:])
 
         return normalized_features

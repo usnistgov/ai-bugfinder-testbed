@@ -6,8 +6,8 @@ from shutil import copy
 import pandas as pd
 from sklearn.decomposition import PCA
 
-from tools.dataset.processing import DatasetProcessing
-from tools.settings import LOGGER
+from bugfinder.dataset.processing import DatasetProcessing
+from bugfinder.settings import LOGGER
 
 
 class FeatureExtractor(DatasetProcessing):
