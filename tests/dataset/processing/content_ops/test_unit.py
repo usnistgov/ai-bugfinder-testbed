@@ -16,7 +16,7 @@ class TestReplaceLitteralsExecute(TestCase):
         mock_process_file.return_value = 0
         mock_processing_logger.return_value = None
         mock_dataset_logger.return_value = None
-        dataset_path = "./tests/dataset/fixtures/dataset01"
+        dataset_path = "./tests/fixtures/dataset01"
 
         dataset = CWEClassificationDataset(dataset_path)
         dataset_processing = ReplaceLitterals(dataset)
@@ -51,7 +51,7 @@ class TestReplaceLitteralsProcessFile(TestCase):
 
     def setUp(self) -> None:
         self._default_patch()
-        dataset_path = "./tests/dataset/fixtures/dataset01"
+        dataset_path = "./tests/fixtures/dataset01"
 
         dataset = CWEClassificationDataset(dataset_path)
         self.dataset_processing = ReplaceLitterals(dataset)
@@ -101,7 +101,7 @@ class TestRemoveMainFunctionProcessFile(TestCase):
 
     def setUp(self) -> None:
         self._default_patch()
-        dataset_path = "./tests/dataset/fixtures/dataset01"
+        dataset_path = "./tests/fixtures/dataset01"
 
         dataset = CWEClassificationDataset(dataset_path)
         self.dataset_processing = RemoveMainFunction(dataset)

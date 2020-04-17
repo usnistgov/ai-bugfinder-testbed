@@ -73,12 +73,12 @@ class TestCWEClassificationDatasetRebuildIndex(TestCase):
     def test_not_dir_dataset_raises_error(self):
         with self.assertRaises(FileNotFoundError):
             CWEClassificationDataset(
-                "./tests/dataset/fixtures/dataset01/sample_file.txt"
+                "./tests/fixtures/dataset01/sample_file.txt"
             )
 
     def test_indexed_classes_are_correct(self):
         dataset = CWEClassificationDataset(
-            "./tests/dataset/fixtures/dataset01"
+            "./tests/fixtures/dataset01"
         )
 
         self.assertEqual(
@@ -88,7 +88,7 @@ class TestCWEClassificationDatasetRebuildIndex(TestCase):
 
     def test_indexed_test_cases_are_correct(self):
         dataset = CWEClassificationDataset(
-            "./tests/dataset/fixtures/dataset01"
+            "./tests/fixtures/dataset01"
         )
 
         self.assertEqual(
@@ -102,23 +102,23 @@ class TestCWEClassificationDatasetRebuildIndex(TestCase):
 
     def test_features_are_correct(self):
         dataset = CWEClassificationDataset(
-            "./tests/dataset/fixtures/dataset01"
+            "./tests/fixtures/dataset01"
         )
 
         self.assertTrue(pd.read_csv(
-            "./tests/dataset/fixtures/dataset01/features/features.csv"
+            "./tests/fixtures/dataset01/features/features.csv"
         ).equals(dataset.features))
 
     def test_stats_are_correct(self):
         dataset = CWEClassificationDataset(
-            "./tests/dataset/fixtures/dataset01"
+            "./tests/fixtures/dataset01"
         )
 
         self.assertEqual(set(dataset.stats), {1/3, 0.5, 1/6})
 
     def test_empty_dataset(self):
         dataset = CWEClassificationDataset(
-            "./tests/dataset/fixtures/dataset02"
+            "./tests/fixtures/dataset02"
         )
 
         self.assertEqual(len(dataset.test_cases), 0)
@@ -132,7 +132,7 @@ class TestCWEClassificationDatasetGetFeaturesInfo(TestCase):
 
     def test_column_types_are_correct(self):
         dataset = CWEClassificationDataset(
-            "./tests/dataset/fixtures/dataset01"
+            "./tests/fixtures/dataset01"
         )
         expected_result = {
             "non_empty_cols": 3,
@@ -143,7 +143,7 @@ class TestCWEClassificationDatasetGetFeaturesInfo(TestCase):
 
     def test_unexisting_features_raises_error(self):
         dataset = CWEClassificationDataset(
-            "./tests/dataset/fixtures/dataset02"
+            "./tests/fixtures/dataset02"
         )
 
         with self.assertRaises(IndexError):
@@ -157,7 +157,7 @@ class TestCWEClassificationDatasetQueueOperation(TestCase):
         self.addCleanup(patch_logger.stop)
 
         self.dataset = CWEClassificationDataset(
-            "./tests/dataset/fixtures/dataset01"
+            "./tests/fixtures/dataset01"
         )
 
     def test_queue_size_increases(self):
@@ -178,7 +178,7 @@ class TestCWEClassificationDatasetProcess(TestCase):
         self.addCleanup(patch_logger.stop)
 
         self.dataset = CWEClassificationDataset(
-            "./tests/dataset/fixtures/dataset01"
+            "./tests/fixtures/dataset01"
         )
 
     def test_empty_queue_returns_correct_code(self):

@@ -46,19 +46,19 @@ class TestDatasetFileProcessingExecute(TestCase):
     @patch("bugfinder.dataset.LOGGER")
     def test_process_file_calls_equal_nb_of_files(self, mock_logger):
         mock_logger.return_value = None
-        dataset_obj = CWEClassificationDataset("./tests/dataset/fixtures/dataset01")
+        dataset_obj = CWEClassificationDataset("./tests/fixtures/dataset01")
         data_processing = self.MockDatasetFileProcessing(dataset_obj)
         data_processing.execute()
 
         self.assertEqual(
             data_processing.processed_file.sort(),
             [
-                "./tests/dataset/fixtures/dataset01/class02/tc03/item.c",
-                "./tests/dataset/fixtures/dataset01/class03/tc01/item.c",
-                "./tests/dataset/fixtures/dataset01/class01/tc03/item.c",
-                "./tests/dataset/fixtures/dataset01/class01/tc02/item.c",
-                "./tests/dataset/fixtures/dataset01/class02/tc04/item.c",
-                "./tests/dataset/fixtures/dataset01/class02/tc01/item.c"
+                "./tests/fixtures/dataset01/class02/tc03/item.c",
+                "./tests/fixtures/dataset01/class03/tc01/item.c",
+                "./tests/fixtures/dataset01/class01/tc03/item.c",
+                "./tests/fixtures/dataset01/class01/tc02/item.c",
+                "./tests/fixtures/dataset01/class02/tc04/item.c",
+                "./tests/fixtures/dataset01/class02/tc01/item.c"
             ].sort()
         )
 

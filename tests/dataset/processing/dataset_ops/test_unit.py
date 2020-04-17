@@ -17,8 +17,8 @@ class TestCopyDatasetExecute(TestCase):
             "bugfinder.dataset.CWEClassificationDataset.process"
         ])
 
-        self.input_dataset_path = "./tests/dataset/fixtures/dataset01"
-        self.output_dataset_path = "./tests/dataset/fixtures/dataset01_copy"
+        self.input_dataset_path = "./tests/fixtures/dataset01"
+        self.output_dataset_path = "./tests/fixtures/dataset01_copy"
         dataset = CWEClassificationDataset(self.input_dataset_path)
 
         self.dataset_processing = CopyDataset(dataset)
@@ -55,8 +55,8 @@ class TestExtractSampleDatasetExecute(TestCase):
             "bugfinder.dataset.LOGGER"
         ])
 
-        self.input_dataset_path = "./tests/dataset/fixtures/dataset03"
-        self.output_dataset_path = "./tests/dataset/fixtures/dataset03_copy"
+        self.input_dataset_path = "./tests/fixtures/dataset03"
+        self.output_dataset_path = "./tests/fixtures/dataset03_copy"
         self.sample_nb = 5
         dataset = CWEClassificationDataset(self.input_dataset_path)
 
@@ -123,9 +123,9 @@ class TestInverseDatasetExecute(TestCase):
             "bugfinder.dataset.LOGGER"
         ])
 
-        self.input_dataset_path = "./tests/dataset/fixtures/dataset03"
-        self.from_dataset_path = "./tests/dataset/fixtures/dataset01"
-        self.output_dataset_path = "./tests/dataset/fixtures/dataset_copy"
+        self.input_dataset_path = "./tests/fixtures/dataset03"
+        self.from_dataset_path = "./tests/fixtures/dataset01"
+        self.output_dataset_path = "./tests/fixtures/dataset_copy"
 
         self.dataset = CWEClassificationDataset(self.input_dataset_path)
         self.dataset_processing = InverseDataset(self.dataset)
@@ -206,7 +206,7 @@ class TestRightFixer(TestCase):
             "bugfinder.dataset.LOGGER"
         ])
 
-        self.input_dataset_path = "./tests/dataset/fixtures/dataset01"
+        self.input_dataset_path = "./tests/fixtures/dataset01"
         sample_uid = 20000
         sample_gid = 25000
 

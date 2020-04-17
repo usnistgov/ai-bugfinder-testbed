@@ -25,8 +25,8 @@ class TestDatasetFileRemoverRemoveFile(TestCase):
             "bugfinder.dataset.LOGGER"
         ])
 
-        dataset_path = "./tests/dataset/fixtures/dataset01"
-        self.tmp_dataset_path = "./tests/dataset/fixtures/dataset_copy"
+        dataset_path = "./tests/fixtures/dataset01"
+        self.tmp_dataset_path = "./tests/fixtures/dataset_copy"
 
         copytree(dataset_path, self.tmp_dataset_path)
 
@@ -83,8 +83,8 @@ class TestRemoveCppFilesProcessFile(TestCase):
             "bugfinder.dataset.LOGGER"
         ])
 
-        dataset_path = "./tests/dataset/fixtures/dataset01"
-        self.tmp_dataset_path = "./tests/dataset/fixtures/dataset_copy"
+        dataset_path = "./tests/fixtures/dataset01"
+        self.tmp_dataset_path = "./tests/fixtures/dataset_copy"
 
         copytree(dataset_path, self.tmp_dataset_path)
 
@@ -109,8 +109,8 @@ class TestRemoveInterproceduralTestCasesProcessFile(TestCase):
             "bugfinder.dataset.LOGGER"
         ])
 
-        dataset_path = "./tests/dataset/fixtures/dataset01"
-        self.tmp_dataset_path = "./tests/dataset/fixtures/dataset_copy"
+        dataset_path = "./tests/fixtures/dataset01"
+        self.tmp_dataset_path = "./tests/fixtures/dataset_copy"
 
         copytree(dataset_path, self.tmp_dataset_path)
 
