@@ -45,6 +45,9 @@ class TestJoernDatasetProcessingSendCommands(TestCase):
     def tearDown(self) -> None:
         import_dir = join(self.dataset.joern_dir, "import")
         for filename in listdir(import_dir):
+            if filename == ".keep":
+                continue
+
             remove(join(import_dir, filename))
 
     @patch("bugfinder.joern.v040.exists")
@@ -64,7 +67,8 @@ class TestJoernDatasetProcessingSendCommands(TestCase):
         self.dataset_processing.send_commands()
 
         self.assertListEqual(
-            listdir(join(self.dataset.joern_dir, "import")),
+            [filename for filename in listdir(join(self.dataset.joern_dir, "import"))
+             if filename != ".keep"],
             listdir(join(self.dataset.joern_dir, "import.expected"))
         )
 
@@ -73,7 +77,7 @@ class TestJoernDatasetProcessingSendCommands(TestCase):
         mock_exists.return_value = True
         self.dataset_processing.send_commands()
 
-        for filename in listdir(join(self.dataset.joern_dir, "import")):
+        for filename in listdir(join(self.dataset.joern_dir, "import.expected")):
             with open(join(self.dataset.joern_dir, "import", filename)) as fp:
                 returned_content = fp.read()
 
