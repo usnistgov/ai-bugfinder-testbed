@@ -1,6 +1,6 @@
 from abc import abstractmethod
 
-from tools.dataset.processing import DatasetProcessingWithContainer
+from bugfinder.dataset.processing import DatasetProcessingWithContainer
 
 
 class JoernDefaultDatasetProcessing(DatasetProcessingWithContainer):

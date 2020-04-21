@@ -1,8 +1,8 @@
 from os import makedirs, walk
 from os.path import join, exists, splitext
 
-from tools.joern import JoernDefaultDatasetProcessing
-from tools.settings import LOGGER
+from bugfinder.joern import JoernDefaultDatasetProcessing
+from bugfinder.settings import LOGGER
 
 
 class JoernDatasetProcessing(JoernDefaultDatasetProcessing):
@@ -23,6 +23,7 @@ class JoernDatasetProcessing(JoernDefaultDatasetProcessing):
         in_path = join(self.dataset.joern_dir, "code")
         out_path = join(self.dataset.joern_dir, "import")
 
+        # Create output path if it doesn't exist
         if not exists(out_path):
             makedirs(out_path)
 
@@ -30,38 +31,39 @@ class JoernDatasetProcessing(JoernDefaultDatasetProcessing):
             for filename in filelist:
                 (filetype, fileext) = splitext(filename)
 
-                if fileext == ".csv":
-                    filepath = join(dirname, filename)
+                if fileext != ".csv":  # Only parse CSV files
+                    continue
 
-                    with open(filepath) as csv_file:
-                        if len(content[filetype]) == 0:
-                            headers = csv_file.readline()
+                filepath = join(dirname, filename)
 
-                            if filetype == "nodes":
-                                headers = headers.replace("key", ":ID")
-                            elif filetype == "edges":
-                                headers = headers.replace("start", ":START_ID")
-                                headers = headers.replace("end", ":END_ID")
-                                headers = headers.replace("type", ":TYPE")
+                with open(filepath, "r") as csv_file:
+                    if len(content[filetype]) == 0:
+                        headers = csv_file.readline()
 
-                            content[filetype].append(headers)
+                        if filetype == "nodes":
+                            headers = headers.replace("key", ":ID")
+                        elif filetype == "edges":
+                            headers = headers.replace("start", ":START_ID")
+                            headers = headers.replace("end", ":END_ID")
+                            headers = headers.replace("type", ":TYPE")
 
-                        for line in csv_file.readlines()[1:]:
-                            if "\tDirectory\t" in line:
-                                LOGGER.debug(
-                                    "Ignoring '%s'" %
-                                    line[:-1].replace("\t", " ").strip()
-                                )
-                                continue
+                        content[filetype].append(headers)
 
-                            if "\tStatement\t" in line:
-                                warn_count += 1
-                                LOGGER.warn(
-                                    "Parsing error in '%s'" %
-                                    line[:-1].replace("\t", " ").strip()
-                                )
+                    for line in csv_file.readlines()[1:]:
+                        if "\tDirectory\t" in line:
+                            LOGGER.debug(
+                                "Ignoring '%s'" % line[:-1].replace("\t", " ").strip()
+                            )
+                            continue
 
-                            content[filetype].append(line)
+                        if "\tStatement\t" in line:
+                            warn_count += 1
+                            LOGGER.warn(
+                                "Parsing error in '%s'" %
+                                line[:-1].replace("\t", " ").strip()
+                            )
+
+                        content[filetype].append(line)
 
         with open(join(out_path, "nodes.csv"), "w") as nodes_file:
             nodes_file.writelines(content["nodes"])

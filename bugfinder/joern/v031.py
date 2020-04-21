@@ -1,5 +1,5 @@
-from tools.joern import JoernDefaultDatasetProcessing
-from tools.settings import LOGGER
+from bugfinder.joern import JoernDefaultDatasetProcessing
+from bugfinder.settings import LOGGER
 
 
 class JoernDatasetProcessing(JoernDefaultDatasetProcessing):
