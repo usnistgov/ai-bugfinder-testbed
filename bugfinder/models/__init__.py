@@ -5,8 +5,8 @@ from abc import abstractmethod
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
 
-from tools.dataset.processing import DatasetProcessing
-from tools.settings import LOGGER
+from bugfinder.dataset.processing import DatasetProcessing
+from bugfinder.settings import LOGGER
 
 
 class ClassifierModel(DatasetProcessing):
@@ -60,4 +60,4 @@ class ClassifierModel(DatasetProcessing):
         fs = 2 * pr * rc / (pr + rc)
 
         LOGGER.info("Precision: %f%%; Recall: %f%%; F-score: %f%%" %
-                     (pr, rc, fs))
+                    (pr, rc, fs))

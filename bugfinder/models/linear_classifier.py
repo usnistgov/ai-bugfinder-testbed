@@ -4,7 +4,7 @@ from os.path import join
 
 import tensorflow as tf
 
-from tools.models import ClassifierModel
+from bugfinder.models import ClassifierModel
 
 
 class LinearClassifierTraining(ClassifierModel):
