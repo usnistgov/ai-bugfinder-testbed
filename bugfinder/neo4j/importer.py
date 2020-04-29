@@ -1,7 +1,7 @@
 from os.path import join
 
-from tools.neo4j import Neo4J3Processing
-from tools.settings import LOGGER
+from bugfinder.neo4j import Neo4J3Processing
+from bugfinder.settings import LOGGER
 
 
 class Neo4J3Importer(Neo4J3Processing):

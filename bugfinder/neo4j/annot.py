@@ -2,9 +2,9 @@
 """
 from docker.errors import APIError
 
-from tools.neo4j import Neo4J3Processing
-from tools.settings import LOGGER
-from tools.utils.statistics import get_time
+from bugfinder.neo4j import Neo4J3Processing
+from bugfinder.settings import LOGGER
+from bugfinder.utils.statistics import get_time
 
 
 class Neo4JAnnotations(Neo4J3Processing):

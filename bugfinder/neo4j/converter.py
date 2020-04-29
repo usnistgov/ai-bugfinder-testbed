@@ -1,11 +1,11 @@
 from os import makedirs, walk, remove
 from os.path import join, splitext
 
-from tools.dataset.processing import DatasetProcessingWithContainer
-from tools.neo4j import Neo4J3Processing
-from tools.settings import LOGGER
-from tools.utils.containers import wait_log_display
-from tools.utils.dirs import copy_dir
+from bugfinder.dataset.processing import DatasetProcessingWithContainer
+from bugfinder.neo4j import Neo4J3Processing
+from bugfinder.settings import LOGGER
+from bugfinder.utils.containers import wait_log_display
+from bugfinder.utils.dirs import copy_dir
 
 
 class Neo4J2Converter(DatasetProcessingWithContainer):
