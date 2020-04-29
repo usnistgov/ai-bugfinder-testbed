@@ -50,38 +50,35 @@ class GraphFeatureExtractorGetEntrypointList(TestCase):
                 self.call_nb += 1
 
                 if self.call_nb == 1:
-                    return [{
-                        "id": 0,
-                        "filepath": "mock_testcase_a",
-                        "mock_key_0": "mock_value_0"
-                    }, {
-                        "id": 1,
-                        "filepath": "mock_testcase_b",
-                        "mock_key_0": "mock_value_1"
-                    }]
+                    return [
+                        {
+                            "id": 0,
+                            "filepath": "mock_testcase_a",
+                            "mock_key_0": "mock_value_0",
+                        },
+                        {
+                            "id": 1,
+                            "filepath": "mock_testcase_b",
+                            "mock_key_0": "mock_value_1",
+                        },
+                    ]
                 else:
-                    return [{
-                        "call_nb": self.call_nb
-                    }]
+                    return [{"call_nb": self.call_nb}]
 
         mock_neo4j_db_run_data = MockNeo4JRunData()
         mock_neo4j_db.run.side_effect = [
             mock_neo4j_db_run_data,
             mock_neo4j_db_run_data,
-            mock_neo4j_db_run_data
+            mock_neo4j_db_run_data,
         ]
 
-        expected_result = [{
-            "filepath": "mock_testcase_a",
-            "call_nb": 2
-        }, {
-            "filepath": "mock_testcase_b",
-            "call_nb": 3
-        }]
+        expected_result = [
+            {"filepath": "mock_testcase_a", "call_nb": 2},
+            {"filepath": "mock_testcase_b", "call_nb": 3},
+        ]
 
         self.assertListEqual(
-            self.dataset_processing._get_entrypoint_list(),
-            expected_result
+            self.dataset_processing._get_entrypoint_list(), expected_result
         )
 
     @patch("bugfinder.neo4j.Neo4J3Processing.neo4j_db")
@@ -102,10 +99,7 @@ class GraphFeatureExtractorGetEntrypointList(TestCase):
 
 class GraphFeatureExtractorCreateFeatureMapFile(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, [
-            "bugfinder.dataset.LOGGER",
-            "bugfinder.features.LOGGER"
-        ])
+        patch_paths(self, ["bugfinder.dataset.LOGGER", "bugfinder.features.LOGGER"])
 
         dataset = CWEClassificationDataset("./tests/fixtures/dataset01")
         self.dataset_processing = MockGraphFeatureExtractor(dataset)
@@ -118,9 +112,10 @@ class GraphFeatureExtractorCreateFeatureMapFile(TestCase):
         self.assertEqual(
             self.dataset_processing.feature_map_filepath,
             join(
-                ROOT_DIR, "feature_maps",
-                "%s.bin" % basename(dirname(self.dataset_processing.dataset.path))
-            )
+                ROOT_DIR,
+                "feature_maps",
+                "%s.bin" % basename(dirname(self.dataset_processing.dataset.path)),
+            ),
         )
 
     def test_feature_map_file_assigned_if_arg_not_none(self):
@@ -128,8 +123,7 @@ class GraphFeatureExtractorCreateFeatureMapFile(TestCase):
         self.dataset_processing._create_feature_map_file(expected_filepath)
 
         self.assertEqual(
-            self.dataset_processing.feature_map_filepath,
-            expected_filepath
+            self.dataset_processing.feature_map_filepath, expected_filepath
         )
 
 
@@ -138,9 +132,12 @@ class GraphFeatureExtractorExecute(TestCase):
         self.dataset_processing = MockGraphFeatureExtractor(None)
 
     @patch("bugfinder.neo4j.Neo4J3Processing.execute")
-    @patch("tests.features.test_unit.MockGraphFeatureExtractor._create_feature_map_file")
-    def test_create_feature_map_file_called(self, mock_create_feature_map_file,
-                                            mock_execute):
+    @patch(
+        "tests.features.test_unit.MockGraphFeatureExtractor._create_feature_map_file"
+    )
+    def test_create_feature_map_file_called(
+        self, mock_create_feature_map_file, mock_execute
+    ):
         mock_execute.return_value = None
 
         self.dataset_processing.execute()
@@ -148,7 +145,9 @@ class GraphFeatureExtractorExecute(TestCase):
         self.assertTrue(mock_create_feature_map_file.called)
 
     @patch("bugfinder.neo4j.Neo4J3Processing.execute")
-    @patch("tests.features.test_unit.MockGraphFeatureExtractor._create_feature_map_file")
+    @patch(
+        "tests.features.test_unit.MockGraphFeatureExtractor._create_feature_map_file"
+    )
     def test_need_map_features_init(self, mock_create_feature_map_file, mock_execute):
         mock_create_feature_map_file.return_value = None
         mock_execute.return_value = None
@@ -159,7 +158,9 @@ class GraphFeatureExtractorExecute(TestCase):
         self.assertEqual(self.dataset_processing.need_map_features, expected_result)
 
     @patch("bugfinder.neo4j.Neo4J3Processing.execute")
-    @patch("tests.features.test_unit.MockGraphFeatureExtractor._create_feature_map_file")
+    @patch(
+        "tests.features.test_unit.MockGraphFeatureExtractor._create_feature_map_file"
+    )
     def test_parent_execute_called(self, mock_create_feature_map_file, mock_execute):
         mock_create_feature_map_file.return_value = None
         mock_execute.return_value = None
@@ -171,9 +172,7 @@ class GraphFeatureExtractorExecute(TestCase):
 
 class GraphFeatureExtractorSendCommands(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, [
-            "bugfinder.features.LOGGER"
-        ])
+        patch_paths(self, ["bugfinder.features.LOGGER"])
 
         self.dataset_processing = MockGraphFeatureExtractor(None)
 
@@ -182,8 +181,11 @@ class GraphFeatureExtractorSendCommands(TestCase):
     @patch("tests.features.test_unit.MockGraphFeatureExtractor.extract_features")
     @patch("tests.features.test_unit.GraphFeatureExtractor.write_extraction_outputs")
     def test_parent_send_command_called(
-            self, mock_write_extraction_outputs, mock_extract_features,
-            mock_check_extraction_inputs, mock_send_commands
+        self,
+        mock_write_extraction_outputs,
+        mock_extract_features,
+        mock_check_extraction_inputs,
+        mock_send_commands,
     ):
         mock_write_extraction_outputs.return_value = None
         mock_extract_features.return_value = None
@@ -197,8 +199,7 @@ class GraphFeatureExtractorSendCommands(TestCase):
     @patch("tests.features.test_unit.MockGraphFeatureExtractor.map_features")
     @patch("tests.features.test_unit.GraphFeatureExtractor.save_labels_to_feature_map")
     def test_map_features_called_if_need_map_feature(
-            self, mock_save_labels_to_feature_map, mock_map_features,
-            mock_send_commands
+        self, mock_save_labels_to_feature_map, mock_map_features, mock_send_commands
     ):
         mock_save_labels_to_feature_map.return_value = None
         mock_map_features.return_value = None
@@ -213,8 +214,7 @@ class GraphFeatureExtractorSendCommands(TestCase):
     @patch("tests.features.test_unit.MockGraphFeatureExtractor.map_features")
     @patch("tests.features.test_unit.GraphFeatureExtractor.save_labels_to_feature_map")
     def test_save_labels_called_if_need_map_feature(
-            self, mock_save_labels_to_feature_map, mock_map_features,
-            mock_send_commands
+        self, mock_save_labels_to_feature_map, mock_map_features, mock_send_commands
     ):
         mock_save_labels_to_feature_map.return_value = None
         mock_map_features.return_value = None
@@ -230,8 +230,11 @@ class GraphFeatureExtractorSendCommands(TestCase):
     @patch("tests.features.test_unit.MockGraphFeatureExtractor.extract_features")
     @patch("tests.features.test_unit.GraphFeatureExtractor.write_extraction_outputs")
     def test_check_extraction_inputs_called_if_not_need_map_feature(
-            self, mock_write_extraction_outputs, mock_extract_features,
-            mock_check_extraction_inputs, mock_send_commands
+        self,
+        mock_write_extraction_outputs,
+        mock_extract_features,
+        mock_check_extraction_inputs,
+        mock_send_commands,
     ):
         mock_write_extraction_outputs.return_value = None
         mock_extract_features.return_value = None
@@ -246,8 +249,11 @@ class GraphFeatureExtractorSendCommands(TestCase):
     @patch("tests.features.test_unit.MockGraphFeatureExtractor.extract_features")
     @patch("tests.features.test_unit.GraphFeatureExtractor.write_extraction_outputs")
     def test_extract_features_called_if_not_need_map_feature(
-            self, mock_write_extraction_outputs, mock_extract_features,
-            mock_check_extraction_inputs, mock_send_commands
+        self,
+        mock_write_extraction_outputs,
+        mock_extract_features,
+        mock_check_extraction_inputs,
+        mock_send_commands,
     ):
         mock_write_extraction_outputs.return_value = None
         mock_extract_features.return_value = None
@@ -262,8 +268,11 @@ class GraphFeatureExtractorSendCommands(TestCase):
     @patch("tests.features.test_unit.MockGraphFeatureExtractor.extract_features")
     @patch("tests.features.test_unit.GraphFeatureExtractor.write_extraction_outputs")
     def test_write_output_called_if_not_need_map_feature(
-            self, mock_write_extraction_outputs, mock_extract_features,
-            mock_check_extraction_inputs, mock_send_commands
+        self,
+        mock_write_extraction_outputs,
+        mock_extract_features,
+        mock_check_extraction_inputs,
+        mock_send_commands,
     ):
         mock_write_extraction_outputs.return_value = None
         mock_extract_features.return_value = None
@@ -276,13 +285,16 @@ class GraphFeatureExtractorSendCommands(TestCase):
 
 class GraphFeatureExtractorCheckExtractionInputs(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, [
-            "bugfinder.dataset.join",
-            "bugfinder.dataset.listdir",
-            "bugfinder.dataset.pd.read_csv",
-            "bugfinder.dataset.CWEClassificationDataset._validate_features",
-            "bugfinder.dataset.LOGGER"
-        ])
+        patch_paths(
+            self,
+            [
+                "bugfinder.dataset.join",
+                "bugfinder.dataset.listdir",
+                "bugfinder.dataset.pd.read_csv",
+                "bugfinder.dataset.CWEClassificationDataset._validate_features",
+                "bugfinder.dataset.LOGGER",
+            ],
+        )
 
         self.dataset = CWEClassificationDataset(None)
         self.dataset_processing = MockGraphFeatureExtractor(self.dataset)
@@ -312,15 +324,18 @@ class GraphFeatureExtractorCheckExtractionInputs(TestCase):
 
 class GraphFeatureExtractorWriteExtractionOutputs(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, [
-            "bugfinder.dataset.join",
-            "bugfinder.dataset.listdir",
-            "bugfinder.dataset.pd.read_csv",
-            "bugfinder.dataset.CWEClassificationDataset._validate_features",
-            "bugfinder.features.join",
-            "bugfinder.features.open",
-            "bugfinder.dataset.LOGGER"
-        ])
+        patch_paths(
+            self,
+            [
+                "bugfinder.dataset.join",
+                "bugfinder.dataset.listdir",
+                "bugfinder.dataset.pd.read_csv",
+                "bugfinder.dataset.CWEClassificationDataset._validate_features",
+                "bugfinder.features.join",
+                "bugfinder.features.open",
+                "bugfinder.dataset.LOGGER",
+            ],
+        )
 
         self.dataset = CWEClassificationDataset(None)
         self.dataset_processing = MockGraphFeatureExtractor(self.dataset)
@@ -345,16 +360,19 @@ class GraphFeatureExtractorWriteExtractionOutputs(TestCase):
 
 class GraphFeatureExtractorSaveLabelsToFeatursMap(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, [
-            "bugfinder.dataset.join",
-            "bugfinder.dataset.listdir",
-            "bugfinder.dataset.pd.read_csv",
-            "bugfinder.dataset.CWEClassificationDataset._validate_features",
-            "bugfinder.features.open",
-            "bugfinder.features.join",
-            "bugfinder.dataset.LOGGER",
-            "bugfinder.features.LOGGER",
-        ])
+        patch_paths(
+            self,
+            [
+                "bugfinder.dataset.join",
+                "bugfinder.dataset.listdir",
+                "bugfinder.dataset.pd.read_csv",
+                "bugfinder.dataset.CWEClassificationDataset._validate_features",
+                "bugfinder.features.open",
+                "bugfinder.features.join",
+                "bugfinder.dataset.LOGGER",
+                "bugfinder.features.LOGGER",
+            ],
+        )
 
         self.dataset = CWEClassificationDataset(None)
         self.dataset_processing = MockGraphFeatureExtractor(self.dataset)
@@ -369,8 +387,9 @@ class GraphFeatureExtractorSaveLabelsToFeatursMap(TestCase):
 
     @patch("tests.features.test_unit.GraphFeatureExtractor.get_labels_from_feature_map")
     @patch("bugfinder.features.pickle")
-    def test_same_labels_are_not_overwritten(self, mock_pickle,
-                                             mock_get_labels_from_feature_map):
+    def test_same_labels_are_not_overwritten(
+        self, mock_pickle, mock_get_labels_from_feature_map
+    ):
         mock_get_labels_from_feature_map.return_value = ["feature"]
 
         self.dataset_processing.save_labels_to_feature_map(["feature"])
@@ -379,8 +398,9 @@ class GraphFeatureExtractorSaveLabelsToFeatursMap(TestCase):
 
     @patch("tests.features.test_unit.GraphFeatureExtractor.get_labels_from_feature_map")
     @patch("bugfinder.features.pickle")
-    def test_extra_labels_are_overwritten(self, mock_pickle,
-                                          mock_get_labels_from_feature_map):
+    def test_extra_labels_are_overwritten(
+        self, mock_pickle, mock_get_labels_from_feature_map
+    ):
         mock_get_labels_from_feature_map.return_value = ["feature_1"]
 
         self.dataset_processing.save_labels_to_feature_map(["feature_1", "feature_2"])
@@ -390,15 +410,18 @@ class GraphFeatureExtractorSaveLabelsToFeatursMap(TestCase):
 
 class GraphFeatureExtractorGetLabelsFromFeatursMap(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, [
-            "bugfinder.dataset.join",
-            "bugfinder.dataset.listdir",
-            "bugfinder.dataset.pd.read_csv",
-            "bugfinder.dataset.CWEClassificationDataset._validate_features",
-            "bugfinder.features.join",
-            "bugfinder.features.open",
-            "bugfinder.dataset.LOGGER"
-        ])
+        patch_paths(
+            self,
+            [
+                "bugfinder.dataset.join",
+                "bugfinder.dataset.listdir",
+                "bugfinder.dataset.pd.read_csv",
+                "bugfinder.dataset.CWEClassificationDataset._validate_features",
+                "bugfinder.features.join",
+                "bugfinder.features.open",
+                "bugfinder.dataset.LOGGER",
+            ],
+        )
 
         self.dataset = CWEClassificationDataset(None)
         self.dataset_processing = MockGraphFeatureExtractor(self.dataset)
@@ -427,8 +450,7 @@ class FlowGraphFeatureExtractorInitializeFeatures(TestCase):
     def setUp(self) -> None:
         dataset_processing = MockFlowGraphFeatureExtractor(None)
         self.returned_features = dataset_processing.initialize_features(
-            {"filepath": "./data/bad/entrypoint_name"},
-            ["label1", "label2"]
+            {"filepath": "./data/bad/entrypoint_name"}, ["label1", "label2"]
         )
 
     def test_returns_list(self):
@@ -443,8 +465,7 @@ class FlowGraphFeatureExtractorFinalizeFeatures(TestCase):
         dataset_processing = MockFlowGraphFeatureExtractor(None)
         self.features = [1, 2]
         self.returned_features = dataset_processing.finalize_features(
-            self.features,
-            ["label1", "label2"]
+            self.features, ["label1", "label2"]
         )
 
     def test_returns_args(self):
@@ -453,16 +474,15 @@ class FlowGraphFeatureExtractorFinalizeFeatures(TestCase):
 
 class FlowGraphFeatureExtractorExtractFeatures(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, [
-            "bugfinder.features.LOGGER"
-        ])
+        patch_paths(self, ["bugfinder.features.LOGGER"])
 
         self.dataset_processing = MockFlowGraphFeatureExtractor(None)
 
     @patch("bugfinder.features.GraphFeatureExtractor.get_labels_from_feature_map")
     @patch("bugfinder.features.GraphFeatureExtractor._get_entrypoint_list")
     def test_get_label_from_feature_map_is_called(
-            self, mock_get_entrypoint_list, mock_get_labels_from_feature_map):
+        self, mock_get_entrypoint_list, mock_get_labels_from_feature_map
+    ):
         mock_get_entrypoint_list.return_value = []
         self.dataset_processing.extract_features()
 
@@ -471,7 +491,8 @@ class FlowGraphFeatureExtractorExtractFeatures(TestCase):
     @patch("bugfinder.features.GraphFeatureExtractor.get_labels_from_feature_map")
     @patch("bugfinder.features.GraphFeatureExtractor._get_entrypoint_list")
     def test_get_entrypoint_list_is_called(
-            self, mock_get_entrypoint_list, mock_get_labels_from_feature_map):
+        self, mock_get_entrypoint_list, mock_get_labels_from_feature_map
+    ):
         mock_get_entrypoint_list.return_value = []
         mock_get_labels_from_feature_map.return_value = []
         self.dataset_processing.extract_features()
@@ -481,13 +502,19 @@ class FlowGraphFeatureExtractorExtractFeatures(TestCase):
     @patch("bugfinder.features.GraphFeatureExtractor.get_labels_from_feature_map")
     @patch("bugfinder.features.GraphFeatureExtractor._get_entrypoint_list")
     @patch("bugfinder.features.FlowGraphFeatureExtractor.initialize_features")
-    @patch("tests.features.test_unit.MockFlowGraphFeatureExtractor"
-           ".get_flowgraph_list_for_entrypoint")
+    @patch(
+        "tests.features.test_unit.MockFlowGraphFeatureExtractor"
+        ".get_flowgraph_list_for_entrypoint"
+    )
     @patch("bugfinder.features.FlowGraphFeatureExtractor.finalize_features")
     def test_initialize_features_is_called(
-            self, mock_finalize_features, mock_get_flowgraph_list_for_entrypoint,
-            mock_initialize_features, mock_get_entrypoint_list,
-            mock_get_labels_from_feature_map):
+        self,
+        mock_finalize_features,
+        mock_get_flowgraph_list_for_entrypoint,
+        mock_initialize_features,
+        mock_get_entrypoint_list,
+        mock_get_labels_from_feature_map,
+    ):
         mock_finalize_features.return_value = None
         mock_get_flowgraph_list_for_entrypoint.return_value = []
         mock_initialize_features.return_value = []
@@ -500,13 +527,19 @@ class FlowGraphFeatureExtractorExtractFeatures(TestCase):
     @patch("bugfinder.features.GraphFeatureExtractor.get_labels_from_feature_map")
     @patch("bugfinder.features.GraphFeatureExtractor._get_entrypoint_list")
     @patch("bugfinder.features.FlowGraphFeatureExtractor.initialize_features")
-    @patch("tests.features.test_unit.MockFlowGraphFeatureExtractor"
-           ".get_flowgraph_list_for_entrypoint")
+    @patch(
+        "tests.features.test_unit.MockFlowGraphFeatureExtractor"
+        ".get_flowgraph_list_for_entrypoint"
+    )
     @patch("bugfinder.features.FlowGraphFeatureExtractor.finalize_features")
     def test_get_flowgraph_list_for_entrypoint_is_called(
-            self, mock_finalize_features, mock_get_flowgraph_list_for_entrypoint,
-            mock_initialize_features, mock_get_entrypoint_list,
-            mock_get_labels_from_feature_map):
+        self,
+        mock_finalize_features,
+        mock_get_flowgraph_list_for_entrypoint,
+        mock_initialize_features,
+        mock_get_entrypoint_list,
+        mock_get_labels_from_feature_map,
+    ):
         mock_finalize_features.return_value = None
         mock_get_flowgraph_list_for_entrypoint.return_value = []
         mock_initialize_features.return_value = []
@@ -519,15 +552,24 @@ class FlowGraphFeatureExtractorExtractFeatures(TestCase):
     @patch("bugfinder.features.GraphFeatureExtractor.get_labels_from_feature_map")
     @patch("bugfinder.features.GraphFeatureExtractor._get_entrypoint_list")
     @patch("bugfinder.features.FlowGraphFeatureExtractor.initialize_features")
-    @patch("tests.features.test_unit.MockFlowGraphFeatureExtractor"
-           ".get_flowgraph_list_for_entrypoint")
-    @patch("tests.features.test_unit.MockFlowGraphFeatureExtractor"
-           ".get_label_from_flowgraph")
+    @patch(
+        "tests.features.test_unit.MockFlowGraphFeatureExtractor"
+        ".get_flowgraph_list_for_entrypoint"
+    )
+    @patch(
+        "tests.features.test_unit.MockFlowGraphFeatureExtractor"
+        ".get_label_from_flowgraph"
+    )
     @patch("bugfinder.features.FlowGraphFeatureExtractor.finalize_features")
     def test_get_label_from_flowgraph_is_called(
-            self, mock_finalize_features, mock_get_label_from_flowgraph,
-            mock_get_flowgraph_list_for_entrypoint, mock_initialize_features,
-            mock_get_entrypoint_list, mock_get_labels_from_feature_map):
+        self,
+        mock_finalize_features,
+        mock_get_label_from_flowgraph,
+        mock_get_flowgraph_list_for_entrypoint,
+        mock_initialize_features,
+        mock_get_entrypoint_list,
+        mock_get_labels_from_feature_map,
+    ):
         mock_finalize_features.return_value = None
         mock_get_label_from_flowgraph.return_value = None
         mock_get_flowgraph_list_for_entrypoint.return_value = ["mock_flowgraph"]
@@ -541,18 +583,28 @@ class FlowGraphFeatureExtractorExtractFeatures(TestCase):
     @patch("bugfinder.features.GraphFeatureExtractor.get_labels_from_feature_map")
     @patch("bugfinder.features.GraphFeatureExtractor._get_entrypoint_list")
     @patch("bugfinder.features.FlowGraphFeatureExtractor.initialize_features")
-    @patch("tests.features.test_unit.MockFlowGraphFeatureExtractor"
-           ".get_flowgraph_list_for_entrypoint")
-    @patch("tests.features.test_unit.MockFlowGraphFeatureExtractor"
-           ".get_label_from_flowgraph")
-    @patch("tests.features.test_unit.MockFlowGraphFeatureExtractor"
-           ".get_flowgraph_count")
+    @patch(
+        "tests.features.test_unit.MockFlowGraphFeatureExtractor"
+        ".get_flowgraph_list_for_entrypoint"
+    )
+    @patch(
+        "tests.features.test_unit.MockFlowGraphFeatureExtractor"
+        ".get_label_from_flowgraph"
+    )
+    @patch(
+        "tests.features.test_unit.MockFlowGraphFeatureExtractor" ".get_flowgraph_count"
+    )
     @patch("bugfinder.features.FlowGraphFeatureExtractor.finalize_features")
     def test_get_flowgraph_count_is_called(
-            self, mock_finalize_features, mock_get_flowgraph_count,
-            mock_get_label_from_flowgraph, mock_get_flowgraph_list_for_entrypoint,
-            mock_initialize_features, mock_get_entrypoint_list,
-            mock_get_labels_from_feature_map):
+        self,
+        mock_finalize_features,
+        mock_get_flowgraph_count,
+        mock_get_label_from_flowgraph,
+        mock_get_flowgraph_list_for_entrypoint,
+        mock_initialize_features,
+        mock_get_entrypoint_list,
+        mock_get_labels_from_feature_map,
+    ):
         mock_finalize_features.return_value = None
         mock_get_flowgraph_count.return_value = 0
         mock_get_label_from_flowgraph.return_value = "mock_label"
@@ -567,13 +619,19 @@ class FlowGraphFeatureExtractorExtractFeatures(TestCase):
     @patch("bugfinder.features.GraphFeatureExtractor.get_labels_from_feature_map")
     @patch("bugfinder.features.GraphFeatureExtractor._get_entrypoint_list")
     @patch("bugfinder.features.FlowGraphFeatureExtractor.initialize_features")
-    @patch("tests.features.test_unit.MockFlowGraphFeatureExtractor"
-           ".get_flowgraph_list_for_entrypoint")
+    @patch(
+        "tests.features.test_unit.MockFlowGraphFeatureExtractor"
+        ".get_flowgraph_list_for_entrypoint"
+    )
     @patch("bugfinder.features.FlowGraphFeatureExtractor.finalize_features")
     def test_finalize_features_is_called(
-            self, mock_finalize_features, mock_get_flowgraph_list_for_entrypoint,
-            mock_initialize_features, mock_get_entrypoint_list,
-            mock_get_labels_from_feature_map):
+        self,
+        mock_finalize_features,
+        mock_get_flowgraph_list_for_entrypoint,
+        mock_initialize_features,
+        mock_get_entrypoint_list,
+        mock_get_labels_from_feature_map,
+    ):
         mock_finalize_features.return_value = None
         mock_get_flowgraph_list_for_entrypoint.return_value = []
         mock_initialize_features.return_value = []
@@ -586,21 +644,33 @@ class FlowGraphFeatureExtractorExtractFeatures(TestCase):
     @patch("bugfinder.features.GraphFeatureExtractor.get_labels_from_feature_map")
     @patch("bugfinder.features.GraphFeatureExtractor._get_entrypoint_list")
     @patch("bugfinder.features.FlowGraphFeatureExtractor.initialize_features")
-    @patch("tests.features.test_unit.MockFlowGraphFeatureExtractor"
-           ".get_flowgraph_list_for_entrypoint")
-    @patch("tests.features.test_unit.MockFlowGraphFeatureExtractor"
-           ".get_label_from_flowgraph")
-    @patch("tests.features.test_unit.MockFlowGraphFeatureExtractor"
-           ".get_flowgraph_count")
+    @patch(
+        "tests.features.test_unit.MockFlowGraphFeatureExtractor"
+        ".get_flowgraph_list_for_entrypoint"
+    )
+    @patch(
+        "tests.features.test_unit.MockFlowGraphFeatureExtractor"
+        ".get_label_from_flowgraph"
+    )
+    @patch(
+        "tests.features.test_unit.MockFlowGraphFeatureExtractor" ".get_flowgraph_count"
+    )
     def test_unknown_labels_are_ignored(
-            self, mock_get_flowgraph_count, mock_get_label_from_flowgraph,
-            mock_get_flowgraph_list_for_entrypoint, mock_initialize_features,
-            mock_get_entrypoint_list, mock_get_labels_from_feature_map):
+        self,
+        mock_get_flowgraph_count,
+        mock_get_label_from_flowgraph,
+        mock_get_flowgraph_list_for_entrypoint,
+        mock_initialize_features,
+        mock_get_entrypoint_list,
+        mock_get_labels_from_feature_map,
+    ):
         mock_get_flowgraph_count.return_value = 2
-        mock_get_label_from_flowgraph.side_effect = \
-            lambda name: re.sub("flowgraph", "label", name)
+        mock_get_label_from_flowgraph.side_effect = lambda name: re.sub(
+            "flowgraph", "label", name
+        )
         mock_get_flowgraph_list_for_entrypoint.return_value = [
-            "mock_flowgraph_1", "mock_flowgraph_2"
+            "mock_flowgraph_1",
+            "mock_flowgraph_2",
         ]
         mock_initialize_features.return_value = [0]
         mock_get_entrypoint_list.return_value = ["entrypoint"]
@@ -613,9 +683,7 @@ class FlowGraphFeatureExtractorExtractFeatures(TestCase):
 
 class FlowGraphFeatureExtractorMapFeatures(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, [
-            "bugfinder.features.LOGGER"
-        ])
+        patch_paths(self, ["bugfinder.features.LOGGER"])
 
         self.dataset_processing = MockFlowGraphFeatureExtractor(None)
 
@@ -628,10 +696,13 @@ class FlowGraphFeatureExtractorMapFeatures(TestCase):
         self.assertTrue(mock_get_entrypoint_list.called)
 
     @patch("bugfinder.features.GraphFeatureExtractor._get_entrypoint_list")
-    @patch("tests.features.test_unit.MockFlowGraphFeatureExtractor"
-           ".get_flowgraph_list_for_entrypoint")
+    @patch(
+        "tests.features.test_unit.MockFlowGraphFeatureExtractor"
+        ".get_flowgraph_list_for_entrypoint"
+    )
     def test_get_flowgraph_list_for_entrypoint_is_called(
-            self, mock_get_flowgraph_list_for_entrypoint, mock_get_entrypoint_list):
+        self, mock_get_flowgraph_list_for_entrypoint, mock_get_entrypoint_list
+    ):
         mock_get_flowgraph_list_for_entrypoint.return_value = []
         mock_get_entrypoint_list.return_value = [None]
 
@@ -640,13 +711,20 @@ class FlowGraphFeatureExtractorMapFeatures(TestCase):
         self.assertTrue(mock_get_flowgraph_list_for_entrypoint.called)
 
     @patch("bugfinder.features.GraphFeatureExtractor._get_entrypoint_list")
-    @patch("tests.features.test_unit.MockFlowGraphFeatureExtractor"
-           ".get_flowgraph_list_for_entrypoint")
-    @patch("tests.features.test_unit.MockFlowGraphFeatureExtractor"
-           ".get_label_from_flowgraph")
+    @patch(
+        "tests.features.test_unit.MockFlowGraphFeatureExtractor"
+        ".get_flowgraph_list_for_entrypoint"
+    )
+    @patch(
+        "tests.features.test_unit.MockFlowGraphFeatureExtractor"
+        ".get_label_from_flowgraph"
+    )
     def test_get_label_from_flowgraph_is_called(
-            self, mock_get_label_from_flowgraph, mock_get_flowgraph_list_for_entrypoint,
-            mock_get_entrypoint_list):
+        self,
+        mock_get_label_from_flowgraph,
+        mock_get_flowgraph_list_for_entrypoint,
+        mock_get_entrypoint_list,
+    ):
         mock_get_label_from_flowgraph.return_value = "label"
         mock_get_flowgraph_list_for_entrypoint.return_value = [None]
         mock_get_entrypoint_list.return_value = [None]
@@ -656,13 +734,20 @@ class FlowGraphFeatureExtractorMapFeatures(TestCase):
         self.assertTrue(mock_get_label_from_flowgraph.called)
 
     @patch("bugfinder.features.GraphFeatureExtractor._get_entrypoint_list")
-    @patch("tests.features.test_unit.MockFlowGraphFeatureExtractor"
-           ".get_flowgraph_list_for_entrypoint")
-    @patch("tests.features.test_unit.MockFlowGraphFeatureExtractor"
-           ".get_label_from_flowgraph")
+    @patch(
+        "tests.features.test_unit.MockFlowGraphFeatureExtractor"
+        ".get_flowgraph_list_for_entrypoint"
+    )
+    @patch(
+        "tests.features.test_unit.MockFlowGraphFeatureExtractor"
+        ".get_label_from_flowgraph"
+    )
     def test_duplicate_label_appear_only_once(
-            self, mock_get_label_from_flowgraph, mock_get_flowgraph_list_for_entrypoint,
-            mock_get_entrypoint_list):
+        self,
+        mock_get_label_from_flowgraph,
+        mock_get_flowgraph_list_for_entrypoint,
+        mock_get_entrypoint_list,
+    ):
         mock_get_label_from_flowgraph.return_value = "label"
         mock_get_flowgraph_list_for_entrypoint.return_value = [None, None, None]
         mock_get_entrypoint_list.return_value = [None, None]

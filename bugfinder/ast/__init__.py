@@ -37,7 +37,7 @@ class AbstractASTMarkup(Neo4J3Processing):
         cmd_list = []
         limit = 2000
 
-        for i in range(int(len(ast_list)/limit) + 1):
+        for i in range(int(len(ast_list) / limit) + 1):
             lower = i * limit
             upper = (i + 1) * limit
 
@@ -58,8 +58,8 @@ class AbstractASTMarkup(Neo4J3Processing):
 
             # Cleanup dict to be parsed by Neo4J
             ast_update_dict = str(operation_list)
-            ast_update_dict = re.sub(r'u\'([^\']*)\'', "'\\g<1>'", ast_update_dict)
-            ast_update_dict = re.sub(r'\'([^\']*)\':', "\\g<1>:", ast_update_dict)
+            ast_update_dict = re.sub(r"u\'([^\']*)\'", "'\\g<1>'", ast_update_dict)
+            ast_update_dict = re.sub(r"\'([^\']*)\':", "\\g<1>:", ast_update_dict)
 
             LOGGER.debug("Updating AST...")
             try:
@@ -103,9 +103,7 @@ class ASTSetExporter(Neo4J3Processing):
 
         # Concatenate list of AST if it already exists
         ast_list += [
-            item["ast"] for item in self.neo4j_db.run(
-                self.ast_list_command
-            ).data()
+            item["ast"] for item in self.neo4j_db.run(self.ast_list_command).data()
         ]
 
         # Write data to disk in CSV format

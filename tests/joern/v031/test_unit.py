@@ -6,9 +6,9 @@ from tests import patch_paths
 
 class TestJoernDatasetProcessingConfigureContainer(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, [
-            "bugfinder.joern.JoernDefaultDatasetProcessing.configure_container"
-        ])
+        patch_paths(
+            self, ["bugfinder.joern.JoernDefaultDatasetProcessing.configure_container"]
+        )
 
         self.dataset_processing = JoernDatasetProcessing(None)
 
@@ -24,4 +24,6 @@ class TestJoernDatasetProcessingConfigureContainer(TestCase):
 
         self.dataset_processing.configure_container()
 
-        self.assertEqual(self.dataset_processing.container_name, expected_container_name)
+        self.assertEqual(
+            self.dataset_processing.container_name, expected_container_name
+        )

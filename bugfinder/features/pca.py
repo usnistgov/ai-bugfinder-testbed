@@ -18,10 +18,7 @@ class FeatureExtractor(DatasetProcessing):
 
         copy(
             join(self.dataset.feats_dir, "features.csv"),
-            join(
-                self.dataset.feats_dir,
-                "features.%d.csv" % self.dataset.feats_ver
-            )
+            join(self.dataset.feats_dir, "features.%d.csv" % self.dataset.feats_ver),
         )
 
         self.dataset.feats_ver += 1
@@ -34,7 +31,7 @@ class FeatureExtractor(DatasetProcessing):
         output_features = pd.DataFrame(
             pca_op.transform(input_data),
             columns=["pca%d" % i for i in range(final_dimension)],
-            index=input_data.index
+            index=input_data.index,
         )
 
         for col in drop_out_cols:

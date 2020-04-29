@@ -13,10 +13,7 @@ class JoernDatasetProcessing(JoernDefaultDatasetProcessing):
         self.container_name = "joern040"
 
     def send_commands(self):
-        content = {
-            "edges": [],
-            "nodes": []
-        }
+        content = {"edges": [], "nodes": []}
 
         warn_count = 0
 
@@ -59,8 +56,8 @@ class JoernDatasetProcessing(JoernDefaultDatasetProcessing):
                         if "\tStatement\t" in line:
                             warn_count += 1
                             LOGGER.warn(
-                                "Parsing error in '%s'" %
-                                line[:-1].replace("\t", " ").strip()
+                                "Parsing error in '%s'"
+                                % line[:-1].replace("\t", " ").strip()
                             )
 
                         content[filetype].append(line)

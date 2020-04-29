@@ -44,17 +44,20 @@ class TestNeo4J3ImporterConfigureContainer(TestCase):
 
         self.dataset_processing.configure_container()
 
-        self.assertDictEqual(self.dataset_processing.volumes, {
-            self.dataset.neo4j_dir: "/data/databases/%s" % self.dataset_processing.db_name,
-            "%s/import" % self.dataset.joern_dir: self.dataset_processing.import_dir
-        })
+        self.assertDictEqual(
+            self.dataset_processing.volumes,
+            {
+                self.dataset.neo4j_dir: "/data/databases/%s"
+                % self.dataset_processing.db_name,
+                "%s/import"
+                % self.dataset.joern_dir: self.dataset_processing.import_dir,
+            },
+        )
 
 
 class TestNeo4J3ImporterSendCommands(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, [
-            "bugfinder.neo4j.importer.LOGGER"
-        ])
+        patch_paths(self, ["bugfinder.neo4j.importer.LOGGER"])
 
         self.dataset_processing = Neo4J3Importer(None)
 

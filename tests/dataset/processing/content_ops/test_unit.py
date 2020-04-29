@@ -4,15 +4,19 @@ from unittest import TestCase
 from unittest.mock import patch, call
 
 from bugfinder.dataset import CWEClassificationDataset
-from bugfinder.dataset.processing.content_ops import ReplaceLitterals, RemoveMainFunction
+from bugfinder.dataset.processing.content_ops import (
+    ReplaceLitterals,
+    RemoveMainFunction,
+)
 
 
 class TestReplaceLitteralsExecute(TestCase):
     @patch("bugfinder.dataset.processing.content_ops.LOGGER")
     @patch("bugfinder.dataset.LOGGER")
     @patch("bugfinder.dataset.processing.content_ops.ReplaceLitterals.process_file")
-    def test_process_file_called_correctly(self, mock_process_file,
-                                           mock_processing_logger, mock_dataset_logger):
+    def test_process_file_called_correctly(
+        self, mock_process_file, mock_processing_logger, mock_dataset_logger
+    ):
         mock_process_file.return_value = 0
         mock_processing_logger.return_value = None
         mock_dataset_logger.return_value = None
@@ -29,9 +33,7 @@ class TestReplaceLitteralsExecute(TestCase):
             for filename in listdir(test_case_path):
                 test_files.append(join(test_case_path, filename))
 
-        mock_process_file_calls = [
-            call(test_file) for test_file in test_files
-        ]
+        mock_process_file_calls = [call(test_file) for test_file in test_files]
 
         mock_process_file.assert_has_calls(mock_process_file_calls, any_order=True)
 
@@ -41,7 +43,7 @@ class TestReplaceLitteralsProcessFile(TestCase):
         patches_path = [
             "bugfinder.dataset.processing.content_ops.move",
             "bugfinder.dataset.processing.content_ops.LOGGER",
-            "bugfinder.dataset.LOGGER"
+            "bugfinder.dataset.LOGGER",
         ]
 
         for patch_path in patches_path:
@@ -91,7 +93,7 @@ class TestRemoveMainFunctionProcessFile(TestCase):
         patches_path = [
             "bugfinder.dataset.processing.content_ops.move",
             "bugfinder.dataset.processing.content_ops.LOGGER",
-            "bugfinder.dataset.LOGGER"
+            "bugfinder.dataset.LOGGER",
         ]
 
         for patch_path in patches_path:

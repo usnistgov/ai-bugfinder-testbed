@@ -5,8 +5,11 @@ from shutil import rmtree, copytree
 from unittest import TestCase
 
 from bugfinder.dataset import CWEClassificationDataset
-from bugfinder.dataset.processing.file_ops import DatasetFileRemover, RemoveCppFiles, \
-    RemoveInterproceduralTestCases
+from bugfinder.dataset.processing.file_ops import (
+    DatasetFileRemover,
+    RemoveCppFiles,
+    RemoveInterproceduralTestCases,
+)
 from tests import patch_paths
 
 
@@ -20,10 +23,13 @@ class TestDatasetFileRemoverRemoveFile(TestCase):
                 self._remove_file(filepath)
 
     def setUp(self) -> None:
-        patch_paths(self, [
-            "bugfinder.dataset.processing.file_ops.LOGGER",
-            "bugfinder.dataset.LOGGER"
-        ])
+        patch_paths(
+            self,
+            [
+                "bugfinder.dataset.processing.file_ops.LOGGER",
+                "bugfinder.dataset.LOGGER",
+            ],
+        )
 
         dataset_path = "./tests/fixtures/dataset01"
         self.tmp_dataset_path = "./tests/fixtures/dataset_copy"
@@ -78,10 +84,13 @@ class TestDatasetFileRemoverRemoveFile(TestCase):
 
 class TestRemoveCppFilesProcessFile(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, [
-            "bugfinder.dataset.processing.file_ops.LOGGER",
-            "bugfinder.dataset.LOGGER"
-        ])
+        patch_paths(
+            self,
+            [
+                "bugfinder.dataset.processing.file_ops.LOGGER",
+                "bugfinder.dataset.LOGGER",
+            ],
+        )
 
         dataset_path = "./tests/fixtures/dataset01"
         self.tmp_dataset_path = "./tests/fixtures/dataset_copy"
@@ -104,10 +113,13 @@ class TestRemoveCppFilesProcessFile(TestCase):
 
 class TestRemoveInterproceduralTestCasesProcessFile(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, [
-            "bugfinder.dataset.processing.file_ops.LOGGER",
-            "bugfinder.dataset.LOGGER"
-        ])
+        patch_paths(
+            self,
+            [
+                "bugfinder.dataset.processing.file_ops.LOGGER",
+                "bugfinder.dataset.LOGGER",
+            ],
+        )
 
         dataset_path = "./tests/fixtures/dataset01"
         self.tmp_dataset_path = "./tests/fixtures/dataset_copy"

@@ -9,27 +9,26 @@ from bugfinder.settings import LOGGER
 
 class ReplaceLitterals(DatasetProcessing):
     replacements = {
-        r'(.*)L\'([^\']*)\'(.*)': "\\g<1>L('\\g<2>')\\g<3>",
-        r'(.*)L"([^"]*)"(.*)': "\\g<1>L(\"\\g<2>\")\\g<3>",
+        r"(.*)L\'([^\']*)\'(.*)": "\\g<1>L('\\g<2>')\\g<3>",
+        r'(.*)L"([^"]*)"(.*)': '\\g<1>L("\\g<2>")\\g<3>',
     }
 
     def execute(self):
         LOGGER.debug("Starting replacing litterals...")
         file_processing_list = [
-            join(test_case, filepath) for test_case in self.dataset.test_cases
+            join(test_case, filepath)
+            for test_case in self.dataset.test_cases
             for filepath in listdir(join(self.dataset.path, test_case))
         ]
 
         while len(file_processing_list) != 0:
             filepath = file_processing_list.pop(0)
             LOGGER.debug(
-                "Replacing litterals in %s (%d items left)..." %
-                (filepath, len(file_processing_list))
+                "Replacing litterals in %s (%d items left)..."
+                % (filepath, len(file_processing_list))
             )
 
-            repl_count = self.process_file(
-                join(self.dataset.path, filepath)
-            )
+            repl_count = self.process_file(join(self.dataset.path, filepath))
 
             # If replacement were made, we keep the file for another round.
             if repl_count != 0:

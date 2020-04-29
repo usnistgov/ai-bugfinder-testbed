@@ -10,7 +10,7 @@ LOGGER_CONFIG = {
     "formatters": {
         "default": {
             "format": "[%(asctime)s][%(levelname)s] %(message)s",
-            "datefmt": "%Y-%m-%d %H:%M:%S"
+            "datefmt": "%Y-%m-%d %H:%M:%S",
         }
     },
     "handlers": {
@@ -25,24 +25,16 @@ LOGGER_CONFIG = {
             "filename": "%s/debug.log" % ROOT_DIR,
             "maxBytes": 25000,
             "backupCount": 3,
-        }
+        },
     },
     "loggers": {
-        "app": {
-            "level": "DEBUG",
-            "handlers": ["console", "file"],
-            "propagate": "no",
-        }
+        "app": {"level": "DEBUG", "handlers": ["console", "file"], "propagate": "no",}
     },
 }
 
 NEO4J_V3_MEMORY = "4G"
 
-DATASET_DIRS = {
-    "joern": "joern.db",
-    "neo4j": "neo4j_v3.db",
-    "feats": "features"
-}
+DATASET_DIRS = {"joern": "joern.db", "neo4j": "neo4j_v3.db", "feats": "features"}
 
 logging.config.dictConfig(LOGGER_CONFIG)
 LOGGER = logging.getLogger("app")

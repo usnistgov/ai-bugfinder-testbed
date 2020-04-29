@@ -14,7 +14,9 @@ class TestLinearClassifierTrainingInit(TestCase):
         self.dataset_processing = LinearClassifierTraining(dataset)
 
     def test_model_cls_initialized(self):
-        self.assertEqual(self.dataset_processing.model_cls, tf.estimator.LinearClassifier)
+        self.assertEqual(
+            self.dataset_processing.model_cls, tf.estimator.LinearClassifier
+        )
 
     def test_model_dir_initialized(self):
         self.assertEqual(

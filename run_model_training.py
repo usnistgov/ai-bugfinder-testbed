@@ -16,8 +16,13 @@ if __name__ == "__main__":
     # Setup the argument parser
     parser = argparse.ArgumentParser()
     parser.add_argument("dataset_path", help="path to the dataset to clean")
-    parser.add_argument("--model", "-m", choices=options.keys(), required=True,
-                        help="path to the dataset to clean")
+    parser.add_argument(
+        "--model",
+        "-m",
+        choices=options.keys(),
+        required=True,
+        help="path to the dataset to clean",
+    )
 
     args = parser.parse_args()
 

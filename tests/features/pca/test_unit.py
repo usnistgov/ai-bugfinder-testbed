@@ -11,16 +11,19 @@ from tests import patch_paths
 
 class FeatureExtractorExecute(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, [
-            "bugfinder.dataset.join",
-            "bugfinder.dataset.listdir",
-            "bugfinder.dataset.pd.read_csv",
-            "bugfinder.dataset.CWEClassificationDataset._validate_features",
-            "bugfinder.features.pca.PCA",
-            "bugfinder.features.pca.pd.DataFrame",
-            "bugfinder.dataset.LOGGER",
-            "bugfinder.features.pca.LOGGER"
-        ])
+        patch_paths(
+            self,
+            [
+                "bugfinder.dataset.join",
+                "bugfinder.dataset.listdir",
+                "bugfinder.dataset.pd.read_csv",
+                "bugfinder.dataset.CWEClassificationDataset._validate_features",
+                "bugfinder.features.pca.PCA",
+                "bugfinder.features.pca.pd.DataFrame",
+                "bugfinder.dataset.LOGGER",
+                "bugfinder.features.pca.LOGGER",
+            ],
+        )
 
         self.dataset = CWEClassificationDataset(None)
         self.dataset.feats_dir = ""
@@ -37,10 +40,7 @@ class FeatureExtractorExecute(TestCase):
         # self.assertTrue(mock_copy.called)
         mock_copy.assert_called_with(
             join(self.dataset.feats_dir, "features.csv"),
-            join(
-                self.dataset.feats_dir,
-                "features.%d.csv" % self.dataset.feats_ver
-            )
+            join(self.dataset.feats_dir, "features.%d.csv" % self.dataset.feats_ver),
         )
 
     @patch("bugfinder.features.pca.copy")
@@ -58,4 +58,3 @@ class FeatureExtractorExecute(TestCase):
         self.data_processing.execute(2)
 
         mock_rebuild_index.assert_called()
-

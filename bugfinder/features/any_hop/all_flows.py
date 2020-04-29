@@ -24,9 +24,7 @@ class FeatureExtractor(FlowGraphFeatureExtractor):
             RETURN source, flow, sink
         """
 
-        return self.neo4j_db.run(
-            flowgraph_command % entrypoint["id"]
-        ).data()
+        return self.neo4j_db.run(flowgraph_command % entrypoint["id"]).data()
 
     def get_flowgraph_count(self, flowgraph):
         return 1
@@ -34,6 +32,6 @@ class FeatureExtractor(FlowGraphFeatureExtractor):
     def get_label_from_flowgraph(self, flowgraph):
         source = flowgraph["source"]
         sink = flowgraph["sink"]
-        flow = ':'.join(flowgraph["flow"])
+        flow = ":".join(flowgraph["flow"])
 
         return "%s-%s-%s" % (source, flow, sink)

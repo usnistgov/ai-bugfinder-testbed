@@ -18,24 +18,17 @@ class Neo4J2Converter(DatasetProcessingWithContainer):
             "NEO4J_CACHE_MEMORY": "2048M",
             "NEO4J_HEAP_MEMORY": "2048",
             "NEO4J_ALLOW_STORE_UPGRADE": "true",
-            "NEO4J_AUTH": "none"
+            "NEO4J_AUTH": "none",
         }
-        self.ports = {
-            "7474": "7474"
-        }
-        self.volumes = {
-            self.dataset.joern_dir: "/data/graph.db"
-        }
+        self.ports = {"7474": "7474"}
+        self.volumes = {self.dataset.joern_dir: "/data/graph.db"}
 
     def send_commands(self):
         wait_log_display(self.container, self.START_STRING)
 
         # Copy Joern directory content to Neo4J directory content
         makedirs(self.dataset.neo4j_dir)
-        if not copy_dir(
-            self.dataset.joern_dir,
-            self.dataset.neo4j_dir
-        ):
+        if not copy_dir(self.dataset.joern_dir, self.dataset.neo4j_dir):
             raise Exception("Copy to neo4j-v3 failed")
 
         for dirname, sudirs, filelist in walk(self.dataset.neo4j_dir):

@@ -31,8 +31,7 @@ class ClassifierModel(DatasetProcessing):
 
         # Renaming input columns to avoid forbidden characters
         input_data.columns = [
-            "feat%03d" % feature_nb
-            for feature_nb in range(len(input_data.columns))
+            "feat%03d" % feature_nb for feature_nb in range(len(input_data.columns))
         ]
 
         input_train, input_test, output_train, output_test = train_test_split(
@@ -42,12 +41,10 @@ class ClassifierModel(DatasetProcessing):
         self.columns = input_train.columns
 
         self.train_fn = tf.estimator.inputs.pandas_input_fn(
-            x=input_train, y=output_train, shuffle=True, batch_size=100,
-            num_epochs=100
+            x=input_train, y=output_train, shuffle=True, batch_size=100, num_epochs=100
         )
         self.test_fn = tf.estimator.inputs.pandas_input_fn(
-            x=input_test, y=output_test, shuffle=False, batch_size=10,
-            num_epochs=1
+            x=input_test, y=output_test, shuffle=False, batch_size=10, num_epochs=1
         )
 
         model = self.init_model()
@@ -59,5 +56,4 @@ class ClassifierModel(DatasetProcessing):
         rc = results["recall"]
         fs = 2 * pr * rc / (pr + rc)
 
-        LOGGER.info("Precision: %f%%; Recall: %f%%; F-score: %f%%" %
-                    (pr, rc, fs))
+        LOGGER.info("Precision: %f%%; Recall: %f%%; F-score: %f%%" % (pr, rc, fs))

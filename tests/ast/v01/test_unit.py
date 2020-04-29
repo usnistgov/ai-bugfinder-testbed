@@ -39,6 +39,5 @@ class TestNeo4JASTMarkupBuildAstMarkup(TestCase):
         expected_result = {"id": "mock_id", "ast": "a:b:c"}
 
         self.assertDictEqual(
-            self.dataset_processing.build_ast_markup(ast_item),
-            expected_result
+            self.dataset_processing.build_ast_markup(ast_item), expected_result
         )

@@ -11,9 +11,7 @@ class TestNeo4J2ConverterDefault(TestCase):
         self.dataset_processing = Neo4J2Converter(None)
 
     def test_start_string_correct(self):
-        self.assertEqual(
-            self.dataset_processing.START_STRING, "Remote interface ready"
-        )
+        self.assertEqual(self.dataset_processing.START_STRING, "Remote interface ready")
 
 
 class TestNeo4J2ConverterConfigureContainer(TestCase):
@@ -35,26 +33,27 @@ class TestNeo4J2ConverterConfigureContainer(TestCase):
     def test_environment_correct(self):
         self.dataset_processing.configure_container()
 
-        self.assertDictEqual(self.dataset_processing.environment, {
-            "NEO4J_CACHE_MEMORY": "2048M",
-            "NEO4J_HEAP_MEMORY": "2048",
-            "NEO4J_ALLOW_STORE_UPGRADE": "true",
-            "NEO4J_AUTH": "none"
-        })
+        self.assertDictEqual(
+            self.dataset_processing.environment,
+            {
+                "NEO4J_CACHE_MEMORY": "2048M",
+                "NEO4J_HEAP_MEMORY": "2048",
+                "NEO4J_ALLOW_STORE_UPGRADE": "true",
+                "NEO4J_AUTH": "none",
+            },
+        )
 
     def test_ports_correct(self):
         self.dataset_processing.configure_container()
 
-        self.assertDictEqual(self.dataset_processing.ports, {
-            "7474": "7474"
-        })
+        self.assertDictEqual(self.dataset_processing.ports, {"7474": "7474"})
 
     def test_volumes_correct(self):
         self.dataset_processing.configure_container()
 
-        self.assertDictEqual(self.dataset_processing.volumes, {
-            self.dataset.joern_dir: "/data/graph.db"
-        })
+        self.assertDictEqual(
+            self.dataset_processing.volumes, {self.dataset.joern_dir: "/data/graph.db"}
+        )
 
 
 class TestNeo4J2ConverterSendCommands(TestCase):
@@ -68,8 +67,9 @@ class TestNeo4J2ConverterSendCommands(TestCase):
     @patch("bugfinder.neo4j.converter.makedirs")
     @patch("bugfinder.neo4j.converter.copy_dir")
     @patch("bugfinder.neo4j.converter.walk")
-    def test_wait_for_display_called(self, mock_walk, mock_copy_dir, mock_makedirs,
-                                     mock_wait_log_display):
+    def test_wait_for_display_called(
+        self, mock_walk, mock_copy_dir, mock_makedirs, mock_wait_log_display
+    ):
         mock_walk.return_value = [(None, None, [])]
         mock_copy_dir.return_value = True
         mock_makedirs.return_value = None
@@ -82,8 +82,9 @@ class TestNeo4J2ConverterSendCommands(TestCase):
     @patch("bugfinder.neo4j.converter.makedirs")
     @patch("bugfinder.neo4j.converter.copy_dir")
     @patch("bugfinder.neo4j.converter.walk")
-    def test_makedirs_called(self, mock_walk, mock_copy_dir, mock_makedirs,
-                             mock_wait_log_display):
+    def test_makedirs_called(
+        self, mock_walk, mock_copy_dir, mock_makedirs, mock_wait_log_display
+    ):
         mock_wait_log_display.return_value = None
         mock_walk.return_value = [(None, None, [])]
         mock_copy_dir.return_value = True
@@ -96,8 +97,9 @@ class TestNeo4J2ConverterSendCommands(TestCase):
     @patch("bugfinder.neo4j.converter.wait_log_display")
     @patch("bugfinder.neo4j.converter.makedirs")
     @patch("bugfinder.neo4j.converter.copy_dir")
-    def test_failed_dir_copy_raises_exception(self, mock_copy_dir, mock_makedirs,
-                                              mock_wait_log_display):
+    def test_failed_dir_copy_raises_exception(
+        self, mock_copy_dir, mock_makedirs, mock_wait_log_display
+    ):
         mock_wait_log_display.return_value = None
         mock_copy_dir.return_value = False
         mock_makedirs.return_value = None
@@ -110,8 +112,14 @@ class TestNeo4J2ConverterSendCommands(TestCase):
     @patch("bugfinder.neo4j.converter.copy_dir")
     @patch("bugfinder.neo4j.converter.walk")
     @patch("bugfinder.neo4j.converter.remove")
-    def test_id_files_removed_from_dir(self, mock_remove, mock_walk, mock_copy_dir,
-                                       mock_makedirs, mock_wait_log_display):
+    def test_id_files_removed_from_dir(
+        self,
+        mock_remove,
+        mock_walk,
+        mock_copy_dir,
+        mock_makedirs,
+        mock_wait_log_display,
+    ):
         mock_wait_log_display.return_value = None
         mock_walk.return_value = [("mockdir", None, ["test.txt", "test.id"])]
         mock_copy_dir.return_value = True
@@ -143,9 +151,7 @@ class TestNeo4J3ConverterConfigureContainer(TestCase):
 
 class TestNeo4J3ConverterSendCommands(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, [
-            "bugfinder.neo4j.converter.LOGGER"
-        ])
+        patch_paths(self, ["bugfinder.neo4j.converter.LOGGER"])
 
         self.dataset_processing = Neo4J3Converter(None)
 

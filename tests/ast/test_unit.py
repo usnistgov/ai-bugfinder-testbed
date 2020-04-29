@@ -20,9 +20,7 @@ class TestAbstractASTMarkupSendCommands(TestCase):
             return None
 
     def setUp(self) -> None:
-        patch_paths(self, [
-            "bugfinder.ast.LOGGER"
-        ])
+        patch_paths(self, ["bugfinder.ast.LOGGER"])
 
         self.dataset_processing = self.MockASTMarkup(None)
 
@@ -43,9 +41,7 @@ class TestAbstractASTMarkupSendCommands(TestCase):
 
     @patch.object(MockASTMarkup, "build_ast_markup")
     @patch("bugfinder.neo4j.Neo4J3Processing.send_commands")
-    def test_build_ast_markup_calls(
-        self, mock_send_commands, mock_build_ast_markup
-    ):
+    def test_build_ast_markup_calls(self, mock_send_commands, mock_build_ast_markup):
         mock_send_commands.return_value = None
 
         self.dataset_processing.send_commands()
@@ -53,9 +49,7 @@ class TestAbstractASTMarkupSendCommands(TestCase):
 
     @patch("bugfinder.neo4j.Neo4J3Processing.neo4j_db")
     @patch("bugfinder.neo4j.Neo4J3Processing.send_commands")
-    def test_neo4j_run_calls(
-        self, mock_send_commands, mock_neo4j_db
-    ):
+    def test_neo4j_run_calls(self, mock_send_commands, mock_neo4j_db):
         mock_send_commands.return_value = None
 
         self.dataset_processing.send_commands()
@@ -97,9 +91,7 @@ class TestASTSetExporterConfigureContainer(TestCase):
 
 class TestASTSetExporterSendCommands(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, [
-            "builtins.open"
-        ])
+        patch_paths(self, ["builtins.open"])
         self.dataset_processing = ASTSetExporter(None)
         self.dataset_processing.ast_file = "mock_file"
 
@@ -114,8 +106,9 @@ class TestASTSetExporterSendCommands(TestCase):
     @patch("bugfinder.ast.load")
     @patch("bugfinder.ast.exists")
     @patch("bugfinder.neo4j.Neo4J3Processing.send_commands")
-    def test_ast_file_reloaded_if_exists(self, mock_send_commands, mock_exists,
-                                         mock_load, mock_neo4j_db):
+    def test_ast_file_reloaded_if_exists(
+        self, mock_send_commands, mock_exists, mock_load, mock_neo4j_db
+    ):
         mock_send_commands.return_value = None
         mock_exists.return_value = True
         mock_load.return_value = []
@@ -124,8 +117,7 @@ class TestASTSetExporterSendCommands(TestCase):
         with patch("builtins.open", mock_open(read_data=b"data")) as mock_file:
             self.dataset_processing.send_commands()
             mock_file.assert_any_call(
-                join(ROOT_DIR, self.dataset_processing.ast_file),
-                "rb"
+                join(ROOT_DIR, self.dataset_processing.ast_file), "rb"
             )
 
             self.assertEqual(mock_file.call_count, 2)
@@ -134,7 +126,7 @@ class TestASTSetExporterSendCommands(TestCase):
     @patch("bugfinder.ast.exists")
     @patch("bugfinder.neo4j.Neo4J3Processing.send_commands")
     def test_ast_list_empty_if_file_does_not_exists(
-            self, mock_send_commands, mock_exists, mock_neo4j_db
+        self, mock_send_commands, mock_exists, mock_neo4j_db
     ):
         mock_send_commands.return_value = None
         mock_exists.return_value = False
@@ -143,14 +135,7 @@ class TestASTSetExporterSendCommands(TestCase):
         with patch("builtins.open", mock_open(read_data=b"data")) as mock_file:
             self.dataset_processing.send_commands()
             mock_file.assert_any_call(
-                join(ROOT_DIR, self.dataset_processing.ast_file),
-                "wb"
+                join(ROOT_DIR, self.dataset_processing.ast_file), "wb"
             )
 
             self.assertEqual(mock_file.call_count, 1)
-
-
-
-
-
-

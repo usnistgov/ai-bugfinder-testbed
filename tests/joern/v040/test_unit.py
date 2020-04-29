@@ -11,9 +11,9 @@ from tests import patch_paths
 
 class TestJoernDatasetProcessingConfigureContainer(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, [
-            "bugfinder.joern.JoernDefaultDatasetProcessing.configure_container"
-        ])
+        patch_paths(
+            self, ["bugfinder.joern.JoernDefaultDatasetProcessing.configure_container"]
+        )
 
         self.dataset_processing = JoernDatasetProcessing(None)
 
@@ -29,7 +29,9 @@ class TestJoernDatasetProcessingConfigureContainer(TestCase):
 
         self.dataset_processing.configure_container()
 
-        self.assertEqual(self.dataset_processing.container_name, expected_container_name)
+        self.assertEqual(
+            self.dataset_processing.container_name, expected_container_name
+        )
 
 
 class TestJoernDatasetProcessingSendCommands(TestCase):
@@ -39,7 +41,9 @@ class TestJoernDatasetProcessingSendCommands(TestCase):
         # ])
 
         self.dataset = Mock(spec=CWEClassificationDataset)
-        self.dataset.joern_dir = join(ROOT_DIR, "tests", "fixtures", "dataset04", "joern.db")
+        self.dataset.joern_dir = join(
+            ROOT_DIR, "tests", "fixtures", "dataset04", "joern.db"
+        )
         self.dataset_processing = JoernDatasetProcessing(self.dataset)
 
     def tearDown(self) -> None:
@@ -53,8 +57,9 @@ class TestJoernDatasetProcessingSendCommands(TestCase):
     @patch("bugfinder.joern.v040.exists")
     @patch("bugfinder.joern.v040.open")
     @patch("bugfinder.joern.v040.makedirs")
-    def test_create_output_path_if_it_does_not_exist(self, mock_makedirs, mock_open,
-                                                     mock_exists):
+    def test_create_output_path_if_it_does_not_exist(
+        self, mock_makedirs, mock_open, mock_exists
+    ):
         mock_makedirs.return_value = None
         mock_exists.return_value = False
         self.dataset_processing.send_commands()
@@ -67,9 +72,12 @@ class TestJoernDatasetProcessingSendCommands(TestCase):
         self.dataset_processing.send_commands()
 
         self.assertListEqual(
-            [filename for filename in listdir(join(self.dataset.joern_dir, "import"))
-             if filename != ".keep"],
-            listdir(join(self.dataset.joern_dir, "import.expected"))
+            [
+                filename
+                for filename in listdir(join(self.dataset.joern_dir, "import"))
+                if filename != ".keep"
+            ],
+            listdir(join(self.dataset.joern_dir, "import.expected")),
         )
 
     @patch("bugfinder.joern.v040.exists")
@@ -85,10 +93,3 @@ class TestJoernDatasetProcessingSendCommands(TestCase):
                 expected_content = fp.read()
 
             self.assertEqual(returned_content, expected_content)
-
-
-
-
-
-
-

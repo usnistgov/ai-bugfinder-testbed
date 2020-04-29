@@ -6,17 +6,22 @@ from time import sleep
 import docker
 
 
-def start_container(image_name, container_name, ports=None, volumes=None,
-                    environment=None, command=None, detach=True):
+def start_container(
+    image_name,
+    container_name,
+    ports=None,
+    volumes=None,
+    environment=None,
+    command=None,
+    detach=True,
+):
     if volumes is None:
         volumes = {}
 
     # Get absolute path for volumes
     volumes_realpath = dict()
     for vol_key, vol_value in volumes.items():
-        volumes_realpath[
-            realpath(vol_key)
-        ] = vol_value
+        volumes_realpath[realpath(vol_key)] = vol_value
     volumes = volumes_realpath
 
     if ports is None:
@@ -42,7 +47,7 @@ def start_container(image_name, container_name, ports=None, volumes=None,
         },
         detach=detach,
         remove=not detach,
-        **extra_args
+        **extra_args,
     )
 
     docker_cli.close()
@@ -53,8 +58,10 @@ def wait_log_display(container, log_string, max_wait_time=300):
     max_sleep_time = min(max_wait_time - 1, 12)
     current_wait = 0
 
-    while log_string.encode("utf-8") not in container.logs(tail=10)\
-            and current_wait < max_wait_time:
+    while (
+        log_string.encode("utf-8") not in container.logs(tail=10)
+        and current_wait < max_wait_time
+    ):
         current_wait += 1
         sleep(min(current_wait, max_sleep_time))
 

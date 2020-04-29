@@ -46,15 +46,20 @@ class DatasetProcessingWithContainer(DatasetProcessing):
 
             self.container_name = "%s-%s" % (
                 self.container_name,
-                get_rand_string(6, special=False, upper=False)
+                get_rand_string(6, special=False, upper=False),
             )
 
             if command_args is not None:
                 self.configure_command(command_args)
 
             self.container = start_container(
-                self.image_name, self.container_name, self.ports, self.volumes,
-                self.environment, self.command, self.detach
+                self.image_name,
+                self.container_name,
+                self.ports,
+                self.volumes,
+                self.environment,
+                self.command,
+                self.detach,
             )
 
             self.send_commands()

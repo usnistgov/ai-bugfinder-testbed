@@ -11,26 +11,26 @@ from bugfinder.utils.processing import is_processing_stack_valid
 if __name__ == "__main__":
     options = [  # List of processing classes
         [
-            {
-                "class": RightFixer,
-                "args": {"command_args": "neo4j_v3.db 101 101"}
-            },
-            Neo4JASTMarkupV01
+            {"class": RightFixer, "args": {"command_args": "neo4j_v3.db 101 101"}},
+            Neo4JASTMarkupV01,
         ],
         [
-            {
-                "class": RightFixer,
-                "args": {"command_args": "neo4j_v3.db 101 101"}
-            },
-            Neo4JASTMarkupV02
-        ]
+            {"class": RightFixer, "args": {"command_args": "neo4j_v3.db 101 101"}},
+            Neo4JASTMarkupV02,
+        ],
     ]
 
     # Setup the argument parser
     parser = argparse.ArgumentParser()
     parser.add_argument("dataset_path", help="path to the dataset to clean")
-    parser.add_argument("--version", "-v", choices=range(1, len(options)+1), type=int,
-                        required=True, help="path to the dataset to clean")
+    parser.add_argument(
+        "--version",
+        "-v",
+        choices=range(1, len(options) + 1),
+        type=int,
+        required=True,
+        help="path to the dataset to clean",
+    )
 
     args = parser.parse_args()
 
