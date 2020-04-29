@@ -1,7 +1,7 @@
 import argparse
 
-from tools.dataset import CWEClassificationDataset as Dataset
-from tools.dataset.processing.dataset_ops import ExtractSampleDataset
+from bugfinder.dataset import CWEClassificationDataset as Dataset
+from bugfinder.dataset.processing.dataset_ops import ExtractSampleDataset
 
 if __name__ == "__main__":
     # Setup the argument parser

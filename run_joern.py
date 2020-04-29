@@ -1,15 +1,13 @@
 import argparse
-from inspect import isclass
 
-from tools.dataset import CWEClassificationDataset as Dataset
-from tools.dataset.processing import DatasetProcessing
-from tools.dataset.processing.dataset_ops import RightFixer
-from tools.joern.v031 import JoernDatasetProcessing as Joern031DatasetProcessing
-from tools.joern.v040 import JoernDatasetProcessing as Joern040DatasetProcessing
-from tools.neo4j.annot import Neo4JAnnotations
-from tools.neo4j.converter import Neo4J2Converter, Neo4J3Converter
-from tools.neo4j.importer import Neo4J3Importer
-from tools.utils.processing import is_processsing_stack_valid
+from bugfinder.dataset import CWEClassificationDataset as Dataset
+from bugfinder.dataset.processing.dataset_ops import RightFixer
+from bugfinder.joern.v031 import JoernDatasetProcessing as Joern031DatasetProcessing
+from bugfinder.joern.v040 import JoernDatasetProcessing as Joern040DatasetProcessing
+from bugfinder.neo4j.annot import Neo4JAnnotations
+from bugfinder.neo4j.converter import Neo4J2Converter, Neo4J3Converter
+from bugfinder.neo4j.importer import Neo4J3Importer
+from bugfinder.utils.processing import is_processing_stack_valid
 
 if __name__ == "__main__":
     options = {  # Dictionary linking input arguments to processing classes
@@ -45,7 +43,7 @@ if __name__ == "__main__":
     # Instantiate dataset class and run joern processing
     dataset = Dataset(args.dataset_path)
 
-    if not is_processsing_stack_valid(options[args.version]):
+    if not is_processing_stack_valid(options[args.version]):
         raise TypeError("Invalid processing stack.")
 
     for operation in options[args.version]:

@@ -2,13 +2,13 @@
 """
 import argparse
 
-from tools.dataset import CWEClassificationDataset as Dataset, CWEClassificationDataset
-from tools.dataset.processing.dataset_ops import RightFixer
-from tools.features.any_hop.all_flows import FeatureExtractor as AnyHopAllFlowsExtractor
-from tools.features.any_hop.single_flow import FeatureExtractor as AnyHopSingleFlowExtractor
-from tools.features.pca import FeatureExtractor as PCA
-from tools.features.single_hop.raw import FeatureExtractor as SingleHopRawExtractor
-from tools.utils.processing import is_operation_valid
+from bugfinder.dataset import CWEClassificationDataset as Dataset
+from bugfinder.dataset.processing.dataset_ops import RightFixer
+from bugfinder.features.any_hop.all_flows import FeatureExtractor as AnyHopAllFlowsExtractor
+from bugfinder.features.any_hop.single_flow import FeatureExtractor as AnyHopSingleFlowExtractor
+from bugfinder.features.pca import FeatureExtractor as PCAExtractor
+from bugfinder.features.single_hop.raw import FeatureExtractor as SingleHopRawExtractor
+from bugfinder.utils.processing import is_operation_valid
 
 if __name__ == "__main__":
     options = {  # Dictionary linking input arguments to processing classes
@@ -46,6 +46,6 @@ if __name__ == "__main__":
         dataset.queue_operation(operation_class)
 
     if args.pca > 0:
-        dataset.queue_operation(PCA, {"final_dimension": args.pca})
+        dataset.queue_operation(PCAExtractor, {"final_dimension": args.pca})
 
     dataset.process()
