@@ -2,9 +2,9 @@
 """
 import argparse
 
-from tools.dataset import CWEClassificationDataset as Dataset
-from tools.dataset.processing.content_ops import RemoveMainFunction, ReplaceLitterals
-from tools.dataset.processing.file_ops import RemoveCppFiles, \
+from bugfinder.dataset import CWEClassificationDataset as Dataset
+from bugfinder.dataset.processing.content_ops import RemoveMainFunction, ReplaceLitterals
+from bugfinder.dataset.processing.file_ops import RemoveCppFiles, \
     RemoveInterproceduralTestCases
 
 if __name__ == "__main__":

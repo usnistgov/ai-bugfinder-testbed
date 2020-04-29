@@ -2,11 +2,11 @@
 """
 import argparse
 
-from tools.ast.v01 import Neo4JASTMarkup as Neo4JASTMarkupV01
-from tools.ast.v02 import Neo4JASTMarkup as Neo4JASTMarkupV02
-from tools.dataset import CWEClassificationDataset as Dataset
-from tools.dataset.processing.dataset_ops import RightFixer
-from tools.utils.processing import is_processsing_stack_valid
+from bugfinder.ast.v01 import Neo4JASTMarkup as Neo4JASTMarkupV01
+from bugfinder.ast.v02 import Neo4JASTMarkup as Neo4JASTMarkupV02
+from bugfinder.dataset import CWEClassificationDataset as Dataset
+from bugfinder.dataset.processing.dataset_ops import RightFixer
+from bugfinder.utils.processing import is_processing_stack_valid
 
 if __name__ == "__main__":
     options = [  # List of processing classes
@@ -37,7 +37,7 @@ if __name__ == "__main__":
     # Instantiate dataset class and run AST markup processing
     dataset = Dataset(args.dataset_path)
 
-    if not is_processsing_stack_valid(options[args.version - 1]):
+    if not is_processing_stack_valid(options[args.version - 1]):
         raise TypeError("Invalid processing stack.")
 
     for operation in options[args.version - 1]:
