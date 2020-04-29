@@ -23,9 +23,7 @@ class TestNeo4J3ProcessingDefault(TestCase):
         )
 
     def test_neo4j_db_correct(self):
-        self.assertEqual(
-            self.dataset_processing.neo4j_db, None
-        )
+        self.assertEqual(self.dataset_processing.neo4j_db, None)
 
 
 class TestNeo4J3ProcessingConfigureContainer(TestCase):
@@ -42,28 +40,31 @@ class TestNeo4J3ProcessingConfigureContainer(TestCase):
     def test_environment_correct(self):
         self.dataset_processing.configure_container()
 
-        self.assertDictEqual(self.dataset_processing.environment, {
-            "NEO4J_dbms_memory_pagecache_size": NEO4J_V3_MEMORY,
-            "NEO4J_dbms_memory_heap_max__size": NEO4J_V3_MEMORY,
-            "NEO4J_dbms_allow__upgrade": "true",
-            "NEO4J_dbms_shell_enabled": "true",
-            "NEO4J_AUTH": "none"
-        })
+        self.assertDictEqual(
+            self.dataset_processing.environment,
+            {
+                "NEO4J_dbms_memory_pagecache_size": NEO4J_V3_MEMORY,
+                "NEO4J_dbms_memory_heap_max__size": NEO4J_V3_MEMORY,
+                "NEO4J_dbms_allow__upgrade": "true",
+                "NEO4J_dbms_shell_enabled": "true",
+                "NEO4J_AUTH": "none",
+            },
+        )
 
     def test_ports_correct(self):
         self.dataset_processing.configure_container()
 
-        self.assertDictEqual(self.dataset_processing.ports, {
-            "7474": "7474",
-            "7687": "7687",
-        })
+        self.assertDictEqual(
+            self.dataset_processing.ports, {"7474": "7474", "7687": "7687",}
+        )
 
     def test_volume_correct(self):
         self.dataset_processing.configure_container()
 
-        self.assertDictEqual(self.dataset_processing.volumes, {
-            self.dataset.neo4j_dir: "/data/databases/graph.db",
-        })
+        self.assertDictEqual(
+            self.dataset_processing.volumes,
+            {self.dataset.neo4j_dir: "/data/databases/graph.db",},
+        )
 
 
 class TestNeo4J3ProcessingSendCommands(TestCase):

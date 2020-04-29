@@ -3,16 +3,21 @@
 import argparse
 
 from bugfinder.dataset import CWEClassificationDataset as Dataset
-from bugfinder.dataset.processing.content_ops import RemoveMainFunction, ReplaceLitterals
-from bugfinder.dataset.processing.file_ops import RemoveCppFiles, \
-    RemoveInterproceduralTestCases
+from bugfinder.dataset.processing.content_ops import (
+    RemoveMainFunction,
+    ReplaceLitterals,
+)
+from bugfinder.dataset.processing.file_ops import (
+    RemoveCppFiles,
+    RemoveInterproceduralTestCases,
+)
 
 if __name__ == "__main__":
     options = {  # Dictionary linking input arguments to processing classes
         "no_cpp": RemoveCppFiles,
         "no_interprocedural": RemoveInterproceduralTestCases,
         "no_litterals": ReplaceLitterals,
-        "no_main": RemoveMainFunction
+        "no_main": RemoveMainFunction,
     }
 
     # Setup the argument parser
@@ -20,10 +25,7 @@ if __name__ == "__main__":
     parser.add_argument("dataset_path", help="path to the dataset to clean")
 
     for option in options.keys():
-        parser.add_argument(
-            "--%s" % option.replace("_", "-"),
-            action="store_true"
-        )
+        parser.add_argument("--%s" % option.replace("_", "-"), action="store_true")
 
     # Convert arguments into a dictionary
     args = vars(parser.parse_args())

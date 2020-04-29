@@ -7,8 +7,10 @@ from bugfinder.dataset.processing import DatasetProcessing
 
 def is_operation_valid(processing_operation):
     if isinstance(processing_operation, dict):
-        assert "class" in processing_operation.keys() and \
-               "args" in processing_operation.keys()
+        assert (
+            "class" in processing_operation.keys()
+            and "args" in processing_operation.keys()
+        )
         assert issubclass(processing_operation["class"], DatasetProcessing)
         assert isinstance(processing_operation["args"], dict)
     else:  # operation should be a sublass of dataset operation

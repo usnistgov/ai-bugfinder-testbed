@@ -27,9 +27,7 @@ class TestNeo4JAnnotationsConfigureContainer(TestCase):
 
 class TestNeo4JAnnotationsSendCommand(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, [
-            "bugfinder.neo4j.annot.LOGGER"
-        ])
+        patch_paths(self, ["bugfinder.neo4j.annot.LOGGER"])
 
         self.dataset_processing = Neo4JAnnotations(None)
 

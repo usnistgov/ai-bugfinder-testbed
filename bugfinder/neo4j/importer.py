@@ -10,11 +10,11 @@ class Neo4J3Importer(Neo4J3Processing):
 
     def configure_container(self):
         super().configure_container()
-        
+
         self.container_name = "neo3-importer"
         self.volumes = {
             self.dataset.neo4j_dir: "/data/databases/%s" % self.db_name,
-            "%s/import" % self.dataset.joern_dir: self.import_dir
+            "%s/import" % self.dataset.joern_dir: self.import_dir,
         }
 
     def send_commands(self):
@@ -24,10 +24,12 @@ class Neo4J3Importer(Neo4J3Processing):
             """
             ./bin/neo4j-admin import --database=%s --delimiter='TAB'
                 --nodes=%s --relationships=%s
-            """ % (
+            """
+            % (
                 self.db_name,
                 join(self.import_dir, "nodes.csv"),
-                join(self.import_dir, "edges.csv"))
+                join(self.import_dir, "edges.csv"),
+            )
         )
 
         LOGGER.debug("CSV file imported.")

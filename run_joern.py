@@ -14,29 +14,28 @@ if __name__ == "__main__":
         "0.3.1": [
             Joern031DatasetProcessing,
             Neo4J2Converter,
-            {
-                "class": RightFixer,
-                "args": {"command_args": "neo4j_v3.db 101 101"}
-            },
+            {"class": RightFixer, "args": {"command_args": "neo4j_v3.db 101 101"}},
             Neo4J3Converter,
-            Neo4JAnnotations
+            Neo4JAnnotations,
         ],
         "0.4.0": [
             Joern040DatasetProcessing,
             Neo4J3Importer,
-            {
-                "class": RightFixer,
-                "args": {"command_args": "neo4j_v3.db 101 101"}
-            },
-            Neo4JAnnotations
-        ]
+            {"class": RightFixer, "args": {"command_args": "neo4j_v3.db 101 101"}},
+            Neo4JAnnotations,
+        ],
     }
 
     # Setup the argument parser
     parser = argparse.ArgumentParser()
     parser.add_argument("dataset_path", help="path to the dataset to clean")
-    parser.add_argument("--version", "-v", choices=options.keys(), required=True,
-                        help="path to the dataset to clean")
+    parser.add_argument(
+        "--version",
+        "-v",
+        choices=options.keys(),
+        required=True,
+        help="path to the dataset to clean",
+    )
 
     args = parser.parse_args()
 

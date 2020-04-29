@@ -4,8 +4,10 @@ from os.path import exists, join, isdir
 from shutil import rmtree, copytree
 
 from bugfinder.dataset import CWEClassificationDataset as Dataset
-from bugfinder.dataset.processing import DatasetProcessing, \
-    DatasetProcessingWithContainer
+from bugfinder.dataset.processing import (
+    DatasetProcessing,
+    DatasetProcessingWithContainer,
+)
 from bugfinder.settings import LOGGER
 from bugfinder.utils.statistics import get_time
 
@@ -13,8 +15,8 @@ from bugfinder.utils.statistics import get_time
 class CopyDataset(DatasetProcessing):
     def execute(self, to_path, force=False):
         LOGGER.debug(
-            "Copying dataset at %s to %s (force=%d)..." %
-            (self.dataset.path, to_path, int(force))
+            "Copying dataset at %s to %s (force=%d)..."
+            % (self.dataset.path, to_path, int(force))
         )
         _time = get_time()
 
@@ -23,9 +25,10 @@ class CopyDataset(DatasetProcessing):
             if force:
                 try:
                     dest_dataset = Dataset(to_path)
-                    dest_dataset.queue_operation(RightFixer, {
-                        "command_args": ". %s %s" % (os.getuid(), os.getgid())
-                    })
+                    dest_dataset.queue_operation(
+                        RightFixer,
+                        {"command_args": ". %s %s" % (os.getuid(), os.getgid())},
+                    )
                     dest_dataset.process()
                 finally:
                     rmtree(to_path)
@@ -43,9 +46,8 @@ class ExtractSampleDataset(DatasetProcessing):
     def execute(self, to_path, sample_nb, shuffle=True, force=False):
         LOGGER.debug(
             "Extracting %d samples from dataset %s to %s (shuffle=%d, "
-            "force=%d)..." % (
-                sample_nb, self.dataset.path, to_path, int(shuffle), int(force)
-            )
+            "force=%d)..."
+            % (sample_nb, self.dataset.path, to_path, int(shuffle), int(force))
         )
         _time = get_time()
 
@@ -72,7 +74,8 @@ class ExtractSampleDataset(DatasetProcessing):
 
             # Retrieve all test cases belonging to the class
             class_test_cases = [
-                tc_path for tc_path in self.dataset.test_cases
+                tc_path
+                for tc_path in self.dataset.test_cases
                 if tc_path.startswith(class_name)
             ]
 
@@ -80,7 +83,7 @@ class ExtractSampleDataset(DatasetProcessing):
                 random.shuffle(class_test_cases)
 
             # Truncate test cases list
-            class_test_cases = class_test_cases[:sample_nb_per_class[index]]
+            class_test_cases = class_test_cases[: sample_nb_per_class[index]]
 
             # Copy test cases to their destination
             for class_file in class_test_cases:
@@ -95,9 +98,8 @@ class ExtractSampleDataset(DatasetProcessing):
 class InverseDataset(DatasetProcessing):
     def execute(self, to_path, from_path, force=False):
         LOGGER.debug(
-            "Extracting inverse dataset of %s from %s to %s (force=%d)" % (
-                self.dataset.path, from_path, to_path, int(force)
-            )
+            "Extracting inverse dataset of %s from %s to %s (force=%d)"
+            % (self.dataset.path, from_path, to_path, int(force))
         )
         _time = get_time()
 
@@ -118,7 +120,8 @@ class InverseDataset(DatasetProcessing):
 
         from_dataset = Dataset(from_path)
         inverse_test_cases = [
-            test_case for test_case in self.dataset.test_cases
+            test_case
+            for test_case in self.dataset.test_cases
             if test_case not in from_dataset.test_cases
         ]
 
@@ -135,9 +138,7 @@ class RightFixer(DatasetProcessingWithContainer):
     def configure_container(self):
         self.image_name = "right-fixer:latest"
         self.container_name = "right-fixer"
-        self.volumes = {
-            self.dataset.path: "/data"
-        }
+        self.volumes = {self.dataset.path: "/data"}
 
     def configure_command(self, command):
         self.command = join("/data", command)

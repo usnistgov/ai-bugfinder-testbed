@@ -15,9 +15,7 @@ class MockDatasetProcessing(DatasetProcessing):
 
 
 def mock_return_fn_args_as_dict(*args, **kwargs):
-    kwargs.update({
-        "arg%d" % i: args[i] for i in range(len(args))
-    })
+    kwargs.update({"arg%d" % i: args[i] for i in range(len(args))})
 
     return kwargs
 
@@ -29,9 +27,9 @@ def directory_shasum(directory):
         for f in files:
             fpath = join(root, f)
             with open(fpath, "rb") as fp:
-                directory_hashmap[
-                    fpath.replace(directory, "")
-                ] = sha256(fp.read()).hexdigest()
+                directory_hashmap[fpath.replace(directory, "")] = sha256(
+                    fp.read()
+                ).hexdigest()
 
     return sha256(
         json.dumps(directory_hashmap, sort_keys=True).encode("utf-8")

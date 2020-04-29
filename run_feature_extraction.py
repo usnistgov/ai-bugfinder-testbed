@@ -4,8 +4,12 @@ import argparse
 
 from bugfinder.dataset import CWEClassificationDataset as Dataset
 from bugfinder.dataset.processing.dataset_ops import RightFixer
-from bugfinder.features.any_hop.all_flows import FeatureExtractor as AnyHopAllFlowsExtractor
-from bugfinder.features.any_hop.single_flow import FeatureExtractor as AnyHopSingleFlowExtractor
+from bugfinder.features.any_hop.all_flows import (
+    FeatureExtractor as AnyHopAllFlowsExtractor,
+)
+from bugfinder.features.any_hop.single_flow import (
+    FeatureExtractor as AnyHopSingleFlowExtractor,
+)
 from bugfinder.features.pca import FeatureExtractor as PCAExtractor
 from bugfinder.features.single_hop.raw import FeatureExtractor as SingleHopRawExtractor
 from bugfinder.utils.processing import is_operation_valid
@@ -14,20 +18,32 @@ if __name__ == "__main__":
     options = {  # Dictionary linking input arguments to processing classes
         "ahaf": AnyHopAllFlowsExtractor,
         "shr": SingleHopRawExtractor,
-        "ahsf": AnyHopSingleFlowExtractor
+        "ahsf": AnyHopSingleFlowExtractor,
     }
 
     # Setup the argument parser
     parser = argparse.ArgumentParser()
     parser.add_argument("dataset_path", help="path to the dataset to clean")
-    parser.add_argument("--extractor", "-e", choices=options.keys(), required=True,
-                        help="path to the dataset to clean")
+    parser.add_argument(
+        "--extractor",
+        "-e",
+        choices=options.keys(),
+        required=True,
+        help="path to the dataset to clean",
+    )
 
     option_group = parser.add_mutually_exclusive_group()
-    option_group.add_argument("--map-features", "-m", action="store_true",
-                              help="path to the dataset to clean")
-    option_group.add_argument("--pca", "-p", metavar="pca", default=0,
-                              type=int, help="number of sample to extract")
+    option_group.add_argument(
+        "--map-features", "-m", action="store_true", help="path to the dataset to clean"
+    )
+    option_group.add_argument(
+        "--pca",
+        "-p",
+        metavar="pca",
+        default=0,
+        type=int,
+        help="number of sample to extract",
+    )
 
     args = parser.parse_args()
 

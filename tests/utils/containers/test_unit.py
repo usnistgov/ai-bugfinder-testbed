@@ -5,8 +5,11 @@ from multiprocessing import Process
 from os.path import realpath
 from unittest.mock import patch, Mock
 
-from bugfinder.utils.containers import start_container, wait_log_display, \
-    stop_container_by_name
+from bugfinder.utils.containers import (
+    start_container,
+    wait_log_display,
+    stop_container_by_name,
+)
 from tests import mock_return_fn_args_as_dict
 
 
@@ -26,7 +29,7 @@ class TestStartContainer(unittest.TestCase):
             "ports": {},
             "volumes": {},
             "detach": True,
-            "remove": False
+            "remove": False,
         }
 
         value = start_container(self.image_name, self.container_name)
@@ -43,7 +46,7 @@ class TestStartContainer(unittest.TestCase):
             "ports": ports,
             "volumes": {},
             "detach": True,
-            "remove": False
+            "remove": False,
         }
 
         value = start_container(self.image_name, self.container_name, ports=ports)
@@ -60,13 +63,11 @@ class TestStartContainer(unittest.TestCase):
             "environment": {},
             "ports": {},
             "volumes": {
-                realpath(vol_key): {
-                    "bind": vol_value,
-                    "mode": "rw"
-                } for vol_key, vol_value in volumes.items()
+                realpath(vol_key): {"bind": vol_value, "mode": "rw"}
+                for vol_key, vol_value in volumes.items()
             },
             "detach": True,
-            "remove": False
+            "remove": False,
         }
 
         value = start_container(self.image_name, self.container_name, volumes=volumes)
@@ -83,7 +84,7 @@ class TestStartContainer(unittest.TestCase):
             "ports": {},
             "volumes": {},
             "detach": True,
-            "remove": False
+            "remove": False,
         }
 
         value = start_container(self.image_name, self.container_name, environment=env)
@@ -101,7 +102,7 @@ class TestStartContainer(unittest.TestCase):
             "volumes": {},
             "detach": True,
             "remove": False,
-            "command": command
+            "command": command,
         }
 
         value = start_container(self.image_name, self.container_name, command=command)
@@ -118,7 +119,7 @@ class TestStartContainer(unittest.TestCase):
             "ports": {},
             "volumes": {},
             "detach": detach,
-            "remove": not detach
+            "remove": not detach,
         }
 
         value = start_container(self.image_name, self.container_name, detach=detach)
@@ -154,7 +155,6 @@ class TestWaitLogDisplay(unittest.TestCase):
 
 
 class TestStopContainerByName(unittest.TestCase):
-
     @patch("docker.models.containers.ContainerCollection.get")
     def test_valid_name_exits_correctly(self, mock_container):
         mock_container_object = Mock()

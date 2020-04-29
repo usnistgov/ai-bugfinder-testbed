@@ -11,12 +11,9 @@ USAGE = "./tools/batch_training.py ${batch_csv_file} ${processes}"
 
 
 def launch_training(input_list):
-    LOGGER.info("Launching training rounds with parameters %s" %
-                str(input_list))
+    LOGGER.info("Launching training rounds with parameters %s" % str(input_list))
 
-    input_list.append(
-        join(input_list[2], "training.log")
-    )
+    input_list.append(join(input_list[2], "training.log"))
 
     # FIXME update script to use newer functionalities
     # try:
@@ -53,10 +50,11 @@ if __name__ == "__main__":
     with open(sys.argv[1], "rb") as input_data:
         input_data_table = list(csv.reader(input_data))
 
-    LOGGER.info("Launching %d training rounds on %d processes..." %
-                (len(input_data_table)-1, nb_process))
+    LOGGER.info(
+        "Launching %d training rounds on %d processes..."
+        % (len(input_data_table) - 1, nb_process)
+    )
     worker_pool = Pool(nb_process)
     worker_pool.map_async(launch_training, input_data_table[1:])
     worker_pool.close()
     worker_pool.join()
-

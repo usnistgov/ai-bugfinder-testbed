@@ -45,7 +45,8 @@ class CWEClassificationDataset(object):
                 # Specify full path for test cases and ignore UNIX hidden files
                 files = [
                     dirname(join(root, f).replace(self.path, ""))
-                    for f in files if not f.startswith(".")
+                    for f in files
+                    if not f.startswith(".")
                 ]
 
                 self.test_cases.update(files)
@@ -97,9 +98,13 @@ class CWEClassificationDataset(object):
         _time = get_time() - _time
         LOGGER.info(
             "Dataset index build in %dms. %d test_cases, %d classes, "
-            "%d features (v%d)." % (
-                _time, len(self.test_cases), len(self.classes),
-                self.features.shape[1], self.feats_ver
+            "%d features (v%d)."
+            % (
+                _time,
+                len(self.test_cases),
+                len(self.classes),
+                self.features.shape[1],
+                self.feats_ver,
             )
         )
 
@@ -109,16 +114,13 @@ class CWEClassificationDataset(object):
 
     def get_features_info(self):
         LOGGER.info(
-            "Analyzing features (%dx%d matrix)..." %
-            (self.features.shape[0], self.features.shape[1])
+            "Analyzing features (%dx%d matrix)..."
+            % (self.features.shape[0], self.features.shape[1])
         )
 
         self._validate_features()
 
-        features_info = {
-            "non_empty_cols": 0,
-            "empty_cols": 0
-        }
+        features_info = {"non_empty_cols": 0, "empty_cols": 0}
 
         for col in self.features:
             for item in self.features[col]:
@@ -126,13 +128,14 @@ class CWEClassificationDataset(object):
                     features_info["non_empty_cols"] += 1
                     break
 
-        features_info["empty_cols"] = \
+        features_info["empty_cols"] = (
             self.features.shape[1] - features_info["non_empty_cols"]
+        )
         features_info["non_empty_cols"] -= 2
 
         LOGGER.info(
-            "Features contain %d empty columns, %d non-empty columns." %
-            (features_info["empty_cols"], features_info["non_empty_cols"])
+            "Features contain %d empty columns, %d non-empty columns."
+            % (features_info["empty_cols"], features_info["non_empty_cols"])
         )
 
         return features_info
@@ -141,12 +144,7 @@ class CWEClassificationDataset(object):
         if op_args is None:
             op_args = dict()
 
-        self.ops_queue.append(
-            {
-                "class": op_class,
-                "args": op_args
-            }
-        )
+        self.ops_queue.append({"class": op_class, "args": op_args})
 
     def process(self):
         _time = get_time()
@@ -170,8 +168,8 @@ class CWEClassificationDataset(object):
             current_op += 1
 
             LOGGER.info(
-                "Running operation %d/%d (%s)..." %
-                (current_op, total_op, operation_class.__class__.__name__)
+                "Running operation %d/%d (%s)..."
+                % (current_op, total_op, operation_class.__class__.__name__)
             )
 
             try:
@@ -182,16 +180,13 @@ class CWEClassificationDataset(object):
                     operation["class"](self).execute()
             except Exception as e:
                 LOGGER.error(
-                    "Operation %d/%d failed: %s." %
-                    (current_op, total_op, str(e))
+                    "Operation %d/%d failed: %s." % (current_op, total_op, str(e))
                 )
 
                 # Clear the operation queue and exit
                 self.ops_queue.clear()
                 return DatasetQueueRetCode.OPERATION_FAIL
 
-        LOGGER.info(
-            "%d operations run in %dms." % (total_op, get_time() - _time)
-        )
+        LOGGER.info("%d operations run in %dms." % (total_op, get_time() - _time))
 
         return DatasetQueueRetCode.OK

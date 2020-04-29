@@ -3,7 +3,10 @@ from unittest import TestCase
 from unittest.mock import Mock, patch
 
 from bugfinder.dataset import CWEClassificationDataset
-from bugfinder.dataset.processing import DatasetFileProcessing, DatasetProcessingWithContainer
+from bugfinder.dataset.processing import (
+    DatasetFileProcessing,
+    DatasetProcessingWithContainer,
+)
 from tests import MockDatasetProcessing
 
 
@@ -58,8 +61,8 @@ class TestDatasetFileProcessingExecute(TestCase):
                 "./tests/fixtures/dataset01/class01/tc03/item.c",
                 "./tests/fixtures/dataset01/class01/tc02/item.c",
                 "./tests/fixtures/dataset01/class02/tc04/item.c",
-                "./tests/fixtures/dataset01/class02/tc01/item.c"
-            ].sort()
+                "./tests/fixtures/dataset01/class02/tc01/item.c",
+            ].sort(),
         )
 
     def test_rebuild_index_is_called(self):
@@ -75,9 +78,7 @@ class TestDatasetProcessingWithContainerInit(TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         mock_dataset = Mock(spec=CWEClassificationDataset)
-        cls.mock_dataset_processing = MockDatasetProcessingWithContainer(
-            mock_dataset
-        )
+        cls.mock_dataset_processing = MockDatasetProcessingWithContainer(mock_dataset)
 
     def test_default_image_name(self):
         self.assertEqual(self.mock_dataset_processing.image_name, "")
@@ -107,9 +108,7 @@ class TestDatasetProcessingWithContainerInit(TestCase):
 class TestDatasetProcessingWithContainerExecute(TestCase):
     def setUp(self) -> None:
         mock_dataset = Mock(spec=CWEClassificationDataset)
-        self.mock_dataset_processing = MockDatasetProcessingWithContainer(
-            mock_dataset
-        )
+        self.mock_dataset_processing = MockDatasetProcessingWithContainer(mock_dataset)
         self.mock_dataset_processing.configure_container()
 
         patch_logger = patch("bugfinder.dataset.processing.LOGGER")
@@ -127,14 +126,15 @@ class TestDatasetProcessingWithContainerExecute(TestCase):
         self.addCleanup(patch_stop_container.stop)
 
     def test_container_name_is_randomized(self):
-        container_name_regexp = r"^%s-[a-z0-9]{6}$" % \
-                                self.mock_dataset_processing.container_name
+        container_name_regexp = (
+            r"^%s-[a-z0-9]{6}$" % self.mock_dataset_processing.container_name
+        )
 
         self.mock_dataset_processing.execute()
 
-        self.assertIsNotNone(re.match(
-            container_name_regexp, self.mock_dataset_processing.container_name
-        ))
+        self.assertIsNotNone(
+            re.match(container_name_regexp, self.mock_dataset_processing.container_name)
+        )
 
     def test_empty_command_args(self):
         expected_command = self.mock_dataset_processing.command
@@ -144,8 +144,10 @@ class TestDatasetProcessingWithContainerExecute(TestCase):
 
     def test_command_args(self):
         mock_command = "exec_command"
-        expected_command = "%s_%s" % (self.mock_dataset_processing.command,
-                                      mock_command)
+        expected_command = "%s_%s" % (
+            self.mock_dataset_processing.command,
+            mock_command,
+        )
         self.mock_dataset_processing.execute(mock_command)
 
         self.assertEqual(self.mock_dataset_processing.command, expected_command)
@@ -173,9 +175,7 @@ class TestDatasetProcessingWithContainerExecute(TestCase):
         with self.assertRaises(Exception):
             self.mock_dataset_processing.execute(mock_command)
 
-    @patch(
-        "bugfinder.dataset.processing.start_container"
-    )
+    @patch("bugfinder.dataset.processing.start_container")
     def test_start_container_exception_is_caught(self, mock_start_container):
         mock_start_container.side_effect = Exception()
 
@@ -208,11 +208,10 @@ class TestDatasetProcessingWithContainerExecute(TestCase):
         "tests.dataset.processing.test_unit"
         ".MockDatasetProcessingWithContainer.configure_detach"
     )
-    @patch(
-        "bugfinder.dataset.processing.start_container"
-    )
-    def test_stop_container_not_called_if_container_is_none(self, mock_start_container,
-                                                            mock_configure_detach):
+    @patch("bugfinder.dataset.processing.start_container")
+    def test_stop_container_not_called_if_container_is_none(
+        self, mock_start_container, mock_configure_detach
+    ):
         mock_start_container.return_value = None
         mock_configure_detach.return_value = True
         self.mock_dataset_processing.configure_detach = mock_configure_detach

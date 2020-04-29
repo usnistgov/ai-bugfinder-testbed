@@ -1,16 +1,15 @@
 from unittest import TestCase
 from unittest.mock import patch
 
-from bugfinder.features.single_hop.raw import FeatureExtractor as \
-    SingleHopRawFeatureExtractor
+from bugfinder.features.single_hop.raw import (
+    FeatureExtractor as SingleHopRawFeatureExtractor,
+)
 from tests import patch_paths
 
 
 class FeatureExtractorConfigureContainer(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, [
-            "bugfinder.features.LOGGER"
-        ])
+        patch_paths(self, ["bugfinder.features.LOGGER"])
 
         self.dataset_processing = SingleHopRawFeatureExtractor(None)
 
@@ -21,14 +20,14 @@ class FeatureExtractorConfigureContainer(TestCase):
 
         self.dataset_processing.configure_container()
 
-        self.assertEqual(self.dataset_processing.container_name, expected_container_name)
+        self.assertEqual(
+            self.dataset_processing.container_name, expected_container_name
+        )
 
 
 class FeatureExtractorGetFlowgraphListForEntrypoint(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, [
-            "bugfinder.features.LOGGER"
-        ])
+        patch_paths(self, ["bugfinder.features.LOGGER"])
 
         self.dataset_processing = SingleHopRawFeatureExtractor(None)
 
@@ -41,9 +40,7 @@ class FeatureExtractorGetFlowgraphListForEntrypoint(TestCase):
 
 class FeatureExtractorGetFlowgraphCount(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, [
-            "bugfinder.features.LOGGER"
-        ])
+        patch_paths(self, ["bugfinder.features.LOGGER"])
 
         self.dataset_processing = SingleHopRawFeatureExtractor(None)
 
@@ -59,18 +56,14 @@ class FeatureExtractorGetFlowgraphCount(TestCase):
 
 class FeatureExtractorGetLabelFromFlowgraph(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, [
-            "bugfinder.features.LOGGER"
-        ])
+        patch_paths(self, ["bugfinder.features.LOGGER"])
 
         self.dataset_processing = SingleHopRawFeatureExtractor(None)
 
     def test_format_is_correct(self):
         expected_label = "source-flow-sink"
-        returned_label = self.dataset_processing.get_label_from_flowgraph({
-            "source": "source",
-            "sink": "sink",
-            "flow": "flow"
-        })
+        returned_label = self.dataset_processing.get_label_from_flowgraph(
+            {"source": "source", "sink": "sink", "flow": "flow"}
+        )
 
         self.assertEqual(returned_label, expected_label)

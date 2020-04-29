@@ -50,8 +50,7 @@ class FeatureExtractor(FlowGraphFeatureExtractor):
 
         # Find all labels related to each type of flow
         labels_in_flow = [
-            [labels.index(label) for label in labels if flow in label]
-            for flow in flows
+            [labels.index(label) for label in labels if flow in label] for flow in flows
         ]
 
         # Determine index of each labels
@@ -64,16 +63,23 @@ class FeatureExtractor(FlowGraphFeatureExtractor):
             trimmed_feature_row = feature_row[:-2]
 
             summed_row = [
-                sum([
-                    trimmed_feature_row[label_index]
-                    for label_index in labels_in_flow[flow_index]
-                ]) for flow_index in range(len(flows))
+                sum(
+                    [
+                        trimmed_feature_row[label_index]
+                        for label_index in labels_in_flow[flow_index]
+                    ]
+                )
+                for flow_index in range(len(flows))
             ]
 
-            normalized_features.append([
-               trimmed_feature_row[i] / summed_row[labels_index[i]]
-               if summed_row[labels_index[i]] != 0 else 0
-               for i in range(len(trimmed_feature_row))
-            ] + feature_row[-2:])
+            normalized_features.append(
+                [
+                    trimmed_feature_row[i] / summed_row[labels_index[i]]
+                    if summed_row[labels_index[i]] != 0
+                    else 0
+                    for i in range(len(trimmed_feature_row))
+                ]
+                + feature_row[-2:]
+            )
 
         return normalized_features

@@ -1,16 +1,15 @@
 from unittest import TestCase
 from unittest.mock import patch
 
-from bugfinder.features.any_hop.single_flow import FeatureExtractor as \
-    AnyHopSingleFlowsFeatureExtractor
+from bugfinder.features.any_hop.single_flow import (
+    FeatureExtractor as AnyHopSingleFlowsFeatureExtractor,
+)
 from tests import patch_paths
 
 
 class FeatureExtractorConfigureContainer(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, [
-            "bugfinder.features.LOGGER"
-        ])
+        patch_paths(self, ["bugfinder.features.LOGGER"])
 
         self.dataset_processing = AnyHopSingleFlowsFeatureExtractor(None)
 
@@ -21,14 +20,14 @@ class FeatureExtractorConfigureContainer(TestCase):
 
         self.dataset_processing.configure_container()
 
-        self.assertEqual(self.dataset_processing.container_name, expected_container_name)
+        self.assertEqual(
+            self.dataset_processing.container_name, expected_container_name
+        )
 
 
 class FeatureExtractorGetFlowgraphListForEntrypoint(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, [
-            "bugfinder.features.LOGGER"
-        ])
+        patch_paths(self, ["bugfinder.features.LOGGER"])
 
         self.dataset_processing = AnyHopSingleFlowsFeatureExtractor(None)
 
@@ -43,18 +42,12 @@ class FeatureExtractorGetFlowgraphListForEntrypoint(TestCase):
         class MockNeo4JRunData(object):
             @staticmethod
             def data():
-                return [{
-                    "source": "source",
-                    "sink": "sink",
-                    "count": 1
-                }]
+                return [{"source": "source", "sink": "sink", "count": 1}]
 
-        expected_flowgraphs = [{
-            "source": "source",
-            "sink": "sink",
-            "count": 1,
-            "flow": flow
-        } for flow in self.dataset_processing.FLOWS]
+        expected_flowgraphs = [
+            {"source": "source", "sink": "sink", "count": 1, "flow": flow}
+            for flow in self.dataset_processing.FLOWS
+        ]
 
         mock_neo4j_db.run.side_effect = lambda _: MockNeo4JRunData()
 
@@ -67,9 +60,7 @@ class FeatureExtractorGetFlowgraphListForEntrypoint(TestCase):
 
 class FeatureExtractorGetFlowgraphCount(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, [
-            "bugfinder.features.LOGGER"
-        ])
+        patch_paths(self, ["bugfinder.features.LOGGER"])
 
         self.dataset_processing = AnyHopSingleFlowsFeatureExtractor(None)
 
@@ -84,28 +75,22 @@ class FeatureExtractorGetFlowgraphCount(TestCase):
 
 class FeatureExtractorGetLabelFromFlowgraph(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, [
-            "bugfinder.features.LOGGER"
-        ])
+        patch_paths(self, ["bugfinder.features.LOGGER"])
 
         self.dataset_processing = AnyHopSingleFlowsFeatureExtractor(None)
 
     def test_format_is_correct(self):
         expected_label = "source-flow1-sink"
-        returned_label = self.dataset_processing.get_label_from_flowgraph({
-            "source": "source",
-            "sink": "sink",
-            "flow": "flow1",
-        })
+        returned_label = self.dataset_processing.get_label_from_flowgraph(
+            {"source": "source", "sink": "sink", "flow": "flow1",}
+        )
 
         self.assertEqual(returned_label, expected_label)
 
 
 class FeatureExtractorFinalizeFeatures(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, [
-            "bugfinder.features.LOGGER"
-        ])
+        patch_paths(self, ["bugfinder.features.LOGGER"])
 
         self.dataset_processing = AnyHopSingleFlowsFeatureExtractor(None)
 
@@ -113,15 +98,21 @@ class FeatureExtractorFinalizeFeatures(TestCase):
         input_features = [
             [4, 6, 3, 2, 6, 0, None, None],
             [4, 8, 5, 5, 5, 5, None, None],
-            [3, 3, 11, 2, 4, 3, None, None]
+            [3, 3, 11, 2, 4, 3, None, None],
         ]
-        labels = ["a-CONTROLS-b", "a-CONTROLS-c",  "a-FLOWS_TO-b",  "a-REACHES-b",
-                  "a-REACHES-c", "a-REACHES-d"]
+        labels = [
+            "a-CONTROLS-b",
+            "a-CONTROLS-c",
+            "a-FLOWS_TO-b",
+            "a-REACHES-b",
+            "a-REACHES-c",
+            "a-REACHES-d",
+        ]
 
         expected_features = [
             [0.4, 0.6, 1, 0.25, 0.75, 0, None, None],
-            [1/3, 2/3, 1, 1/3, 1/3, 1/3, None, None],
-            [0.5, 0.5, 1, 2/9, 4/9, 1/3, None, None]
+            [1 / 3, 2 / 3, 1, 1 / 3, 1 / 3, 1 / 3, None, None],
+            [0.5, 0.5, 1, 2 / 9, 4 / 9, 1 / 3, None, None],
         ]
 
         returned_features = self.dataset_processing.finalize_features(
@@ -129,4 +120,3 @@ class FeatureExtractorFinalizeFeatures(TestCase):
         )
 
         self.assertListEqual(returned_features, expected_features)
-

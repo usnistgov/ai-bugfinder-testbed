@@ -46,7 +46,7 @@ class Neo4JAnnotations(Neo4J3Processing):
             MATCH (node)
             WHERE EXISTS(node.functionId)
             SET node.functionId=toString(node.functionId);
-        """
+        """,
     ]
 
     def configure_container(self):
@@ -64,20 +64,15 @@ class Neo4JAnnotations(Neo4J3Processing):
                 self.neo4j_db.run(cmd)
 
                 LOGGER.info(
-                    "Command %d out of %d run in %dms" %
-                    (
+                    "Command %d out of %d run in %dms"
+                    % (
                         self.COMMANDS.index(cmd) + 1,
                         len(self.COMMANDS),
-                        get_time() - start
+                        get_time() - start,
                     )
                 )
             except APIError as error:
-                LOGGER.info(
-                    "An error occured while executing command: %s" %
-                    str(error)
-                )
+                LOGGER.info("An error occured while executing command: %s" % str(error))
                 break
 
         LOGGER.info("Database annotated.")
-
-

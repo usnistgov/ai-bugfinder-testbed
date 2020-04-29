@@ -4,18 +4,25 @@ from unittest import TestCase
 from unittest.mock import patch
 
 from bugfinder.dataset import CWEClassificationDataset
-from bugfinder.dataset.processing.dataset_ops import CopyDataset, ExtractSampleDataset, \
-    InverseDataset, RightFixer
+from bugfinder.dataset.processing.dataset_ops import (
+    CopyDataset,
+    ExtractSampleDataset,
+    InverseDataset,
+    RightFixer,
+)
 from tests import directory_shasum, patch_paths
 
 
 class TestCopyDatasetExecute(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, [
-            "bugfinder.dataset.processing.dataset_ops.LOGGER",
-            "bugfinder.dataset.LOGGER",
-            "bugfinder.dataset.CWEClassificationDataset.process"
-        ])
+        patch_paths(
+            self,
+            [
+                "bugfinder.dataset.processing.dataset_ops.LOGGER",
+                "bugfinder.dataset.LOGGER",
+                "bugfinder.dataset.CWEClassificationDataset.process",
+            ],
+        )
 
         self.input_dataset_path = "./tests/fixtures/dataset01"
         self.output_dataset_path = "./tests/fixtures/dataset01_copy"
@@ -50,10 +57,13 @@ class TestCopyDatasetExecute(TestCase):
 
 class TestExtractSampleDatasetExecute(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, [
-            "bugfinder.dataset.processing.dataset_ops.LOGGER",
-            "bugfinder.dataset.LOGGER"
-        ])
+        patch_paths(
+            self,
+            [
+                "bugfinder.dataset.processing.dataset_ops.LOGGER",
+                "bugfinder.dataset.LOGGER",
+            ],
+        )
 
         self.input_dataset_path = "./tests/fixtures/dataset03"
         self.output_dataset_path = "./tests/fixtures/dataset03_copy"
@@ -71,13 +81,15 @@ class TestExtractSampleDatasetExecute(TestCase):
     def test_cannot_overwrite_without_force_true(self):
         self.dataset_processing.execute(self.output_dataset_path, self.sample_nb)
         with self.assertRaises(FileExistsError):
-            self.dataset_processing.execute(self.output_dataset_path, self.sample_nb,
-                                            force=False)
+            self.dataset_processing.execute(
+                self.output_dataset_path, self.sample_nb, force=False
+            )
 
     def test_can_overwrite_with_force_true(self):
         self.dataset_processing.execute(self.output_dataset_path, self.sample_nb)
-        self.dataset_processing.execute(self.output_dataset_path, self.sample_nb,
-                                        force=True)
+        self.dataset_processing.execute(
+            self.output_dataset_path, self.sample_nb, force=True
+        )
 
     def test_number_of_samples_is_correct(self):
         self.dataset_processing.execute(self.output_dataset_path, self.sample_nb)
@@ -87,14 +99,16 @@ class TestExtractSampleDatasetExecute(TestCase):
 
     def test_shuffle_creates_different_sets(self):
         max_tries = 5
-        self.dataset_processing.execute(self.output_dataset_path, self.sample_nb,
-                                        shuffle=True)
+        self.dataset_processing.execute(
+            self.output_dataset_path, self.sample_nb, shuffle=True
+        )
 
         test_case_01 = CWEClassificationDataset(self.output_dataset_path).test_cases
 
         while max_tries != 0:
-            self.dataset_processing.execute(self.output_dataset_path, self.sample_nb,
-                                            shuffle=True, force=True)
+            self.dataset_processing.execute(
+                self.output_dataset_path, self.sample_nb, shuffle=True, force=True
+            )
             test_case_02 = CWEClassificationDataset(self.output_dataset_path).test_cases
             try:
                 self.assertEqual(test_case_01, test_case_02)
@@ -105,12 +119,14 @@ class TestExtractSampleDatasetExecute(TestCase):
         raise AssertionError("test cases lists are equal")
 
     def test_no_shuffle_creates_same_sets(self):
-        self.dataset_processing.execute(self.output_dataset_path, self.sample_nb,
-                                        shuffle=False)
+        self.dataset_processing.execute(
+            self.output_dataset_path, self.sample_nb, shuffle=False
+        )
         test_case_01 = CWEClassificationDataset(self.output_dataset_path).test_cases
 
-        self.dataset_processing.execute(self.output_dataset_path, self.sample_nb,
-                                        shuffle=False, force=True)
+        self.dataset_processing.execute(
+            self.output_dataset_path, self.sample_nb, shuffle=False, force=True
+        )
         test_case_02 = CWEClassificationDataset(self.output_dataset_path).test_cases
 
         self.assertEqual(test_case_01, test_case_02)
@@ -118,10 +134,13 @@ class TestExtractSampleDatasetExecute(TestCase):
 
 class TestInverseDatasetExecute(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, [
-            "bugfinder.dataset.processing.dataset_ops.LOGGER",
-            "bugfinder.dataset.LOGGER"
-        ])
+        patch_paths(
+            self,
+            [
+                "bugfinder.dataset.processing.dataset_ops.LOGGER",
+                "bugfinder.dataset.LOGGER",
+            ],
+        )
 
         self.input_dataset_path = "./tests/fixtures/dataset03"
         self.from_dataset_path = "./tests/fixtures/dataset01"
@@ -159,18 +178,14 @@ class TestInverseDatasetExecute(TestCase):
         mock_exists.return_value = False
 
         with self.assertRaises(FileNotFoundError):
-            self.dataset_processing.execute(
-                "mock_dir", self.from_dataset_path
-            )
+            self.dataset_processing.execute("mock_dir", self.from_dataset_path)
 
     @patch("bugfinder.dataset.processing.dataset_ops.isdir")
     def test_from_path_is_not_dir_fails(self, mock_isdir):
         mock_isdir.return_value = False
 
         with self.assertRaises(NotADirectoryError):
-            self.dataset_processing.execute(
-                "mock_dir", self.from_dataset_path
-            )
+            self.dataset_processing.execute("mock_dir", self.from_dataset_path)
 
     def test_number_of_samples_is_correct(self):
         self.dataset_processing.execute(
@@ -182,7 +197,7 @@ class TestInverseDatasetExecute(TestCase):
 
         self.assertEqual(
             len(output_dataset.test_cases),
-            len(self.dataset.test_cases) - len(from_dataset.test_cases)
+            len(self.dataset.test_cases) - len(from_dataset.test_cases),
         )
 
     def test_samples_names_are_correct(self):
@@ -195,16 +210,19 @@ class TestInverseDatasetExecute(TestCase):
 
         self.assertEqual(
             output_dataset.test_cases,
-            self.dataset.test_cases.difference(from_dataset.test_cases)
+            self.dataset.test_cases.difference(from_dataset.test_cases),
         )
 
 
 class TestRightFixer(TestCase):
     def test_right_are_fixed(self):
-        patch_paths(self, [
-            "bugfinder.dataset.processing.dataset_ops.LOGGER",
-            "bugfinder.dataset.LOGGER"
-        ])
+        patch_paths(
+            self,
+            [
+                "bugfinder.dataset.processing.dataset_ops.LOGGER",
+                "bugfinder.dataset.LOGGER",
+            ],
+        )
 
         self.input_dataset_path = "./tests/fixtures/dataset01"
         sample_uid = 20000

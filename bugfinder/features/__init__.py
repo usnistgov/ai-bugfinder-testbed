@@ -41,7 +41,7 @@ class GraphFeatureExtractor(Neo4J3Processing):
             entrypoint_list += [
                 {**entrypoint_info, **testcase_info}
                 for entrypoint_info in self.neo4j_db.run(
-                    list_entrypoint_cmd % testcase['id']
+                    list_entrypoint_cmd % testcase["id"]
                 ).data()
             ]
 
@@ -57,13 +57,15 @@ class GraphFeatureExtractor(Neo4J3Processing):
             self.feature_map_filepath = join(
                 feature_map_dir, "%s.bin" % basename(dirname(self.dataset.path))
             )
-            LOGGER.debug("No feature file specified. Using %s..." %
-                         self.feature_map_filepath)
+            LOGGER.debug(
+                "No feature file specified. Using %s..." % self.feature_map_filepath
+            )
         else:
             self.feature_map_filepath = feature_map_filepath
 
-    def execute(self, command_args=None, feature_map_filepath=None,
-                need_map_features=False):
+    def execute(
+        self, command_args=None, feature_map_filepath=None, need_map_features=False
+    ):
         self._create_feature_map_file(feature_map_filepath)
         self.need_map_features = need_map_features
 
@@ -118,8 +120,9 @@ class GraphFeatureExtractor(Neo4J3Processing):
         existing_labels = self.get_labels_from_feature_map()
         orig_labels_count = len(existing_labels)
 
-        LOGGER.debug("Retrieved %d existintg labels. Adding new labels..." %
-                     orig_labels_count)
+        LOGGER.debug(
+            "Retrieved %d existintg labels. Adding new labels..." % orig_labels_count
+        )
 
         existing_labels += labels
         existing_labels = set(existing_labels)
@@ -130,8 +133,7 @@ class GraphFeatureExtractor(Neo4J3Processing):
             return
 
         LOGGER.debug("Writing label set to disk...")
-        with open(join(ROOT_DIR, self.feature_map_filepath), "wb") \
-                as feature_map_file:
+        with open(join(ROOT_DIR, self.feature_map_filepath), "wb") as feature_map_file:
             pickle.dump(existing_labels, feature_map_file)
 
     def get_labels_from_feature_map(self):
@@ -140,8 +142,7 @@ class GraphFeatureExtractor(Neo4J3Processing):
         if not exists(feature_map_filepath):
             return []
 
-        with open(feature_map_filepath, "rb") \
-                as feature_map_file:
+        with open(feature_map_filepath, "rb") as feature_map_file:
             labels = pickle.load(feature_map_file)
 
         return list(labels)
@@ -164,22 +165,18 @@ class FlowGraphFeatureExtractor(GraphFeatureExtractor):
 
     @abstractmethod
     def get_label_from_flowgraph(self, flowgraph):
-        raise NotImplementedError(
-            IMPLEMENTATION_ERROR % "get_label_from_flowgraph"
-        )
+        raise NotImplementedError(IMPLEMENTATION_ERROR % "get_label_from_flowgraph")
 
     @staticmethod
     def initialize_features(entrypoint, label_list):
-        return [0.] * len(label_list) + [
-            entrypoint['filepath'].split('/')[2] == 'good',
-            entrypoint['filepath'].split('/')[-1]
+        return [0.0] * len(label_list) + [
+            entrypoint["filepath"].split("/")[2] == "good",
+            entrypoint["filepath"].split("/")[-1],
         ]
 
     @abstractmethod
     def get_flowgraph_count(self, flowgraph):
-        raise NotImplementedError(
-            IMPLEMENTATION_ERROR % "get_flowgraph_count"
-        )
+        raise NotImplementedError(IMPLEMENTATION_ERROR % "get_flowgraph_count")
 
     @staticmethod
     def finalize_features(features, labels):
@@ -195,8 +192,10 @@ class FlowGraphFeatureExtractor(GraphFeatureExtractor):
             LOGGER.warning("No entrypoint found. Returning None...")
             return None
 
-        LOGGER.info("Retrieved %d entrypoints and %d labels. Querying for "
-                    "flowgraphs..." % (len(entrypoint_list), len(labels)))
+        LOGGER.info(
+            "Retrieved %d entrypoints and %d labels. Querying for "
+            "flowgraphs..." % (len(entrypoint_list), len(labels))
+        )
 
         features = list()
 
@@ -207,9 +206,7 @@ class FlowGraphFeatureExtractor(GraphFeatureExtractor):
                 LOGGER.info("Processed %d%% of the dataset." % progress)
                 last_progress = progress
 
-            features_row_entrypoint = self.initialize_features(
-                entrypoint, labels
-            )
+            features_row_entrypoint = self.initialize_features(entrypoint, labels)
 
             # Record and count each unique flow graph
             for flowgraph in self.get_flowgraph_list_for_entrypoint(entrypoint):
@@ -231,8 +228,10 @@ class FlowGraphFeatureExtractor(GraphFeatureExtractor):
             # Keep track of the progress
             entrypoint_index += 1
 
-        LOGGER.info("Extracted %dx%d features matrix. Finalizing features..." %
-                    (len(features), len(features[0])))
+        LOGGER.info(
+            "Extracted %dx%d features matrix. Finalizing features..."
+            % (len(features), len(features[0]))
+        )
 
         return self.finalize_features(features, labels)
 
@@ -243,8 +242,10 @@ class FlowGraphFeatureExtractor(GraphFeatureExtractor):
         entrypoint_index = 0
         last_progress = 0
 
-        LOGGER.info("Retrieved %d entrypoints. Querying for flowgraphs..." %
-                    len(entrypoint_list))
+        LOGGER.info(
+            "Retrieved %d entrypoints. Querying for flowgraphs..."
+            % len(entrypoint_list)
+        )
 
         # Get the interesting flow graphs for each function
         for entrypoint in entrypoint_list:
@@ -265,6 +266,3 @@ class FlowGraphFeatureExtractor(GraphFeatureExtractor):
         LOGGER.info("Extracted %d labels." % len(labels))
 
         return list(labels)
-
-
-
