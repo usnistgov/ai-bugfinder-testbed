@@ -8,6 +8,8 @@ from bugfinder.models import ClassifierModel
 
 import pandas as pd
 
+from tests import patch_paths
+
 
 class MockModel(Mock):
     def train(self, *args, **kwargs):
@@ -44,6 +46,10 @@ class TestClassifierModelInit(TestCase):
 
 class TestClassifierModelExecute(TestCase):
     def setUp(self) -> None:
+        patch_paths(self, [
+            "bugfinder.models.LOGGER"
+        ])
+
         self.dataset = Mock(spec=CWEClassificationDataset)
         self.dataset.features = pd.read_csv(
             "tests/fixtures/dataset01/features/features.csv"
