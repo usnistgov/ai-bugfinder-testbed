@@ -1,15 +1,19 @@
 from unittest import TestCase
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 from docker.errors import APIError
 
+from bugfinder.dataset import CWEClassificationDataset
 from bugfinder.neo4j.annot import Neo4JAnnotations
 from tests import patch_paths
 
 
 class TestNeo4JAnnotationsConfigureContainer(TestCase):
     def setUp(self) -> None:
-        self.dataset_processing = Neo4JAnnotations(None)
+        dataset = Mock(spec=CWEClassificationDataset)
+        dataset.ops_queue = list()
+
+        self.dataset_processing = Neo4JAnnotations(dataset)
 
     @patch("bugfinder.neo4j.annot.super")
     def test_super_configure_container_called(self, mock_super):

@@ -1,9 +1,10 @@
 import pickle
 from os.path import join
 from unittest import TestCase
-from unittest.mock import patch, mock_open
+from unittest.mock import patch, mock_open, Mock
 
 from bugfinder.ast import AbstractASTMarkup, ASTSetExporter
+from bugfinder.dataset import CWEClassificationDataset
 from bugfinder.settings import ROOT_DIR
 from tests import patch_paths
 
@@ -22,7 +23,10 @@ class TestAbstractASTMarkupSendCommands(TestCase):
     def setUp(self) -> None:
         patch_paths(self, ["bugfinder.ast.LOGGER"])
 
-        self.dataset_processing = self.MockASTMarkup(None)
+        dataset = Mock(spec=CWEClassificationDataset)
+        dataset.ops_queue = list()
+
+        self.dataset_processing = self.MockASTMarkup(dataset)
 
     @patch("bugfinder.neo4j.Neo4J3Processing.send_commands")
     def test_send_commands_called(self, mock_send_commands):

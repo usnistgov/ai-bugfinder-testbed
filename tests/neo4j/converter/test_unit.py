@@ -132,7 +132,10 @@ class TestNeo4J2ConverterSendCommands(TestCase):
 
 class TestNeo4J3ConverterConfigureContainer(TestCase):
     def setUp(self) -> None:
-        self.dataset_processing = Neo4J3Converter(None)
+        dataset = Mock(spec=CWEClassificationDataset)
+        dataset.ops_queue = list()
+
+        self.dataset_processing = Neo4J3Converter(dataset)
 
     @patch("bugfinder.neo4j.converter.super")
     def test_super_configure_container_called(self, mock_super):

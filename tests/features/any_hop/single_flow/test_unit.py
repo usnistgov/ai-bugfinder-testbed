@@ -1,6 +1,7 @@
 from unittest import TestCase
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
+from bugfinder.dataset import CWEClassificationDataset
 from bugfinder.features.any_hop.single_flow import (
     FeatureExtractor as AnyHopSingleFlowsFeatureExtractor,
 )
@@ -11,7 +12,10 @@ class FeatureExtractorConfigureContainer(TestCase):
     def setUp(self) -> None:
         patch_paths(self, ["bugfinder.features.LOGGER"])
 
-        self.dataset_processing = AnyHopSingleFlowsFeatureExtractor(None)
+        dataset = Mock(spec=CWEClassificationDataset)
+        dataset.ops_queue = list()
+
+        self.dataset_processing = AnyHopSingleFlowsFeatureExtractor(dataset)
 
     @patch("bugfinder.neo4j.Neo4J3Processing.configure_container")
     def test_container_name_is_correct(self, mock_configure_container):
