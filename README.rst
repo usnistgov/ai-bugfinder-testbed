@@ -79,9 +79,9 @@ Utilities scripts operates on the dataset folder and do not modify the
 data that it contains. The two utilities available are:
 
 - ``copy_dataset.py`` to duplicate an existing dataset to another
-location.
+  location.
 - ``extract_dataset.py`` to extract a defined number of
-samples from a dataset.
+  samples from a dataset.
 
 Examples:
 
