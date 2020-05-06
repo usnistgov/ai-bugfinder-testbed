@@ -29,6 +29,12 @@ Once the Python environment is setup and the repository downloaded, run
 Installation
 ------------
 
+Test the downloaded code
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Substantial tests have been developed to ensure the code is working properly. To run
+the tests, use command ``pytest``. No error should occur upon running the tests.
+
 Download the Juliet dataset
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
