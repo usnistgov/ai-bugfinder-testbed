@@ -147,7 +147,7 @@ with the additional markup:
 
 .. code:: bash
 
-   python ./ast_markup.py /path/to/dataset \
+   python ./run_ast_markup.py /path/to/dataset \
        -v ${AST_VERSION}  # AST markup version. See --help for details.
 
 Extract feature
@@ -159,12 +159,12 @@ task. The features need to be extracted with the following command:
 .. code:: bash
 
    # Create the feature maps
-   python ./extract_features.py /path/to/dataset \
+   python ./run_feature_extraction.py /path/to/dataset \
        -e ${FEATURE_EXTRACTOR} \  # Choose a feature extractor.
        -m  # To create the feature maps.
 
    # Run the extractor and apply PCA to reduce dimensionality
-   python ./extract_features.py /path/to/dataset \
+   python ./run_feature_extraction.py /path/to/dataset \
        -e ${FEATURE_EXTRACTOR} \  # Choose a feature extractor
        -p ${VECTOR_LENGTH}  # Specify the final number of features
 
@@ -176,7 +176,7 @@ typing:
 
 .. code:: bash
 
-   python ./run_tensorflow.py /path/to/dataset \
+   python ./run_model_training.py /path/to/dataset \
        -m ${MODEL}  # Model to train. See help for details.
 
 Troubleshooting
