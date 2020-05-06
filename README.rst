@@ -76,9 +76,11 @@ Dataset utilities
 ~~~~~~~~~~~~~~~~~
 
 Utilities scripts operates on the dataset folder and do not modify the
-data that it contains. The two utilities available are: \*
-``copy_dataset.py`` to duplicate an existing dataset to another
-location. \* ``extract_dataset.py`` to extract a defined number of
+data that it contains. The two utilities available are:
+
+- ``copy_dataset.py`` to duplicate an existing dataset to another
+location.
+- ``extract_dataset.py`` to extract a defined number of
 samples from a dataset.
 
 Examples:
@@ -99,16 +101,19 @@ Examples:
 Prepare the dataset
 ~~~~~~~~~~~~~~~~~~~
 
-There are several issues with the default Juliet dataset: \* C++ cannot
-be parsed correctly by *Joern*, these samples need to be remove from the
-dataset. \* *Joern* is not able to perfectly parse the C samples from
-*Juliet*. Instances of the code left unparsed need to be replaced by an
-equivalent code line that *Joern* can parse. \* In *Juliet*,
-``main(...)`` functions are used to compile the correct (good or bad)
-code depending on pre-processor variables. These functions are not
-useful and possible misleading for the classifier, they need to be
-removed. \* The current version of the tool does not work with
-interprocedural test cases which need to be removed from the dataset.
+There are several issues with the default Juliet dataset: 
+
+- C++ cannot be parsed correctly by *Joern*, these samples need to be 
+  remove from the dataset.
+- *Joern* is not able to perfectly parse the C samples from *Juliet*. 
+  Instances of the code left unparsed need to be replaced by an 
+  equivalent code line that *Joern* can parse.
+- In *Juliet*, ``main(...)`` functions are used to compile the correct 
+  (good or bad) code depending on pre-processor variables. These 
+  functions are not useful and possible misleading for the classifier, 
+  they need to be removed. 
+- The current version of the tool does not work with interprocedural 
+  test cases which need to be removed from the dataset.
 
 To handle all of these issues, the ``clean_dataset.py`` script is
 available and works as such:
