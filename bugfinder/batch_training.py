@@ -5,7 +5,7 @@ import sys
 from multiprocessing import Pool
 from os.path import isfile, join
 
-from tools.settings import LOGGER
+from bugfinder.settings import LOGGER
 
 USAGE = "./tools/batch_training.py ${batch_csv_file} ${processes}"
 
