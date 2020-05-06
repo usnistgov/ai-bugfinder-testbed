@@ -57,11 +57,11 @@ Build the docker images
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 The necessary docker images can be built using
-``python ./build_images.py``. Three images should be built: \*
-*joern-lite:0.3.1*: Latest release of Joern (11/21/2011). \*
-*joern-lite:0.4.0*: Latest code update from Joern (04/12/2017). \*
-*neo4j-ai:latest*: Neo4J v3 image package with additional shell tools.
-\* *right-fixer:latest*: Tool to modify rights of a given folder.
+``python ./build_images.py``. Four images should be built:
+- *joern-lite:0.3.1*: Latest release of Joern (11/21/2011).
+- *joern-lite:0.4.0*: Latest code update from Joern (04/12/2017).
+- *neo4j-ai:latest*: Neo4J v3 image package with additional shell tools.
+- *right-fixer:latest*: Tool to modify rights of a given folder.
 
 Usage
 -----
