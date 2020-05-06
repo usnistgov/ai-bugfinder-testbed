@@ -26,6 +26,8 @@ class AbstractASTMarkup(Neo4J3Processing):
         raise NotImplementedError("build_ast_markup")
 
     def send_commands(self):
+        self.fix_data_folder_rights()
+
         super().send_commands()
 
         LOGGER.info("Retrieving AST...")

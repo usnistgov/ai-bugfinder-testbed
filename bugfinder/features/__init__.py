@@ -147,6 +147,11 @@ class GraphFeatureExtractor(Neo4J3Processing):
 
         return list(labels)
 
+    def configure_container(self):
+        self.fix_data_folder_rights()
+
+        super().configure_container()
+
     @abstractmethod
     def extract_features(self):
         raise NotImplementedError(IMPLEMENTATION_ERROR % "extract_features")

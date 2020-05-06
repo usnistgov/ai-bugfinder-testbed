@@ -50,8 +50,9 @@ class Neo4JAnnotations(Neo4J3Processing):
     ]
 
     def configure_container(self):
-        super().configure_container()
+        self.fix_data_folder_rights()
 
+        super().configure_container()
         self.container_name = "neo3-annot"
 
     def send_commands(self):

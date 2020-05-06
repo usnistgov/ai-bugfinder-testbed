@@ -41,6 +41,8 @@ class Neo4J2Converter(DatasetProcessingWithContainer):
 
 class Neo4J3Converter(Neo4J3Processing):
     def configure_container(self):
+        self.fix_data_folder_rights()
+
         super().configure_container()
         self.container_name = "neo3-converter"
 

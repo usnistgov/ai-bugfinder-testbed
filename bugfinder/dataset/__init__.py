@@ -140,6 +140,9 @@ class CWEClassificationDataset(object):
 
         return features_info
 
+    def clear_queue(self):
+        self.ops_queue = list()
+
     def queue_operation(self, op_class, op_args=None):
         if op_args is None:
             op_args = dict()
