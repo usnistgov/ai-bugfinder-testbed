@@ -26,6 +26,9 @@ Pre-requisites
 Once the Python environment is setup and the repository downloaded, run
 ``pip install -r requirements.txt``.
 
+To install the development dependencies, run 
+``pip install -r requirements-dev.txt``.
+
 Installation
 ------------
 
@@ -34,6 +37,8 @@ Test the downloaded code
 
 Substantial tests have been developed to ensure the code is working properly. To run
 the tests, use command ``pytest``. No error should occur upon running the tests.
+
+The development dependencies need to be installed to run these tests.
 
 Download the Juliet dataset
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
