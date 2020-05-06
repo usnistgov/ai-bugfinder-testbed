@@ -2,10 +2,10 @@
 """
 import argparse
 
-from tools.dataset import CWEClassificationDataset as Dataset
-from tools.models.dnn_classifier import DNNClassifierTraining
-from tools.models.linear_classifier import LinearClassifierTraining
-from tools.utils.processing import is_operation_valid
+from bugfinder.dataset import CWEClassificationDataset as Dataset
+from bugfinder.models.dnn_classifier import DNNClassifierTraining
+from bugfinder.models.linear_classifier import LinearClassifierTraining
+from bugfinder.utils.processing import is_operation_valid
 
 if __name__ == "__main__":
     options = {  # Dictionary linking input arguments to processing classes
@@ -16,8 +16,13 @@ if __name__ == "__main__":
     # Setup the argument parser
     parser = argparse.ArgumentParser()
     parser.add_argument("dataset_path", help="path to the dataset to clean")
-    parser.add_argument("--model", "-m", choices=options.keys(), required=True,
-                        help="path to the dataset to clean")
+    parser.add_argument(
+        "--model",
+        "-m",
+        choices=options.keys(),
+        required=True,
+        help="path to the dataset to clean",
+    )
 
     args = parser.parse_args()
 

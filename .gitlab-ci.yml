@@ -1,0 +1,15 @@
+image: python:3.6
+
+stages:
+  - tests
+
+before_script:
+  - pip install -r ./requirements.txt
+  - pip install pytest
+  - python ./build_images.py
+
+tests:
+  stage: tests
+  script: pytest
+
+
