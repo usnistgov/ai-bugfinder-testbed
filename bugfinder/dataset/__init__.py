@@ -71,6 +71,7 @@ class CWEClassificationDataset(object):
         self.joern_dir = join(self.path, DATASET_DIRS["joern"])
         self.neo4j_dir = join(self.path, DATASET_DIRS["neo4j"])
         self.feats_dir = join(self.path, DATASET_DIRS["feats"])
+        self.model_dir = join(self.path, DATASET_DIRS["models"])
 
         self.classes = list()
         self.test_cases = set()

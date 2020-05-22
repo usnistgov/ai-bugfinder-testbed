@@ -1,6 +1,8 @@
-"""
+""" Abstract classifier model for the dataset.
 """
 from abc import abstractmethod
+from os.path import join, exists
+from shutil import rmtree
 
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
@@ -19,12 +21,12 @@ class ClassifierModel(DatasetProcessing):
         self.columns = None
 
     @abstractmethod
-    def init_model(self):
+    def init_model(self, name, **kwargs):
         raise NotImplementedError()
 
-    def execute(self, network_path=None):
+    def execute(self, name, reset=False, **kwargs):
         if self.model_cls is None:
-            raise Exception()
+            raise Exception("Parameter 'model_cls' is undefined")
 
         output_data = self.dataset.features["result"]
         input_data = self.dataset.features.drop(["result", "name"], axis=1)
@@ -47,7 +49,13 @@ class ClassifierModel(DatasetProcessing):
             x=input_test, y=output_test, shuffle=False, batch_size=10, num_epochs=1
         )
 
-        model = self.init_model()
+        # Initialize model
+        model_name = join(self.dataset.model_dir, name)
+        if reset and exists(model_name):
+            LOGGER.info("Removing %s..." % model_name)
+            rmtree(model_name)
+
+        model = self.init_model(model_name, **kwargs)
 
         model.train(input_fn=self.train_fn, steps=100)
         results = model.evaluate(self.test_fn)
