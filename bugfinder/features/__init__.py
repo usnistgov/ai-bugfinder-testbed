@@ -172,10 +172,9 @@ class FlowGraphFeatureExtractor(GraphFeatureExtractor):
     def get_label_from_flowgraph(self, flowgraph):
         raise NotImplementedError(IMPLEMENTATION_ERROR % "get_label_from_flowgraph")
 
-    @staticmethod
-    def initialize_features(entrypoint, label_list):
+    def initialize_features(self, entrypoint, label_list):
         return [0.0] * len(label_list) + [
-            entrypoint["filepath"].split("/")[2] == "good",
+            self.dataset.classes.index(entrypoint["filepath"].split("/")[-2]),
             entrypoint["filepath"].split("/")[-1],
         ]
 

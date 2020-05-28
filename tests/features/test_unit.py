@@ -1,6 +1,6 @@
 from os.path import join, basename, dirname
 from unittest import TestCase
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 from bugfinder.dataset import CWEClassificationDataset
 from bugfinder.features import GraphFeatureExtractor, FlowGraphFeatureExtractor
@@ -448,7 +448,9 @@ class GraphFeatureExtractorGetLabelsFromFeatursMap(TestCase):
 
 class FlowGraphFeatureExtractorInitializeFeatures(TestCase):
     def setUp(self) -> None:
-        dataset_processing = MockFlowGraphFeatureExtractor(None)
+        dataset = Mock(spec=CWEClassificationDataset)
+        dataset.classes = ["bad"]
+        dataset_processing = MockFlowGraphFeatureExtractor(dataset)
         self.returned_features = dataset_processing.initialize_features(
             {"filepath": "./data/bad/entrypoint_name"}, ["label1", "label2"]
         )
@@ -457,7 +459,7 @@ class FlowGraphFeatureExtractorInitializeFeatures(TestCase):
         self.assertEqual(type(self.returned_features), list)
 
     def test_returns_correct_data(self):
-        self.assertEqual(self.returned_features, [0, 0, False, "entrypoint_name"])
+        self.assertEqual(self.returned_features, [0, 0, 0, "entrypoint_name"])
 
 
 class FlowGraphFeatureExtractorFinalizeFeatures(TestCase):

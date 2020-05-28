@@ -51,6 +51,9 @@ class CWEClassificationDataset(object):
 
                 self.test_cases.update(files)
 
+            # Sort classes to avoid discrepancies between runs
+            self.classes = sorted(self.classes)
+
             # Compute stats
             self.stats.append(len(self.test_cases) - sum(self.stats))
 
@@ -140,6 +143,16 @@ class CWEClassificationDataset(object):
         )
 
         return features_info
+
+    def get_classes(self):
+        """ List classes identified in the dataset and their id
+        """
+        class_dict = dict()
+
+        for cat_class in self.classes:
+            class_dict[cat_class] = self.classes.index(cat_class)
+
+        return class_dict
 
     def clear_queue(self):
         self.ops_queue = list()
