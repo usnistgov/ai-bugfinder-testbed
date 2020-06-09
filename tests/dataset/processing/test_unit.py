@@ -1,4 +1,6 @@
 import re
+from os import remove
+from os.path import join
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
@@ -46,10 +48,19 @@ class TestDatasetFileProcessingExecute(TestCase):
         def process_file(self, filepath):
             self.processed_file.append(filepath)
 
+    def setUp(self) -> None:
+        self.dataset_path = "./tests/fixtures/dataset01"
+
+    def tearDown(self) -> None:
+        try:
+            remove(join(self.dataset_path, "summary.json"))
+        except FileNotFoundError:
+            pass  # Ignore FileNotFound errors
+
     @patch("bugfinder.dataset.LOGGER")
     def test_process_file_calls_equal_nb_of_files(self, mock_logger):
         mock_logger.return_value = None
-        dataset_obj = CWEClassificationDataset("./tests/fixtures/dataset01")
+        dataset_obj = CWEClassificationDataset(self.dataset_path)
         data_processing = self.MockDatasetFileProcessing(dataset_obj)
         data_processing.execute()
 

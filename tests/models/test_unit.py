@@ -17,6 +17,10 @@ class MockModel(Mock):
     def evaluate(*args, **kwargs):
         return {"precision": 0.5, "recall": 0.5}
 
+    @staticmethod
+    def predict(*args, **kwargs):
+        return [{"classes": [1]}]
+
 
 class MockClassifierModel(ClassifierModel):
     def init_model(self, name, **kwargs):
@@ -45,6 +49,8 @@ class TestClassifierModelExecute(TestCase):
         patch_paths(self, ["bugfinder.models.LOGGER"])
 
         self.dataset = Mock(spec=CWEClassificationDataset)
+        self.dataset.classes = ["class_0", "class_1"]
+        self.dataset.summary = {"training": list()}
         self.dataset.model_dir = "mock_model_dir"
         self.dataset.features = pd.read_csv(
             "tests/fixtures/dataset01/features/features.csv"
@@ -81,9 +87,9 @@ class TestClassifierModelExecute(TestCase):
 
         self.assertTrue(mock_train.called)
 
-    @patch("tests.models.test_unit.MockModel.evaluate")
-    def test_model_evaluate_called(self, mock_evaluate):
-        mock_evaluate.return_value = {"precision": 0.5, "recall": 0.5}
+    @patch("tests.models.test_unit.MockModel.predict")
+    def test_model_predict_called(self, mock_predict):
+        mock_predict.return_value = [{"classes": [1]}]
         self.dataset_processing.execute("mock_name")
 
-        self.assertTrue(mock_evaluate.called)
+        self.assertTrue(mock_predict.called)

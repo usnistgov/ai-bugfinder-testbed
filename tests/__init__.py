@@ -25,6 +25,9 @@ def directory_shasum(directory):
 
     for root, dirs, files in os.walk(directory):
         for f in files:
+            if f == "summary.json":  # Ignore summary.json file
+                continue
+
             fpath = join(root, f)
             with open(fpath, "rb") as fp:
                 directory_hashmap[fpath.replace(directory, "")] = sha256(

@@ -1,6 +1,7 @@
 """
 """
-from enum import Enum
+import json
+from enum import IntEnum
 from os import listdir, walk
 from os.path import exists, isdir, join, dirname
 
@@ -11,7 +12,7 @@ from bugfinder.utils.processing import is_processing_stack_valid
 from bugfinder.utils.statistics import get_time
 
 
-class DatasetQueueRetCode(Enum):
+class DatasetQueueRetCode(IntEnum):
     OK = 0
     EMPTY_QUEUE = 1
     INVALID_QUEUE = 2
@@ -75,6 +76,7 @@ class CWEClassificationDataset(object):
         self.neo4j_dir = join(self.path, DATASET_DIRS["neo4j"])
         self.feats_dir = join(self.path, DATASET_DIRS["feats"])
         self.model_dir = join(self.path, DATASET_DIRS["models"])
+        self.summary_filepath = join(self.path, "summary.json")
 
         self.classes = list()
         self.test_cases = set()
@@ -82,6 +84,7 @@ class CWEClassificationDataset(object):
         self.feats_ver = 0
         self.stats = list()
         self.ops_queue = list()
+        self.summary = None
 
         self.rebuild_index()
 
@@ -111,6 +114,29 @@ class CWEClassificationDataset(object):
                 self.feats_ver,
             )
         )
+
+        self.load_summary()
+        self.summary["metadata"] = {
+            "test_cases": len(self.test_cases),
+            "classes": len(self.classes),
+            "features": {"number": self.features.shape[1], "version": self.feats_ver},
+        }
+
+    def load_summary(self):
+        if not exists(self.summary_filepath):
+            self.reset_summary()
+            return
+
+        with open(self.summary_filepath, "r") as summary_fp:
+            self.summary = json.load(summary_fp)
+
+    def save_summary(self):
+        with open(self.summary_filepath, "w") as summary_fp:
+            json.dump(self.summary, summary_fp, indent=2)
+
+    def reset_summary(self):
+        self.summary = {"metadata": dict(), "processing": list(), "training": list()}
+        self.save_summary()
 
     def _validate_features(self):
         if self.features.shape[1] < 3:
@@ -182,12 +208,18 @@ class CWEClassificationDataset(object):
         while len(self.ops_queue) != 0:
             operation = self.ops_queue.pop(0)  # Get the first op in the queue
             operation_class = operation["class"](self)
+            operation_summary = {
+                "class": operation_class.__class__.__name__,
+                "args": operation["args"],
+            }
             current_op += 1
 
             LOGGER.info(
                 "Running operation %d/%d (%s)..."
-                % (current_op, total_op, operation_class.__class__.__name__)
+                % (current_op, total_op, operation_summary["class"])
             )
+
+            processing_ops_summary = {"operation": operation_summary, "return_code": -1}
 
             try:
                 # If args are defined, pass them to execute command
@@ -195,6 +227,9 @@ class CWEClassificationDataset(object):
                     operation["class"](self).execute(**operation["args"])
                 else:
                     operation["class"](self).execute()
+
+                processing_ops_summary["return_code"] = DatasetQueueRetCode.OK
+                self.summary["processing"].append(processing_ops_summary)
             except Exception as e:
                 LOGGER.error(
                     "Operation %d/%d failed: %s." % (current_op, total_op, str(e))
@@ -202,8 +237,15 @@ class CWEClassificationDataset(object):
 
                 # Clear the operation queue and exit
                 self.ops_queue.clear()
+                processing_ops_summary[
+                    "return_code"
+                ] = DatasetQueueRetCode.OPERATION_FAIL
+
+                self.summary["processing"].append(processing_ops_summary)
+                self.save_summary()
                 return DatasetQueueRetCode.OPERATION_FAIL
 
         LOGGER.info("%d operations run in %dms." % (total_op, get_time() - _time))
 
+        self.save_summary()
         return DatasetQueueRetCode.OK

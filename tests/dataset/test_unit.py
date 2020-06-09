@@ -1,3 +1,4 @@
+from os import remove
 from os.path import join
 from unittest import TestCase
 from unittest.mock import patch
@@ -19,6 +20,12 @@ class TestCWEClassificationDatasetInit(TestCase):
             mock_rebuild_index.return_value = None
             cls.dataset_path = "mock_dataset_path/"
             cls.dataset = CWEClassificationDataset(cls.dataset_path)
+
+    def tearDown(self) -> None:
+        try:
+            remove(join(self.dataset_path, "summary.json"))
+        except FileNotFoundError:
+            pass  # Ignore FileNotFound errors
 
     def test_path_is_correct(self):
         self.assertEqual(self.dataset.path, self.dataset_path)
@@ -62,6 +69,16 @@ class TestCWEClassificationDatasetRebuildIndex(TestCase):
         patch_logger = patch("bugfinder.dataset.LOGGER")
         patch_logger.start()
         self.addCleanup(patch_logger.stop)
+
+    def tearDown(self) -> None:
+        try:
+            remove("./tests/fixtures/dataset01/summary.json")
+        except FileNotFoundError:
+            pass  # Ignore FileNotFound errors
+        try:
+            remove("./tests/fixtures/dataset02/summary.json")
+        except FileNotFoundError:
+            pass  # Ignore FileNotFound errors
 
     def test_inexistant_dataset_raises_error(self):
         with self.assertRaises(FileNotFoundError):
@@ -117,6 +134,16 @@ class TestCWEClassificationDatasetGetFeaturesInfo(TestCase):
         patch_logger.start()
         self.addCleanup(patch_logger.stop)
 
+    def tearDown(self) -> None:
+        try:
+            remove("./tests/fixtures/dataset01/summary.json")
+        except FileNotFoundError:
+            pass  # Ignore FileNotFound errors
+        try:
+            remove("./tests/fixtures/dataset02/summary.json")
+        except FileNotFoundError:
+            pass  # Ignore FileNotFound errors
+
     def test_column_types_are_correct(self):
         dataset = CWEClassificationDataset("./tests/fixtures/dataset01")
         expected_result = {"non_empty_cols": 3, "empty_cols": 1}
@@ -136,7 +163,14 @@ class TestCWEClassificationDatasetQueueOperation(TestCase):
         patch_logger.start()
         self.addCleanup(patch_logger.stop)
 
-        self.dataset = CWEClassificationDataset("./tests/fixtures/dataset01")
+        self.dataset_path = "./tests/fixtures/dataset01"
+        self.dataset = CWEClassificationDataset(self.dataset_path)
+
+    def tearDown(self) -> None:
+        try:
+            remove(join(self.dataset_path, "summary.json"))
+        except FileNotFoundError:
+            pass  # Ignore FileNotFound errors
 
     def test_queue_size_increases(self):
         initial_queue_size = len(self.dataset.ops_queue)
@@ -155,7 +189,14 @@ class TestCWEClassificationDatasetProcess(TestCase):
         patch_logger.start()
         self.addCleanup(patch_logger.stop)
 
-        self.dataset = CWEClassificationDataset("./tests/fixtures/dataset01")
+        self.dataset_path = "./tests/fixtures/dataset01"
+        self.dataset = CWEClassificationDataset(self.dataset_path)
+
+    def tearDown(self) -> None:
+        try:
+            remove(join(self.dataset_path, "summary.json"))
+        except FileNotFoundError:
+            pass  # Ignore FileNotFound errors
 
     def test_empty_queue_returns_correct_code(self):
         self.assertEqual(self.dataset.process(), DatasetQueueRetCode.EMPTY_QUEUE)
