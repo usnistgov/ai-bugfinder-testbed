@@ -39,6 +39,11 @@ class CopyDataset(DatasetProcessing):
                 )
 
         copytree(self.dataset.path, to_path)
+
+        # Resetting summary for the created dataset
+        dest_dataset = Dataset(to_path)
+        dest_dataset.reset_summary()
+
         LOGGER.debug("Dataset copied in %dms" % (get_time() - _time))
 
 
@@ -92,6 +97,10 @@ class ExtractSampleDataset(DatasetProcessing):
 
                 copytree(orig_filepath, dest_filepath)
 
+        # Resetting summary for the created dataset
+        dest_dataset = Dataset(to_path)
+        dest_dataset.reset_summary()
+
         LOGGER.debug("Dataset extracted in %dms" % (get_time() - _time))
 
 
@@ -130,6 +139,10 @@ class InverseDataset(DatasetProcessing):
             dest_test_case = join(to_path, test_case)
 
             copytree(orig_test_case, dest_test_case)
+
+        # Resetting summary for the created dataset
+        dest_dataset = Dataset(to_path)
+        dest_dataset.reset_summary()
 
         LOGGER.debug("Dataset created in %dms" % (get_time() - _time))
 

@@ -5,6 +5,7 @@ from os.path import join, exists
 from shutil import rmtree
 
 import tensorflow as tf
+from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 
 from bugfinder.dataset.processing import DatasetProcessing
@@ -16,6 +17,7 @@ class ClassifierModel(DatasetProcessing):
         super().__init__(dataset)
 
         self.model_cls = None
+        self.training_summary = None
         self.train_fn = None
         self.test_fn = None
         self.columns = None
@@ -24,7 +26,7 @@ class ClassifierModel(DatasetProcessing):
     def init_model(self, name, **kwargs):
         raise NotImplementedError()
 
-    def execute(self, name, reset=False, **kwargs):
+    def execute(self, name, batch_size=100, num_steps=1000, reset=False, **kwargs):
         if self.model_cls is None:
             raise Exception("Parameter 'model_cls' is undefined")
 
@@ -43,10 +45,10 @@ class ClassifierModel(DatasetProcessing):
         self.columns = input_train.columns
 
         self.train_fn = tf.estimator.inputs.pandas_input_fn(
-            x=input_train, y=output_train, shuffle=True, batch_size=100, num_epochs=100
+            x=input_train, y=output_train, shuffle=True, batch_size=batch_size,
         )
         self.test_fn = tf.estimator.inputs.pandas_input_fn(
-            x=input_test, y=output_test, shuffle=False, batch_size=10, num_epochs=1
+            x=input_test, y=output_test, shuffle=False, batch_size=batch_size
         )
 
         # Initialize model
@@ -55,13 +57,31 @@ class ClassifierModel(DatasetProcessing):
             LOGGER.info("Removing %s..." % model_name)
             rmtree(model_name)
 
+        summary = {
+            "samples": {"training": len(input_train), "testing": len(input_test)},
+            "training": {"time": 0, "steps": num_steps},
+            "results": None,
+        }
         model = self.init_model(model_name, **kwargs)
+        model.train(input_fn=self.train_fn, steps=num_steps)
 
-        model.train(input_fn=self.train_fn, steps=100)
-        results = model.evaluate(self.test_fn)
+        preds_test = [
+            int(pred["classes"][0]) for pred in model.predict(input_fn=self.test_fn)
+        ]
 
-        pr = results["precision"]
-        rc = results["recall"]
-        fs = 2 * pr * rc / (pr + rc)
+        summary["results"] = classification_report(
+            output_test,
+            preds_test,
+            target_names=self.dataset.classes,
+            output_dict=True,
+        )
 
-        LOGGER.info("Precision: %f%%; Recall: %f%%; F-score: %f%%" % (pr, rc, fs))
+        self.dataset.summary["training"].append(summary)
+
+        pr = summary["results"]["weighted avg"]["precision"] * 100
+        rc = summary["results"]["weighted avg"]["recall"] * 100
+        fs = summary["results"]["weighted avg"]["f1-score"] * 100
+
+        LOGGER.info(
+            "Precision: %02.03f%%; Recall: %02.03f%%; F-score: %02.03f%%" % (pr, rc, fs)
+        )

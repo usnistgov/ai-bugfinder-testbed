@@ -1,7 +1,9 @@
 import os
+from os import remove
+from os.path import join
 from shutil import rmtree
 from unittest import TestCase
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 from bugfinder.dataset import CWEClassificationDataset
 from bugfinder.dataset.processing.dataset_ops import (
@@ -32,6 +34,7 @@ class TestCopyDatasetExecute(TestCase):
 
     def tearDown(self) -> None:
         try:
+            remove(join(self.input_dataset_path, "summary.json"))
             rmtree(self.output_dataset_path)
         except FileNotFoundError:
             pass  # Ignore FileNotFound errors
@@ -74,6 +77,7 @@ class TestExtractSampleDatasetExecute(TestCase):
 
     def tearDown(self) -> None:
         try:
+            remove(join(self.input_dataset_path, "summary.json"))
             rmtree(self.output_dataset_path)
         except FileNotFoundError:
             pass  # Ignore FileNotFound errors
@@ -151,6 +155,8 @@ class TestInverseDatasetExecute(TestCase):
 
     def tearDown(self) -> None:
         try:
+            remove(join(self.input_dataset_path, "summary.json"))
+            remove(join(self.from_dataset_path, "summary.json"))
             rmtree(self.output_dataset_path)
         except FileNotFoundError:
             pass  # Ignore FileNotFound errors
@@ -215,6 +221,12 @@ class TestInverseDatasetExecute(TestCase):
 
 
 class TestRightFixer(TestCase):
+    def tearDown(self) -> None:
+        try:
+            remove(join(self.input_dataset_path, "summary.json"))
+        except FileNotFoundError:
+            pass  # Ignore FileNotFound errors
+
     def test_right_are_fixed(self):
         patch_paths(
             self,
