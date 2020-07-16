@@ -1,18 +1,24 @@
 import os
 import random
-from os.path import exists, join, isdir
-from shutil import rmtree, copytree
+from os.path import exists, join, isdir, basename
+from shutil import rmtree, copytree, copyfile
 
 from bugfinder.dataset import CWEClassificationDataset as Dataset
 from bugfinder.dataset.processing import (
     DatasetProcessing,
     DatasetProcessingWithContainer,
+    DatasetProcessingCategory,
 )
 from bugfinder.settings import LOGGER
 from bugfinder.utils.statistics import get_time
 
 
 class CopyDataset(DatasetProcessing):
+    def __init__(self, dataset):
+        super().__init__(dataset)
+
+        self.metadata["category"] = str(DatasetProcessingCategory.__NONE__)
+
     def execute(self, to_path, force=False):
         LOGGER.debug(
             "Copying dataset at %s to %s (force=%d)..."
@@ -39,10 +45,6 @@ class CopyDataset(DatasetProcessing):
                 )
 
         copytree(self.dataset.path, to_path)
-
-        # Resetting summary for the created dataset
-        dest_dataset = Dataset(to_path)
-        dest_dataset.reset_summary()
 
         LOGGER.debug("Dataset copied in %dms" % (get_time() - _time))
 
@@ -97,9 +99,10 @@ class ExtractSampleDataset(DatasetProcessing):
 
                 copytree(orig_filepath, dest_filepath)
 
-        # Resetting summary for the created dataset
-        dest_dataset = Dataset(to_path)
-        dest_dataset.reset_summary()
+        copyfile(
+            self.dataset.summary_filepath,
+            join(to_path, basename(self.dataset.summary_filepath)),
+        )
 
         LOGGER.debug("Dataset extracted in %dms" % (get_time() - _time))
 
@@ -140,9 +143,10 @@ class InverseDataset(DatasetProcessing):
 
             copytree(orig_test_case, dest_test_case)
 
-        # Resetting summary for the created dataset
-        dest_dataset = Dataset(to_path)
-        dest_dataset.reset_summary()
+        copyfile(
+            self.dataset.summary_filepath,
+            join(to_path, basename(self.dataset.summary_filepath)),
+        )
 
         LOGGER.debug("Dataset created in %dms" % (get_time() - _time))
 

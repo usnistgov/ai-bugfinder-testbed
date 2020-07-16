@@ -3,6 +3,7 @@
 from inspect import isclass
 
 from bugfinder.dataset.processing import DatasetProcessing
+from bugfinder.settings import LOGGER
 
 
 def is_operation_valid(processing_operation):
@@ -19,10 +20,22 @@ def is_operation_valid(processing_operation):
 
 
 def is_processing_stack_valid(operation_list):
+    processing_operation_index = 1
     for processing_operation in operation_list:
         try:
+            LOGGER.debug(
+                "Checking operation %d/%d (%s)..."
+                % (
+                    processing_operation_index,
+                    len(operation_list),
+                    str(processing_operation),
+                )
+            )
             is_operation_valid(processing_operation)
         except AssertionError:
+            LOGGER.error("Processing operation is invalid", exc_info=True)
             return False
+
+        processing_operation_index += 1
 
     return True

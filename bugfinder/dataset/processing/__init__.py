@@ -2,13 +2,27 @@ from abc import ABC, abstractmethod
 from os import listdir
 from os.path import join
 
+from enum import Enum
+
 from bugfinder.settings import LOGGER
 from bugfinder.utils.containers import start_container, stop_container_by_name
 from bugfinder.utils.rand import get_rand_string
 
 
+class DatasetProcessingCategory(Enum):
+    __NONE__ = "__null__"
+    PROCESSING = "processing"
+    TRAINING = "training"
+
+    def __str__(self):
+        return self.value
+
+
 class DatasetProcessing(ABC):
     def __init__(self, dataset):
+        self.metadata = {"category": str(DatasetProcessingCategory.PROCESSING)}
+        self.processing_stats = dict()
+
         self.dataset = dataset
 
     @abstractmethod
