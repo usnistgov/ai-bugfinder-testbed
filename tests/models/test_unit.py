@@ -9,6 +9,8 @@ from tests import patch_paths
 
 
 class MockModel(Mock):
+    __name__ = "MockModel"
+
     @staticmethod
     def train(*args, **kwargs):
         return None

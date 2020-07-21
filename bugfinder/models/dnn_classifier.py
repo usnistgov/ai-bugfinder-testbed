@@ -20,6 +20,6 @@ class DNNClassifierTraining(ClassifierModel):
             feature_columns=[
                 tf.feature_column.numeric_column(col) for col in self.columns
             ],
-            n_classes=2,
+            n_classes=2,  # FIXME should be defined by the dataset
             model_dir=model_dir,
         )

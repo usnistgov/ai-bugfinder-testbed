@@ -3,10 +3,11 @@
 import json
 from enum import IntEnum
 from os import listdir, walk
-from os.path import exists, isdir, join, dirname
+from os.path import exists, isdir, join, dirname, realpath
 
 import pandas as pd
 
+from bugfinder.dataset.processing import DatasetProcessingCategory
 from bugfinder.settings import LOGGER, DATASET_DIRS
 from bugfinder.utils.processing import is_processing_stack_valid
 from bugfinder.utils.statistics import get_time
@@ -135,7 +136,7 @@ class CWEClassificationDataset(object):
             json.dump(self.summary, summary_fp, indent=2)
 
     def reset_summary(self):
-        self.summary = {"metadata": dict(), "processing": list(), "training": list()}
+        self.summary = {"metadata": dict(), "processing": list(), "training": dict()}
         self.save_summary()
 
     def _validate_features(self):
@@ -194,6 +195,7 @@ class CWEClassificationDataset(object):
         LOGGER.debug("Processing ops queue...")
 
         if not is_processing_stack_valid(self.ops_queue):
+            LOGGER.error("Invalid ops queue")
             return DatasetQueueRetCode.INVALID_QUEUE
 
         total_op = len(self.ops_queue)
@@ -208,28 +210,46 @@ class CWEClassificationDataset(object):
         while len(self.ops_queue) != 0:
             operation = self.ops_queue.pop(0)  # Get the first op in the queue
             operation_class = operation["class"](self)
-            operation_summary = {
-                "class": operation_class.__class__.__name__,
+
+            operation_category = operation_class.metadata["category"]
+
+            if operation_category not in self.summary.keys() and operation_category != str(
+                DatasetProcessingCategory.__NONE__
+            ):
+                self.summary[operation_category] = list()
+
+            operation_call = {
+                "class": "%s.%s"
+                % (
+                    operation_class.__class__.__module__,
+                    operation_class.__class__.__name__,
+                ),
                 "args": operation["args"],
             }
             current_op += 1
 
             LOGGER.info(
                 "Running operation %d/%d (%s)..."
-                % (current_op, total_op, operation_summary["class"])
+                % (current_op, total_op, operation_call["class"])
             )
 
-            processing_ops_summary = {"operation": operation_summary, "return_code": -1}
+            op_start_time = get_time()  # Time single operation
 
             try:
+                operation_instance = operation["class"](self)
                 # If args are defined, pass them to execute command
                 if operation["args"] is not None:
-                    operation["class"](self).execute(**operation["args"])
+                    operation_instance.execute(**operation["args"])
                 else:
-                    operation["class"](self).execute()
+                    operation_instance.execute()
 
-                processing_ops_summary["return_code"] = DatasetQueueRetCode.OK
-                self.summary["processing"].append(processing_ops_summary)
+                self.append_summary(
+                    operation_call,
+                    operation_category,
+                    get_time() - op_start_time,
+                    operation_instance.processing_stats,
+                    DatasetQueueRetCode.OK,
+                )
             except Exception as e:
                 LOGGER.error(
                     "Operation %d/%d failed: %s." % (current_op, total_op, str(e))
@@ -237,15 +257,46 @@ class CWEClassificationDataset(object):
 
                 # Clear the operation queue and exit
                 self.ops_queue.clear()
-                processing_ops_summary[
-                    "return_code"
-                ] = DatasetQueueRetCode.OPERATION_FAIL
-
-                self.summary["processing"].append(processing_ops_summary)
-                self.save_summary()
+                self.append_summary(
+                    operation_call,
+                    operation_category,
+                    get_time() - op_start_time,
+                    dict(),
+                    DatasetQueueRetCode.OPERATION_FAIL,
+                )
                 return DatasetQueueRetCode.OPERATION_FAIL
 
         LOGGER.info("%d operations run in %dms." % (total_op, get_time() - _time))
 
-        self.save_summary()
         return DatasetQueueRetCode.OK
+
+    def append_summary(self, op_call, op_category, exec_time, op_stats, return_code=-1):
+        processing_ops_summary = {
+            "dataset_path": realpath(self.path),
+            "operation": op_call,
+            "time": exec_time,
+            "return_code": return_code,
+        }
+
+        processing_ops_summary.update(op_stats)
+
+        if op_category == str(DatasetProcessingCategory.TRAINING):
+            if op_call["args"]["name"] not in self.summary[op_category].keys():
+                self.summary[op_category][op_call["args"]["name"]] = {
+                    "last_results": None,
+                    "sessions": list(),
+                }
+
+            self.summary[op_category][op_call["args"]["name"]][
+                "last_results"
+            ] = processing_ops_summary["last_results"]
+            del processing_ops_summary["last_results"]
+
+            self.summary[op_category][op_call["args"]["name"]]["sessions"].append(
+                processing_ops_summary
+            )
+
+        elif op_category != str(DatasetProcessingCategory.__NONE__):
+            self.summary[op_category].append(processing_ops_summary)
+
+        self.save_summary()
