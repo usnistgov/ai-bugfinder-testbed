@@ -4,11 +4,11 @@ stages:
   - tests
 
 before_script:
-  - curl -L "https://github.com/docker/compose/releases/download/1.26.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-  - chmod +x /usr/local/bin/docker-compose
+  - curl -L "https://github.com/docker/compose/releases/download/1.26.2/docker-compose-$(uname -s)-$(uname -m)" -o /tmp/docker-compose
+  - chmod +x /tmp/docker-compose
   - pip install -r ./requirements.txt
   - pip install -r ./requirements-dev.txt
-  - cd images; docker-compose build
+  - cd images; /tmp/docker-compose build
 
 tests:
   stage: tests
