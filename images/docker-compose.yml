@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3"
 services:
   joern-lite-v0.3.1:
     image: joern-lite:0.3.1
