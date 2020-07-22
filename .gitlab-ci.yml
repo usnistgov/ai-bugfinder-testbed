@@ -5,8 +5,8 @@ stages:
 
 before_script:
   - pip install -r ./requirements.txt
-  - pip install pytest
-  - python ./build_images.py
+  - pip install -r ./requirements-dev.txt
+  - cd images; docker-compose build
 
 tests:
   stage: tests
