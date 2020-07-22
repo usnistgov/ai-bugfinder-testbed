@@ -16,6 +16,7 @@ Pre-requisites
    -  ``unzip``
 
 -  Docker: https://docs.docker.com/install/#supported-platforms
+-  Docker-compose: https://docs.docker.com/compose/install/
 -  Python 3.6: https://www.python.org/downloads/release/python-369/
 -  Virtual environment:
 
