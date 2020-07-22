@@ -1,4 +1,4 @@
-FROM alpine:3.11
+FROM alpine:3.12
 
 # Build parameters
 ARG JOERN_VERSION="0.3.1"
