@@ -8,7 +8,7 @@ before_script:
   - chmod +x /tmp/docker-compose
   - pip install -r ./requirements.txt
   - pip install -r ./requirements-dev.txt
-  - cd images; /tmp/docker-compose build
+  - cd images; /tmp/docker-compose build; cd - &>/dev/null
 
 tests:
   stage: tests
