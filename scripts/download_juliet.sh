@@ -1,5 +1,5 @@
 #!/bin/bash
-# Script downloading CWE121 test cases from Juliet 1.3
+# Script downloading Juliet 1.3 from the SARD website
 #
 # ==============================================================================
 # Script parameters
