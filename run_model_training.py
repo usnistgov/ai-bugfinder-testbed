@@ -30,6 +30,40 @@ if __name__ == "__main__":
     parser.add_argument(
         "--name", "-n", required=True, help="name to the saved model",
     )
+    parser.add_argument(
+        "--batch-size",
+        "-b",
+        required=False,
+        default=100,
+        type=int,
+        help="batch size for processing data (default=100)",
+    )
+    parser.add_argument(
+        "--limit",
+        "-l",
+        type=int,
+        required=False,
+        help="max number of items to train with",
+    )
+    parser.add_argument(
+        "--epochs", "-e", type=int, default=1, required=False, help="number of epochs",
+    )
+    parser.add_argument(
+        "--keep-best-model",
+        "-k",
+        required=False,
+        default=False,
+        help="keep the best performing model",
+        action="store_true",
+    )
+    parser.add_argument(
+        "--reset",
+        "-r",
+        default=False,
+        required=False,
+        help="overwrite an existing model",
+        action="store_true",
+    )
 
     args = parser.parse_args()
 
@@ -38,7 +72,14 @@ if __name__ == "__main__":
 
     operation = {
         "class": options[args.model],
-        "args": {"name": args.name},
+        "args": {
+            "name": args.name,
+            "batch_size": args.batch_size,
+            "max_items": args.limit,
+            "epochs": args.epochs,
+            "keep_best_model": args.keep_best_model,
+            "reset": args.reset,
+        },
     }
 
     is_operation_valid(operation)
