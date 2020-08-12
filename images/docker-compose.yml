@@ -1,0 +1,14 @@
+version: "3"
+services:
+  joern-lite-v0.3.1:
+    image: joern-lite:0.3.1
+    build: ./joern-lite-v0.3.1
+  joern-lite-v0.4.0:
+    image: joern-lite:0.4.0
+    build: ./joern-lite-v0.4.0
+  neo4j-ai:
+    image: neo4j-ai:latest
+    build: ./neo4j-ai
+  right-fixer:
+    image: right-fixer:latest
+    build: ./right-fixer

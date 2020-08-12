@@ -1,6 +1,6 @@
 import re
 from os import listdir
-from os.path import join
+from os.path import join, splitext
 from shutil import move
 
 from bugfinder.dataset.processing import DatasetProcessing, DatasetFileProcessing
@@ -19,6 +19,7 @@ class ReplaceLitterals(DatasetProcessing):
             join(test_case, filepath)
             for test_case in self.dataset.test_cases
             for filepath in listdir(join(self.dataset.path, test_case))
+            if splitext(filepath)[1] in [".c", ".cpp", ".h", ".hpp"]
         ]
 
         while len(file_processing_list) != 0:
@@ -66,6 +67,10 @@ class RemoveMainFunction(DatasetFileProcessing):
     main_fn_exit = "#endif\n"
 
     def process_file(self, filepath):
+        if splitext(filepath)[1] not in [".c", ".cpp", ".h", ".hpp"]:
+            LOGGER.debug("File %s is not a code file. Ignoring..." % filepath)
+            return
+
         LOGGER.debug("Removing main function in %s" % filepath)
         tmp_filepath = "%s.tmp" % filepath
         is_in_main_fn = False

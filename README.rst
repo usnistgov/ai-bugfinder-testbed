@@ -16,6 +16,7 @@ Pre-requisites
    -  ``unzip``
 
 -  Docker: https://docs.docker.com/install/#supported-platforms
+-  Docker-compose: https://docs.docker.com/compose/install/
 -  Python 3.6: https://www.python.org/downloads/release/python-369/
 -  Virtual environment:
 
@@ -56,8 +57,15 @@ To only download the CWE-121 data, please use
 Build the docker images
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-The necessary docker images can be built using
-``python ./build_images.py``. Four images should be built:
+The necessary docker images can be built using *docker-compose*. Run the
+following command to build them:
+
+.. code-block:: bash
+
+    cd images
+    docker-compose build
+
+Four images should be built:
 
 - *joern-lite:0.3.1*: Latest release of Joern (11/21/2011).
 - *joern-lite:0.4.0*: Latest code update from Joern (04/12/2017).

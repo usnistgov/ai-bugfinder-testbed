@@ -190,8 +190,10 @@ class ClassifierModel(DatasetProcessing):
             )
             rmtree(model_dir)
             copytree(model_dir_bkp, model_dir)
-
-        self.processing_stats["last_results"] = last_results
+        else:
+            self.processing_stats["last_results"] = self.processing_stats["results"][
+                "weighted avg"
+            ]
 
         if exists(model_dir_bkp):
             rmtree(model_dir_bkp)
