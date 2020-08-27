@@ -1,6 +1,8 @@
 """ Common settings shared by the scripts
 """
+import os
 import logging.config
+import multiprocessing
 from os.path import dirname, abspath
 
 ROOT_DIR = "%s/.." % dirname(abspath(__file__))
@@ -44,6 +46,8 @@ DATASET_DIRS = {
     "feats": "features",
     "models": "models",
 }
+
+POOL_SIZE = int(os.getenv("POOL_SIZE", multiprocessing.cpu_count()))
 
 logging.config.dictConfig(LOGGER_CONFIG)
 LOGGER = logging.getLogger("app")
