@@ -16,7 +16,8 @@ class MockDatasetProcessingWithContainer(DatasetProcessingWithContainer):
     def configure_container(self):
         self.image_name = "mock:latest"
         self.container_name = "mock-container"
-        self.ports = {"1111": "1111"}
+        self.container_ports = ["1111"]
+        self.machine_ports = ["1111"]
         self.volumes = {"host_vol": "guest_vol"}
         self.environment = {"key0": "value0"}
         self.command = "mock_command"
@@ -97,8 +98,11 @@ class TestDatasetProcessingWithContainerInit(TestCase):
     def test_default_container_name(self):
         self.assertEqual(self.mock_dataset_processing.container_name, "")
 
-    def test_default_ports(self):
-        self.assertEqual(self.mock_dataset_processing.ports, None)
+    def test_container_ports(self):
+        self.assertEqual(self.mock_dataset_processing.container_ports, None)
+
+    def test_machine_ports(self):
+        self.assertEqual(self.mock_dataset_processing.machine_ports, None)
 
     def test_default_volumes(self):
         self.assertEqual(self.mock_dataset_processing.volumes, None)

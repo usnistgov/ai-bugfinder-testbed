@@ -22,10 +22,7 @@ class Neo4J3Processing(DatasetProcessingWithContainer):
             "NEO4J_dbms_shell_enabled": "true",
             "NEO4J_AUTH": "none",
         }
-        self.ports = {
-            "7474": "7474",
-            "7687": "7687",
-        }
+        self.container_ports = ["7474", "7687"]
         self.volumes = {
             self.dataset.neo4j_dir: "/data/databases/graph.db",
         }
@@ -45,4 +42,8 @@ class Neo4J3Processing(DatasetProcessingWithContainer):
     def send_commands(self):
         wait_log_display(self.container, self.start_string)
 
-        self.neo4j_db = Graph(scheme="http", host="0.0.0.0", port="7474")
+        self.neo4j_db = Graph(
+            scheme="http",
+            host="0.0.0.0",
+            port=self.machine_ports[self.container_ports.index("7474")],
+        )
