@@ -54,22 +54,26 @@ class TestNeo4J3ProcessingConfigureContainer(TestCase):
     def test_ports_correct(self):
         self.dataset_processing.configure_container()
 
-        self.assertDictEqual(
-            self.dataset_processing.ports, {"7474": "7474", "7687": "7687",}
-        )
+        self.assertListEqual(self.dataset_processing.container_ports, ["7474", "7687"])
 
     def test_volume_correct(self):
         self.dataset_processing.configure_container()
 
         self.assertDictEqual(
             self.dataset_processing.volumes,
-            {self.dataset.neo4j_dir: "/data/databases/graph.db",},
+            {
+                self.dataset.neo4j_dir: "/data/databases/graph.db",
+            },
         )
 
 
 class TestNeo4J3ProcessingSendCommands(TestCase):
     def setUp(self) -> None:
-        self.dataset_processing = MockNeo4J3Processing(None)
+        self.dataset = Mock(spec=CWEClassificationDataset)
+        self.dataset.neo4j_dir = "mock_neo4j_dir"
+        self.dataset_processing = MockNeo4J3Processing(self.dataset)
+        self.dataset_processing.configure_container()
+        self.dataset_processing.assign_ports()
 
     @patch("bugfinder.neo4j.wait_log_display")
     def test_wait_for_log_display_called(self, mock_wait_log_display):

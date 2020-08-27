@@ -73,20 +73,10 @@ class DatasetProcessingWithContainer(DatasetProcessing):
 
             while not started:
                 try:
-                    # Randomly assign ports on the machine
-                    assigned_ports = None
-                    if self.container_ports is not None:
-                        self.machine_ports = [
-                            "%d" % randint(49152, 65535) for _ in self.container_ports
-                        ]
-                        assigned_ports = dict(
-                            zip(self.container_ports, self.machine_ports)
-                        )
-
                     self.container = start_container(
                         self.image_name,
                         self.container_name,
-                        assigned_ports,
+                        self.assign_ports(),
                         self.volumes,
                         self.environment,
                         self.command,
@@ -112,6 +102,17 @@ class DatasetProcessingWithContainer(DatasetProcessing):
         finally:
             if self.container is not None and self.detach:
                 stop_container_by_name(self.container_name)
+
+    def assign_ports(self):
+        """Randomly assign ports on the machine."""
+        assigned_ports = None
+        if self.container_ports is not None:
+            self.machine_ports = [
+                "%d" % randint(49152, 65535) for _ in self.container_ports
+            ]
+            assigned_ports = dict(zip(self.container_ports, self.machine_ports))
+
+        return assigned_ports
 
     @abstractmethod
     def configure_container(self):
