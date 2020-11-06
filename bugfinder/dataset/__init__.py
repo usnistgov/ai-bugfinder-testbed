@@ -10,7 +10,7 @@ import pandas as pd
 from bugfinder.dataset.processing import DatasetProcessingCategory
 from bugfinder.settings import LOGGER, DATASET_DIRS
 from bugfinder.utils.processing import is_processing_stack_valid
-from bugfinder.utils.statistics import get_time
+from bugfinder.utils.statistics import get_time, display_time
 
 
 class DatasetQueueRetCode(IntEnum):
@@ -103,12 +103,11 @@ class CWEClassificationDataset(object):
         if len(self.test_cases) > 0:
             self.stats = [st / len(self.test_cases) for st in self.stats]
 
-        _time = get_time() - _time
         LOGGER.info(
-            "Dataset index build in %dms. %d test_cases, %d classes, "
+            "Dataset index build in %s. %d test_cases, %d classes, "
             "%d features (v%d)."
             % (
-                _time,
+                display_time(get_time() - _time),
                 len(self.test_cases),
                 len(self.classes),
                 self.features.shape[1],
@@ -172,8 +171,7 @@ class CWEClassificationDataset(object):
         return features_info
 
     def get_classes(self):
-        """ List classes identified in the dataset and their id
-        """
+        """List classes identified in the dataset and their id"""
         class_dict = dict()
 
         for cat_class in self.classes:
@@ -213,8 +211,9 @@ class CWEClassificationDataset(object):
 
             operation_category = operation_class.metadata["category"]
 
-            if operation_category not in self.summary.keys() and operation_category != str(
-                DatasetProcessingCategory.__NONE__
+            if (
+                operation_category not in self.summary.keys()
+                and operation_category != str(DatasetProcessingCategory.__NONE__)
             ):
                 self.summary[operation_category] = list()
 
@@ -266,7 +265,9 @@ class CWEClassificationDataset(object):
                 )
                 return DatasetQueueRetCode.OPERATION_FAIL
 
-        LOGGER.info("%d operations run in %dms." % (total_op, get_time() - _time))
+        LOGGER.info(
+            "%d operations run in %s." % (total_op, display_time(get_time() - _time))
+        )
 
         return DatasetQueueRetCode.OK
 

@@ -33,7 +33,8 @@ class Neo4J3Processing(DatasetProcessingWithContainer):
         # Reset queue to add the right fixer step
         self.dataset.clear_queue()
         self.dataset.queue_operation(
-            RightFixer, {"command_args": "neo4j_v3.db 101 101"},
+            RightFixer,
+            {"command_args": "neo4j_v3.db 101 101"},
         )
         self.dataset.process()
 
