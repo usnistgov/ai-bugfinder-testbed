@@ -58,14 +58,14 @@ class Neo4JAnnotations(Neo4J3Processing):
     def send_commands(self):
         super().send_commands()
 
-        LOGGER.info("Running commands...")
+        LOGGER.debug("Running annotation commands...")
         for cmd in self.COMMANDS:
             try:
                 start = get_time()
                 self.neo4j_db.run(cmd)
 
                 LOGGER.info(
-                    "Command %d out of %d run in %s"
+                    "Annotation command %d/%d run in %s"
                     % (
                         self.COMMANDS.index(cmd) + 1,
                         len(self.COMMANDS),

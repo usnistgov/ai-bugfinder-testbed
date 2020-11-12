@@ -20,16 +20,18 @@ class Neo4J2Converter(DatasetProcessingWithContainer):
             "NEO4J_ALLOW_STORE_UPGRADE": "true",
             "NEO4J_AUTH": "none",
         }
-        self.ports = {"7474": "7474"}
+        self.container_ports = ["7474"]
         self.volumes = {self.dataset.joern_dir: "/data/graph.db"}
 
     def send_commands(self):
         wait_log_display(self.container, self.START_STRING)
 
+        LOGGER.debug("Importing DB into Neo4J v2.3...")
+
         # Copy Joern directory content to Neo4J directory content
         makedirs(self.dataset.neo4j_dir)
         if not copy_dir(self.dataset.joern_dir, self.dataset.neo4j_dir):
-            raise Exception("Copy to neo4j-v3 failed")
+            raise Exception("Copy to neo4j-v3 failed.")
 
         for dirname, sudirs, filelist in walk(self.dataset.neo4j_dir):
             for filename in filelist:
@@ -37,6 +39,8 @@ class Neo4J2Converter(DatasetProcessingWithContainer):
 
                 if fileext == ".id":
                     remove(join(dirname, filename))
+
+        LOGGER.info("Imported DB into Neo4J v2.3.")
 
 
 class Neo4J3Converter(Neo4J3Processing):
@@ -48,4 +52,4 @@ class Neo4J3Converter(Neo4J3Processing):
 
     def send_commands(self):
         super().send_commands()
-        LOGGER.debug("Imported DB into Neo4J v3")
+        LOGGER.info("Imported DB into Neo4J v3.")

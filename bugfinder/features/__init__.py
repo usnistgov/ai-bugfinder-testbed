@@ -209,7 +209,10 @@ class FlowGraphFeatureExtractor(GraphFeatureExtractor):
             label = self.get_label_from_flowgraph(flowgraph)
 
             if label not in labels:
-                LOGGER.debug("Feature %s not found and ignored" % label)
+                LOGGER.debug(
+                    "Feature '%s' not found in label reference file and ignored."
+                    % label
+                )
                 continue
 
             # Increment the count for the current graph in the current test
@@ -223,8 +226,6 @@ class FlowGraphFeatureExtractor(GraphFeatureExtractor):
     def extract_features(self):
         labels = self.get_labels_from_feature_map()
         entrypoint_list = self._get_entrypoint_list()
-        entrypoint_index = 0
-        last_progress = 0
 
         if len(entrypoint_list) == 0:
             LOGGER.warning("No entrypoint found. Returning None...")
@@ -257,10 +258,7 @@ class FlowGraphFeatureExtractor(GraphFeatureExtractor):
 
     def map_features(self):
         # List of feature labels to return
-        labels = []
         entrypoint_list = self._get_entrypoint_list()
-        entrypoint_index = 0
-        last_progress = 0
 
         LOGGER.info(
             "Retrieved %d entrypoints. Querying for flowgraphs..."

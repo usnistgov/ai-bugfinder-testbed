@@ -1,6 +1,6 @@
 """
 """
-from os.path import join
+from os.path import join, realpath
 from shutil import copy
 
 import pandas as pd
@@ -37,8 +37,9 @@ class FeatureExtractor(DatasetProcessing):
         for col in drop_out_cols:
             output_features[col] = self.dataset.features[col]
 
-        output_features.to_csv(
-            join(self.dataset.feats_dir, "features.csv"), index=False
+        output_features_filepath = realpath(
+            join(self.dataset.feats_dir, "features.csv")
         )
+        output_features.to_csv(output_features_filepath, index=False)
 
-        LOGGER.info("Feature file created.")
+        LOGGER.info("Feature file saved to '%s'." % output_features_filepath)

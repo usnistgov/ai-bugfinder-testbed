@@ -29,7 +29,7 @@ class DatasetProcessing(ABC):
 
     @abstractmethod
     def execute(self, *args, **kwargs):
-        raise NotImplementedError("method not implemented")
+        raise NotImplementedError("Method 'execute' not implemented.")
 
 
 class DatasetFileProcessing(DatasetProcessing):
@@ -42,7 +42,7 @@ class DatasetFileProcessing(DatasetProcessing):
 
     @abstractmethod
     def process_file(self, filepath):
-        raise NotImplementedError("method not implemented")
+        raise NotImplementedError("Method 'process_file' not implemented.")
 
 
 class DatasetProcessingWithContainer(DatasetProcessing):
@@ -86,7 +86,7 @@ class DatasetProcessingWithContainer(DatasetProcessing):
                     started = True
                 except Exception as e:  # Try to restart the container if an error occured
                     LOGGER.error(
-                        "An exception has occured while starting the container: %s"
+                        "An exception has occured while starting the container: %s."
                         % str(e)
                     )
                     sleep(5)
@@ -97,7 +97,7 @@ class DatasetProcessingWithContainer(DatasetProcessing):
 
             self.send_commands()
         except Exception as e:
-            LOGGER.error("Error while running commands: %s" % str(e))
+            LOGGER.error("Error while running commands: %s." % str(e))
             raise e
         finally:
             if self.container is not None and self.detach:
@@ -116,11 +116,11 @@ class DatasetProcessingWithContainer(DatasetProcessing):
 
     @abstractmethod
     def configure_container(self):
-        raise NotImplementedError("method not implemented")
+        raise NotImplementedError("Method 'configure_container' not implemented.")
 
     def configure_command(self, command):
         raise Exception("Command %s not handled by container")
 
     @abstractmethod
     def send_commands(self):
-        raise NotImplementedError("method not implemented")
+        raise NotImplementedError("Method 'send_commands' not implemented.")

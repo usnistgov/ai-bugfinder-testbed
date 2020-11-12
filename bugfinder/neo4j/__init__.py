@@ -36,7 +36,7 @@ class Neo4J3Processing(DatasetProcessingWithContainer):
             RightFixer,
             {"command_args": "neo4j_v3.db 101 101"},
         )
-        self.dataset.process()
+        self.dataset.process(silent=True)
 
         self.dataset.ops_queue = current_ops_queue
 
