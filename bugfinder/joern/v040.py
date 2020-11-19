@@ -13,6 +13,8 @@ class JoernDatasetProcessing(JoernDefaultDatasetProcessing):
         self.container_name = "joern040"
 
     def send_commands(self):
+        LOGGER.debug("Extracting Joern V0.4.0 DB...")
+
         content = {"edges": [], "nodes": []}
 
         warn_count = 0
@@ -67,3 +69,6 @@ class JoernDatasetProcessing(JoernDefaultDatasetProcessing):
 
         with open(join(out_path, "edges.csv"), "w") as nodes_file:
             nodes_file.writelines(content["edges"])
+
+        LOGGER.info("Joern V0.4.0 processing done.")
+        LOGGER.debug("Stopping '%s'..." % self.container_name)

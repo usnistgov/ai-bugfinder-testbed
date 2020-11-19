@@ -74,7 +74,10 @@ class ClassifierModel(DatasetProcessing):
         self.columns = input_train.columns
 
         self.train_fn = tf.estimator.inputs.pandas_input_fn(
-            x=input_train, y=output_train, shuffle=True, batch_size=batch_size,
+            x=input_train,
+            y=output_train,
+            shuffle=True,
+            batch_size=batch_size,
         )
         self.test_fn = tf.estimator.inputs.pandas_input_fn(
             x=input_test, y=output_test, shuffle=False, batch_size=batch_size
@@ -101,7 +104,7 @@ class ClassifierModel(DatasetProcessing):
         need_evaluate_model = False
         if last_results is None and not reset and exists(model_dir):
             LOGGER.warning(
-                "Summary tampered with, create baseline on current testing data..."
+                "Summary tampered with, creating baseline on current testing data..."
             )
             need_evaluate_model = True
 
@@ -168,7 +171,7 @@ class ClassifierModel(DatasetProcessing):
 
         LOGGER.info(
             "Precision: %02.03f%% (%02.03f%%); Recall: %02.03f%% (%02.03f%%); "
-            "F-score: %02.03f%% (%02.03f%%)"
+            "F-score: %02.03f%% (%02.03f%%)."
             % (
                 current["precision"],
                 last["precision"],
@@ -185,8 +188,8 @@ class ClassifierModel(DatasetProcessing):
             last_results,
         ):
             LOGGER.warning(
-                "Performance decreased from original values. Replacing model with previous "
-                "one..."
+                "Performance decreased from original values. Replacing model with "
+                "previous one..."
             )
             rmtree(model_dir)
             copytree(model_dir_bkp, model_dir)

@@ -4,7 +4,7 @@ from docker.errors import APIError
 
 from bugfinder.neo4j import Neo4J3Processing
 from bugfinder.settings import LOGGER
-from bugfinder.utils.statistics import get_time
+from bugfinder.utils.statistics import get_time, display_time
 
 
 class Neo4JAnnotations(Neo4J3Processing):
@@ -58,18 +58,18 @@ class Neo4JAnnotations(Neo4J3Processing):
     def send_commands(self):
         super().send_commands()
 
-        LOGGER.info("Running commands...")
+        LOGGER.debug("Running annotation commands...")
         for cmd in self.COMMANDS:
             try:
                 start = get_time()
                 self.neo4j_db.run(cmd)
 
                 LOGGER.info(
-                    "Command %d out of %d run in %dms"
+                    "Annotation command %d/%d run in %s"
                     % (
                         self.COMMANDS.index(cmd) + 1,
                         len(self.COMMANDS),
-                        get_time() - start,
+                        display_time(get_time() - start),
                     )
                 )
             except APIError as error:

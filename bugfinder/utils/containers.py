@@ -1,5 +1,6 @@
 """ Utility for Docker containers
 """
+from bugfinder.settings import LOGGER
 from os.path import realpath
 from time import sleep
 
@@ -15,6 +16,9 @@ def start_container(
     command=None,
     detach=True,
 ):
+    LOGGER.debug(
+        "Starting container '%s' (image '%s')..." % (container_name, image_name)
+    )
     if volumes is None:
         volumes = {}
 
@@ -55,6 +59,12 @@ def start_container(
 
 
 def wait_log_display(container, log_string, max_wait_time=300):
+    """"""
+    LOGGER.debug(
+        "Waiting for container '%s' to display '%s' (max_wait_time=%d)..."
+        % (container.name, log_string, max_wait_time)
+    )
+
     max_sleep_time = min(max_wait_time - 1, 12)
     current_wait = 0
 
@@ -67,6 +77,7 @@ def wait_log_display(container, log_string, max_wait_time=300):
 
 
 def stop_container_by_name(container_name):
+    LOGGER.debug("Stopping container '%s'..." % container_name)
     docker_cli = docker.from_env()
     container = docker_cli.containers.get(container_name)
 

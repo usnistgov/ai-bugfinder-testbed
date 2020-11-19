@@ -19,6 +19,7 @@ class Neo4J3Importer(Neo4J3Processing):
 
     def send_commands(self):
         super().send_commands()
+        LOGGER.debug("Importing CSV files...")
 
         self.container.exec_run(
             """
@@ -32,4 +33,4 @@ class Neo4J3Importer(Neo4J3Processing):
             )
         )
 
-        LOGGER.debug("CSV file imported.")
+        LOGGER.info("CSV files successfully imported.")

@@ -10,7 +10,7 @@ import pandas as pd
 from bugfinder.dataset.processing import DatasetProcessingCategory
 from bugfinder.settings import LOGGER, DATASET_DIRS
 from bugfinder.utils.processing import is_processing_stack_valid
-from bugfinder.utils.statistics import get_time
+from bugfinder.utils.statistics import get_time, display_time
 
 
 class DatasetQueueRetCode(IntEnum):
@@ -24,7 +24,7 @@ class CWEClassificationDataset(object):
     ignored_dirs = list(DATASET_DIRS.values())
 
     def _index_dataset(self):
-        LOGGER.debug("Start indexing dataset...")
+        LOGGER.debug("Indexing test cases...")
 
         if not exists(self.path):
             msg = "%s does not exists" % self.path
@@ -60,18 +60,21 @@ class CWEClassificationDataset(object):
             self.stats.append(len(self.test_cases) - sum(self.stats))
 
     def _index_features(self):
-        LOGGER.debug("Start loading feature dataframe...")
         features_filename = join(self.feats_dir, "features.csv")
 
         if not exists(features_filename):
-            LOGGER.debug("Features file does not exist yet.")
+            LOGGER.debug("Features file does not exist. Skipping dataframe loading...")
             return
 
+        LOGGER.debug("Loading feature dataframe...")
         self.features = pd.read_csv(features_filename)
         self._validate_features()
         self.feats_ver = 0
 
-    def __init__(self, dataset_path):
+    def __init__(self, dataset_path, silent=False):
+        start_time = get_time()
+        logger_log_func = LOGGER.debug if silent else LOGGER.info
+
         self.path = join(dataset_path, "")
         self.joern_dir = join(self.path, DATASET_DIRS["joern"])
         self.neo4j_dir = join(self.path, DATASET_DIRS["neo4j"])
@@ -89,6 +92,10 @@ class CWEClassificationDataset(object):
 
         self.rebuild_index()
 
+        logger_log_func(
+            "Dataset initialized in %s." % display_time(get_time() - start_time)
+        )
+
     def rebuild_index(self):
         LOGGER.debug("Rebuilding index...")
         _time = get_time()
@@ -103,12 +110,11 @@ class CWEClassificationDataset(object):
         if len(self.test_cases) > 0:
             self.stats = [st / len(self.test_cases) for st in self.stats]
 
-        _time = get_time() - _time
-        LOGGER.info(
-            "Dataset index build in %dms. %d test_cases, %d classes, "
+        LOGGER.debug(
+            "Dataset index build in %s. %d test_cases, %d classes, "
             "%d features (v%d)."
             % (
-                _time,
+                display_time(get_time() - _time),
                 len(self.test_cases),
                 len(self.classes),
                 self.features.shape[1],
@@ -172,8 +178,7 @@ class CWEClassificationDataset(object):
         return features_info
 
     def get_classes(self):
-        """ List classes identified in the dataset and their id
-        """
+        """List classes identified in the dataset and their id"""
         class_dict = dict()
 
         for cat_class in self.classes:
@@ -190,11 +195,13 @@ class CWEClassificationDataset(object):
 
         self.ops_queue.append({"class": op_class, "args": op_args})
 
-    def process(self):
+    def process(self, silent=False):
+        logger_log_func = LOGGER.debug if silent else LOGGER.info
+
         _time = get_time()
         LOGGER.debug("Processing ops queue...")
 
-        if not is_processing_stack_valid(self.ops_queue):
+        if not is_processing_stack_valid(self.ops_queue, silent=silent):
             LOGGER.error("Invalid ops queue")
             return DatasetQueueRetCode.INVALID_QUEUE
 
@@ -203,7 +210,7 @@ class CWEClassificationDataset(object):
 
         # Exit if the queue is empty.
         if total_op == 0:
-            LOGGER.info("No operation in queue.")
+            logger_log_func("No operation in queue.")
             return DatasetQueueRetCode.EMPTY_QUEUE
 
         # Process operation while the queue is not empty.
@@ -213,8 +220,9 @@ class CWEClassificationDataset(object):
 
             operation_category = operation_class.metadata["category"]
 
-            if operation_category not in self.summary.keys() and operation_category != str(
-                DatasetProcessingCategory.__NONE__
+            if (
+                operation_category not in self.summary.keys()
+                and operation_category != str(DatasetProcessingCategory.__NONE__)
             ):
                 self.summary[operation_category] = list()
 
@@ -228,7 +236,7 @@ class CWEClassificationDataset(object):
             }
             current_op += 1
 
-            LOGGER.info(
+            logger_log_func(
                 "Running operation %d/%d (%s)..."
                 % (current_op, total_op, operation_call["class"])
             )
@@ -266,7 +274,9 @@ class CWEClassificationDataset(object):
                 )
                 return DatasetQueueRetCode.OPERATION_FAIL
 
-        LOGGER.info("%d operations run in %dms." % (total_op, get_time() - _time))
+        logger_log_func(
+            "%d operations run in %s." % (total_op, display_time(get_time() - _time))
+        )
 
         return DatasetQueueRetCode.OK
 

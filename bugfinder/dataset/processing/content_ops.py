@@ -14,7 +14,7 @@ class ReplaceLitterals(DatasetProcessing):
     }
 
     def execute(self):
-        LOGGER.debug("Starting replacing litterals...")
+        LOGGER.debug("Replacing litterals in code...")
         file_processing_list = [
             join(test_case, filepath)
             for test_case in self.dataset.test_cases
@@ -33,8 +33,9 @@ class ReplaceLitterals(DatasetProcessing):
 
             # If replacement were made, we keep the file for another round.
             if repl_count != 0:
-                LOGGER.debug("Adding %s back to the queue..." % filepath)
                 file_processing_list.append(filepath)
+
+        LOGGER.info("Litterals successfully replaced.")
 
     def process_file(self, filepath):
         tmp_filepath = "%s.tmp" % filepath
@@ -66,12 +67,17 @@ class RemoveMainFunction(DatasetFileProcessing):
     main_fn_entry = "#ifdef INCLUDEMAIN\n"
     main_fn_exit = "#endif\n"
 
+    def execute(self):
+        LOGGER.debug("Removing main function in dataset at '%s'..." % self.dataset.path)
+        super().execute()
+        LOGGER.info("Main function successfully removed.")
+
     def process_file(self, filepath):
         if splitext(filepath)[1] not in [".c", ".cpp", ".h", ".hpp"]:
             LOGGER.debug("File %s is not a code file. Ignoring..." % filepath)
             return
 
-        LOGGER.debug("Removing main function in %s" % filepath)
+        LOGGER.debug("Removing main function in '%s'." % filepath)
         tmp_filepath = "%s.tmp" % filepath
         is_in_main_fn = False
         out_lines = list()
