@@ -3,6 +3,8 @@
 from inspect import isclass
 
 from bugfinder.dataset.processing import DatasetProcessing
+from bugfinder.settings import LOGGER
+from bugfinder.utils.statistics import get_time, display_time
 
 
 def is_operation_valid(processing_operation):
@@ -18,11 +20,29 @@ def is_operation_valid(processing_operation):
         assert issubclass(processing_operation, DatasetProcessing)
 
 
-def is_processing_stack_valid(operation_list):
+def is_processing_stack_valid(operation_list, silent=False):
+    logger_log_func = LOGGER.debug if silent else LOGGER.info
+    _time = get_time()
+
+    processing_operation_index = 1
     for processing_operation in operation_list:
         try:
+            LOGGER.debug(
+                "Checking operation %d/%d (%s)..."
+                % (
+                    processing_operation_index,
+                    len(operation_list),
+                    str(processing_operation),
+                )
+            )
             is_operation_valid(processing_operation)
         except AssertionError:
+            LOGGER.error("Processing operation is invalid.", exc_info=True)
             return False
 
+        processing_operation_index += 1
+
+    logger_log_func(
+        "Operation queue validated in %s." % display_time(get_time() - _time)
+    )
     return True

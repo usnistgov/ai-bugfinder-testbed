@@ -1,4 +1,6 @@
 import re
+from os import remove
+from os.path import join
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
@@ -14,7 +16,8 @@ class MockDatasetProcessingWithContainer(DatasetProcessingWithContainer):
     def configure_container(self):
         self.image_name = "mock:latest"
         self.container_name = "mock-container"
-        self.ports = {"1111": "1111"}
+        self.container_ports = ["1111"]
+        self.machine_ports = ["1111"]
         self.volumes = {"host_vol": "guest_vol"}
         self.environment = {"key0": "value0"}
         self.command = "mock_command"
@@ -46,10 +49,19 @@ class TestDatasetFileProcessingExecute(TestCase):
         def process_file(self, filepath):
             self.processed_file.append(filepath)
 
+    def setUp(self) -> None:
+        self.dataset_path = "./tests/fixtures/dataset01"
+
+    def tearDown(self) -> None:
+        try:
+            remove(join(self.dataset_path, "summary.json"))
+        except FileNotFoundError:
+            pass  # Ignore FileNotFound errors
+
     @patch("bugfinder.dataset.LOGGER")
     def test_process_file_calls_equal_nb_of_files(self, mock_logger):
         mock_logger.return_value = None
-        dataset_obj = CWEClassificationDataset("./tests/fixtures/dataset01")
+        dataset_obj = CWEClassificationDataset(self.dataset_path)
         data_processing = self.MockDatasetFileProcessing(dataset_obj)
         data_processing.execute()
 
@@ -86,8 +98,11 @@ class TestDatasetProcessingWithContainerInit(TestCase):
     def test_default_container_name(self):
         self.assertEqual(self.mock_dataset_processing.container_name, "")
 
-    def test_default_ports(self):
-        self.assertEqual(self.mock_dataset_processing.ports, None)
+    def test_container_ports(self):
+        self.assertEqual(self.mock_dataset_processing.container_ports, None)
+
+    def test_machine_ports(self):
+        self.assertEqual(self.mock_dataset_processing.machine_ports, None)
 
     def test_default_volumes(self):
         self.assertEqual(self.mock_dataset_processing.volumes, None)

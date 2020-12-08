@@ -1,7 +1,7 @@
 from os import remove, listdir
-from os.path import join, exists
+from os.path import join, exists, splitext
 from unittest import TestCase
-from unittest.mock import patch, call
+from unittest.mock import patch, call, Mock
 
 from bugfinder.dataset import CWEClassificationDataset
 from bugfinder.dataset.processing.content_ops import (
@@ -11,6 +11,12 @@ from bugfinder.dataset.processing.content_ops import (
 
 
 class TestReplaceLitteralsExecute(TestCase):
+    def tearDown(self) -> None:
+        try:
+            remove(join(self.dataset_path, "summary.json"))
+        except FileNotFoundError:
+            pass  # Ignore FileNotFound errors
+
     @patch("bugfinder.dataset.processing.content_ops.LOGGER")
     @patch("bugfinder.dataset.LOGGER")
     @patch("bugfinder.dataset.processing.content_ops.ReplaceLitterals.process_file")
@@ -20,21 +26,21 @@ class TestReplaceLitteralsExecute(TestCase):
         mock_process_file.return_value = 0
         mock_processing_logger.return_value = None
         mock_dataset_logger.return_value = None
-        dataset_path = "./tests/fixtures/dataset01"
+        self.dataset_path = "./tests/fixtures/dataset01"
 
-        dataset = CWEClassificationDataset(dataset_path)
+        dataset = CWEClassificationDataset(self.dataset_path)
         dataset_processing = ReplaceLitterals(dataset)
 
         dataset_processing.execute()
 
         test_files = []
         for test_case in dataset.test_cases:
-            test_case_path = join(dataset_path, test_case)
+            test_case_path = join(self.dataset_path, test_case)
             for filename in listdir(test_case_path):
-                test_files.append(join(test_case_path, filename))
+                if splitext(filename)[1] in [".c", ".cpp", ".h", ".hpp"]:
+                    test_files.append(join(test_case_path, filename))
 
         mock_process_file_calls = [call(test_file) for test_file in test_files]
-
         mock_process_file.assert_has_calls(mock_process_file_calls, any_order=True)
 
 
@@ -53,16 +59,17 @@ class TestReplaceLitteralsProcessFile(TestCase):
 
     def setUp(self) -> None:
         self._default_patch()
-        dataset_path = "./tests/fixtures/dataset01"
+        self.dataset_path = "./tests/fixtures/dataset01"
 
-        dataset = CWEClassificationDataset(dataset_path)
+        dataset = CWEClassificationDataset(self.dataset_path)
         self.dataset_processing = ReplaceLitterals(dataset)
 
-        self.file_with_litterals = join(dataset_path, "class01/tc02", "item.c")
-        self.clean_file = join(dataset_path, "class01/tc03", "item.c")
+        self.file_with_litterals = join(self.dataset_path, "class01/tc02", "item.c")
+        self.clean_file = join(self.dataset_path, "class01/tc03", "item.c")
 
     def tearDown(self) -> None:
         try:
+            remove(join(self.dataset_path, "summary.json"))
             remove("%s.tmp" % self.file_with_litterals)
         except FileNotFoundError:
             pass  # Ignore FileNotFound errors
@@ -105,7 +112,8 @@ class TestRemoveMainFunctionProcessFile(TestCase):
         self._default_patch()
         dataset_path = "./tests/fixtures/dataset01"
 
-        dataset = CWEClassificationDataset(dataset_path)
+        dataset = Mock(spec=CWEClassificationDataset)
+        dataset.path = dataset_path
         self.dataset_processing = RemoveMainFunction(dataset)
 
         self.file_with_main = join(dataset_path, "class02/tc01", "item.c")

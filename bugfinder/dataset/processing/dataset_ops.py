@@ -1,45 +1,51 @@
 import os
 import random
-from os.path import exists, join, isdir
-from shutil import rmtree, copytree
+from os.path import exists, join, isdir, basename
+from shutil import rmtree, copytree, copyfile
 
 from bugfinder.dataset import CWEClassificationDataset as Dataset
 from bugfinder.dataset.processing import (
     DatasetProcessing,
     DatasetProcessingWithContainer,
+    DatasetProcessingCategory,
 )
 from bugfinder.settings import LOGGER
 from bugfinder.utils.statistics import get_time
 
 
 class CopyDataset(DatasetProcessing):
+    def __init__(self, dataset):
+        super().__init__(dataset)
+
+        self.metadata["category"] = str(DatasetProcessingCategory.__NONE__)
+
     def execute(self, to_path, force=False):
         LOGGER.debug(
             "Copying dataset at %s to %s (force=%d)..."
             % (self.dataset.path, to_path, int(force))
         )
-        _time = get_time()
 
         # Cleanup directory if it exists or remove
         if exists(to_path):
             if force:
                 try:
-                    dest_dataset = Dataset(to_path)
+                    dest_dataset = Dataset(to_path, silent=True)
                     dest_dataset.queue_operation(
                         RightFixer,
                         {"command_args": ". %s %s" % (os.getuid(), os.getgid())},
                     )
-                    dest_dataset.process()
+                    dest_dataset.process(silent=True)
                 finally:
                     rmtree(to_path)
             else:
                 raise FileExistsError(
                     "%s already exists. Run with force=True to overwrite the "
-                    "directory" % to_path
+                    "existing directory." % to_path
                 )
 
         copytree(self.dataset.path, to_path)
-        LOGGER.debug("Dataset copied in %dms" % (get_time() - _time))
+
+        LOGGER.info("Dataset copy succeeded.")
 
 
 class ExtractSampleDataset(DatasetProcessing):
@@ -49,7 +55,6 @@ class ExtractSampleDataset(DatasetProcessing):
             "force=%d)..."
             % (sample_nb, self.dataset.path, to_path, int(shuffle), int(force))
         )
-        _time = get_time()
 
         if exists(to_path):
             if force:
@@ -92,7 +97,12 @@ class ExtractSampleDataset(DatasetProcessing):
 
                 copytree(orig_filepath, dest_filepath)
 
-        LOGGER.debug("Dataset extracted in %dms" % (get_time() - _time))
+        copyfile(
+            self.dataset.summary_filepath,
+            join(to_path, basename(self.dataset.summary_filepath)),
+        )
+
+        LOGGER.info("Dataset extraction succeeded.")
 
 
 class InverseDataset(DatasetProcessing):
@@ -109,14 +119,14 @@ class InverseDataset(DatasetProcessing):
             else:
                 raise FileExistsError(
                     "%s already exists. Run with force=True to overwrite the "
-                    "directory" % to_path
+                    "existing directory." % to_path
                 )
 
         if not exists(from_path):
-            raise FileNotFoundError("%s does not exists" % from_path)
+            raise FileNotFoundError("%s does not exists." % from_path)
 
         if not isdir(from_path):
-            raise NotADirectoryError("%s is not a directory" % from_path)
+            raise NotADirectoryError("%s is not a directory." % from_path)
 
         from_dataset = Dataset(from_path)
         inverse_test_cases = [
@@ -131,7 +141,12 @@ class InverseDataset(DatasetProcessing):
 
             copytree(orig_test_case, dest_test_case)
 
-        LOGGER.debug("Dataset created in %dms" % (get_time() - _time))
+        copyfile(
+            self.dataset.summary_filepath,
+            join(to_path, basename(self.dataset.summary_filepath)),
+        )
+
+        LOGGER.info("Inverse dataset creation succeeded.")
 
 
 class RightFixer(DatasetProcessingWithContainer):

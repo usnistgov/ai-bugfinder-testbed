@@ -10,4 +10,4 @@ class JoernDefaultDatasetProcessing(DatasetProcessingWithContainer):
 
     @abstractmethod
     def send_commands(self):
-        raise NotImplementedError("method not implemented")
+        raise NotImplementedError("Method 'send_commands' not implemented.")

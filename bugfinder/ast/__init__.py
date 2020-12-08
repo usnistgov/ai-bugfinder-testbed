@@ -33,7 +33,7 @@ class AbstractASTMarkup(Neo4J3Processing):
         LOGGER.info("Retrieving AST...")
         ast_list = self.get_ast_information()
 
-        LOGGER.info("%d item found. Creating command bundles..." % len(ast_list))
+        LOGGER.debug("AST retrieved. Creating command bundles...")
 
         # Slicing the list into several command
         cmd_list = []
@@ -48,10 +48,14 @@ class AbstractASTMarkup(Neo4J3Processing):
 
             cmd_list.append(ast_list[lower:upper])
 
-        LOGGER.info("%d bundles prepared." % len(cmd_list))
+        LOGGER.info(
+            "Found %d AST. Prepared %d command bundles."
+            % (len(ast_list), len(cmd_list))
+        )
+        cmd_index = 0
 
         for operation_list in cmd_list:
-            LOGGER.debug("Prepping operations...")
+            LOGGER.debug("Preparing operations...")
 
             # For each item, create the correct notation
             operation_list = [
@@ -69,14 +73,16 @@ class AbstractASTMarkup(Neo4J3Processing):
             except Exception as e:
                 LOGGER.info(str(e))
 
-            LOGGER.info("AST command successfully run.")
+            cmd_index += 1
+            LOGGER.info(
+                "AST command %d/%d successfully run." % (cmd_index, len(cmd_list))
+            )
 
-        LOGGER.info("AST updated")
+        LOGGER.info("AST updated.")
 
 
 class ASTSetExporter(Neo4J3Processing):
-    """ Generate the set of AST retrieved from a Neo4J database
-    """
+    """Generate the set of AST retrieved from a Neo4J database"""
 
     ast_list_command = """
         MATCH (n:GenericNode) 

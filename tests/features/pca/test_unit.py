@@ -1,6 +1,6 @@
 from os.path import join
 from unittest import TestCase
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 import pandas as pd
 
@@ -25,8 +25,8 @@ class FeatureExtractorExecute(TestCase):
             ],
         )
 
-        self.dataset = CWEClassificationDataset(None)
-        self.dataset.feats_dir = ""
+        self.dataset = Mock(spec=CWEClassificationDataset)
+        self.dataset.feats_dir = "mock_feats_dir"
         self.dataset.feats_ver = 0
         self.dataset.features = pd.read_csv(
             "tests/fixtures/dataset01/features/features.csv"
@@ -37,10 +37,11 @@ class FeatureExtractorExecute(TestCase):
     def test_feature_file_is_copied(self, mock_copy):
         self.data_processing.execute(2)
 
-        # self.assertTrue(mock_copy.called)
         mock_copy.assert_called_with(
             join(self.dataset.feats_dir, "features.csv"),
-            join(self.dataset.feats_dir, "features.%d.csv" % self.dataset.feats_ver),
+            join(
+                self.dataset.feats_dir, "features.%d.csv" % (self.dataset.feats_ver - 1)
+            ),
         )
 
     @patch("bugfinder.features.pca.copy")
@@ -48,7 +49,7 @@ class FeatureExtractorExecute(TestCase):
         mock_copy.return_value = None
         self.data_processing.execute(2)
 
-        self.assertEqual(self.dataset.feats_ver, 0)
+        self.assertEqual(self.dataset.feats_ver, 1)
 
     @patch("bugfinder.features.pca.copy")
     @patch("tests.features.pca.test_unit.CWEClassificationDataset.rebuild_index")

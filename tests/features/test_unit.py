@@ -1,6 +1,7 @@
+from os import remove
 from os.path import join, basename, dirname
 from unittest import TestCase
-from unittest.mock import patch
+from unittest.mock import patch, Mock
 
 from bugfinder.dataset import CWEClassificationDataset
 from bugfinder.features import GraphFeatureExtractor, FlowGraphFeatureExtractor
@@ -101,8 +102,15 @@ class GraphFeatureExtractorCreateFeatureMapFile(TestCase):
     def setUp(self) -> None:
         patch_paths(self, ["bugfinder.dataset.LOGGER", "bugfinder.features.LOGGER"])
 
-        dataset = CWEClassificationDataset("./tests/fixtures/dataset01")
+        self.dataset_path = "./tests/fixtures/dataset01"
+        dataset = CWEClassificationDataset(self.dataset_path)
         self.dataset_processing = MockGraphFeatureExtractor(dataset)
+
+    def tearDown(self) -> None:
+        try:
+            remove(join(self.dataset_path, "summary.json"))
+        except FileNotFoundError:
+            pass  # Ignore FileNotFound errors
 
     @patch("bugfinder.features.mkdir")
     def test_feature_map_file_created_if_arg_none(self, mock_mkdir):
@@ -296,7 +304,8 @@ class GraphFeatureExtractorCheckExtractionInputs(TestCase):
             ],
         )
 
-        self.dataset = CWEClassificationDataset(None)
+        self.dataset = Mock(spec=CWEClassificationDataset)
+        self.dataset.feats_dir = "mock_feats_dir"
         self.dataset_processing = MockGraphFeatureExtractor(self.dataset)
 
     @patch("bugfinder.features.exists")
@@ -337,7 +346,8 @@ class GraphFeatureExtractorWriteExtractionOutputs(TestCase):
             ],
         )
 
-        self.dataset = CWEClassificationDataset(None)
+        self.dataset = Mock(spec=CWEClassificationDataset)
+        self.dataset.feats_dir = "mock_feats_dir"
         self.dataset_processing = MockGraphFeatureExtractor(self.dataset)
 
     @patch("tests.features.test_unit.GraphFeatureExtractor.get_labels_from_feature_map")
@@ -374,7 +384,7 @@ class GraphFeatureExtractorSaveLabelsToFeatursMap(TestCase):
             ],
         )
 
-        self.dataset = CWEClassificationDataset(None)
+        self.dataset = Mock(spec=CWEClassificationDataset)
         self.dataset_processing = MockGraphFeatureExtractor(self.dataset)
 
     @patch("tests.features.test_unit.GraphFeatureExtractor.get_labels_from_feature_map")
@@ -423,7 +433,7 @@ class GraphFeatureExtractorGetLabelsFromFeatursMap(TestCase):
             ],
         )
 
-        self.dataset = CWEClassificationDataset(None)
+        self.dataset = Mock(spec=CWEClassificationDataset)
         self.dataset_processing = MockGraphFeatureExtractor(self.dataset)
 
     @patch("bugfinder.features.exists")
@@ -448,16 +458,19 @@ class GraphFeatureExtractorGetLabelsFromFeatursMap(TestCase):
 
 class FlowGraphFeatureExtractorInitializeFeatures(TestCase):
     def setUp(self) -> None:
-        dataset_processing = MockFlowGraphFeatureExtractor(None)
+        dataset = Mock(spec=CWEClassificationDataset)
+        dataset.classes = ["bad"]
+        dataset_processing = MockFlowGraphFeatureExtractor(dataset)
         self.returned_features = dataset_processing.initialize_features(
-            {"filepath": "./data/bad/entrypoint_name"}, ["label1", "label2"]
+            {"filepath": "/code/bad/entrypoint_name/entrypoint_file.c"},
+            ["label1", "label2"],
         )
 
     def test_returns_list(self):
         self.assertEqual(type(self.returned_features), list)
 
     def test_returns_correct_data(self):
-        self.assertEqual(self.returned_features, [0, 0, False, "entrypoint_name"])
+        self.assertEqual(self.returned_features, [0, 0, 0, "entrypoint_file.c"])
 
 
 class FlowGraphFeatureExtractorFinalizeFeatures(TestCase):

@@ -10,4 +10,5 @@ class JoernDatasetProcessing(JoernDefaultDatasetProcessing):
         self.container_name = "joern031"
 
     def send_commands(self):
-        LOGGER.debug("Joern processing done.")
+        LOGGER.info("Joern V0.3.1 processing done.")
+        LOGGER.debug("Stopping '%s'..." % self.container_name)

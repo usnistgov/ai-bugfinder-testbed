@@ -1,6 +1,8 @@
 """ Common settings shared by the scripts
 """
+import os
 import logging.config
+import multiprocessing
 from os.path import dirname, abspath
 
 ROOT_DIR = "%s/.." % dirname(abspath(__file__))
@@ -28,13 +30,24 @@ LOGGER_CONFIG = {
         },
     },
     "loggers": {
-        "app": {"level": "DEBUG", "handlers": ["console", "file"], "propagate": "no",}
+        "app": {
+            "level": "DEBUG",
+            "handlers": ["console", "file"],
+            "propagate": "no",
+        }
     },
 }
 
 NEO4J_V3_MEMORY = "4G"
 
-DATASET_DIRS = {"joern": "joern.db", "neo4j": "neo4j_v3.db", "feats": "features"}
+DATASET_DIRS = {
+    "joern": "joern.db",
+    "neo4j": "neo4j_v3.db",
+    "feats": "features",
+    "models": "models",
+}
+
+POOL_SIZE = int(os.getenv("POOL_SIZE", multiprocessing.cpu_count()))
 
 logging.config.dictConfig(LOGGER_CONFIG)
 LOGGER = logging.getLogger("app")

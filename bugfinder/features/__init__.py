@@ -2,12 +2,14 @@
 """
 import csv
 import pickle
+import itertools
 from abc import abstractmethod
 from os import mkdir
 from os.path import join, exists, basename, dirname
+from concurrent.futures import ThreadPoolExecutor
 
 from bugfinder.neo4j import Neo4J3Processing
-from bugfinder.settings import LOGGER, ROOT_DIR
+from bugfinder.settings import LOGGER, ROOT_DIR, POOL_SIZE
 
 IMPLEMENTATION_ERROR = "%s needs to be implemented."
 
@@ -16,34 +18,35 @@ class GraphFeatureExtractor(Neo4J3Processing):
     need_map_features = False
     feature_map_filepath = None
 
+    def _get_entrypoint_list_worker(self, testcase):
+        list_entrypoint_cmd = """
+            MATCH (f {type:"Function"})-[:IS_FUNCTION_OF_CFG]->(entry {type:'CFGEntryNode'})
+            WHERE id(f)=%d
+            RETURN entry.functionId AS id
+        """
+        testcase_info = {"filepath": testcase["filepath"]}
+
+        # Collect the entry points and merge with test case info.
+        return [
+            {**entrypoint_info, **testcase_info}
+            for entrypoint_info in self.neo4j_db.run(
+                list_entrypoint_cmd % testcase["id"]
+            ).data()
+        ]
+
     def _get_entrypoint_list(self):
         list_testcases_cmd = """
             MATCH (f {type:"File"})-[:IS_FILE_OF]->(n {type:"Function"}) 
             WHERE n.code<>"main"
             RETURN id(n) AS id, f.code AS filepath, n.code AS name
         """
-        list_entrypoint_cmd = """
-            MATCH (f)-[:IS_FUNCTION_OF_CFG]->(entry {type:'CFGEntryNode'})
-            WHERE id(f)=%d
-            RETURN entry.functionId AS id
-        """
-
-        entrypoint_list = list()
-
         # Get a list of all test cases in the database
         testcase_list = self.neo4j_db.run(list_testcases_cmd).data()
 
         # For each test case, extract interesting flow graphs
-        for testcase in testcase_list:
-            testcase_info = {"filepath": testcase["filepath"]}
-
-            # Collect the entry points and merge with test case info.
-            entrypoint_list += [
-                {**entrypoint_info, **testcase_info}
-                for entrypoint_info in self.neo4j_db.run(
-                    list_entrypoint_cmd % testcase["id"]
-                ).data()
-            ]
+        with ThreadPoolExecutor(max_workers=POOL_SIZE) as executor:
+            res = executor.map(self._get_entrypoint_list_worker, testcase_list)
+            entrypoint_list = list(itertools.chain(*res))
 
         return entrypoint_list
 
@@ -172,10 +175,18 @@ class FlowGraphFeatureExtractor(GraphFeatureExtractor):
     def get_label_from_flowgraph(self, flowgraph):
         raise NotImplementedError(IMPLEMENTATION_ERROR % "get_label_from_flowgraph")
 
-    @staticmethod
-    def initialize_features(entrypoint, label_list):
+    def initialize_features(self, entrypoint, label_list):
+        """Initialize the features to 0 and returns the expected array
+
+        Args:
+            entrypoint - dict:
+            label_list - list:
+
+        Returns:
+            list: List of labels initialized to 0
+        """
         return [0.0] * len(label_list) + [
-            entrypoint["filepath"].split("/")[2] == "good",
+            self.dataset.classes.index(entrypoint["filepath"].split("/")[2]),
             entrypoint["filepath"].split("/")[-1],
         ]
 
@@ -187,11 +198,34 @@ class FlowGraphFeatureExtractor(GraphFeatureExtractor):
     def finalize_features(features, labels):
         return features
 
+    def extract_features_worker(self, args):
+        entrypoint = args[0]
+        labels = args[1]
+
+        features_row_entrypoint = self.initialize_features(entrypoint, labels)
+
+        # Record and count each unique flow graph
+        for flowgraph in self.get_flowgraph_list_for_entrypoint(entrypoint):
+            label = self.get_label_from_flowgraph(flowgraph)
+
+            if label not in labels:
+                LOGGER.debug(
+                    "Feature '%s' not found in label reference file and ignored."
+                    % label
+                )
+                continue
+
+            # Increment the count for the current graph in the current test
+            # case's vector
+            features_row_entrypoint[labels.index(label)] += self.get_flowgraph_count(
+                flowgraph
+            )
+
+        return features_row_entrypoint
+
     def extract_features(self):
         labels = self.get_labels_from_feature_map()
         entrypoint_list = self._get_entrypoint_list()
-        entrypoint_index = 0
-        last_progress = 0
 
         if len(entrypoint_list) == 0:
             LOGGER.warning("No entrypoint found. Returning None...")
@@ -202,36 +236,12 @@ class FlowGraphFeatureExtractor(GraphFeatureExtractor):
             "flowgraphs..." % (len(entrypoint_list), len(labels))
         )
 
-        features = list()
-
-        for entrypoint in entrypoint_list:
-            progress = int(100 * (entrypoint_index + 1) / len(entrypoint_list))
-
-            if progress > 0 and progress % 10 == 0 and progress > last_progress:
-                LOGGER.info("Processed %d%% of the dataset." % progress)
-                last_progress = progress
-
-            features_row_entrypoint = self.initialize_features(entrypoint, labels)
-
-            # Record and count each unique flow graph
-            for flowgraph in self.get_flowgraph_list_for_entrypoint(entrypoint):
-                label = self.get_label_from_flowgraph(flowgraph)
-
-                if label not in labels:
-                    LOGGER.debug("Feature %s not found and ignored" % label)
-                    continue
-
-                # Increment the count for the current graph in the current test
-                # case's vector
-                features_row_entrypoint[
-                    labels.index(label)
-                ] += self.get_flowgraph_count(flowgraph)
-
-            # Add the entrypoint features to the feature list
-            features.append(features_row_entrypoint)
-
-            # Keep track of the progress
-            entrypoint_index += 1
+        with ThreadPoolExecutor(max_workers=POOL_SIZE) as executor:
+            res = executor.map(
+                self.extract_features_worker,
+                [(entrypoint, labels) for entrypoint in entrypoint_list],
+            )
+            features = list(res)
 
         LOGGER.info(
             "Extracted %dx%d features matrix. Finalizing features..."
@@ -240,12 +250,15 @@ class FlowGraphFeatureExtractor(GraphFeatureExtractor):
 
         return self.finalize_features(features, labels)
 
+    def map_features_worker(self, entrypoint):
+        labels = []
+        for flowgraph in self.get_flowgraph_list_for_entrypoint(entrypoint):
+            labels.append(self.get_label_from_flowgraph(flowgraph))
+        return labels
+
     def map_features(self):
         # List of feature labels to return
-        labels = []
         entrypoint_list = self._get_entrypoint_list()
-        entrypoint_index = 0
-        last_progress = 0
 
         LOGGER.info(
             "Retrieved %d entrypoints. Querying for flowgraphs..."
@@ -253,20 +266,9 @@ class FlowGraphFeatureExtractor(GraphFeatureExtractor):
         )
 
         # Get the interesting flow graphs for each function
-        for entrypoint in entrypoint_list:
-            progress = int(100 * (entrypoint_index + 1) / len(entrypoint_list))
-
-            if progress > 0 and progress % 10 == 0 and progress > last_progress:
-                LOGGER.info("Processed %d%% of the dataset." % progress)
-                last_progress = progress
-
-            # Record and count each unique flow graph
-            for flowgraph in self.get_flowgraph_list_for_entrypoint(entrypoint):
-                labels.append(self.get_label_from_flowgraph(flowgraph))
-
-            entrypoint_index += 1
-
-        labels = set(labels)
+        with ThreadPoolExecutor(max_workers=POOL_SIZE) as executor:
+            res = executor.map(self.map_features_worker, entrypoint_list)
+            labels = set(itertools.chain(*res))
 
         LOGGER.info("Extracted %d labels." % len(labels))
 
