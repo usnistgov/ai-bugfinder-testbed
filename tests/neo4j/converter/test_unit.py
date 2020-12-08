@@ -45,8 +45,7 @@ class TestNeo4J2ConverterConfigureContainer(TestCase):
 
     def test_ports_correct(self):
         self.dataset_processing.configure_container()
-
-        self.assertDictEqual(self.dataset_processing.ports, {"7474": "7474"})
+        self.assertListEqual(self.dataset_processing.container_ports, ["7474"])
 
     def test_volumes_correct(self):
         self.dataset_processing.configure_container()

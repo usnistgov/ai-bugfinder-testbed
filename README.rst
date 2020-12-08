@@ -17,7 +17,7 @@ Pre-requisites
 
 -  Docker: https://docs.docker.com/install/#supported-platforms
 -  Docker-compose: https://docs.docker.com/compose/install/
--  Python 3.6: https://www.python.org/downloads/release/python-369/
+-  Python >= 3.6: https://www.python.org/downloads/
 -  Virtual environment:
 
    -  With ``venv``: https://virtualenv.pypa.io/en/stable/installation/
@@ -33,26 +33,32 @@ To install the development dependencies, run
 Installation
 ------------
 
-Test the downloaded code
-~~~~~~~~~~~~~~~~~~~~~~~~
+Run the tests
+~~~~~~~~~~~~~
 
-Substantial tests have been developed to ensure the code is working properly. To run
-the tests, use command ``pytest``. No error should occur upon running the tests.
+Substantial tests have been developed to ensure the code is working properly.
+To run the tests, use command ``pytest``. While no error should occur upon
+running the tests, some warnings might appear.
 
 The development dependencies need to be installed to run these tests.
 
-Download the Juliet dataset
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Download the dataset
+~~~~~~~~~~~~~~~~~~~~
 
-Using the ``download_juliet.sh`` located in the **scripts/** folder,
-download the `Juliet Dataset for
-C/C++ <https://samate.nist.gov/SRD/testsuite.php>`__. The testcases will
-be split between healthy (good) and buggy (bad) code. The dataset is
-stored in the **data/juliet_orig/** folder and the annotated data are
-stored in **data/juliet_annot/**.
+There are several datasets  to choose from:
+* The CWE-121 is a set of buffer overflow test cases (2838 buggy test cases,
+2838 clean test cases). It is a good place to begin the exploration of this
+repository. Download it by typing `./scripts/download_cwe121.sh`.
+* The `Juliet Dataset for C/C++ <https://samate.nist.gov/SRD/testsuite.php>`__
+is a much larger dataset containing multiple types of bugs. It can be
+downloaded with `./scripts/download_juliet.sh` and contains 64099 buggy test
+cases and 64099 clean test cases.
+* A better dataset, focused on buffer overflows, is packaged with this
+repository. It contains 6507 buggy test cases and 5905 clean test cases and
+can be installed using `./scripts/setup_ai_dataset.sh`.
 
-To only download the CWE-121 data, please use
-``./scripts/download_cwe121.sh``.
+Note: More information about the packaged AI dataset focused on buffer
+overflows is avaible at https://gitlab.nist.gov/gitlab/samate/ai-dataset/.
 
 Build the docker images
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -77,7 +83,7 @@ Usage
 
 Several scripts are available in this repository to manipulate datasets
 and train a machine learning model to identify bugs in source code. The
-scripts are written in python and, for every script, help is available
+scripts are written in python and, for every script, an help page is available
 by typing ``python ./script.py --help``.
 
 Dataset utilities
@@ -109,7 +115,7 @@ Examples:
 Prepare the dataset
 ~~~~~~~~~~~~~~~~~~~
 
-There are several issues with the default Juliet dataset: 
+There are several issues with the default datasets:
 
 - C++ cannot be parsed correctly by *Joern*, these samples need to be 
   remove from the dataset.
@@ -118,7 +124,7 @@ There are several issues with the default Juliet dataset:
   equivalent code line that *Joern* can parse.
 - In *Juliet*, ``main(...)`` functions are used to compile the correct 
   (good or bad) code depending on pre-processor variables. These 
-  functions are not useful and possible misleading for the classifier, 
+  functions are not useful and possibly misleading for the classifier,
   they need to be removed. 
 - The current version of the tool does not work with interprocedural 
   test cases which need to be removed from the dataset.
@@ -137,10 +143,9 @@ available and works as such:
 Run Joern
 ~~~~~~~~~
 
-`Joern <http://mlsec.org/joern/index.shtml>`__ then needs to be executed
-with the script ``run_joern.py``. Once the execution is done, the
-*.joernIndex* is moved to *data/graph.db*. A Neo4j DB then loads the
-data for further processing.
+`Joern <https://joern.io/>`__ then needs to be executed with the script
+``run_joern.py``. Once the execution is done, the *.joernIndex* is moved to
+*data/graph.db*. A Neo4j DB then loads the data for further processing.
 
 Run the tool with
 ``python ./run_joern.py /path/to/dataset -v ${JOERN_VERSION}``. Use
@@ -191,7 +196,7 @@ Troubleshooting
 ---------------
 
 The dataset is fairly important in size. Once loaded in Neo4j, executing
-the commands could be difficult. There are few tweaks that could
+the commands could be difficult. Here are few tweaks that could
 facilitate the training.
 
 More memory in Neo4J
