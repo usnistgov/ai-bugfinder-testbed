@@ -1,8 +1,7 @@
 from abc import ABC, abstractmethod
+from enum import Enum
 from os import listdir
 from os.path import join
-
-from enum import Enum
 from random import randint
 from time import sleep
 
@@ -20,12 +19,38 @@ class DatasetProcessingCategory(Enum):
         return self.value
 
 
+class DatasetProcessingDeprecation(object):
+    def __init__(self, notice, deprecated_in=None, removed_in=None):
+        self.notice = notice
+        self.deprecated_in = deprecated_in
+        self.removed_in = removed_in
+
+
 class DatasetProcessing(ABC):
-    def __init__(self, dataset):
+    def __init__(self, dataset, deprecation_warning=None):
         self.metadata = {"category": str(DatasetProcessingCategory.PROCESSING)}
         self.processing_stats = dict()
 
         self.dataset = dataset
+
+        if deprecation_warning:
+            deprecation_notice = "%s processing class deprecated" % str(
+                self.__class__.__name__
+            )
+
+            if deprecation_warning.deprecated_in:
+                deprecation_notice += " since %s" % deprecation_warning.deprecated_in
+
+            if deprecation_warning.removed_in:
+                if self.deprecation_warning.deprecated_in:
+                    deprecation_notice += ","
+
+                deprecation_notice += (
+                    " will be removed in %s" % deprecation_warning.removed_in
+                )
+
+            deprecation_notice += ". Notice: %s" % deprecation_warning.notice
+            LOGGER.warn(deprecation_notice)
 
     @abstractmethod
     def execute(self, *args, **kwargs):
