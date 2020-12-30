@@ -12,5 +12,5 @@ services:
       - "7474:7474"
       - "7687:7687"
     volumes:
-      - "/home/delaitre2/Documents/ai-bugfinder/data/cwe121_annot/neo4j_v3.db:/data/databases/graph.db"
-      #- "/home/delaitre2/Documents/ai-bugfinder/data/aure/neo4j_v3.db:/data/databases/graph.db"
+      #- "/home/delaitre2/Documents/ai-bugfinder/data/cwe121_annot/neo4j_v3.db:/data/databases/graph.db"
+      - "/home/delaitre2/Documents/ai-bugfinder/data/aure/neo4j_v3.db:/data/databases/graph.db"
