@@ -1,4 +1,4 @@
-image: gitlab/ci-runner:latest
+image: isd-ssd-p861381.nist.gov:5000/gitlab/ci-runner:latest
 
 stages:
   - tests
