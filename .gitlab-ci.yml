@@ -1,4 +1,4 @@
-image: gitlab-runner:latest
+image: gitlab/ci-runner:latest
 
 stages:
   - tests
