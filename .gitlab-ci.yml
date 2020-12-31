@@ -1,4 +1,4 @@
-image: python:3.6
+image: gitlab-runner:latest
 
 stages:
   - tests
