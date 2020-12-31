@@ -4,6 +4,7 @@ stages:
   - tests
 
 before_script:
+  - apk add curl
   - curl -L "https://github.com/docker/compose/releases/download/1.26.2/docker-compose-$(uname -s)-$(uname -m)" -o /tmp/docker-compose
   - chmod +x /tmp/docker-compose
   - pip install -r ./requirements.txt
