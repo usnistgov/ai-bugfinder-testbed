@@ -1,10 +1,9 @@
-image: isd-ssd-p861381.nist.gov:5000/gitlab/ci-runner:latest
+image: python:3.6-slim
 
 stages:
   - tests
 
 before_script:
-  - apk add curl
   - curl -L "https://github.com/docker/compose/releases/download/1.26.2/docker-compose-$(uname -s)-$(uname -m)" -o /tmp/docker-compose
   - chmod +x /tmp/docker-compose
   - pip install -r ./requirements.txt
