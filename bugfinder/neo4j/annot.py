@@ -11,11 +11,12 @@ class Neo4JAnnotations(Neo4J3Processing):
     COMMANDS = [
         "MATCH (n) SET n:GenericNode;",
         "CREATE INDEX ON :GenericNode(type);",
+        "CREATE INDEX ON :GenericNode(code);",
         "CREATE INDEX ON :GenericNode(filepath);",
         """
             MATCH (root1:GenericNode)-[:FLOWS_TO|REACHES|CONTROLS]->()
             WHERE root1.type IN [ 
-                'Condition', 'ForInit', 'IncDecOp',
+                'Condition', 'ForInit', 'IncDecOp', 'PostIncDecOperationExpression',
                 'ExpressionStatement', 'IdentifierDeclStatement', 'CFGEntryNode',
                 'BreakStatement', 'Parameter', 'ReturnStatement', 'Label',
                 'GotoStatement', 'Statement', 'UnaryExpression' 
@@ -25,7 +26,7 @@ class Neo4JAnnotations(Neo4J3Processing):
         """
             MATCH ()-[:FLOWS_TO|REACHES|CONTROLS]->(root2:GenericNode)
             WHERE root2.type IN [
-                'CFGExitNode', 'IncDecOp', 'Condition',
+                'CFGExitNode', 'IncDecOp', 'Condition', 'PostIncDecOperationExpression',
                 'ExpressionStatement', 'ForInit', 'IdentifierDeclStatement',
                 'BreakStatement', 'Parameter', 'ReturnStatement', 'Label',
                 'GotoStatement', 'Statement', 'UnaryExpression' 
@@ -46,6 +47,15 @@ class Neo4JAnnotations(Neo4J3Processing):
             MATCH (node)
             WHERE EXISTS(node.functionId)
             SET node.functionId=toString(node.functionId);
+        """,
+        """
+            match (file:GenericNode {type:'File'})
+            with split(file.code,'/')[2..4] as tc, collect(distinct file) as files
+            merge (testcase:GenericNode { type:'Testcase', label:tc[0], name:tc[1]})
+            with testcase, files
+            unwind files as file
+            with testcase, file
+            merge (testcase)<-[r:IS_FILE_OF]-(file)
         """,
     ]
 
