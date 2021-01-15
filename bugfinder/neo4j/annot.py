@@ -57,6 +57,14 @@ class Neo4JAnnotations(Neo4J3Processing):
             with testcase, file
             merge (testcase)<-[r:IS_FILE_OF]-(file)
         """,
+        """
+            // Delete dataflow for the NULL keyword, which is misinterpreted by Joern
+            match (n1:DownstreamNode)-[r:REACHES {var:"NULL"}]->(n2:DownstreamNode)
+            delete r
+        """, """
+            match (:GenericNode {type:"Symbol",code:"NULL"})<-[d:DEF]-()
+            delete d
+        """,
     ]
 
     def configure_container(self):
