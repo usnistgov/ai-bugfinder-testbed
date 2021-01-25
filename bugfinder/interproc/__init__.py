@@ -53,7 +53,9 @@ class InterprocMerger(Neo4J3Processing):
             match (tc:GenericNode {type:"Testcase"})<-[:IS_FILE_OF]-(:GenericNode {type:"File"})-[:IS_FILE_OF]->(func:GenericNode {type:"Function"})-[:IS_FUNCTION_OF_CFG]->(callee:UpstreamNode {type:"CFGEntryNode"}) // Get all function declarations in the testcase
             where id(tc)=%d
             with tc,func,callee
-            match (tc)<-[:IS_FILE_OF]-(:GenericNode {type:"File"})-[:IS_FILE_OF]->(:GenericNode {type:"Function"})-[:IS_FUNCTION_OF_CFG]->(:UpstreamNode {type:"CFGEntryNode"})-[:CONTROLS]->(caller:DownstreamNode)
+            match (tc)<-[:IS_FILE_OF]-(:GenericNode {type:"File"})-[:IS_FILE_OF]->(:GenericNode {type:"Function"})-[:IS_FUNCTION_OF_CFG]->(entry:UpstreamNode {type:"CFGEntryNode"})
+            with func,callee,entry
+            match shortestPath((entry)-[:CONTROLS*]->(caller:DownstreamNode))
             where caller.type in ["ExpressionStatement","Condition"]
             with func,callee,caller
             match shortestPath((caller)-[:IS_AST_PARENT*]->(cexpr:GenericNode {type:"CallExpression"}))
@@ -63,7 +65,9 @@ class InterprocMerger(Neo4J3Processing):
             with callee,caller
             merge (caller)-[intercall:FLOWS_TO]->(callee) // Connect the callee's entry point (head) to where it is called
             with callee,caller,intercall
-            match (callee)-[:CONTROLS]->(:DownstreamNode)-[:FLOWS_TO|DOM]->(exit:DownstreamNode {type:"CFGExitNode"}) // Find the callee's exit point // FIXME Should we put a * on CONTROLS?
+            match shortestPath((callee)-[:CONTROLS*]->(last:DownstreamNode))
+            with callee,caller,intercall,last
+            match (last)-[:FLOWS_TO|DOM]->(exit:DownstreamNode {type:"CFGExitNode"}) // Find the callee's exit point
             with caller,intercall,exit
             match (caller)-[nextrel:FLOWS_TO]->(next:DownstreamNode) // Find the caller's next node in its control flow graph
             where next.type<>"CFGEntryNode"
@@ -75,7 +79,7 @@ class InterprocMerger(Neo4J3Processing):
             // Handle use of *var
             match (tc:GenericNode {type:"Testcase"})<-[:IS_FILE_OF]-(:GenericNode {type:"File"})-[:IS_FILE_OF]->(:GenericNode {type:"Function"})-[:IS_FUNCTION_OF_CFG]->(entry:UpstreamNode {type:"CFGEntryNode"})
             where id(tc)=%d
-            with entry
+            with distinct entry
             match shortestPath((entry)-[:CONTROLS*]->(n:DownstreamNode))
             with distinct n
             match shortestPath((n)-[:DEF|USE]->(sym0:GenericNode {type:"Symbol"}))
@@ -87,7 +91,7 @@ class InterprocMerger(Neo4J3Processing):
             // Handle use of &var
             match (tc:GenericNode {type:"Testcase"})<-[:IS_FILE_OF]-(:GenericNode {type:"File"})-[:IS_FILE_OF]->(:GenericNode {type:"Function"})-[:IS_FUNCTION_OF_CFG]->(entry:UpstreamNode {type:"CFGEntryNode"})
             where id(tc)=%d
-            with entry
+            with distinct entry
             match shortestPath((entry)-[:CONTROLS*]->(n:DownstreamNode))
             with distinct n
             match shortestPath((n)-[:IS_AST_PARENT*]->(uop:GenericNode {type:"UnaryOperator",code:"&"}))
@@ -103,7 +107,7 @@ class InterprocMerger(Neo4J3Processing):
             match (def)-[:DEF]->(def_sym:GenericNode {type:"Symbol",code:idf.code})
             merge (def)-[rdef:DEF {var:idf.code}]->(adr_sym)
             merge (def)-[dflr:REACHES {var:adr_sym.code}]->(expr)
-            with expr
+            with distinct expr
             match (ptr_sym:GenericNode {type:"Symbol"})<-[:DEF]-(expr)
             match shortestPath((expr)-[:FLOWS_TO*]-(usr:DownstreamNode {type:"ExpressionStatement"}))
             where expr<>usr
@@ -113,10 +117,10 @@ class InterprocMerger(Neo4J3Processing):
             // Add missing dataflow
             match (tc:GenericNode {type:"Testcase"})<-[:IS_FILE_OF]-(:GenericNode {type:"File"})-[:IS_FILE_OF]->(:GenericNode {type:"Function"})-[:IS_FUNCTION_OF_CFG]->(entry:UpstreamNode {type:"CFGEntryNode"})
             where id(tc)=%d
-            with entry
+            with distinct entry
             match shortestPath((entry)-[:CONTROLS*]->(n:DownstreamNode))
             with distinct n
-            match shortestPath((n)-[:DEF|USE]->(sym:GenericNode {type:"Symbol"}))
+            match (n)-[:DEF|USE]->(sym:GenericNode {type:"Symbol"})
             with distinct sym
             match (sym)<-[use:USE]-(clr:GenericNode)
             match (sym)<-[def:DEF]-(src:DownstreamNode)
@@ -125,9 +129,12 @@ class InterprocMerger(Neo4J3Processing):
             merge (src)-[ndf:REACHES {var:sym.code}]->(clr)
         """, """
             // Connect arguments to dataflow on the caller side
-            match (tc:GenericNode {type:"Testcase"})<-[:IS_FILE_OF]-(:GenericNode {type:"File"})-[:IS_FILE_OF]->(:GenericNode {type:"Function"})-[:IS_FUNCTION_OF_CFG]->(:UpstreamNode {type:"CFGEntryNode"})-[:CONTROLS]->(caller:DownstreamNode)
-            where id(tc)=%d and caller.type in ["ExpressionStatement","Condition"]
-            with caller
+            match (tc:GenericNode {type:"Testcase"})<-[:IS_FILE_OF]-(:GenericNode {type:"File"})-[:IS_FILE_OF]->(:GenericNode {type:"Function"})-[:IS_FUNCTION_OF_CFG]->(entry:UpstreamNode {type:"CFGEntryNode"})
+            where id(tc)=%d
+            with distinct entry
+            match shortestPath((entry)-[:CONTROLS*]->(caller:DownstreamNode))
+            where caller.type in ["ExpressionStatement","Condition"]
+            with distinct caller
             match shortestPath((caller)-[:IS_AST_PARENT*]->(cexpr:GenericNode {type:"CallExpression"}))
             where not (cexpr)<-[:IS_AST_PARENT*]-(:GenericNode {type:"CallExpression"})
             with caller,cexpr
