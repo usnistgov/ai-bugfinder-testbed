@@ -65,6 +65,16 @@ class Neo4JAnnotations(Neo4J3Processing):
             match (:GenericNode {type:"Symbol",code:"NULL"})<-[d:DEF]-()
             delete d
         """,
+        """
+            // Add canonical name to File nodes
+            match (f:GenericNode {type:"File"})
+            set f.basename=split(f.code,'/')[-1]
+        """, """
+            // Add canonical line number to all expressions
+            match (n1:GenericNode)
+            where exists(n1.location)
+            set n1.lineno=toInteger(split(n1.location,":")[0])
+        """,
     ]
 
     def configure_container(self):
