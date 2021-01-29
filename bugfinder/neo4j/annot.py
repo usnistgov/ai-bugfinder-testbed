@@ -75,6 +75,11 @@ class Neo4JAnnotations(Neo4J3Processing):
             where exists(n1.location)
             set n1.lineno=toInteger(split(n1.location,":")[0])
         """,
+	"""
+            // Remove extraneous dataflow to exit nodes
+	    match (:GenericNode {type:"CFGExitNode"})<-[r:REACHES]-()
+	    delete r
+	""",
     ]
 
     def configure_container(self):
