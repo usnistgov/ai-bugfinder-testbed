@@ -1,9 +1,21 @@
 """
 """
+from bugfinder.dataset.processing import DatasetProcessingDeprecation
 from bugfinder.features import FlowGraphFeatureExtractor
 
 
 class FeatureExtractor(FlowGraphFeatureExtractor):
+    def __init__(self, dataset):
+        notice = """
+            The Any Hop All Flows (AHAF) extractor is being deprecated and will be
+            removed in a future version. This extractor does not adapt well for large
+            test cases and, hence, is being deprecated.
+        """
+
+        super().__init__(
+            dataset, deprecation_warning=DatasetProcessingDeprecation(notice)
+        )
+
     def configure_container(self):
         super().configure_container()
         self.container_name = "fext-any-hop-all-flows"

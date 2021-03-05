@@ -25,10 +25,17 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("dataset_path", help="path to the dataset to clean")
     parser.add_argument(
-        "--model", "-m", choices=options.keys(), required=True, help="model to use",
+        "--model",
+        "-m",
+        choices=options.keys(),
+        required=True,
+        help="model to use",
     )
     parser.add_argument(
-        "--name", "-n", required=True, help="name of the saved model",
+        "--name",
+        "-n",
+        required=True,
+        help="name of the saved model",
     )
     parser.add_argument(
         "--batch-size",
@@ -46,7 +53,12 @@ if __name__ == "__main__":
         help="max number of items to train with",
     )
     parser.add_argument(
-        "--epochs", "-e", type=int, default=1, required=False, help="number of epochs",
+        "--epochs",
+        "-e",
+        type=int,
+        default=1,
+        required=False,
+        help="number of epochs",
     )
     parser.add_argument(
         "--keep-best-model",
