@@ -3,10 +3,12 @@ services:
   neo4j:
     image: "neo4j-ai:latest"
     environment:
-      - NEO4J_dbms_memory_pagecache_size=64G
-      - NEO4J_dbms_memory_heap_max__size=64G
+      - NEO4J_dbms_memory_pagecache_size=48G
+      - NEO4J_dbms_memory_heap_max__size=48G
+      - NEO4J_dbms_routing_driver_connection_pool_max__size=unlimited,
       - NEO4J_dbms_allow__upgrade=true
       - NEO4J_dbms_shell_enabled=true
+      - NEO4J_dbms_transaction_timeout=2h
       - NEO4J_AUTH=none
     ports:
       - "7474:7474"
@@ -14,3 +16,6 @@ services:
     volumes:
       - "/home/delaitre2/Documents/ai-bugfinder/data/cwe121_annot/neo4j_v3.db:/data/databases/graph.db"
       #- "/home/delaitre2/Documents/ai-bugfinder/data/aure/neo4j_v3.db:/data/databases/graph.db"
+    sysctls:
+      net.ipv6.conf.all.disable_ipv6: 1
+      net.ipv6.conf.all.forwarding: 1

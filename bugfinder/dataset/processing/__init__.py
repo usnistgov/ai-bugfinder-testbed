@@ -85,6 +85,9 @@ class DatasetProcessingWithContainer(DatasetProcessing):
 
     def execute(self, command_args=None):
         try:
+            if command_args is not None:
+                self.configure_command(command_args)
+
             self.configure_container()
             started = False
 
@@ -92,9 +95,6 @@ class DatasetProcessingWithContainer(DatasetProcessing):
                 self.container_name,
                 get_rand_string(6, special=False, upper=False),
             )
-
-            if command_args is not None:
-                self.configure_command(command_args)
 
             while not started:
                 try:

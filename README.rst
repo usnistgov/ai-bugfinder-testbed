@@ -1,6 +1,19 @@
 AI Bugfinder
 ============
 
+TLDR
+----
+.. code:: bash
+	cd images
+	docker-compose build
+	cd ..
+	./scripts/download_cwe121.sh
+	python ./clean_dataset.py  --no-cpp --no-litterals data/cwe121_annot
+	python ./run_joern.py data/cwe121_annot --version 0.4.0
+	./bugfinder/sink_tagging/tag_sinks.sh
+	python run_interproc.py data/cwe121_annot
+
+
 Disclaimer
 ----------
 

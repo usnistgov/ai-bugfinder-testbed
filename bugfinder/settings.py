@@ -38,7 +38,10 @@ LOGGER_CONFIG = {
     },
 }
 
-NEO4J_V3_MEMORY = "4G"
+POOL_SIZE = int(os.getenv("POOL_SIZE", multiprocessing.cpu_count()))
+
+NEO4J_V3_MEMORY = "64G"
+NEO4J_V3_CORES  = POOL_SIZE
 
 DATASET_DIRS = {
     "joern": "joern.db",
@@ -47,7 +50,6 @@ DATASET_DIRS = {
     "models": "models",
 }
 
-POOL_SIZE = int(os.getenv("POOL_SIZE", multiprocessing.cpu_count()))
 
 logging.config.dictConfig(LOGGER_CONFIG)
 LOGGER = logging.getLogger("app")
