@@ -4,6 +4,7 @@ import argparse
 
 from bugfinder.ast.v01 import Neo4JASTMarkup as Neo4JASTMarkupV01
 from bugfinder.ast.v02 import Neo4JASTMarkup as Neo4JASTMarkupV02
+from bugfinder.ast.v03 import Neo4JASTMarkup as Neo4JASTMarkupV03
 from bugfinder.dataset import CWEClassificationDataset as Dataset
 from bugfinder.dataset.processing.dataset_ops import RightFixer
 from bugfinder.utils.processing import is_processing_stack_valid
@@ -17,6 +18,10 @@ if __name__ == "__main__":
         [
             {"class": RightFixer, "args": {"command_args": "neo4j_v3.db 101 101"}},
             Neo4JASTMarkupV02,
+        ],
+        [
+            {"class": RightFixer, "args": {"command_args": "neo4j_v3.db 101 101"}},
+            Neo4JASTMarkupV03,
         ],
     ]
 
