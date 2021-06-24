@@ -4,14 +4,14 @@ AI Bugfinder
 TLDR
 ----
 .. code:: bash
-	cd images
-	docker-compose build
-	cd ..
+	docker-compose -f images/docker-compose.yml build --force
 	./scripts/download_cwe121.sh
 	python ./clean_dataset.py  --no-cpp --no-litterals data/cwe121_annot
 	python ./run_joern.py data/cwe121_annot --version 0.4.0
 	./bugfinder/sink_tagging/tag_sinks.sh
-	python run_interproc.py data/cwe121_annot
+	python run_interproc.py --log_failed /tmp/failed.15m.log --timeout 15m data/cwe121_annot
+	python run_interproc.py --run_failed /tmp/failed.15m.log --timeout 24h --log_failed /tmp/failed.24h.log data/cwe121_annot
+	python run_interproc.py --run_failed /tmp/failed.24h.log --timeout  7d --log_failed /tmp/failed.7d.log  data/cwe121_annot
 
 
 Disclaimer

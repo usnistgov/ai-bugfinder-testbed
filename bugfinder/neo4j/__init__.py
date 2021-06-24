@@ -24,7 +24,7 @@ class Neo4J3Processing(DatasetProcessingWithContainer):
             "NEO4J_dbms_transaction_timeout": "2h",
             "NEO4J_AUTH": "none",
         }
-        self.container_ports = ["7474", "7687"]
+        self.container_ports = ["7474", "7687", "7473"]
         self.volumes = {
             self.dataset.neo4j_dir: "/data/databases/graph.db",
         }

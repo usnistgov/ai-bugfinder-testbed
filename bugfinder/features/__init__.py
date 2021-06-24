@@ -21,7 +21,7 @@ class GraphFeatureExtractor(Neo4J3Processing):
     def _get_entrypoint_list_worker(self, testcase):
         list_entrypoint_cmd = """
             MATCH (f {type:"Function"})-[:IS_FUNCTION_OF_CFG]->(entry {type:'CFGEntryNode'})
-            WHERE id(f)=%d
+            WHERE id(f)=%d AND NOT (entry)<-[:FLOWS_TO]-()
             RETURN entry.functionId AS id
         """
         testcase_info = {"filepath": testcase["filepath"]}

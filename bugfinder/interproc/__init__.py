@@ -33,7 +33,7 @@ def interproc_worker(bar, cmds, tcid, q, port):
                 break
             except (RemoteDisconnected, ProtocolError):
                 continue
-            except Exception as e:
+            except (KeyboardInterrupt, Exception) as e:
                 LOGGER.debug("Testcase %d Query %d failed: %s" % (tcid, idx, str(e)))
                 bar.next(n=len(cmds)-idx)
                 bar.unsubscribe()
@@ -53,6 +53,13 @@ class InterprocProcessing(Neo4J3Processing):
     interproc_cmds_pre  = []
     interproc_cmds_tc   = []
     interproc_cmds_post = []
+
+    def assign_ports(self):
+        assigned_ports = None
+        if self.container_ports is not None:
+            self.machine_ports = self.container_ports
+            assigned_ports = dict(zip(self.container_ports, self.machine_ports))
+        return assigned_ports
 
     def configure_command(self, command):
         self.log_input  = command["log_input"]
@@ -97,18 +104,21 @@ class InterprocProcessing(Neo4J3Processing):
             status = pool.starmap_async(interproc_worker, [[bar, self.interproc_cmds_tc, int(tc), int(q), port] for tc, q in tc_list], chunksize=1)
             pool.close()
 
+            # Display progress until we are done
+            bar.next()
+            try:
+                bar.refresh()
+            except KeyboardInterrupt:
+                pass
+            bar.finish()
+            pool.join()
+
             # Write failed queries to a log file if specified
             if self.log_output:
                 failed = filter(None, status.get())
                 with open(self.log_output, 'a') as outlog:
                     for query in failed:
                         outlog.write("%d,%d,%s\n" % (query[0], query[1], query[2].replace('\n', ' ')))
-
-            # Display progress until we are done
-            bar.next()
-            bar.refresh()
-            bar.finish()
-            pool.join()
 
         if self.interproc_cmds_post:
             LOGGER.debug("Postprocessing...")
@@ -124,19 +134,6 @@ class InterprocProcessing(Neo4J3Processing):
 class InterprocMerger(InterprocProcessing):
 
     interproc_cmds_pre = [
-        """
-            // Remove incorrect DEF relationships in arr[x] = data where x was considered DEF'ed by the expression
-            match (expr:DownstreamNode)-[:IS_AST_PARENT*]->(asgn:GenericNode {type:"AssignmentExpression"})-[:IS_AST_PARENT]->(aidx:GenericNode {type:"ArrayIndexing",childNum:"0"})-[:IS_AST_PARENT]->(idfr:GenericNode {type:"Identifier",childNum:"1"})
-            match (expr)-[rd1:DEF]->(sym:GenericNode {type:"Symbol",code:"* "+idfr.code})<-[rd2:DEF]-(asgn)
-            delete rd1, rd2
-        """,
-        """
-            // Delete incorrect DEF relationships created by Joern
-            match (decl:GenericNode {type:"IdentifierDeclStatement"})-[rdef:DEF]->(sym:GenericNode {type:"Symbol"})
-            where left(sym.code,2)<>"& "
-              and not (decl)-[:IS_AST_PARENT]->(:GenericNode {type:"IdentifierDecl"})-[:DEF]->(sym)
-              delete rdef
-        """,
         """
             match (cexpr:GenericNode {type:"CallExpression"})-[:IS_AST_PARENT]->(func:GenericNode {type:"Callee"})
             where func.code in ["memcpy","memmove","gets","fgets","fgetws","sprintf","swprintf","strcat","wcscat","strncat","wcsncat","strcpy","wcscpy","strncpy","wcsncpy","wcstombs"]
@@ -286,6 +283,7 @@ class InterprocMerger(InterprocProcessing):
             merge (ret)-[:REACHES {callerid:id(calrel)}]->(caller)
         """,
          """
+            // Remove redundant dataflow/shortcuts
             match (tc:GenericNode {type:"Testcase"})<-[:IS_FILE_OF]-(:GenericNode {type:"File"})-[:IS_FILE_OF]->(:GenericNode {type:"Function",code:"main"})-[:IS_FUNCTION_OF_CFG]->(main:UpstreamNode {type:"CFGEntryNode"})
             where id(tc)=%d
             with distinct main
