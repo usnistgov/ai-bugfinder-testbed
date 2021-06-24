@@ -9,7 +9,6 @@ import csv
 
 
 class FeatureExtractor(Neo4J3Processing):
-
     def configure_command(self, command):
         self.timeout = command["timeout"]
 
@@ -91,17 +90,16 @@ class FeatureExtractor(Neo4J3Processing):
             csv_writer = csv.writer(csv_file)
 
             # FIXME developer will not know how to setup its features
-            #labels = self.get_labels_from_feature_map() + ["result", "name"]
+            # labels = self.get_labels_from_feature_map() + ["result", "name"]
 
             # Make sure the number of labels and the number of features are the
             # same.
-            #if len(labels) != len(features[0]):
+            # if len(labels) != len(features[0]):
             #    raise IndexError(
             #        "Number of labels (%d) differs from number of features (%d)"
             #        % (len(labels), len(features[0]))
             #    )
 
             # Write headers and content to CSV file
-            #csv_writer.writerow(labels)
+            # csv_writer.writerow(labels)
             csv_writer.writerows(features)
-

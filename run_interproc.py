@@ -11,12 +11,33 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument("dataset_path", help="path to the dataset", type=str)
-    parser.add_argument("--log_failed", help="path to a file to log failed queries",   type=str, default=None)
-    parser.add_argument("--run_failed", help="path to the log file of failed queries", type=str, default=None)
-    parser.add_argument("--timeout",    help="timeout for Neo4J queries", type=str, default="2h")
+    parser.add_argument(
+        "--log_failed",
+        help="path to a file to log failed queries",
+        type=str,
+        default=None,
+    )
+    parser.add_argument(
+        "--run_failed",
+        help="path to the log file of failed queries",
+        type=str,
+        default=None,
+    )
+    parser.add_argument(
+        "--timeout", help="timeout for Neo4J queries", type=str, default="2h"
+    )
     args = parser.parse_args()
 
     dataset = Dataset(args.dataset_path)
     dataset.queue_operation(RightFixer, {"command_args": "neo4j_v3.db 101 101"})
-    dataset.queue_operation(InterprocMerger, {"command_args": { "log_input": args.run_failed, "log_output": args.log_failed, "timeout": args.timeout}})
+    dataset.queue_operation(
+        InterprocMerger,
+        {
+            "command_args": {
+                "log_input": args.run_failed,
+                "log_output": args.log_failed,
+                "timeout": args.timeout,
+            }
+        },
+    )
     dataset.process()

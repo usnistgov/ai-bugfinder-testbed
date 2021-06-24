@@ -27,7 +27,7 @@ def interproc_worker(bar, cmds, tcid, q, port):
         cmd = cmds[idx]
         for tries in range(4):
             try:
-                sleep(tries**2)
+                sleep(tries ** 2)
                 db.run(cmd % tcid)
                 LOGGER.debug("Testcase %d Query %d succeeded." % (tcid, idx))
                 break
@@ -35,12 +35,12 @@ def interproc_worker(bar, cmds, tcid, q, port):
                 continue
             except (KeyboardInterrupt, Exception) as e:
                 LOGGER.debug("Testcase %d Query %d failed: %s" % (tcid, idx, str(e)))
-                bar.next(n=len(cmds)-idx)
+                bar.next(n=len(cmds) - idx)
                 bar.unsubscribe()
                 return (tcid, idx, str(e))
         else:
             LOGGER.debug("Testcase %d Query %d failed." % (tcid, idx))
-            bar.next(n=len(cmds)-idx)
+            bar.next(n=len(cmds) - idx)
             bar.unsubscribe()
             return (tcid, idx, "All tries exhausted.")
         bar.next()
@@ -50,8 +50,8 @@ def interproc_worker(bar, cmds, tcid, q, port):
 
 class InterprocProcessing(Neo4J3Processing):
 
-    interproc_cmds_pre  = []
-    interproc_cmds_tc   = []
+    interproc_cmds_pre = []
+    interproc_cmds_tc = []
     interproc_cmds_post = []
 
     def assign_ports(self):
@@ -62,9 +62,9 @@ class InterprocProcessing(Neo4J3Processing):
         return assigned_ports
 
     def configure_command(self, command):
-        self.log_input  = command["log_input"]
+        self.log_input = command["log_input"]
         self.log_output = command["log_output"]
-        self.timeout    = command["timeout"]
+        self.timeout = command["timeout"]
 
     def configure_container(self):
         super().configure_container()
@@ -87,21 +87,33 @@ class InterprocProcessing(Neo4J3Processing):
             if self.log_input:
                 # Read failed queries from a log file if specified
                 LOGGER.info("Loading failed testcases...")
-                with open(self.log_input, 'r') as inlog:
+                with open(self.log_input, "r") as inlog:
                     failed = list(inlog)
-                tc_list = [l.split(',')[:2]  for l in failed]
+                tc_list = [l.split(",")[:2] for l in failed]
             else:
                 # Read test cases from the database otherwise
                 LOGGER.info("Retrieving testcases...")
-                tc_list = [[tc["id"], 0] for tc in self.neo4j_db.run("""match (tc:GenericNode {type:"Testcase"}) return distinct id(tc) as id, tc.name as name""").data()]
+                tc_list = [
+                    [tc["id"], 0]
+                    for tc in self.neo4j_db.run(
+                        """match (tc:GenericNode {type:"Testcase"}) return distinct id(tc) as id, tc.name as name"""
+                    ).data()
+                ]
             LOGGER.debug("%d testcases retrieved." % len(tc_list))
 
-            port=self.machine_ports[self.container_ports.index("7474")]
+            port = self.machine_ports[self.container_ports.index("7474")]
 
             LOGGER.debug("Processing...")
             bar = MultiBar("Processing", max=1)
             pool = Pool(POOL_SIZE)
-            status = pool.starmap_async(interproc_worker, [[bar, self.interproc_cmds_tc, int(tc), int(q), port] for tc, q in tc_list], chunksize=1)
+            status = pool.starmap_async(
+                interproc_worker,
+                [
+                    [bar, self.interproc_cmds_tc, int(tc), int(q), port]
+                    for tc, q in tc_list
+                ],
+                chunksize=1,
+            )
             pool.close()
 
             # Display progress until we are done
@@ -116,9 +128,12 @@ class InterprocProcessing(Neo4J3Processing):
             # Write failed queries to a log file if specified
             if self.log_output:
                 failed = filter(None, status.get())
-                with open(self.log_output, 'a') as outlog:
+                with open(self.log_output, "a") as outlog:
                     for query in failed:
-                        outlog.write("%d,%d,%s\n" % (query[0], query[1], query[2].replace('\n', ' ')))
+                        outlog.write(
+                            "%d,%d,%s\n"
+                            % (query[0], query[1], query[2].replace("\n", " "))
+                        )
 
         if self.interproc_cmds_post:
             LOGGER.debug("Postprocessing...")
@@ -185,7 +200,8 @@ class InterprocMerger(InterprocProcessing):
             merge (exit)-[interreturn:FLOWS_TO {callerid:id(intercall)}]->(next) // Connect the callee's tail to the caller's next node
             merge (caller)-[:SHORTCUT]->(next)
             delete nextrel // Delete the edge between the function call and its next step, so that the control flow graph now goes through the callee and returns to the callers next step
-        """, """
+        """,
+        """
             // Handle global variables by first finding their initialization, then creating dataflow to nodes that use them.
             match (tc:GenericNode {type:"Testcase"})<-[:IS_FILE_OF]-(:GenericNode {type:"File"})-[:IS_FILE_OF]->(:GenericNode {type:"Function",code:"main"})-[:IS_FUNCTION_OF_CFG]->(main:UpstreamNode {type:"CFGEntryNode"})
             where id(tc)=%d
@@ -202,7 +218,8 @@ class InterprocMerger(InterprocProcessing):
             match p=(n1)-[:FLOWS_TO*]->(n2:GenericNode)-[:USE]->(sym2:GenericNode {type:"Symbol",code:sym1.code}) // Find the next node n2 that uses the global variable
             where n1<>n2 and none(n in nodes(p)[1..-1] where (n)-[:DEF]->(:GenericNode {type:"Symbol",code:sym1.code})) // Ensure the value has not been modified since n1
             merge (n1)-[:REACHES {var:sym1.code}]->(n2)
-        """, """
+        """,
+        """
             // Handle use of *var
             match (tc:GenericNode {type:"Testcase"})<-[:IS_FILE_OF]-(:GenericNode {type:"File"})-[:IS_FILE_OF]->(:GenericNode {type:"Function"})-[:IS_FUNCTION_OF_CFG]->(entry:UpstreamNode {type:"CFGEntryNode"})
             where id(tc)=%d
@@ -214,7 +231,8 @@ class InterprocMerger(InterprocProcessing):
             match (sym0)<-[r0:DEF]-(expr:DownstreamNode)-[r1:USE]->(sym1:GenericNode {type:"Symbol"})
             where expr.type in ["ExpressionStatement","Condition"] and sym0.code="* "+sym1.code
             merge (expr)-[r2:DEF]->(sym1)
-        """, """
+        """,
+        """
             // Handle use of &var
             match (tc:GenericNode {type:"Testcase"})<-[:IS_FILE_OF]-(:GenericNode {type:"File"})-[:IS_FILE_OF]->(:GenericNode {type:"Function"})-[:IS_FUNCTION_OF_CFG]->(entry:UpstreamNode {type:"CFGEntryNode"})
             where id(tc)=%d
@@ -241,7 +259,8 @@ class InterprocMerger(InterprocProcessing):
             where expr<>usr
             match (usr)-[:USE]->(star_sym:GenericNode {type:"Symbol",code:"* "+ptr_sym.code})
             merge (expr)-[sdef:DEF {var:ptr_sym.code}]->(star_sym)
-        """, """
+        """,
+        """
             // Add missing dataflow
             match (tc:GenericNode {type:"Testcase"})<-[:IS_FILE_OF]-(:GenericNode {type:"File"})-[:IS_FILE_OF]->(:GenericNode {type:"Function"})-[:IS_FUNCTION_OF_CFG]->(entry:UpstreamNode {type:"CFGEntryNode"})
             where id(tc)=%d
@@ -255,7 +274,8 @@ class InterprocMerger(InterprocProcessing):
             match (clr)<-[cf:FLOWS_TO*]-(src)
             where clr<>src
             merge (src)-[ndf:REACHES {var:sym.code}]->(clr)
-        """, """
+        """,
+        """
             // Connect arguments to dataflow on the caller side
             match (tc:GenericNode {type:"Testcase"})<-[:IS_FILE_OF]-(:GenericNode {type:"File"})-[:IS_FILE_OF]->(:GenericNode {type:"Function"})-[:IS_FUNCTION_OF_CFG]->(entry:UpstreamNode {type:"CFGEntryNode"})
             where id(tc)=%d
@@ -282,7 +302,7 @@ class InterprocMerger(InterprocProcessing):
             where callee<>ret
             merge (ret)-[:REACHES {callerid:id(calrel)}]->(caller)
         """,
-         """
+        """
             // Remove redundant dataflow/shortcuts
             match (tc:GenericNode {type:"Testcase"})<-[:IS_FILE_OF]-(:GenericNode {type:"File"})-[:IS_FILE_OF]->(:GenericNode {type:"Function",code:"main"})-[:IS_FUNCTION_OF_CFG]->(main:UpstreamNode {type:"CFGEntryNode"})
             where id(tc)=%d
@@ -301,7 +321,7 @@ class InterprocMerger(InterprocProcessing):
             with src, dst, filter(r in relationships(shorter) where not r in relationships(longer)) as xr // Retrieve extraneous relationship / shortcuts in the shorter path 
             foreach(r in xr | delete r) // Delete the shortcuts
         """,
-        ]
+    ]
 
     interproc_cmds_post = [
         """
@@ -311,4 +331,3 @@ class InterprocMerger(InterprocProcessing):
             SET d:DataSinkNode
         """,
     ]
-

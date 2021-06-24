@@ -18,7 +18,7 @@ class Neo4J3Processing(DatasetProcessingWithContainer):
         self.environment = {
             "NEO4J_dbms_memory_pagecache_size": NEO4J_V3_MEMORY,
             "NEO4J_dbms_memory_heap_max__size": NEO4J_V3_MEMORY,
-            #"NEO4J_dbms_routing_driver_connection_pool_max__size": NEO4J_V3_CORES * 2,
+            # "NEO4J_dbms_routing_driver_connection_pool_max__size": NEO4J_V3_CORES * 2,
             "NEO4J_dbms_allow__upgrade": "true",
             "NEO4J_dbms_shell_enabled": "true",
             "NEO4J_dbms_transaction_timeout": "2h",

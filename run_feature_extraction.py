@@ -33,7 +33,9 @@ if __name__ == "__main__":
         required=True,
         help="path to the dataset to clean",
     )
-    parser.add_argument("--timeout", help="timeout for Neo4J queries", type=str, default="2h")
+    parser.add_argument(
+        "--timeout", help="timeout for Neo4J queries", type=str, default="2h"
+    )
 
     option_group = parser.add_mutually_exclusive_group()
     option_group.add_argument(
@@ -62,7 +64,9 @@ if __name__ == "__main__":
     if args.map_features:
         dataset.queue_operation(operation_class, {"need_map_features": True})
     elif args.timeout:
-        dataset.queue_operation(operation_class, {"command_args": {"timeout": args.timeout}})
+        dataset.queue_operation(
+            operation_class, {"command_args": {"timeout": args.timeout}}
+        )
     else:
         dataset.queue_operation(operation_class)
 

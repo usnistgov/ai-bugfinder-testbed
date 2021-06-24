@@ -59,7 +59,7 @@ def start_container(
 
 
 def wait_log_display(container, log_string, max_wait_time=300):
-    """"""
+    """ """
     LOGGER.debug(
         "Waiting for container '%s' to display '%s' (max_wait_time=%d)..."
         % (container.name, log_string, max_wait_time)
