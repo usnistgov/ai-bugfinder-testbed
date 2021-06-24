@@ -38,9 +38,9 @@ def display_time(time_in_ms):
     days, hours = divide(hours, 24)
 
     if days == 0:
-        return "%dh%d02m%d02s" % (hours, mins, secs)
+        return "%dh%02dm%02ds" % (hours, mins, secs)
 
-    return "%d days %02dh%d02m%d02s" % (days, hours, mins, secs)
+    return "%d days %02dh%02dm%02ds" % (days, hours, mins, secs)
 
 
 def has_better_metrics(eval_keys, current_metrics, last_metrics=None):
