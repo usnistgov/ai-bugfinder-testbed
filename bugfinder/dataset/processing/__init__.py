@@ -50,7 +50,7 @@ class DatasetProcessing(ABC):
                 )
 
             deprecation_notice += ". Notice: %s" % deprecation_warning.notice
-            LOGGER.warn(deprecation_notice)
+            LOGGER.warning(deprecation_notice)
 
     @abstractmethod
     def execute(self, *args, **kwargs):

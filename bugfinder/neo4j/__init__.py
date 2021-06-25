@@ -4,7 +4,7 @@ from py2neo import Graph
 
 from bugfinder.dataset.processing import DatasetProcessingWithContainer
 from bugfinder.dataset.processing.dataset_ops import RightFixer
-from bugfinder.settings import NEO4J_V3_MEMORY, NEO4J_V3_CORES
+from bugfinder import settings
 from bugfinder.utils.containers import wait_log_display
 
 
@@ -16,12 +16,11 @@ class Neo4J3Processing(DatasetProcessingWithContainer):
     def configure_container(self):
         self.image_name = "neo4j-ai:latest"
         self.environment = {
-            "NEO4J_dbms_memory_pagecache_size": NEO4J_V3_MEMORY,
-            "NEO4J_dbms_memory_heap_max__size": NEO4J_V3_MEMORY,
-            # "NEO4J_dbms_routing_driver_connection_pool_max__size": NEO4J_V3_CORES * 2,
+            "NEO4J_dbms_memory_pagecache_size": settings.NEO4J_V3_MEMORY,
+            "NEO4J_dbms_memory_heap_max__size": settings.NEO4J_V3_MEMORY,
             "NEO4J_dbms_allow__upgrade": "true",
             "NEO4J_dbms_shell_enabled": "true",
-            "NEO4J_dbms_transaction_timeout": "2h",
+            "NEO4J_dbms_transaction_timeout": settings.NEO4J_DEFAULT_TIMEOUT,
             "NEO4J_AUTH": "none",
         }
         self.container_ports = ["7474", "7687", "7473"]
