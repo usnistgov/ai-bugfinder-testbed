@@ -1,15 +1,16 @@
 """
 """
-from multiprocessing import Pool
-from py2neo import Graph
 from http.client import RemoteDisconnected
-from urllib3.exceptions import ProtocolError
+from multiprocessing import Pool
 from time import sleep
-from sys import stderr
+
+from py2neo import Graph
+from urllib3.exceptions import ProtocolError
 
 from bugfinder.neo4j import Neo4J3Processing
+from bugfinder.settings import LOGGER, POOL_SIZE
 from bugfinder.utils.progressbar import SlowBar, MultiBar
-from bugfinder.settings import ROOT_DIR, LOGGER, POOL_SIZE
+
 
 # TODO
 # Check if Joern includes global variables in data flow
@@ -37,19 +38,20 @@ def interproc_worker(bar, cmds, tcid, q, port):
                 LOGGER.debug("Testcase %d Query %d failed: %s" % (tcid, idx, str(e)))
                 bar.next(n=len(cmds) - idx)
                 bar.unsubscribe()
-                return (tcid, idx, str(e))
+                return tcid, idx, str(e)
         else:
             LOGGER.debug("Testcase %d Query %d failed." % (tcid, idx))
             bar.next(n=len(cmds) - idx)
             bar.unsubscribe()
-            return (tcid, idx, "All tries exhausted.")
+            return tcid, idx, "All tries exhausted."
         bar.next()
     bar.unsubscribe()
     return None
 
 
 class InterprocProcessing(Neo4J3Processing):
-
+    log_input = None
+    log_output = None
     interproc_cmds_pre = []
     interproc_cmds_tc = []
     interproc_cmds_post = []
@@ -64,12 +66,14 @@ class InterprocProcessing(Neo4J3Processing):
     def configure_command(self, command):
         self.log_input = command["log_input"]
         self.log_output = command["log_output"]
-        self.timeout = command["timeout"]
+
+    def configure_container_with_dict(self, container_config):
+        self.configure_container()
+        self.environment["NEO4J_dbms_transaction_timeout"] = container_config["timeout"]
 
     def configure_container(self):
         super().configure_container()
         self.container_name = "interproc"
-        self.environment["NEO4J_dbms_transaction_timeout"] = self.timeout
 
     def send_commands(self):
         self.fix_data_folder_rights()
@@ -96,7 +100,10 @@ class InterprocProcessing(Neo4J3Processing):
                 tc_list = [
                     [tc["id"], 0]
                     for tc in self.neo4j_db.run(
-                        """match (tc:GenericNode {type:"Testcase"}) return distinct id(tc) as id, tc.name as name"""
+                        """ 
+                        match (tc:GenericNode {type:"Testcase"}) 
+                        return distinct id(tc) as id, tc.name as name
+                        """
                     ).data()
                 ]
             LOGGER.debug("%d testcases retrieved." % len(tc_list))
