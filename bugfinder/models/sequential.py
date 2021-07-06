@@ -1,16 +1,23 @@
 """ Abstract classifier model for the dataset.
 """
-from abc import abstractmethod
-from os.path import join, exists
-from shutil import rmtree, copytree
 
-import tensorflow as tf
+import tensorflow.keras as keras
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 
 from bugfinder.dataset.processing import DatasetProcessing, DatasetProcessingCategory
 from bugfinder.settings import LOGGER
-from bugfinder.utils.statistics import has_better_metrics
+
+
+class SequenceGenerator(keras.utils.Sequence):
+    def __init__(self, x_set, y_set, batch_size, shuffle=False):
+        pass
+
+    def __len__(self):
+        pass
+
+    def __getitem__(self, item):
+        pass
 
 
 class SequentialModel(DatasetProcessing):
@@ -18,15 +25,13 @@ class SequentialModel(DatasetProcessing):
         super().__init__(dataset)
 
         self.metadata["category"] = str(DatasetProcessingCategory.TRAINING)
-        self.model_cls = None
+        self.model_cls = keras.models.Sequential
         self.train_fn = None
         self.test_fn = None
         self.columns = None
 
-    @abstractmethod
-    def init_model(self, name, **kwargs):
-        # FIXME use this function to initial your model and return it
-        raise NotImplementedError()
+    def init_model(self, layers, model_dir, **kwargs):
+        return self.model_cls(layers=layers)
 
     def execute(
         self,
@@ -39,13 +44,13 @@ class SequentialModel(DatasetProcessing):
         reset=False,
         **kwargs,
     ):
-        last_results = None
+        # last_results = None
 
         if self.model_cls is None:
             raise Exception("Parameter 'model_cls' is undefined")
 
-        if result_focus is None:
-            result_focus = ["f1-score"]
+        # if result_focus is None:
+        #     result_focus = ["f1-score"]
 
         # FIXME make sure your dataset has a column 'result' and 'name', change
         #   this code otherwise. The column 'result' is used for output_data
@@ -80,79 +85,84 @@ class SequentialModel(DatasetProcessing):
         self.columns = input_train.columns
 
         # FIXME it is possible that these functions are not needed anymore. See
-        #   how they are replaced. Can be deleted in not needed
-        self.train_fn = tf.estimator.inputs.pandas_input_fn(
-            x=input_train,
-            y=output_train,
-            shuffle=True,
-            batch_size=batch_size,
+        #   how they are replaced. Can be deleted if not needed
+        self.train_fn = SequenceGenerator(
+            x_set=input_train, y_set=output_train, batch_size=batch_size, shuffle=True
         )
-        self.test_fn = tf.estimator.inputs.pandas_input_fn(
-            x=input_test, y=output_test, shuffle=False, batch_size=batch_size
+        self.test_fn = SequenceGenerator(
+            x_set=input_test, y_set=output_test, batch_size=batch_size
         )
+        # self.train_fn = tf.estimator.inputs.pandas_input_fn(
+        #     x=input_train,
+        #     y=output_train,
+        #     shuffle=True,
+        #     batch_size=batch_size,
+        # )
+        # self.test_fn = tf.estimator.inputs.pandas_input_fn(
+        #     x=input_test, y=output_test, shuffle=False, batch_size=batch_size
+        # )
 
         # Initialize model dir and backup dir
         # FIXME make sure your model can save to/load from the 'model_dir'
-        model_dir = join(self.dataset.model_dir, name)
-        if reset and exists(model_dir):
-            LOGGER.info("Removing %s..." % model_dir)
-            rmtree(model_dir)
-
-        model_dir_bkp = "%s.bkp" % model_dir
+        # model_dir = join(self.dataset.model_dir, name)
+        # if reset and exists(model_dir):
+        #     LOGGER.info("Removing %s..." % model_dir)
+        #     rmtree(model_dir)
+        #
+        # model_dir_bkp = "%s.bkp" % model_dir
 
         # Initialize statistics
-        self.processing_stats = {
-            "samples": {"training": len(input_train), "testing": len(input_test)},
-            "results": None,
-        }
-
-        if name in self.dataset.summary["training"] and not reset:
-            last_results = self.dataset.summary["training"][name]["last_results"]
+        # self.processing_stats = {
+        #     "samples": {"training": len(input_train), "testing": len(input_test)},
+        #     "results": None,
+        # }
+        #
+        # if name in self.dataset.summary["training"] and not reset:
+        #     last_results = self.dataset.summary["training"][name]["last_results"]
 
         # Check if results need to be recalculated
-        need_evaluate_model = False
-        if last_results is None and not reset and exists(model_dir):
-            LOGGER.warning(
-                "Summary tampered with, creating baseline on current testing data..."
-            )
-            need_evaluate_model = True
+        # need_evaluate_model = False
+        # if last_results is None and not reset and exists(model_dir):
+        #     LOGGER.warning(
+        #         "Summary tampered with, creating baseline on current testing data..."
+        #     )
+        #     need_evaluate_model = True
 
-        model = self.init_model(model_dir, **kwargs)
+        # FIXME add your layers here
+        layers = []
+        model = self.init_model(layers, None, **kwargs)
 
-        if need_evaluate_model:  # Evaluate the model if needed
-            # FIXME the model will need a 'predict' method. This line might need
-            #   tweaking.
-            preds_test = [
-                int(pred["classes"][0]) for pred in model.predict(input_fn=self.test_fn)
-            ]
-
-            last_results = classification_report(
-                output_test,
-                preds_test,
-                target_names=self.dataset.classes,
-                output_dict=True,
-            )["weighted avg"]
-
-            LOGGER.info("Report generated for existing model.")
-
-        # Backup the existing model if needs be
-        if exists(model_dir_bkp):
-            rmtree(model_dir_bkp)
-
-        if last_results is not None and keep_best_model:
-            copytree(model.model_dir, model_dir_bkp)
+        # if need_evaluate_model:  # Evaluate the model if needed
+        #     preds_test = [
+        #         int(pred["classes"][0])
+        #         for pred in model.predict_generator(generator=self.test_fn)
+        #     ]
+        #
+        #     last_results = classification_report(
+        #         output_test,
+        #         preds_test,
+        #         target_names=self.dataset.classes,
+        #         output_dict=True,
+        #     )["weighted avg"]
+        #
+        #     LOGGER.info("Report generated for existing model.")
+        #
+        # # Backup the existing model if needs be
+        # if exists(model_dir_bkp):
+        #     rmtree(model_dir_bkp)
+        #
+        # if last_results is not None and keep_best_model:
+        #     copytree(model.model_dir, model_dir_bkp)
 
         # Train the model for the given number of epochs
         for epoch_num in range(epochs):
             LOGGER.info("Training dataset for epoch %d/%d..." % (epoch_num + 1, epochs))
-            # FIXME model needs a 'train' method. Code might need tweaks.
-            model.train(input_fn=self.train_fn, steps=max_items)
+            model.fit_generator(generator=self.train_fn, steps_per_epoch=max_items)
 
         # Evaluate the model and save the predictions
-        # FIXME the model will need a 'predict' method. This line might need
-        #   tweaking.
         preds_test = [
-            int(pred["classes"][0]) for pred in model.predict(input_fn=self.test_fn)
+            int(pred["classes"][0])
+            for pred in model.predict_generator(generator=self.test_fn)
         ]
 
         self.processing_stats["results"] = classification_report(
@@ -170,18 +180,23 @@ class SequentialModel(DatasetProcessing):
             * 100,
         }
 
+        # if last_results is not None:
+        #     last = {
+        #         "precision": last_results["precision"] * 100,
+        #         "recall": last_results["recall"] * 100,
+        #         "f1-score": last_results["f1-score"] * 100,
+        #     }
+        # else:
+        #     last = {
+        #         "precision": float("nan"),
+        #         "recall": float("nan"),
+        #         "f1-score": float("nan"),
+        #     }
         last = {
             "precision": float("nan"),
             "recall": float("nan"),
             "f1-score": float("nan"),
         }
-
-        if last_results is not None:
-            last = {
-                "precision": last_results["precision"] * 100,
-                "recall": last_results["recall"] * 100,
-                "f1-score": last_results["f1-score"] * 100,
-            }
 
         LOGGER.info(
             "Precision: %02.03f%% (%02.03f%%); Recall: %02.03f%% (%02.03f%%); "
@@ -195,22 +210,22 @@ class SequentialModel(DatasetProcessing):
                 last["f1-score"],
             )
         )
-
-        if keep_best_model and not has_better_metrics(
-            result_focus,
-            self.processing_stats["results"]["weighted avg"],
-            last_results,
-        ):
-            LOGGER.warning(
-                "Performance decreased from original values. Replacing model with "
-                "previous one..."
-            )
-            rmtree(model_dir)
-            copytree(model_dir_bkp, model_dir)
-        else:
-            self.processing_stats["last_results"] = self.processing_stats["results"][
-                "weighted avg"
-            ]
-
-        if exists(model_dir_bkp):
-            rmtree(model_dir_bkp)
+        #
+        # if keep_best_model and not has_better_metrics(
+        #     result_focus,
+        #     self.processing_stats["results"]["weighted avg"],
+        #     last_results,
+        # ):
+        #     LOGGER.warning(
+        #         "Performance decreased from original values. Replacing model with "
+        #         "previous one..."
+        #     )
+        #     rmtree(model_dir)
+        #     copytree(model_dir_bkp, model_dir)
+        # else:
+        #     self.processing_stats["last_results"] = self.processing_stats["results"][
+        #         "weighted avg"
+        #     ]
+        #
+        # if exists(model_dir_bkp):
+        #     rmtree(model_dir_bkp)
