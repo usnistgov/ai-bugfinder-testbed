@@ -1,6 +1,8 @@
 """
 """
 from concurrent.futures import ThreadPoolExecutor
+
+from bugfinder import settings
 from bugfinder.neo4j import Neo4J3Processing
 from bugfinder.settings import LOGGER, POOL_SIZE
 from os.path import join, exists
@@ -9,8 +11,11 @@ import csv
 
 
 class FeatureExtractor(Neo4J3Processing):
-    def configure_command(self, command):
-        self.timeout = command["timeout"]
+    timeout = settings.NEO4J_DEFAULT_TIMEOUT
+
+    def configure_container_with_dict(self, container_config):
+        self.timeout = container_config["timeout"]
+        self.configure_container()
 
     def configure_container(self):
         super().configure_container()
@@ -66,7 +71,7 @@ class FeatureExtractor(Neo4J3Processing):
         with ThreadPoolExecutor(max_workers=POOL_SIZE) as executor:
             res = executor.map(
                 self.extract_features_worker,
-                [(entrypoint) for entrypoint in entrypoint_list],
+                entrypoint_list,
             )
             return list(res)
 

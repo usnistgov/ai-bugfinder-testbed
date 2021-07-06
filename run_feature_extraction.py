@@ -61,12 +61,16 @@ if __name__ == "__main__":
 
     dataset.queue_operation(RightFixer, {"command_args": "neo4j_v3.db 101 101"})
 
+    operation_params = dict()
+
     if args.map_features:
-        dataset.queue_operation(operation_class, {"need_map_features": True})
-    elif args.timeout:
-        dataset.queue_operation(
-            operation_class, {"command_args": {"timeout": args.timeout}}
-        )
+        operation_params["need_map_features"] = True
+
+    if args.timeout:
+        operation_params["container_config"] = {"timeout": args.timeout}
+
+    if len(operation_params.keys()) > 0:
+        dataset.queue_operation(operation_class, operation_params)
     else:
         dataset.queue_operation(operation_class)
 
