@@ -1,4 +1,4 @@
-""" Script to markup nodes with an AST structure
+""" Script to connect data and control flows through function calls
 """
 import argparse
 

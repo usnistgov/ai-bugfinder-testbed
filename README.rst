@@ -4,15 +4,38 @@ AI Bugfinder
 TLDR
 ----
 .. code:: bash
-	docker-compose -f images/docker-compose.yml build --force
-	./scripts/download_cwe121.sh
-	python ./clean_dataset.py  --no-cpp --no-litterals data/cwe121_annot
-	python ./run_joern.py data/cwe121_annot --version 0.4.0
-	./bugfinder/sink_tagging/tag_sinks.sh
-	python run_interproc.py --log_failed /tmp/failed.15m.log --timeout 15m data/cwe121_annot
-	python run_interproc.py --run_failed /tmp/failed.15m.log --timeout 24h --log_failed /tmp/failed.24h.log data/cwe121_annot
-	python run_interproc.py --run_failed /tmp/failed.24h.log --timeout  7d --log_failed /tmp/failed.7d.log  data/cwe121_annot
 
+  # Setup the dataset path
+  export DATASET='data/ai-dataset'
+
+  # Extract sinks from the SARD
+  # Data are currently located at /home/ygp/Documents/ai/manifests
+  find /sard/manifests -maxdepth 1 -type d -printf '%f\n' | grep -v '^\.$' | nice parallel --lb -I {} "jq -r '.runs[0] | (.properties.id|tostring) + \",\" + (.results[0].locations[0].physicalLocation | .artifactLocation.uri + \",\" + (.region.startLine|tostring))' {}/manifest.sarif" | grep -v ,,null > ${DATASET}/sinks.csv
+
+  # Build the docker images
+  docker-compose -f images/docker-compose.yml build --force
+
+  # Prepare the dataset
+  python clean_dataset.py  --no-cpp --no-litterals ${DATASET}
+
+  # Run Joern to parse the dataset and load it into Neo4j
+  python run_joern.py --version 0.4.0 ${DATASET}
+
+  # Tag the sinks based on SARD data (until the log files have no errors left)
+  python run_sinktagging.py --log_failed /tmp/sink.failed.15m.log --timeout 15m --sinks ${DATASET|/sinks.csv ${DATASET}
+  python run_sinktagging.py --run_failed /tmp/sink.failed.15m.log --log_failed /tmp/sink.failed.24h.log --timeout 24h --sinks ${DATASET}sinks.csv ${DATASET}
+  python run_sinktagging.py --run_failed /tmp/sink.failed.24h.log --log_failed /tmp/sink.failed.7d.log  --timeout  7d --sinks ${DATASET}sinks.csv ${DATASET}
+
+  # Connect data and control flows at function calls
+  python run_interproc.py --log_failed /tmp/failed.15m.log --timeout 15m ${DATASET}
+  python run_interproc.py --run_failed /tmp/failed.15m.log --timeout 24h --log_failed /tmp/failed.24h.log ${DATASET}
+  python run_interproc.py --run_failed /tmp/failed.24h.log --timeout  7d --log_failed /tmp/failed.7d.log  ${DATASET}
+
+  # Annotate the AST
+  python run_ast_markup.py -v 3 ${DATASET}
+
+  # Extract the features
+  python run_feature_extraction.py --extractor iprc ${DATASET}
 
 Disclaimer
 ----------
