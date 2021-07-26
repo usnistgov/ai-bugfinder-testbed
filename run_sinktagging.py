@@ -27,7 +27,10 @@ if __name__ == "__main__":
         "--timeout", help="timeout for Neo4J queries", type=str, default="2h"
     )
     parser.add_argument(
-        "--sinks", help="CSV file formatted as <file path, linenumber>", type=str, required=True
+        "--sinks",
+        help="CSV file formatted as <file path, linenumber>",
+        type=str,
+        required=True,
     )
     args = parser.parse_args()
 

@@ -39,8 +39,7 @@ def sinktagging_worker(bar, tc_name, tc_info, port):
                 # cases. In Juliet, the bad code comes first, so the line
                 # number is usually correct, even after removing the good
                 # code.
-                query = \
-                    """
+                query = """
                     MATCH (tc:GenericNode {type:"Testcase",label:"bad",name:"%s"})
                     WHERE ID(tc)=%d
                     MATCH (tc)<-[:IS_FILE_OF]-(:GenericNode {type:"File",basename:"%s"})-[:IS_FILE_OF]->(:GenericNode {type:"Function"})-[:IS_FUNCTION_OF_CFG]->(e:UpstreamNode {type:"CFGEntryNode"})
@@ -48,7 +47,12 @@ def sinktagging_worker(bar, tc_name, tc_info, port):
                     MATCH (e)-[:CONTROLS*]->(n1:GenericNode)
                     WHERE EXISTS(n1.lineno) AND n1.lineno=%d
                     SET n1:BugSinkNode
-                    """ % (tc_name, tcid, sink["basename"], sink["lineno"])
+                    """ % (
+                    tc_name,
+                    tcid,
+                    sink["basename"],
+                    sink["lineno"],
+                )
                 # LOGGER.info(query)
                 db.run(query)
                 sinks_left -= 1
@@ -104,10 +108,13 @@ class SinkTaggingProcessing(Neo4J3Processing):
             LOGGER.info("Loading failed testcases...")
             with open(self.log_input, "r") as inlog:
                 failed = list(inlog)
-            tc_list = {ln.split(",")[1]: {
-                "tcid": int(ln.split(",")[0]),
-                "sinks": [],
-            } for ln in failed}
+            tc_list = {
+                ln.split(",")[1]: {
+                    "tcid": int(ln.split(",")[0]),
+                    "sinks": [],
+                }
+                for ln in failed
+            }
         else:
             # Read test cases from the database otherwise
             LOGGER.info("Retrieving testcases...")
@@ -115,7 +122,8 @@ class SinkTaggingProcessing(Neo4J3Processing):
                 tc["name"]: {
                     "tcid": tc["id"],
                     "sinks": [],
-                } for tc in self.neo4j_db.run(
+                }
+                for tc in self.neo4j_db.run(
                     """
                         MATCH (tc:GenericNode {type:"Testcase",label:"bad"})
                         RETURN DISTINCT ID(tc) AS id, tc.name AS name
@@ -136,7 +144,11 @@ class SinkTaggingProcessing(Neo4J3Processing):
                 basnam = os.path.basename(fields[1])
                 lineno = int(fields[2])
                 jtcnam = basnam.rsplit(".", 1)[0]
-                jtcnam = jtcnam[:-1] if jtcnam[-1] in ['a','b','c','d','e','f'] else jtcnam
+                jtcnam = (
+                    jtcnam[:-1]
+                    if jtcnam[-1] in ["a", "b", "c", "d", "e", "f"]
+                    else jtcnam
+                )
                 entry = {"basename": basnam, "lineno": lineno, "sardid": sardid}
                 if sardtc in tc_list:
                     # This block is for general SARD test cases
@@ -144,11 +156,17 @@ class SinkTaggingProcessing(Neo4J3Processing):
                         tc_list[sardtc]["sinks"].append(entry)
                 elif jtcnam in tc_list:
                     # This block is Juliet-specific
-                    entry["lineno"] -= 1 # Because we remove line #ifndef OMITBAD
-                    if not tc_list[jtcnam]["sinks"] or tc_list[jtcnam]["sinks"][0]["sardid"] < sardid:
+                    entry["lineno"] -= 1  # Because we remove line #ifndef OMITBAD
+                    if (
+                        not tc_list[jtcnam]["sinks"]
+                        or tc_list[jtcnam]["sinks"][0]["sardid"] < sardid
+                    ):
                         # This is a more recent version of Juliet, use it
                         tc_list[jtcnam]["sinks"] = [entry]
-                    elif tc_list[jtcnam]["sinks"][0]["sardid"] == sardid and entry not in tc_list[jtcnam]["sinks"]:
+                    elif (
+                        tc_list[jtcnam]["sinks"][0]["sardid"] == sardid
+                        and entry not in tc_list[jtcnam]["sinks"]
+                    ):
                         tc_list[jtcnam]["sinks"].append(entry)
             except Exception as e:
                 LOGGER.warning("Problem parsing line '%s': %s" % (s[:-1], str(e)))
@@ -162,10 +180,7 @@ class SinkTaggingProcessing(Neo4J3Processing):
         pool = Pool(POOL_SIZE)
         status = pool.starmap_async(
             sinktagging_worker,
-            [
-                [bar, tc_name, tc_info, port]
-                for tc_name, tc_info in tc_list.items()
-            ],
+            [[bar, tc_name, tc_info, port] for tc_name, tc_info in tc_list.items()],
             chunksize=1,
         )
         pool.close()
@@ -185,9 +200,7 @@ class SinkTaggingProcessing(Neo4J3Processing):
             with open(self.log_output, "a") as outlog:
                 for query in failed:
                     outlog.write(
-                        "%d,%s,%s\n"
-                        % (query[0], query[1], query[2].replace("\n", " "))
+                        "%d,%s,%s\n" % (query[0], query[1], query[2].replace("\n", " "))
                     )
 
         LOGGER.info("All done.")
-
