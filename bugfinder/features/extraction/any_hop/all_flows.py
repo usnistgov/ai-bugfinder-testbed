@@ -1,7 +1,7 @@
 """
 """
 from bugfinder.dataset.processing import DatasetProcessingDeprecation
-from bugfinder.features import FlowGraphFeatureExtractor
+from bugfinder.features.extraction import FlowGraphFeatureExtractor
 
 
 class FeatureExtractor(FlowGraphFeatureExtractor):

@@ -2,7 +2,7 @@ from unittest import TestCase
 from unittest.mock import patch, Mock
 
 from bugfinder.dataset import CWEClassificationDataset
-from bugfinder.features.any_hop.single_flow import (
+from bugfinder.features.extraction.any_hop.single_flow import (
     FeatureExtractor as AnyHopSingleFlowsFeatureExtractor,
 )
 from tests import patch_paths
@@ -10,7 +10,7 @@ from tests import patch_paths
 
 class FeatureExtractorConfigureContainer(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, ["bugfinder.features.LOGGER"])
+        patch_paths(self, ["bugfinder.features.extraction.LOGGER"])
 
         dataset = Mock(spec=CWEClassificationDataset)
         dataset.ops_queue = list()
@@ -31,7 +31,7 @@ class FeatureExtractorConfigureContainer(TestCase):
 
 class FeatureExtractorGetFlowgraphListForEntrypoint(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, ["bugfinder.features.LOGGER"])
+        patch_paths(self, ["bugfinder.features.extraction.LOGGER"])
 
         self.dataset_processing = AnyHopSingleFlowsFeatureExtractor(None)
 
@@ -64,7 +64,7 @@ class FeatureExtractorGetFlowgraphListForEntrypoint(TestCase):
 
 class FeatureExtractorGetFlowgraphCount(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, ["bugfinder.features.LOGGER"])
+        patch_paths(self, ["bugfinder.features.extraction.LOGGER"])
 
         self.dataset_processing = AnyHopSingleFlowsFeatureExtractor(None)
 
@@ -79,7 +79,7 @@ class FeatureExtractorGetFlowgraphCount(TestCase):
 
 class FeatureExtractorGetLabelFromFlowgraph(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, ["bugfinder.features.LOGGER"])
+        patch_paths(self, ["bugfinder.features.extraction.LOGGER"])
 
         self.dataset_processing = AnyHopSingleFlowsFeatureExtractor(None)
 
@@ -98,7 +98,7 @@ class FeatureExtractorGetLabelFromFlowgraph(TestCase):
 
 class FeatureExtractorFinalizeFeatures(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, ["bugfinder.features.LOGGER"])
+        patch_paths(self, ["bugfinder.features.extraction.LOGGER"])
 
         self.dataset_processing = AnyHopSingleFlowsFeatureExtractor(None)
 

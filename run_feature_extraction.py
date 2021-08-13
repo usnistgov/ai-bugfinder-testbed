@@ -4,14 +4,16 @@ import argparse
 
 from bugfinder.dataset import CWEClassificationDataset as Dataset
 from bugfinder.dataset.processing.dataset_ops import RightFixer
-from bugfinder.features.any_hop.all_flows import (
+from bugfinder.features.extraction.any_hop.all_flows import (
     FeatureExtractor as AnyHopAllFlowsExtractor,
 )
-from bugfinder.features.any_hop.single_flow import (
+from bugfinder.features.extraction.any_hop.single_flow import (
     FeatureExtractor as AnyHopSingleFlowExtractor,
 )
-from bugfinder.features.pca import FeatureExtractor as PCAExtractor
-from bugfinder.features.single_hop.raw import FeatureExtractor as SingleHopRawExtractor
+from bugfinder.features.reduction.pca import FeatureExtractor as PCAExtractor
+from bugfinder.features.extraction.single_hop.raw import (
+    FeatureExtractor as SingleHopRawExtractor,
+)
 from bugfinder.utils.processing import is_operation_valid
 
 if __name__ == "__main__":
