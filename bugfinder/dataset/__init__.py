@@ -1,6 +1,7 @@
 """
 """
 import json
+import re
 from enum import IntEnum
 from os import listdir, walk
 from os.path import exists, isdir, join, dirname, realpath
@@ -61,7 +62,7 @@ class CWEClassificationDataset(object):
             self.stats.append(len(self.test_cases) - sum(self.stats))
 
     def _index_features(self):
-        features_filename = join(self.feats_dir, "features.csv")
+        features_filename = join(self.feats_dir, settings.FEATURES_FILE)
 
         if not exists(features_filename):
             LOGGER.debug("Features file does not exist. Skipping dataframe loading...")
@@ -70,7 +71,16 @@ class CWEClassificationDataset(object):
         LOGGER.debug("Loading feature dataframe...")
         self.features = pd.read_csv(features_filename)
         self._validate_features()
-        self.feats_ver = 0
+
+        feature_history_version = [
+            int(re.sub(r"[^\.]+\.([0-9]+)\.csv", r"\1", feature_file))
+            for feature_file in listdir(self.feats_dir)
+            if feature_file != settings.FEATURES_FILE
+        ]
+
+        self.feats_version = (
+            max(feature_history_version) + 1 if len(feature_history_version) > 0 else 1
+        )
 
     def __init__(self, dataset_path, silent=False):
         start_time = get_time()
@@ -86,7 +96,7 @@ class CWEClassificationDataset(object):
         self.classes = list()
         self.test_cases = set()
         self.features = pd.DataFrame()
-        self.feats_ver = 0
+        self.feats_version = 0
         self.stats = list()
         self.ops_queue = list()
         self.summary = None
@@ -119,7 +129,7 @@ class CWEClassificationDataset(object):
                 len(self.test_cases),
                 len(self.classes),
                 self.features.shape[1],
-                self.feats_ver,
+                self.feats_version,
             )
         )
 
@@ -127,7 +137,10 @@ class CWEClassificationDataset(object):
         self.summary["metadata"] = {
             "test_cases": len(self.test_cases),
             "classes": len(self.classes),
-            "features": {"number": self.features.shape[1], "version": self.feats_ver},
+            "features": {
+                "number": self.features.shape[1],
+                "version": self.feats_version,
+            },
         }
 
     def load_summary(self):
