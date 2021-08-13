@@ -17,5 +17,5 @@ quality:
 
 tests:
   stage: tests
-  script: pytest tests/
+  script: pytest ./tests
 
