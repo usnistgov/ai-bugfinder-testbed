@@ -27,7 +27,7 @@ class FeatureExtractorExecute(TestCase):
 
         self.dataset = Mock(spec=CWEClassificationDataset)
         self.dataset.feats_dir = "mock_feats_dir"
-        self.dataset.feats_ver = 0
+        self.dataset.feats_version = 0
         self.dataset.features = pd.read_csv(
             "tests/fixtures/dataset01/features/features.csv"
         )
@@ -40,7 +40,8 @@ class FeatureExtractorExecute(TestCase):
         mock_copy.assert_called_with(
             join(self.dataset.feats_dir, "features.csv"),
             join(
-                self.dataset.feats_dir, "features.%d.csv" % (self.dataset.feats_ver - 1)
+                self.dataset.feats_dir,
+                "features.%d.csv" % (self.dataset.feats_version - 1),
             ),
         )
 
@@ -49,7 +50,7 @@ class FeatureExtractorExecute(TestCase):
         mock_copy.return_value = None
         self.data_processing.execute(2)
 
-        self.assertEqual(self.dataset.feats_ver, 1)
+        self.assertEqual(self.dataset.feats_version, 1)
 
     @patch("bugfinder.features.pca.copy")
     @patch("tests.features.pca.test_unit.CWEClassificationDataset.rebuild_index")
