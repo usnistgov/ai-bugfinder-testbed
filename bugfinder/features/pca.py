@@ -18,10 +18,12 @@ class FeatureExtractor(DatasetProcessing):
 
         copy(
             join(self.dataset.feats_dir, "features.csv"),
-            join(self.dataset.feats_dir, "features.%d.csv" % self.dataset.feats_ver),
+            join(
+                self.dataset.feats_dir, "features.%d.csv" % self.dataset.feats_version
+            ),
         )
 
-        self.dataset.feats_ver += 1
+        self.dataset.feats_version += 1
         self.dataset.rebuild_index()
 
         input_data = self.dataset.features.drop(drop_out_cols, axis=1)
