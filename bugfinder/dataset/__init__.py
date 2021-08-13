@@ -7,8 +7,9 @@ from os.path import exists, isdir, join, dirname, realpath
 
 import pandas as pd
 
+from bugfinder import settings
 from bugfinder.dataset.processing import DatasetProcessingCategory
-from bugfinder.settings import LOGGER, DATASET_DIRS
+from bugfinder.settings import LOGGER
 from bugfinder.utils.processing import is_processing_stack_valid
 from bugfinder.utils.statistics import get_time, display_time
 
@@ -21,7 +22,7 @@ class DatasetQueueRetCode(IntEnum):
 
 
 class CWEClassificationDataset(object):
-    ignored_dirs = list(DATASET_DIRS.values())
+    ignored_dirs = list(settings.DATASET_DIRS.values())
 
     def _index_dataset(self):
         LOGGER.debug("Indexing test cases...")
@@ -76,11 +77,11 @@ class CWEClassificationDataset(object):
         logger_log_func = LOGGER.debug if silent else LOGGER.info
 
         self.path = join(dataset_path, "")
-        self.joern_dir = join(self.path, DATASET_DIRS["joern"])
-        self.neo4j_dir = join(self.path, DATASET_DIRS["neo4j"])
-        self.feats_dir = join(self.path, DATASET_DIRS["feats"])
-        self.model_dir = join(self.path, DATASET_DIRS["models"])
-        self.summary_filepath = join(self.path, "summary.json")
+        self.joern_dir = join(self.path, settings.DATASET_DIRS["joern"])
+        self.neo4j_dir = join(self.path, settings.DATASET_DIRS["neo4j"])
+        self.feats_dir = join(self.path, settings.DATASET_DIRS["feats"])
+        self.model_dir = join(self.path, settings.DATASET_DIRS["models"])
+        self.summary_filepath = join(self.path, settings.SUMMARY_FILE)
 
         self.classes = list()
         self.test_cases = set()

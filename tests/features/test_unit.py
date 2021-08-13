@@ -3,6 +3,7 @@ from os.path import join, basename, dirname
 from unittest import TestCase
 from unittest.mock import patch, Mock
 
+from bugfinder import settings
 from bugfinder.dataset import CWEClassificationDataset
 from bugfinder.features import GraphFeatureExtractor, FlowGraphFeatureExtractor
 from bugfinder.settings import ROOT_DIR
@@ -108,7 +109,7 @@ class GraphFeatureExtractorCreateFeatureMapFile(TestCase):
 
     def tearDown(self) -> None:
         try:
-            remove(join(self.dataset_path, "summary.json"))
+            remove(join(self.dataset_path, settings.SUMMARY_FILE))
         except FileNotFoundError:
             pass  # Ignore FileNotFound errors
 

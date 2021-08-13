@@ -47,6 +47,9 @@ DATASET_DIRS = {
     "models": "models",
 }
 
+SUMMARY_FILE = "summary.json"
+FEATURES_FILE = "features.csv"
+
 POOL_SIZE = int(os.getenv("POOL_SIZE", multiprocessing.cpu_count()))
 
 logging.config.dictConfig(LOGGER_CONFIG)
