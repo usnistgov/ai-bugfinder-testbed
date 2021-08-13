@@ -51,6 +51,8 @@ DATASET_DIRS = {
     "models": "models",
 }
 
+SUMMARY_FILE = "summary.json"
+FEATURES_FILE = "features.csv"
 
 logging.config.dictConfig(LOGGER_CONFIG)
 LOGGER = logging.getLogger("app")

@@ -3,6 +3,7 @@ from os.path import join, exists, splitext
 from unittest import TestCase
 from unittest.mock import patch, call, Mock
 
+from bugfinder import settings
 from bugfinder.dataset import CWEClassificationDataset
 from bugfinder.dataset.processing.content_ops import (
     ReplaceLitterals,
@@ -13,7 +14,7 @@ from bugfinder.dataset.processing.content_ops import (
 class TestReplaceLitteralsExecute(TestCase):
     def tearDown(self) -> None:
         try:
-            remove(join(self.dataset_path, "summary.json"))
+            remove(join(self.dataset_path, settings.SUMMARY_FILE))
         except FileNotFoundError:
             pass  # Ignore FileNotFound errors
 
@@ -69,7 +70,7 @@ class TestReplaceLitteralsProcessFile(TestCase):
 
     def tearDown(self) -> None:
         try:
-            remove(join(self.dataset_path, "summary.json"))
+            remove(join(self.dataset_path, settings.SUMMARY_FILE))
             remove("%s.tmp" % self.file_with_litterals)
         except FileNotFoundError:
             pass  # Ignore FileNotFound errors

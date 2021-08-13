@@ -5,6 +5,7 @@ from unittest.mock import patch
 
 import pandas as pd
 
+from bugfinder import settings
 from bugfinder.dataset import CWEClassificationDataset, DatasetQueueRetCode
 from bugfinder.dataset.processing import DatasetProcessing
 from bugfinder.settings import DATASET_DIRS
@@ -23,7 +24,7 @@ class TestCWEClassificationDatasetInit(TestCase):
 
     def tearDown(self) -> None:
         try:
-            remove(join(self.dataset_path, "summary.json"))
+            remove(join(self.dataset_path, settings.SUMMARY_FILE))
         except FileNotFoundError:
             pass  # Ignore FileNotFound errors
 
@@ -72,11 +73,11 @@ class TestCWEClassificationDatasetRebuildIndex(TestCase):
 
     def tearDown(self) -> None:
         try:
-            remove("./tests/fixtures/dataset01/summary.json")
+            remove(join("./tests/fixtures/dataset01", settings.SUMMARY_FILE))
         except FileNotFoundError:
             pass  # Ignore FileNotFound errors
         try:
-            remove("./tests/fixtures/dataset02/summary.json")
+            remove(join("./tests/fixtures/dataset02", settings.SUMMARY_FILE))
         except FileNotFoundError:
             pass  # Ignore FileNotFound errors
 
@@ -136,11 +137,11 @@ class TestCWEClassificationDatasetGetFeaturesInfo(TestCase):
 
     def tearDown(self) -> None:
         try:
-            remove("./tests/fixtures/dataset01/summary.json")
+            remove(join("./tests/fixtures/dataset01", settings.SUMMARY_FILE))
         except FileNotFoundError:
             pass  # Ignore FileNotFound errors
         try:
-            remove("./tests/fixtures/dataset02/summary.json")
+            remove(join("./tests/fixtures/dataset02", settings.SUMMARY_FILE))
         except FileNotFoundError:
             pass  # Ignore FileNotFound errors
 
@@ -168,7 +169,7 @@ class TestCWEClassificationDatasetQueueOperation(TestCase):
 
     def tearDown(self) -> None:
         try:
-            remove(join(self.dataset_path, "summary.json"))
+            remove(join(self.dataset_path, settings.SUMMARY_FILE))
         except FileNotFoundError:
             pass  # Ignore FileNotFound errors
 
@@ -194,7 +195,7 @@ class TestCWEClassificationDatasetProcess(TestCase):
 
     def tearDown(self) -> None:
         try:
-            remove(join(self.dataset_path, "summary.json"))
+            remove(join(self.dataset_path, settings.SUMMARY_FILE))
         except FileNotFoundError:
             pass  # Ignore FileNotFound errors
 
