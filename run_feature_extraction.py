@@ -4,14 +4,13 @@ import argparse
 
 from bugfinder.dataset import CWEClassificationDataset as Dataset
 from bugfinder.dataset.processing.dataset_ops import RightFixer
-from bugfinder.features.any_hop.all_flows import (
+from bugfinder.features.extraction.any_hop.all_flows import (
     FeatureExtractor as AnyHopAllFlowsExtractor,
 )
-from bugfinder.features.any_hop.single_flow import (
+from bugfinder.features.extraction.any_hop.single_flow import (
     FeatureExtractor as AnyHopSingleFlowExtractor,
 )
-from bugfinder.features.pca import FeatureExtractor as PCAExtractor
-from bugfinder.features.single_hop.raw import FeatureExtractor as SingleHopRawExtractor
+from bugfinder.features.extraction.single_hop.raw import FeatureExtractor as SingleHopRawExtractor
 from bugfinder.features.interproc.raw import FeatureExtractor as InterprocRawExtractor
 from bugfinder.utils.processing import is_operation_valid
 
@@ -36,18 +35,8 @@ if __name__ == "__main__":
     parser.add_argument(
         "--timeout", help="timeout for Neo4J queries", type=str, default="2h"
     )
-
-    option_group = parser.add_mutually_exclusive_group()
-    option_group.add_argument(
+    parser.add_argument(
         "--map-features", "-m", action="store_true", help="path to the dataset to clean"
-    )
-    option_group.add_argument(
-        "--pca",
-        "-p",
-        metavar="pca",
-        default=0,
-        type=int,
-        help="number of sample to extract",
     )
 
     args = parser.parse_args()
@@ -73,8 +62,5 @@ if __name__ == "__main__":
         dataset.queue_operation(operation_class, operation_params)
     else:
         dataset.queue_operation(operation_class)
-
-    if args.pca > 0:
-        dataset.queue_operation(PCAExtractor, {"final_dimension": args.pca})
 
     dataset.process()

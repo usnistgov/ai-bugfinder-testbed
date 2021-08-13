@@ -5,7 +5,7 @@ from unittest.mock import patch, Mock
 import pandas as pd
 
 from bugfinder.dataset import CWEClassificationDataset
-from bugfinder.features.pca import FeatureExtractor as PcaFeatureExtractor
+from bugfinder.features.reduction.pca import FeatureExtractor as PcaFeatureExtractor
 from tests import patch_paths
 
 
@@ -18,10 +18,10 @@ class FeatureExtractorExecute(TestCase):
                 "bugfinder.dataset.listdir",
                 "bugfinder.dataset.pd.read_csv",
                 "bugfinder.dataset.CWEClassificationDataset._validate_features",
-                "bugfinder.features.pca.PCA",
-                "bugfinder.features.pca.pd.DataFrame",
-                "bugfinder.dataset.LOGGER",
-                "bugfinder.features.pca.LOGGER",
+                "bugfinder.features.reduction.pca.PCA",
+                "bugfinder.features.reduction.pca.pd.DataFrame",
+                # "bugfinder.dataset.LOGGER",
+                "bugfinder.features.reduction.pca.LOGGER",
             ],
         )
 
@@ -33,7 +33,7 @@ class FeatureExtractorExecute(TestCase):
         )
         self.data_processing = PcaFeatureExtractor(self.dataset)
 
-    @patch("bugfinder.features.pca.copy")
+    @patch("bugfinder.features.reduction.pca.copy")
     def test_feature_file_is_copied(self, mock_copy):
         self.data_processing.execute(2)
 
@@ -45,15 +45,17 @@ class FeatureExtractorExecute(TestCase):
             ),
         )
 
-    @patch("bugfinder.features.pca.copy")
+    @patch("bugfinder.features.reduction.pca.copy")
     def test_feature_version_is_updated(self, mock_copy):
         mock_copy.return_value = None
         self.data_processing.execute(2)
 
         self.assertEqual(self.dataset.feats_version, 1)
 
-    @patch("bugfinder.features.pca.copy")
-    @patch("tests.features.pca.test_unit.CWEClassificationDataset.rebuild_index")
+    @patch("bugfinder.features.reduction.pca.copy")
+    @patch(
+        "tests.features.reduction.pca.test_unit.CWEClassificationDataset.rebuild_index"
+    )
     def test_index_is_rebuilt(self, mock_copy, mock_rebuild_index):
         mock_copy.return_value = None
 
