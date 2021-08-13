@@ -12,6 +12,5 @@ before_script:
 
 tests:
   stage: tests
-  script: pytest
-
+  script: pytest ./tests
 
