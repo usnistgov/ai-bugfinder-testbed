@@ -96,7 +96,7 @@ class CWEClassificationDataset(object):
         self.classes = list()
         self.test_cases = set()
         self.features = pd.DataFrame()
-        self.feats_version = 0
+        self.feats_version = 1
         self.stats = list()
         self.ops_queue = list()
         self.summary = None
