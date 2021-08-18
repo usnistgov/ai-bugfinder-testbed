@@ -5,7 +5,7 @@ from unittest.mock import patch, Mock
 import pandas as pd
 
 from bugfinder.dataset import CWEClassificationDataset
-from bugfinder.features.reduction.pca import FeatureExtractor as PcaFeatureExtractor
+from bugfinder.features.reduction.pca import FeatureSelector as PCA
 from tests import patch_paths
 
 
@@ -27,38 +27,38 @@ class FeatureExtractorExecute(TestCase):
 
         self.dataset = Mock(spec=CWEClassificationDataset)
         self.dataset.feats_dir = "mock_feats_dir"
-        self.dataset.feats_version = 0
+        self.dataset.feats_version = 1
         self.dataset.features = pd.read_csv(
             "tests/fixtures/dataset01/features/features.csv"
         )
-        self.data_processing = PcaFeatureExtractor(self.dataset)
+        self.data_processing = PCA(self.dataset)
 
-    @patch("bugfinder.features.reduction.pca.copy")
+    @patch("bugfinder.features.reduction.copy")
     def test_feature_file_is_copied(self, mock_copy):
-        self.data_processing.execute(2)
+        self.data_processing.execute(dimension=2)
 
         mock_copy.assert_called_with(
             join(self.dataset.feats_dir, "features.csv"),
             join(
                 self.dataset.feats_dir,
-                "features.%d.csv" % (self.dataset.feats_version - 1),
+                "features.%d.csv" % self.dataset.feats_version,
             ),
         )
 
-    @patch("bugfinder.features.reduction.pca.copy")
+    @patch("bugfinder.features.reduction.copy")
     def test_feature_version_is_updated(self, mock_copy):
         mock_copy.return_value = None
-        self.data_processing.execute(2)
+        self.data_processing.execute(dimension=2)
 
         self.assertEqual(self.dataset.feats_version, 1)
 
-    @patch("bugfinder.features.reduction.pca.copy")
+    @patch("bugfinder.features.reduction.copy")
     @patch(
         "tests.features.reduction.pca.test_unit.CWEClassificationDataset.rebuild_index"
     )
     def test_index_is_rebuilt(self, mock_copy, mock_rebuild_index):
         mock_copy.return_value = None
 
-        self.data_processing.execute(2)
+        self.data_processing.execute(dimension=2)
 
         mock_rebuild_index.assert_called()

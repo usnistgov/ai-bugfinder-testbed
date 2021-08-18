@@ -10,7 +10,7 @@ from bugfinder.features.extraction.any_hop.all_flows import (
 from bugfinder.features.extraction.any_hop.single_flow import (
     FeatureExtractor as AnyHopSingleFlowExtractor,
 )
-from bugfinder.features.reduction.pca import FeatureExtractor as PCAExtractor
+from bugfinder.features.reduction.pca import FeatureSelector as PCA
 from bugfinder.features.extraction.single_hop.raw import (
     FeatureExtractor as SingleHopRawExtractor,
 )
@@ -64,6 +64,6 @@ if __name__ == "__main__":
         dataset.queue_operation(operation_class)
 
     if args.pca > 0:
-        dataset.queue_operation(PCAExtractor, {"final_dimension": args.pca})
+        dataset.queue_operation(PCA, {"dimension": args.pca})
 
     dataset.process()

@@ -56,7 +56,7 @@ class TestCWEClassificationDatasetInit(TestCase):
         self.assertEqual(self.dataset.features.shape, (0, 0))
 
     def test_feats_version_is_zero(self):
-        self.assertEqual(self.dataset.feats_version, 0)
+        self.assertEqual(self.dataset.feats_version, 1)
 
     def test_stats_is_empty(self):
         self.assertEqual(len(self.dataset.stats), 0)
