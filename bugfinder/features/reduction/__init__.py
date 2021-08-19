@@ -13,7 +13,7 @@ class AbstractFeatureSelector(DatasetProcessing):
     def select_feature(self, *args, **kwargs) -> pd.DataFrame:
         raise NotImplementedError("Method 'select_feature' needs to be implemented.")
 
-    def execute(self, *args, **kwargs):
+    def execute(self, dry_run, *args, **kwargs):
         drop_out_cols = ["result", "name"]
 
         copy(
@@ -31,6 +31,14 @@ class AbstractFeatureSelector(DatasetProcessing):
             input_features, input_results, *args, **kwargs
         )
 
+        if dry_run:
+            LOGGER.info(
+                f"Executed a dry-run, no feature will be saved. Generated "
+                f"{output_features.shape[1]} features from {input_features.shape[1]} "
+                f"features."
+            )
+            return
+
         for col in drop_out_cols:
             output_features[col] = self.dataset.features[col]
 
@@ -39,4 +47,4 @@ class AbstractFeatureSelector(DatasetProcessing):
         )
         output_features.to_csv(output_features_filepath, index=False)
 
-        LOGGER.info("Feature file saved to '%s'." % output_features_filepath)
+        LOGGER.info(f"Feature file saved to '{output_features_filepath}'.")
