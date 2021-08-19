@@ -15,7 +15,7 @@ from bugfinder.features.interproc.raw import FeatureExtractor as InterprocRawExt
 from bugfinder.utils.processing import is_operation_valid
 
 if __name__ == "__main__":
-    options = {  # Dictionary linking input arguments to processing classes
+    feature_extractors = {  # Available feature extractors
         "ahaf": AnyHopAllFlowsExtractor,
         "shr": SingleHopRawExtractor,
         "ahsf": AnyHopSingleFlowExtractor,
@@ -28,7 +28,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--extractor",
         "-e",
-        choices=options.keys(),
+        choices=feature_extractors.keys(),
         required=True,
         help="path to the dataset to clean",
     )
@@ -44,7 +44,7 @@ if __name__ == "__main__":
     # Instantiate dataset class and run joern processing
     dataset = Dataset(args.dataset_path)
 
-    operation_class = options[args.extractor]
+    operation_class = feature_extractors[args.extractor]
 
     is_operation_valid(operation_class)
 
