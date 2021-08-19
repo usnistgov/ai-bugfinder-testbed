@@ -1,26 +1,43 @@
 """ Script to run feature selection
 """
+import re
+from copy import deepcopy
+
+from argparse import ArgumentError
 
 import argparse
+from sklearn import feature_selection
 
 from bugfinder.dataset import CWEClassificationDataset as Dataset
-from bugfinder.dataset.processing.dataset_ops import RightFixer
 from bugfinder.features.reduction.pca import FeatureSelector as PCA
 from bugfinder.features.reduction.variance_threshold import (
     FeatureSelector as VarianceThreshold,
 )
+from bugfinder.features.reduction.univariate_select import (
+    FeatureSelector as UnivariateSelect,
+)
 from bugfinder.utils.processing import is_operation_valid
 
 if __name__ == "__main__":
+    generic_options = {
+        "dimension": {
+            "args": ["--dimension", "-dm"],
+            "kwargs": {"type": int, "help": "output dimension"},
+        }
+    }
+
     feature_selectors = {  # Available feature selection and options
         "pca": {
             "class": PCA,
-            "options": [
-                {
-                    "args": ["--dimension", "-d"],
-                    "kwargs": {"type": int, "help": "output dimension"},
-                }
-            ],
+            "options": [generic_options["dimension"]],
+        },
+        "pca2": {
+            "class": PCA,
+            "options": [generic_options["dimension"]],
+        },
+        "pca3": {
+            "class": PCA,
+            "options": [generic_options["dimension"]],
         },
         "variance": {
             "class": VarianceThreshold,
@@ -29,6 +46,33 @@ if __name__ == "__main__":
                     "args": ["--threshold", "-t"],
                     "kwargs": {"type": float, "help": "variance threshold"},
                 }
+            ],
+        },
+        "univariate": {
+            "class": UnivariateSelect,
+            "options": [
+                {
+                    "args": ["--function", "-fn"],
+                    "kwargs": {
+                        "choices": [
+                            "chi2",
+                            "f_classif",
+                            "mutual_info_classif",
+                        ],
+                        "help": "score function",
+                    },
+                },
+                {
+                    "args": ["--mode", "-md"],
+                    "kwargs": {
+                        "choices": ["k_best", "percentile", "fpr", "fdr", "fwe"],
+                        "help": "selection mode",
+                    },
+                },
+                {
+                    "args": ["--param", "-p"],
+                    "kwargs": {"type": float, "help": "selection mode parameter"},
+                },
             ],
         },
     }
@@ -41,7 +85,7 @@ if __name__ == "__main__":
         "-s",
         choices=feature_selectors.keys(),
         required=True,
-        help="feature selector to chose",
+        help="feature selector to apply",
     )
     parser.add_argument(
         "--dry-run",
@@ -51,49 +95,69 @@ if __name__ == "__main__":
         action="store_true",
     )
 
+    default_constraints = ["dataset_path", "selector", "dry_run"]
+
     selector_constraints = dict()
+    options_map = dict()
+
+    # Define args necessary for each selector and establish the list of options to add
+    # to the parser.
     for name, selector in feature_selectors.items():
         if "options" not in selector.keys():
             continue
 
-        selector_constraints[name] = []
+        selector_constraints[name] = deepcopy(default_constraints)
 
         for option in selector["options"]:
-            option["kwargs"]["help"] += f" ({name} selector only)"
+            option_name = option["args"][0].replace("--", "")
 
-            argument = parser.add_argument(*option["args"], **option["kwargs"])
-            selector_constraints[name].append(argument.dest)
+            if option_name in options_map.keys():
+                options_map[option_name]["kwargs"]["help"] = re.sub(
+                    r"^([^\(]+\(for )([^ ]+)( selector\))",
+                    rf"\1\2,{name}\3",
+                    option["kwargs"]["help"],
+                )
+            else:
+                option["kwargs"]["help"] += f" (for {name} selector)"
+                options_map[option_name] = option
+
+            selector_constraints[name].append(option_name)
+
+    # Add the options to the parser
+    for option in options_map.values():
+        parser.add_argument(*option["args"], **option["kwargs"])
 
     args = parser.parse_args()
 
-    # Check required argument are all there and forbidden argument are not defined
+    # Check required arguments are all present and forbidden arguments are not defined
     operation_args = {"dry_run": args.dry_run}
-    required_args = selector_constraints[args.selector]
-    forbidden_args = [
-        constraint
-        for selector, constraints in selector_constraints.items()
-        for constraint in constraints
-        if selector != args.selector
+
+    provided_args = set([key for key, value in vars(args).items() if value])
+    required_args = set(selector_constraints[args.selector])
+    arg_list = [
+        args
+        for args in selector_constraints[args.selector]
+        if args not in default_constraints
     ]
+    arg_helper = ",".join([f"'{args}'" for args in arg_list])
 
-    for argument in forbidden_args:
-        if getattr(args, argument):
-            args_list = " ,".join([f"'{args}'" for args in required_args])
-            parser.error(
-                f"argument '{argument}' is not expected for selector {args.selector} "
-                f"(choose from {args_list})"
-            )
+    for argument in arg_list:
+        operation_args[argument] = getattr(args, argument)
 
-    for argument in required_args:
-        argv = getattr(args, argument)
-        if not argv:
-            args_list = " ,".join([f"'{args}'" for args in required_args])
-            parser.error(
-                f"argument '{argument}' is missing for selector {args.selector} "
-                f"(needs {args_list})"
-            )
+    forbidden_args = provided_args.difference(required_args)
+    missing_args = required_args.difference(provided_args)
 
-        operation_args[argument] = argv
+    if len(forbidden_args) > 0:  # If forbidden argument were found.
+        parser.error(
+            f"argument '{forbidden_args.pop()}' is not expected for selector "
+            f"'{args.selector}' (choose from {args_list})"
+        )
+
+    if len(missing_args) > 0:  # If missing arguments were found.
+        parser.error(
+            f"argument '{missing_args.pop()}' is missing for selector '{args.selector}' "
+            f"(choose from {args_list})"
+        )
 
     # Instantiate dataset class and run joern processing
     dataset = Dataset(args.dataset_path)
