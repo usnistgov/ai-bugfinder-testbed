@@ -1,6 +1,0 @@
-"""
-"""
-
-
-class FeatureReducer(DatasetProcessing):
-    pass
