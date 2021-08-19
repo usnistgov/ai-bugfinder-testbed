@@ -32,10 +32,11 @@ class FeatureExtractorExecute(TestCase):
             "tests/fixtures/dataset01/features/features.csv"
         )
         self.data_processing = PCA(self.dataset)
+        self.data_processing_kwargs = {"dry_run": False, "dimension": 2}
 
     @patch("bugfinder.features.reduction.copy")
     def test_feature_file_is_copied(self, mock_copy):
-        self.data_processing.execute(dimension=2)
+        self.data_processing.execute(**self.data_processing_kwargs)
 
         mock_copy.assert_called_with(
             join(self.dataset.feats_dir, "features.csv"),
@@ -48,7 +49,7 @@ class FeatureExtractorExecute(TestCase):
     @patch("bugfinder.features.reduction.copy")
     def test_feature_version_is_updated(self, mock_copy):
         mock_copy.return_value = None
-        self.data_processing.execute(dimension=2)
+        self.data_processing.execute(**self.data_processing_kwargs)
 
         self.assertEqual(self.dataset.feats_version, 1)
 
@@ -59,6 +60,6 @@ class FeatureExtractorExecute(TestCase):
     def test_index_is_rebuilt(self, mock_copy, mock_rebuild_index):
         mock_copy.return_value = None
 
-        self.data_processing.execute(dimension=2)
+        self.data_processing.execute(**self.data_processing_kwargs)
 
         mock_rebuild_index.assert_called()
