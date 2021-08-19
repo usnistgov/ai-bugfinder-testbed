@@ -1,23 +1,23 @@
 """ Script to run feature selection
 """
-import re
 from copy import deepcopy
 
-from argparse import ArgumentError
-
 import argparse
-from sklearn import feature_selection
+import re
 
 from bugfinder.dataset import CWEClassificationDataset as Dataset
 from bugfinder.features.reduction.pca import FeatureSelector as PCA
-from bugfinder.features.reduction.variance_threshold import (
-    FeatureSelector as VarianceThreshold,
+from bugfinder.features.reduction.select_from_model import (
+    FeatureSelector as SelectFromModel,
 )
 from bugfinder.features.reduction.univariate_select import (
     FeatureSelector as UnivariateSelect,
 )
-from bugfinder.features.reduction.select_from_model import (
-    FeatureSelector as SelectFromModel,
+from bugfinder.features.reduction.variance_threshold import (
+    FeatureSelector as VarianceThreshold,
+)
+from bugfinder.features.reduction.recursive_feature_elemination import (
+    FeatureSelector as RecursiveFeatureElimination,
 )
 from bugfinder.utils.feature_selection import selection_estimators
 from bugfinder.utils.processing import is_operation_valid
@@ -27,7 +27,14 @@ if __name__ == "__main__":
         "dimension": {
             "args": ["--dimension", "-dm"],
             "kwargs": {"type": int, "help": "output dimension"},
-        }
+        },
+        "model": {
+            "args": ["--model", "-ml"],
+            "kwargs": {
+                "choices": selection_estimators().keys(),
+                "help": "model to use for feature selection",
+            },
+        },
     }
 
     feature_selectors = {  # Available feature selection and options
@@ -73,14 +80,20 @@ if __name__ == "__main__":
         },
         "from_model": {
             "class": SelectFromModel,
+            "options": [generic_options["model"]],
+        },
+        "rfe": {
+            "class": RecursiveFeatureElimination,
             "options": [
+                generic_options["model"],
                 {
-                    "args": ["--model", "-ml"],
-                    "kwargs": {
-                        "choices": selection_estimators().keys(),
-                        "help": "model to use for feature selection",
-                    },
-                }
+                    "args": ["--cross-validation", "-cv"],
+                    "kwargs": {"default": False, "help": "use cross-validation"},
+                },
+                {
+                    "args": ["--features", "-ft"],
+                    "kwargs": {"type": int, "help": "number of features to keep"},
+                },
             ],
         },
     }
@@ -118,6 +131,7 @@ if __name__ == "__main__":
 
         for option in selector["options"]:
             option_name = option["args"][0].replace("--", "")
+            option_name = option_name.replace("-", "_")
 
             if option_name in options_map.keys():
                 options_map[option_name]["kwargs"]["help"] = re.sub(
@@ -140,7 +154,7 @@ if __name__ == "__main__":
     # Check required arguments are all present and forbidden arguments are not defined
     operation_args = {"dry_run": args.dry_run}
 
-    provided_args = set([key for key, value in vars(args).items() if value])
+    provided_args = set([key for key, value in vars(args).items() if value is not None])
     required_args = set(selector_constraints[args.selector])
     arg_list = [
         args
@@ -158,13 +172,13 @@ if __name__ == "__main__":
     if len(forbidden_args) > 0:  # If forbidden argument were found.
         parser.error(
             f"argument '{forbidden_args.pop()}' is not expected for selector "
-            f"'{args.selector}' (choose from {args_list})"
+            f"'{args.selector}' (choose from {arg_helper})"
         )
 
     if len(missing_args) > 0:  # If missing arguments were found.
         parser.error(
             f"argument '{missing_args.pop()}' is missing for selector '{args.selector}' "
-            f"(choose from {args_list})"
+            f"(choose from {arg_helper})"
         )
 
     # Instantiate dataset class and run joern processing
