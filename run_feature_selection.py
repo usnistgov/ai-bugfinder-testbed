@@ -16,8 +16,11 @@ from bugfinder.features.reduction.univariate_select import (
 from bugfinder.features.reduction.variance_threshold import (
     FeatureSelector as VarianceThreshold,
 )
-from bugfinder.features.reduction.recursive_feature_elemination import (
+from bugfinder.features.reduction.recursive_feature_elimination import (
     FeatureSelector as RecursiveFeatureElimination,
+)
+from bugfinder.features.reduction.sequential_feature_selector import (
+    FeatureSelector as SequentialFeatureSelector,
 )
 from bugfinder.utils.feature_selection import selection_estimators
 from bugfinder.utils.processing import is_operation_valid
@@ -34,6 +37,10 @@ if __name__ == "__main__":
                 "choices": selection_estimators().keys(),
                 "help": "model to use for feature selection",
             },
+        },
+        "features": {
+            "args": ["--features", "-ft"],
+            "kwargs": {"type": int, "help": "number of features to keep"},
         },
     }
 
@@ -86,13 +93,24 @@ if __name__ == "__main__":
             "class": RecursiveFeatureElimination,
             "options": [
                 generic_options["model"],
+                generic_options["features"],
                 {
                     "args": ["--cross-validation", "-cv"],
-                    "kwargs": {"default": False, "help": "use cross-validation"},
+                    "kwargs": {"type": bool, "help": "use cross-validation"},
                 },
+            ],
+        },
+        "sfs": {
+            "class": SequentialFeatureSelector,
+            "options": [
+                generic_options["model"],
+                generic_options["features"],
                 {
-                    "args": ["--features", "-ft"],
-                    "kwargs": {"type": int, "help": "number of features to keep"},
+                    "args": ["--direction", "-dr"],
+                    "kwargs": {
+                        "choices": ["forward", "backward"],
+                        "help": "direction of the feature selection",
+                    },
                 },
             ],
         },

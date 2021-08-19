@@ -128,7 +128,7 @@ class CWEClassificationDataset(object):
                 display_time(get_time() - _time),
                 len(self.test_cases),
                 len(self.classes),
-                self.features.shape[1],
+                self.features.shape[1] - 2,
                 self.feats_version,
             )
         )
