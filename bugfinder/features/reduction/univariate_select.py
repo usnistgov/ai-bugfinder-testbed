@@ -12,6 +12,7 @@ class FeatureSelector(AbstractFeatureSelector):
     def select_feature(
         self, input_features, input_results, function, mode, param
     ) -> pd.DataFrame:
+        # Need to cast parameter to 'int' for some of the modes
         if mode in ["k_best", "percentile"]:
             param = int(param)
 
