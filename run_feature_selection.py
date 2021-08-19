@@ -16,6 +16,10 @@ from bugfinder.features.reduction.variance_threshold import (
 from bugfinder.features.reduction.univariate_select import (
     FeatureSelector as UnivariateSelect,
 )
+from bugfinder.features.reduction.select_from_model import (
+    FeatureSelector as SelectFromModel,
+)
+from bugfinder.utils.feature_selection import selection_estimators
 from bugfinder.utils.processing import is_operation_valid
 
 if __name__ == "__main__":
@@ -28,14 +32,6 @@ if __name__ == "__main__":
 
     feature_selectors = {  # Available feature selection and options
         "pca": {
-            "class": PCA,
-            "options": [generic_options["dimension"]],
-        },
-        "pca2": {
-            "class": PCA,
-            "options": [generic_options["dimension"]],
-        },
-        "pca3": {
             "class": PCA,
             "options": [generic_options["dimension"]],
         },
@@ -73,6 +69,18 @@ if __name__ == "__main__":
                     "args": ["--param", "-p"],
                     "kwargs": {"type": float, "help": "selection mode parameter"},
                 },
+            ],
+        },
+        "from_model": {
+            "class": SelectFromModel,
+            "options": [
+                {
+                    "args": ["--model", "-ml"],
+                    "kwargs": {
+                        "choices": selection_estimators().keys(),
+                        "help": "model to use for feature selection",
+                    },
+                }
             ],
         },
     }
