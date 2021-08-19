@@ -10,14 +10,13 @@ from bugfinder.features.extraction.any_hop.all_flows import (
 from bugfinder.features.extraction.any_hop.single_flow import (
     FeatureExtractor as AnyHopSingleFlowExtractor,
 )
-from bugfinder.features.reduction.pca import FeatureSelector as PCA
 from bugfinder.features.extraction.single_hop.raw import (
     FeatureExtractor as SingleHopRawExtractor,
 )
 from bugfinder.utils.processing import is_operation_valid
 
 if __name__ == "__main__":
-    options = {  # Dictionary linking input arguments to processing classes
+    feature_extractors = {  # Available feature extractors
         "ahaf": AnyHopAllFlowsExtractor,
         "shr": SingleHopRawExtractor,
         "ahsf": AnyHopSingleFlowExtractor,
@@ -29,22 +28,12 @@ if __name__ == "__main__":
     parser.add_argument(
         "--extractor",
         "-e",
-        choices=options.keys(),
+        choices=feature_extractors.keys(),
         required=True,
         help="path to the dataset to clean",
     )
-
-    option_group = parser.add_mutually_exclusive_group()
-    option_group.add_argument(
+    parser.add_argument(
         "--map-features", "-m", action="store_true", help="path to the dataset to clean"
-    )
-    option_group.add_argument(
-        "--pca",
-        "-p",
-        metavar="pca",
-        default=0,
-        type=int,
-        help="number of sample to extract",
     )
 
     args = parser.parse_args()
@@ -52,7 +41,7 @@ if __name__ == "__main__":
     # Instantiate dataset class and run joern processing
     dataset = Dataset(args.dataset_path)
 
-    operation_class = options[args.extractor]
+    operation_class = feature_extractors[args.extractor]
 
     is_operation_valid(operation_class)
 
@@ -62,8 +51,5 @@ if __name__ == "__main__":
         dataset.queue_operation(operation_class, {"need_map_features": True})
     else:
         dataset.queue_operation(operation_class)
-
-    if args.pca > 0:
-        dataset.queue_operation(PCA, {"dimension": args.pca})
 
     dataset.process()
