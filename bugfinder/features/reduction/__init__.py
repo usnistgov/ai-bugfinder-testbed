@@ -16,14 +16,16 @@ class AbstractFeatureSelector(DatasetProcessing):
     def execute(self, dry_run, *args, **kwargs):
         drop_out_cols = ["result", "name"]
 
-        copy(
-            join(self.dataset.feats_dir, "features.csv"),
-            join(
-                self.dataset.feats_dir, "features.%d.csv" % self.dataset.feats_version
-            ),
-        )
+        if not dry_run:  # Create a backup of the feature if running the selection
+            copy(
+                join(self.dataset.feats_dir, "features.csv"),
+                join(
+                    self.dataset.feats_dir,
+                    "features.%d.csv" % self.dataset.feats_version,
+                ),
+            )
 
-        self.dataset.rebuild_index()
+            self.dataset.rebuild_index()
 
         input_features = self.dataset.features.drop(drop_out_cols, axis=1)
         input_results = self.dataset.features["result"]
@@ -31,7 +33,7 @@ class AbstractFeatureSelector(DatasetProcessing):
             input_features, input_results, *args, **kwargs
         )
 
-        if dry_run:
+        if dry_run:  # Do not write the output features if this is a dry run
             LOGGER.info(
                 f"Executed a dry-run, no feature will be saved. Generated "
                 f"{output_features.shape[1]} features from {input_features.shape[1]} "
