@@ -22,6 +22,9 @@ from bugfinder.features.reduction.recursive_feature_elimination import (
 from bugfinder.features.reduction.sequential_feature_selector import (
     FeatureSelector as SequentialFeatureSelector,
 )
+from bugfinder.features.reduction.auto_encoder import (
+    FeatureSelector as AutoEncoder,
+)
 from bugfinder.utils.feature_selection import selection_estimators
 from bugfinder.utils.processing import is_operation_valid
 
@@ -111,6 +114,23 @@ if __name__ == "__main__":
                         "choices": ["forward", "backward"],
                         "help": "direction of the feature selection",
                     },
+                },
+            ],
+        },
+        "autoencoder": {
+            "class": AutoEncoder,
+            "options": [
+                generic_options["dimension"],
+                {
+                    "args": ["--layers", "-l"],
+                    "kwargs": {
+                        "type": str,
+                        "help": "list of hidden layers, comma separated",
+                    },
+                },
+                {
+                    "args": ["--encoder-path", "-ep"],
+                    "kwargs": {"type": str, "help": "path to the encoder model"},
                 },
             ],
         },

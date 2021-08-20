@@ -15,7 +15,7 @@ from bugfinder.utils.feature_selection import (
 
 class FeatureSelector(AbstractFeatureSelector):
     def select_feature(
-        self, input_features, input_results, model, cross_validation, features
+        self, input_features, input_results, dry_run, model, cross_validation, features
     ) -> pd.DataFrame:
         LOGGER.debug(
             f"Running RecursiveFeatureElimination with model {model}, selecting "

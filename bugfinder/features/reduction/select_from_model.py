@@ -13,7 +13,7 @@ from importlib import import_module
 
 
 class FeatureSelector(AbstractFeatureSelector):
-    def select_feature(self, input_features, input_results, model) -> pd.DataFrame:
+    def select_feature(self, input_features, input_results, dry_run, model) -> pd.DataFrame:
         LOGGER.debug(f"Running SelectFromModel with model {model}...")
 
         # Load package

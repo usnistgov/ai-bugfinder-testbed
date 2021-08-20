@@ -30,7 +30,7 @@ class AbstractFeatureSelector(DatasetProcessing):
         input_features = self.dataset.features.drop(drop_out_cols, axis=1)
         input_results = self.dataset.features["result"]
         output_features = self.select_feature(
-            input_features, input_results, *args, **kwargs
+            input_features, input_results, dry_run, *args, **kwargs
         )
 
         if dry_run:  # Do not write the output features if this is a dry run

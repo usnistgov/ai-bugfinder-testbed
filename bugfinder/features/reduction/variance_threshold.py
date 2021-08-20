@@ -9,7 +9,7 @@ from bugfinder.utils.feature_selection import retrieve_original_columns_name
 
 
 class FeatureSelector(AbstractFeatureSelector):
-    def select_feature(self, input_features, input_results, threshold) -> pd.DataFrame:
+    def select_feature(self, input_features, input_results, dry_run, threshold) -> pd.DataFrame:
         LOGGER.debug(f"Running VarianceThreshold with threshold value {threshold}...")
 
         variance_op = VarianceThreshold(threshold=(threshold * (1 - threshold)))
