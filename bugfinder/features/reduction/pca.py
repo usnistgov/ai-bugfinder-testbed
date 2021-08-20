@@ -8,7 +8,7 @@ from bugfinder.settings import LOGGER
 
 
 class FeatureSelector(AbstractFeatureSelector):
-    def select_feature(self, input_features, input_results, dimension) -> pd.DataFrame:
+    def select_feature(self, input_features, input_results, dry_run, dimension) -> pd.DataFrame:
         LOGGER.info(f"Running PCA to output {dimension} features...")
         pca_op = PCA(n_components=dimension)
         pca_op.fit(input_features)

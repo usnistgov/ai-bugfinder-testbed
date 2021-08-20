@@ -15,7 +15,7 @@ from bugfinder.utils.feature_selection import (
 
 class FeatureSelector(AbstractFeatureSelector):
     def select_feature(
-        self, input_features, input_results, model, direction, features
+        self, input_features, input_results, dry_run, model, direction, features
     ) -> pd.DataFrame:
         LOGGER.debug(
             f"Running SequentialFeatureSelector with model {model}, running {direction} "
