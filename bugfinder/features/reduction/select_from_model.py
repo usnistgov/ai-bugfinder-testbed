@@ -41,6 +41,6 @@ class FeatureSelector(AbstractFeatureSelector):
         )
         LOGGER.info(
             f"Applied SelectFromModel with model {model}: retrieved "
-            f"{len(output_features.columns)} features."
+            f"{len(output_features.columns)}/{input_features.shape[1]} features."
         )
         return output_features

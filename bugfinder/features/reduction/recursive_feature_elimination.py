@@ -51,6 +51,6 @@ class FeatureSelector(AbstractFeatureSelector):
         LOGGER.info(
             f"Applied RecursiveFeatureElimination with model {model}, selecting "
             f"{features} features (cross_validation={cross_validation}): retrieved "
-            f"{len(output_features.columns)} features."
+            f"{len(output_features.columns)}/{input_features.shape[1]} features."
         )
         return output_features

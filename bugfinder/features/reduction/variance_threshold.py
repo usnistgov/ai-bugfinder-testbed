@@ -24,6 +24,6 @@ class FeatureSelector(AbstractFeatureSelector):
         )
         LOGGER.info(
             f"Applied VarianceThreshold of {threshold}, retrieved "
-            f"{len(output_features.columns)} features."
+            f"{output_features.shape[1]}/{input_features.shape[1]} features."
         )
         return output_features

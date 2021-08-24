@@ -81,6 +81,7 @@ class FeatureSelector(AbstractFeatureSelector):
         )
         LOGGER.info(
             f"Applied AutoEncoder at {encoder_path} with architecture {str(arch)} and "
-            f"selected {dimension} features."
+            f"computed {output_features.shape[1]} out of {input_features.shape[1]} "
+            f"features."
         )
         return output_features
