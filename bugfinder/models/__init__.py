@@ -1,10 +1,15 @@
 """ Abstract classifier model for the dataset.
 """
 from abc import abstractmethod
-from os.path import join, exists
+
+from os import listdir, makedirs
+from os.path import join, exists, splitext
+
 from shutil import rmtree, copytree
 
 import tensorflow as tf
+from gensim.models import Word2Vec
+
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 
@@ -12,6 +17,70 @@ from bugfinder.dataset.processing import DatasetProcessing, DatasetProcessingCat
 from bugfinder.settings import LOGGER
 from bugfinder.utils.statistics import has_better_metrics
 
+class Word2VecModel(DatasetProcessing):
+    def __init__(self, dataset):
+        super().__init__(dataset)
+
+        self.tokens = {}
+
+        self.word_dim = 100
+        self.window_dim = 5
+        self.min_count = 5
+        self.workers = 4
+        self.algorithm = 1 # 1 = skipgram
+        self.seed = 32
+
+    @abstractmethod
+    def init_model(self, name, **kwargs):
+        raise NotImplementedError()
+
+    def execute(self, name, **kwargs):
+        LOGGER.debug('Generating the token list for training...')
+
+        token_list = self.get_token_list()
+
+        LOGGER.debug('%d tokens found' % len(token_list))
+        LOGGER.debug('Training the word2vec model.')
+
+
+        model = Word2Vec(token_list, 
+                         min_count=self.min_count,
+                         vector_size = self.word_dim,
+                         workers = self.workers,
+                         sg = self.algorithm,
+                         seed = self.seed)
+
+        LOGGER.debug('Training complete. Saving the model...')
+
+        model_dir = join(self.dataset.model_dir, name)
+
+        if exists(model_dir):
+            LOGGER.info("Removing %s..." % model_dir)
+            rmtree(model_dir)
+
+        model.save(model_dir)
+
+
+    def get_token_list(self):
+        token_list = list()
+
+        file_processing_list = [
+            join(test_case, filepath)
+            for test_case in self.dataset.test_cases
+            for filepath in listdir(join(self.dataset.path, test_case))
+            if splitext(filepath)[1] in [".c",".h"]
+        ]
+
+        while len(file_processing_list) != 0:
+            filepath = file_processing_list.pop(0)
+
+            with open(join(self.dataset.path, filepath), "r") as in_file:
+                code = in_file.readlines()
+
+                tokens = [token.strip() for token in code]
+                token_list.append(tokens)
+
+        return token_list
 
 class ClassifierModel(DatasetProcessing):
     def __init__(self, dataset):

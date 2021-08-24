@@ -1,5 +1,3 @@
-""" Script to clean a dataset from problematic code samples
-"""
 import argparse
 
 from bugfinder.dataset import CWEClassificationDataset as Dataset
@@ -8,13 +6,17 @@ from bugfinder.dataset.processing.word2vec_ops import (
     ReplaceFunctions,
     ReplaceVariables
 )
+from bugfinder.dataset.processing.token_ops import (
+    TokenizeText
+)
 
 
 if __name__ == "__main__":
     options = { 
         "no_comments": RemoveComments,
         "replace_funcs": ReplaceFunctions,
-        "replace_vars": ReplaceVariables
+        "replace_vars": ReplaceVariables,
+        "tokenize": TokenizeText
     }
 
     parser = argparse.ArgumentParser()
