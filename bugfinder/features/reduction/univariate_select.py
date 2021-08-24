@@ -35,7 +35,7 @@ class FeatureSelector(AbstractFeatureSelector):
         )
         LOGGER.info(
             f"Applied UnivariateSelect with scoring_fn {str(function)}, using mode "
-            f"{str(mode)} with param {param}: retrieved {len(output_features.columns)} "
-            f"features."
+            f"{str(mode)} with param {param}: retrieved "
+            f"{len(output_features.columns)}/{input_features.shape[1]} features."
         )
         return output_features

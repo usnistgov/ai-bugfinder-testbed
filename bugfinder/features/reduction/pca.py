@@ -20,5 +20,8 @@ class FeatureSelector(AbstractFeatureSelector):
             columns=["pca%d" % i for i in range(dimension)],
             index=input_features.index,
         )
-        LOGGER.info(f"PCA operation terminated successfully!")
+        LOGGER.info(
+            f"PCA operation terminated, computed {output_features.shape[1]} "
+            f"out of {input_features.shape[1]} features"
+        )
         return output_features

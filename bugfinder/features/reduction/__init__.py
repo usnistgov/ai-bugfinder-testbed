@@ -34,11 +34,7 @@ class AbstractFeatureSelector(DatasetProcessing):
         )
 
         if dry_run:  # Do not write the output features if this is a dry run
-            LOGGER.info(
-                f"Executed a dry-run, no feature will be saved. Generated "
-                f"{output_features.shape[1]} features from {input_features.shape[1]} "
-                f"features."
-            )
+            LOGGER.info("Executed a dry-run, no feature will be saved.")
             return
 
         for col in drop_out_cols:
