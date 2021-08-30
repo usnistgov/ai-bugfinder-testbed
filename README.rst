@@ -243,6 +243,80 @@ typing:
    python ./run_model_training.py /path/to/dataset \
        -m ${MODEL}  # Model to train. See help for details.
 
+Training the word2vec model
+~~~~~~~~~~~~~~~~~~~
+
+If you want to train a word2vec model in this dataset, there's no need to run Joern.
+After you finished preparing the dataset with the ``clean_dataset.py`` script, 
+it's necessary to run an additional script to deal with:
+
+- Removal of code comments
+- Replacement of variables names by similar tokens
+- Replacement of function names by similar tokens
+
+To handle this additional cleanup, you need to use the ``clean_dataset_for_word2vec.py`` 
+script:
+
+.. code:: bash
+
+   python ./clean_dataset_for_word2vec.py /path/to/dataset \
+       --no-comments \  # Remove comments
+       --replace-funcs \  # Replace functions by a FUN token
+       --replace-vars \  # Replace variables by a VAR token
+
+Tokenizing the dataset
+~~~~~~~~~~~~~~~~~~~
+
+After finishing the cleanup, it's necessary to separate the code in tokens to be
+used as input for the word2vec model. That can be done by an additional parameter
+in the ``clean_dataset_for_word2vec.py``, so after finishing the previous command,
+run:
+
+.. code:: bash
+
+   python ./clean_dataset_for_word2vec.py /path/to/dataset \
+       --tokenize 
+
+Training the word2vec model
+~~~~~~~~~~~~~~~~~~~
+
+After the tokenization process, you can train the word2vec model, using
+the ``run_model_training.py`` script with word2vec as the parameter.
+Run the command:
+
+.. code:: bash
+
+   python ./run_model_training.py /path/to/dataset \
+       -m word2vec \  # word2vec model
+       -n {MODEL_NAME} \  # path where the model will be saved
+
+Generate the embeddings for the BLSTM model
+~~~~~~~~~~~~~~~~~~~
+
+After the model training is complete, it's necessary to generate
+embeddings which will be used as input for the BLSTM model. These
+embeddings are saved in a folder with the dataset, in .CSV format.
+Execute the following script:
+
+.. code:: bash
+
+   python ./run_embeddings.py /path/to/dataset \
+       -m {MODEL_DIR} \  # Previous trained word2vec model
+
+Train the BLSTM model
+~~~~~~~~~~~~~~~~~~~
+
+After generating the embeddings, the BLSTM model is ready to use.
+Execute the following script:
+
+.. code:: bash
+
+   python ./run_embeddings.py /path/to/dataset \
+       -m bidirectional_lstm \  # BLSTM
+       -n {MODEL_NAME} \ # path where the model will be saved
+       -e {EPOCHS} \ # number of epochs
+       -b {BATCH_SIZE} \ # Size of the batch used for training
+
 Troubleshooting
 ---------------
 

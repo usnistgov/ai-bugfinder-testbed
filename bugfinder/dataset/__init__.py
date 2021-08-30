@@ -91,6 +91,7 @@ class CWEClassificationDataset(object):
         self.neo4j_dir = join(self.path, settings.DATASET_DIRS["neo4j"])
         self.feats_dir = join(self.path, settings.DATASET_DIRS["feats"])
         self.model_dir = join(self.path, settings.DATASET_DIRS["models"])
+        self.embeddings_dir = join(self.path, settings.DATASET_DIRS["embeddings"])
         self.summary_filepath = join(self.path, settings.SUMMARY_FILE)
 
         self.classes = list()
