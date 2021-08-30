@@ -1,6 +1,7 @@
 import re
 from os import listdir
 from os.path import join, splitext
+from shutil import move
 
 from bugfinder.dataset.processing import DatasetProcessing
 from bugfinder.settings import LOGGER
@@ -58,18 +59,17 @@ class TokenizeText(DatasetProcessing):
             for line in code:
                 if line == '': continue
 
+                line = re.sub('(\n)|(\\\\n)|(\\\\)|(\\t)|(\\r)', '', line)
                 splitter = r' +|' + regex_split_operators + r'|(\/)|(\;)|(\-)|(\*)'
                 
                 line = re.split(splitter, line)
+
                 line = list(filter(None, line))
                 line = list(filter(str.strip, line))
 
                 tokens.extend(line)
 
-        LOGGER.debug('Tokenization complete.')
-        LOGGER.debug('%d tokens found' % len(tokens))
+        with open(tmp_filepath, 'w') as out_file:
+            out_file.writelines(token + '\n' for token in tokens)
 
-        #with open(tmp_filepath, 'w') as out_file:
-        #    out_file.writelines(token + '\n' for token in tokens)
-
-        #move(tmp_filepath, filepath)
+        move(tmp_filepath, filepath)

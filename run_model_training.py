@@ -9,6 +9,7 @@ from bugfinder.dataset import CWEClassificationDataset as Dataset
 from bugfinder.models.dnn_classifier import DNNClassifierTraining
 from bugfinder.models.linear_classifier import LinearClassifierTraining
 from bugfinder.models.word2vec import Word2VecTraining
+from bugfinder.models.blstm_classifier import BLSTMClassifierTraining
 
 from bugfinder.settings import LOGGER
 from bugfinder.utils.processing import is_operation_valid
@@ -22,6 +23,7 @@ if __name__ == "__main__":
     options = {  # Dictionary linking input arguments to processing classes
         "linear_classifier": LinearClassifierTraining,
         "deep_neural_network": DNNClassifierTraining,
+        "bidirectional_lstm": BLSTMClassifierTraining,
         "word2vec": Word2VecTraining
     }
 

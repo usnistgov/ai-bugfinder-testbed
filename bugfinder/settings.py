@@ -45,6 +45,7 @@ DATASET_DIRS = {
     "neo4j": "neo4j_v3.db",
     "feats": "features",
     "models": "models",
+    "embeddings" : "embeddings"
 }
 
 POOL_SIZE = int(os.getenv("POOL_SIZE", multiprocessing.cpu_count()))
