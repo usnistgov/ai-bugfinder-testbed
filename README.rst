@@ -212,10 +212,25 @@ task. The features need to be extracted with the following command:
        -e ${FEATURE_EXTRACTOR} \  # Choose a feature extractor.
        -m  # To create the feature maps.
 
-   # Run the extractor and apply PCA to reduce dimensionality
+   # Run the extractor
    python ./run_feature_extraction.py /path/to/dataset \
        -e ${FEATURE_EXTRACTOR} \  # Choose a feature extractor
-       -p ${VECTOR_LENGTH}  # Specify the final number of features
+
+Reduce feature dimension
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+To fasten training of the model, feature reduction can be applied with the following command:
+
+.. code:: bash
+
+   # Create the feature maps
+   python ./run_feature_selection.py /path/to/dataset \
+       -s ${FEATURE_SELECTOR} \  # Choose a feature selector.
+       ${FEATURES_SELECTOR_ARGS} \  # Parametrize the selector correctly (use --help for more details)
+       -m  # To create the feature maps.
+
+N.B.: Several feature reducer can be applied successively if necessary. Use `--dry-run` to preview the final training
+set dimension.
 
 Run model training
 ~~~~~~~~~~~~~~~~~~
