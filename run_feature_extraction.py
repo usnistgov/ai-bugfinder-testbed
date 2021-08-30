@@ -10,7 +10,9 @@ from bugfinder.features.extraction.any_hop.all_flows import (
 from bugfinder.features.extraction.any_hop.single_flow import (
     FeatureExtractor as AnyHopSingleFlowExtractor,
 )
-from bugfinder.features.extraction.single_hop.raw import FeatureExtractor as SingleHopRawExtractor
+from bugfinder.features.extraction.single_hop.raw import (
+    FeatureExtractor as SingleHopRawExtractor,
+)
 from bugfinder.features.interproc.raw import FeatureExtractor as InterprocRawExtractor
 from bugfinder.utils.processing import is_operation_valid
 
