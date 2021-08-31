@@ -1,42 +1,6 @@
 AI Bugfinder
 ============
 
-TLDR
-----
-.. code:: bash
-
-  # Setup the dataset path
-  export DATASET='data/ai-dataset'
-
-  # Extract sinks from the SARD
-  # Data are currently located at /home/ygp/Documents/ai/manifests
-  find /sard/manifests -maxdepth 1 -type d -printf '%f\n' | grep -v '^\.$' | nice parallel --lb -I {} "jq -r '.runs[0] | (.properties.id|tostring) + \",\" + (.results[0].locations[0].physicalLocation | .artifactLocation.uri + \",\" + (.region.startLine|tostring))' {}/manifest.sarif" | grep -v ,,null > ${DATASET}/sinks.csv
-
-  # Build the docker images
-  docker-compose -f images/docker-compose.yml build --force
-
-  # Prepare the dataset
-  python clean_dataset.py  --no-cpp --no-litterals ${DATASET}
-
-  # Run Joern to parse the dataset and load it into Neo4j
-  python run_joern.py --version 0.4.0 ${DATASET}
-
-  # Tag the sinks based on SARD data (until the log files have no errors left)
-  python run_sinktagging.py --log_failed /tmp/sink.failed.15m.log --timeout 15m --sinks ${DATASET|/sinks.csv ${DATASET}
-  python run_sinktagging.py --run_failed /tmp/sink.failed.15m.log --log_failed /tmp/sink.failed.24h.log --timeout 24h --sinks ${DATASET}sinks.csv ${DATASET}
-  python run_sinktagging.py --run_failed /tmp/sink.failed.24h.log --log_failed /tmp/sink.failed.7d.log  --timeout  7d --sinks ${DATASET}sinks.csv ${DATASET}
-
-  # Connect data and control flows at function calls
-  python run_interproc.py --log_failed /tmp/failed.15m.log --timeout 15m ${DATASET}
-  python run_interproc.py --run_failed /tmp/failed.15m.log --timeout 24h --log_failed /tmp/failed.24h.log ${DATASET}
-  python run_interproc.py --run_failed /tmp/failed.24h.log --timeout  7d --log_failed /tmp/failed.7d.log  ${DATASET}
-
-  # Annotate the AST
-  python run_ast_markup.py -v 3 ${DATASET}
-
-  # Extract the features
-  python run_feature_extraction.py --extractor iprc ${DATASET}
-
 Disclaimer
 ----------
 
@@ -176,6 +140,25 @@ available and works as such:
        --no-litterals \  # Replace litterals from C code
        --no-main  # Remove main functions
 
+Identify sinks (interprocedural features)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To extract interprocedural features, it is necessary to first identify all sinks in a
+given dataset. SARD test cases have a manifest bundled with the code that allows to
+perform sink identification. Run the following command to do so.
+
+.. code:: bash
+    DATASET=/path/to/dataset
+
+    find /path/to/manifests -maxdepth 1 -type d -printf '%f\n' | grep -v '^\.$' \
+        | nice parallel --lb -I {} \
+            "jq -r '.runs[0] | (.properties.id|tostring) + \",\" \
+                + (.results[0].locations[0].physicalLocation | .artifactLocation.uri \
+                + \",\" + (.region.startLine|tostring))' {}/manifest.sarif" \
+        | grep -v ,,null > ${DATASET}/sinks.csv
+
+N.B.: Manifests are still being created and not available to the general public
+
 Run Joern
 ~~~~~~~~~
 
@@ -186,6 +169,42 @@ Run Joern
 Run the tool with
 ``python ./run_joern.py /path/to/dataset -v ${JOERN_VERSION}``. Use
 ``--help`` to see which version are available.
+
+Sink tagging (interprocedural features)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To link data and control flow to compute interprocedural features, it is necessary to
+tag the sinks, using the CSV obtain earlier. Sink tagging can be done using:
+
+.. code:: bash
+    DATASET=/path/to/datsaset
+
+    # Tag sinks with a maximum runtime of 15min
+    python run_sinktagging.py --log_failed /tmp/sink.failed.15m.log \
+        --timeout 15m --sinks ${DATASET|/sinks.csv ${DATASET}
+
+    # Retry tagging sinks for a longer period, using previous log files
+    python run_sinktagging.py --run_failed /tmp/sink.failed.15m.log \
+        --log_failed /tmp/sink.failed.24h.log \
+        --timeout 24h --sinks ${DATASET}sinks.csv ${DATASET}
+
+
+
+Link data and control flows (interprocedural features)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To link data and control flow, the following commands need to be run:
+
+.. code:: bash
+    DATASET=/path/to/dataset
+
+    # Connect data and control flows at function calls
+    python run_interproc.py --log_failed /tmp/failed.15m.log \
+        --timeout 15m ${DATASET}
+
+    # Retry linking flows for a longer period, using previous log files
+    python run_interproc.py --run_failed /tmp/failed.15m.log \
+        --timeout 24h --log_failed /tmp/failed.24h.log ${DATASET}
 
 AST Markup
 ~~~~~~~~~~
