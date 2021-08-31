@@ -148,6 +148,7 @@ given dataset. SARD test cases have a manifest bundled with the code that allows
 perform sink identification. Run the following command to do so.
 
 .. code:: bash
+
     DATASET=/path/to/dataset
 
     find /path/to/manifests -maxdepth 1 -type d -printf '%f\n' | grep -v '^\.$' \
@@ -177,6 +178,7 @@ To link data and control flow to compute interprocedural features, it is necessa
 tag the sinks, using the CSV obtain earlier. Sink tagging can be done using:
 
 .. code:: bash
+
     DATASET=/path/to/datsaset
 
     # Tag sinks with a maximum runtime of 15min
@@ -196,6 +198,7 @@ Link data and control flows (interprocedural features)
 To link data and control flow, the following commands need to be run:
 
 .. code:: bash
+
     DATASET=/path/to/dataset
 
     # Connect data and control flows at function calls
