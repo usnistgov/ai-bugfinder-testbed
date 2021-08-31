@@ -11,7 +11,8 @@ class Word2VecTraining(Word2VecModel):
         super().__init__(dataset)
 
     def init_model(self, **kwargs):
-        LOGGER.debug('Word2vec model class')
+        LOGGER.debug("Word2vec model class")
+
 
 #########################################
 class Word2VecEmbeddings(Word2VecEmbeddings):
@@ -19,4 +20,4 @@ class Word2VecEmbeddings(Word2VecEmbeddings):
         super().__init__(dataset)
 
     def init_model(self, **kwargs):
-        LOGGER.debug('Word2vec embeddings class')
+        LOGGER.debug("Word2vec embeddings class")

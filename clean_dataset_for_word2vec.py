@@ -4,19 +4,17 @@ from bugfinder.dataset import CWEClassificationDataset as Dataset
 from bugfinder.dataset.processing.word2vec_ops import (
     RemoveComments,
     ReplaceFunctions,
-    ReplaceVariables
+    ReplaceVariables,
 )
-from bugfinder.dataset.processing.token_ops import (
-    TokenizeText
-)
+from bugfinder.dataset.processing.token_ops import TokenizeText
 
 
 if __name__ == "__main__":
-    options = { 
+    options = {
         "no_comments": RemoveComments,
         "replace_funcs": ReplaceFunctions,
         "replace_vars": ReplaceVariables,
-        "tokenize": TokenizeText
+        "tokenize": TokenizeText,
     }
 
     parser = argparse.ArgumentParser()

@@ -13,4 +13,4 @@ class BLSTMClassifierTraining(BLSTMClassifierModel):
         super().__init__(dataset)
 
     def init_model(self, **kwargs):
-        LOGGER.debug('Bidirectional LSTM class')
+        LOGGER.debug("Bidirectional LSTM class")
