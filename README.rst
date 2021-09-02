@@ -289,7 +289,7 @@ script:
    python ./clean_dataset_for_word2vec.py /path/to/dataset \
        --no-comments \  # Remove comments
        --replace-funcs \  # Replace functions by a FUN token
-       --replace-vars \  # Replace variables by a VAR token
+       --replace-vars  # Replace variables by a VAR token
 
 Tokenizing the dataset
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -328,7 +328,7 @@ Execute the following script:
 .. code:: bash
 
    python ./run_embeddings.py /path/to/dataset \
-       -m {MODEL_DIR} \  # Previous trained word2vec model
+       -m {MODEL_DIR}  # Previous trained word2vec model
 
 Train the BLSTM model
 ~~~~~~~~~~~~~~~~~~~~~
@@ -338,11 +338,11 @@ Execute the following script:
 
 .. code:: bash
 
-   python ./run_embeddings.py /path/to/dataset \
+   python ./run_model_training.py /path/to/dataset \
        -m bidirectional_lstm \  # BLSTM
        -n {MODEL_NAME} \ # path where the model will be saved
        -e {EPOCHS} \ # number of epochs
-       -b {BATCH_SIZE} \ # Size of the batch used for training
+       -b {BATCH_SIZE} # Size of the batch used for training
 
 Troubleshooting
 ---------------
