@@ -154,13 +154,15 @@ to perform sink identification. Run the following command to do so.
 .. code:: bash
 
     export DATASET=/path/to/dataset
+    export SARIF_DIR=/path/to/sarif_manifests
 
-    find /path/to/manifests -maxdepth 1 -type d -printf '%f\n' | grep -v '^\.$' \
+    find ${SARIF_DIR} -maxdepth 1 -type d -printf '%f\n' | grep '^[0-9]\+$' \
         | nice parallel --lb -I {} \
             "jq -r '.runs[0] | (.properties.id|tostring) + \",\" \
                 + (.results[0].locations[0].physicalLocation | .artifactLocation.uri \
-                + \",\" + (.region.startLine|tostring))' {}/manifest.sarif" \
+                + \",\" + (.region.startLine|tostring))' ${SARIF_DIR}/{}/manifest.sarif" \
         | grep -v ,,null > ${DATASET}/sinks.csv
+
 
 N.B.: Manifests are still being created and not available to the general public
 
