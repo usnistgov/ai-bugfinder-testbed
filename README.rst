@@ -14,6 +14,7 @@ Pre-requisites
 -  APT packages:
 
    -  ``unzip``
+   -  ``parallel``
 
 -  Docker: https://docs.docker.com/install/#supported-platforms
 -  Docker-compose: https://docs.docker.com/compose/install/
@@ -189,12 +190,12 @@ tag the sinks, using the CSV obtain earlier. Sink tagging can be done using:
 
     # Tag sinks with a maximum runtime of 15min
     python run_sinktagging.py --log_failed /tmp/sink.failed.15m.log \
-        --timeout 15m --sinks ${DATASET|/sinks.csv ${DATASET}
+        --timeout 15m --sinks ${DATASET}/sinks.csv ${DATASET}
 
     # Retry tagging sinks for a longer period, using previous log files
     python run_sinktagging.py --run_failed /tmp/sink.failed.15m.log \
         --log_failed /tmp/sink.failed.24h.log \
-        --timeout 24h --sinks ${DATASET}sinks.csv ${DATASET}
+        --timeout 24h --sinks ${DATASET}/sinks.csv ${DATASET}
 
 
 
