@@ -49,7 +49,7 @@ DATASET_DIRS = {
     "neo4j": "neo4j_v3.db",
     "feats": "features",
     "models": "models",
-    "embeddings" : "embeddings"
+    "embeddings": "embeddings",
 }
 
 SUMMARY_FILE = "summary.json"

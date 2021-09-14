@@ -12,20 +12,23 @@ from bugfinder.dataset.processing.lstm_utils import process_csv
 
 # TODO: integrate this function in the LSTMClassifierTraining class
 def build_model(neurons, input_size):
-    LOGGER.info('Building model...')
+    LOGGER.info("Building model...")
 
     model = keras.models.Sequential()
 
-    model.add(keras.layers.Bidirectional(keras.layers.LSTM(neurons, activation='tanh', return_sequences=True), input_shape=(input_size, 1)))
+    model.add(
+        keras.layers.Bidirectional(
+            keras.layers.LSTM(neurons, activation="tanh", return_sequences=True),
+            input_shape=(input_size, 1),
+        )
+    )
     model.add(keras.layers.Bidirectional(keras.layers.LSTM(neurons)))
-    model.add(keras.layers.Dense(64, activation='tanh'))
-    model.add(keras.layers.Dense(1, activation='sigmoid'))
+    model.add(keras.layers.Dense(64, activation="tanh"))
+    model.add(keras.layers.Dense(1, activation="sigmoid"))
 
-    LOGGER.info('Compiling model...')
+    LOGGER.info("Compiling model...")
 
-    model.compile(loss='binary_crossentropy',
-                  optimizer='adam',
-                  metrics=['accuracy'])
+    model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"])
 
     return model
 
@@ -37,8 +40,8 @@ if __name__ == "__main__":
     parser.add_argument("dataset_path", help="path to the file with the features")
 
     parser.add_argument(
-        "--neurons", 
-        "-n", 
+        "--neurons",
+        "-n",
         required=False,
         default=128,
         type=int,
@@ -64,22 +67,20 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-    
+
     x_train, y_train, x_test, y_test = process_csv(args.dataset_path)
 
-    LOGGER.info ('Building the model structure...')
+    LOGGER.info("Building the model structure...")
 
     model = build_model(args.neurons, x_train.shape[1])
 
-    LOGGER.info('Training the model...')
+    LOGGER.info("Training the model...")
 
     print(x_train.shape)
     model.summary()
 
-    history = model.fit(x_train, 
-                        y_train, 
-                        batch_size=args.batch_size, 
-                        epochs=args.epochs, 
-                        verbose=1)
+    history = model.fit(
+        x_train, y_train, batch_size=args.batch_size, epochs=args.epochs, verbose=1
+    )
 
-    LOGGER.info ('Training complete')
+    LOGGER.info("Training complete")

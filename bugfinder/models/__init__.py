@@ -36,7 +36,7 @@ class Word2VecModel(DatasetProcessing):
         self.window_dim = 5
         self.min_count = 1
         self.workers = 4
-        self.algorithm = 1 # 1 = skipgram
+        self.algorithm = 1  # 1 = skipgram
         self.seed = 32
 
     @abstractmethod
@@ -44,25 +44,27 @@ class Word2VecModel(DatasetProcessing):
         raise NotImplementedError()
 
     def execute(self, name, **kwargs):
-        LOGGER.debug('Generating the token list for training...')
+        LOGGER.debug("Generating the token list for training...")
 
         token_list = self.get_token_list()
 
-        LOGGER.debug('Training the word2vec model.')
+        LOGGER.debug("Training the word2vec model.")
 
-        model = Word2Vec(token_list, 
-                         min_count=self.min_count,
-                         vector_size = self.word_dim,
-                         workers = self.workers,
-                         sg = self.algorithm,
-                         seed = self.seed)
+        model = Word2Vec(
+            token_list,
+            min_count=self.min_count,
+            vector_size=self.word_dim,
+            workers=self.workers,
+            sg=self.algorithm,
+            seed=self.seed,
+        )
 
-        LOGGER.debug('Training complete. Saving the model...')
+        LOGGER.debug("Training complete. Saving the model...")
 
         model_dir = join(self.dataset.model_dir, name)
 
-        if not exists (self.dataset.model_dir):
-           makedirs(self.dataset.model_dir) 
+        if not exists(self.dataset.model_dir):
+            makedirs(self.dataset.model_dir)
 
         model.save(model_dir)
 
@@ -75,12 +77,12 @@ class Word2VecModel(DatasetProcessing):
             join(test_case, filepath)
             for test_case in self.dataset.test_cases
             for filepath in listdir(join(self.dataset.path, test_case))
-            if splitext(filepath)[1] in [".c",".h"]
+            if splitext(filepath)[1] in [".c", ".h"]
         ]
 
         while len(file_processing_list) != 0:
             filepath = file_processing_list.pop(0)
-            #LOGGER.debug(filepath.split('/')[0])
+            # LOGGER.debug(filepath.split('/')[0])
 
             with open(join(self.dataset.path, filepath), "r") as in_file:
                 code = in_file.readlines()
@@ -90,11 +92,12 @@ class Word2VecModel(DatasetProcessing):
 
         return token_list
 
+
 #########################################
 class Word2VecEmbeddings(DatasetProcessing):
     def __init__(self, dataset):
         super().__init__(dataset)
-        
+
         self.embedding_length = 300
         self.vector_length = 50
 
@@ -103,56 +106,67 @@ class Word2VecEmbeddings(DatasetProcessing):
         raise NotImplementedError()
 
     def execute(self, name, **kwargs):
-        if "emb_length" in kwargs.keys(): self.embedding_length = kwargs['emb_length']
+        if "emb_length" in kwargs.keys():
+            self.embedding_length = kwargs["emb_length"]
 
-        LOGGER.debug('Retrieving the tokens to transform...')
+        LOGGER.debug("Retrieving the tokens to transform...")
 
         token_list = self.get_token_list()
 
-        LOGGER.debug ('Token list retrieved. Loading model...')
-        
+        LOGGER.debug("Token list retrieved. Loading model...")
+
         embeddings = list()
 
-        model = Word2Vec.load(join(self.dataset.model_dir, kwargs['model']))
+        model = Word2Vec.load(join(self.dataset.model_dir, kwargs["model"]))
 
         for item in range(len(token_list)):
-            LOGGER.debug('Creating the embeddings for %s. %d items left for processing...' % (token_list[item]['path'], (len(token_list) - item)))
+            LOGGER.debug(
+                "Creating the embeddings for %s. %d items left for processing..."
+                % (token_list[item]["path"], (len(token_list) - item))
+            )
 
             try:
                 vectors = self.vectorize(model, token_list[item])
             except:
-                LOGGER.debug('Key not found. Skipping...')
+                LOGGER.debug("Key not found. Skipping...")
                 continue
 
-            tmp = {'path': token_list[item]['path'], 'embeddings': vectors}
+            tmp = {"path": token_list[item]["path"], "embeddings": vectors}
 
             embeddings.append(tmp)
-        
-        LOGGER.info('Embeddings created. Saving features...')
 
-        for item in range (len(embeddings)): 
-            LOGGER.debug('Processing %s file. %d items remaining...' %(embeddings[item]['path'], (len(embeddings) - item)))
+        LOGGER.info("Embeddings created. Saving features...")
+
+        for item in range(len(embeddings)):
+            LOGGER.debug(
+                "Processing %s file. %d items remaining..."
+                % (embeddings[item]["path"], (len(embeddings) - item))
+            )
             self.save_dataframe(embeddings[item])
 
     #########################
 
     def save_dataframe(self, embeddings):
-        df = pd.DataFrame(embeddings['embeddings'])
+        df = pd.DataFrame(embeddings["embeddings"])
 
-        dir_path = dirname(abspath(join(self.dataset.embeddings_dir, embeddings['path'])))
+        dir_path = dirname(
+            abspath(join(self.dataset.embeddings_dir, embeddings["path"]))
+        )
 
-        if not exists(dir_path): 
-            makedirs (dir_path)
+        if not exists(dir_path):
+            makedirs(dir_path)
 
-        df.to_csv(join(self.dataset.embeddings_dir, embeddings['path']) + '.csv', index=False)
+        df.to_csv(
+            join(self.dataset.embeddings_dir, embeddings["path"]) + ".csv", index=False
+        )
 
     #########################
 
     def vectorize(self, model, tokens):
         vectors = np.zeros(shape=(self.embedding_length, self.vector_length))
 
-        for token in range(min(len(tokens['tokens']), self.embedding_length)):
-            vectors[token] = model.wv[tokens['tokens'][token]]
+        for token in range(min(len(tokens["tokens"]), self.embedding_length)):
+            vectors[token] = model.wv[tokens["tokens"][token]]
 
         return vectors
 
@@ -165,30 +179,33 @@ class Word2VecEmbeddings(DatasetProcessing):
             join(test_case, filepath)
             for test_case in self.dataset.test_cases
             for filepath in listdir(join(self.dataset.path, test_case))
-            if splitext(filepath)[1] in [".c",".h"]
+            if splitext(filepath)[1] in [".c", ".h"]
         ]
 
         while len(file_processing_list) != 0:
             filepath = file_processing_list.pop(0)
-            
+
             processed_tokens = dict()
-            processed_tokens['path'] = splitext(filepath)[0]
-            
-            #processed_tokens['class'] = filepath.split('/')[0]
-            #LOGGER.debug(filepath.split('/')[0])
+            processed_tokens["path"] = splitext(filepath)[0]
+
+            # processed_tokens['class'] = filepath.split('/')[0]
+            # LOGGER.debug(filepath.split('/')[0])
 
             with open(join(self.dataset.path, filepath), "r") as in_file:
                 code = in_file.readlines()
 
                 tokens = [token.strip() for token in code]
 
-                LOGGER.debug('%s file read. Retrieved %d tokens.' % (filepath, len(tokens)))
-                
-                processed_tokens['tokens'] = tokens
-                
+                LOGGER.debug(
+                    "%s file read. Retrieved %d tokens." % (filepath, len(tokens))
+                )
+
+                processed_tokens["tokens"] = tokens
+
                 token_list.append(processed_tokens)
 
         return token_list
+
 
 #########################################
 class BLSTMClassifierModel(DatasetProcessing):
@@ -218,14 +235,15 @@ class BLSTMClassifierModel(DatasetProcessing):
 
         for dirs, subdirs, files in walk(input_path):
             for file in files:
-                if basename(file).endswith('.csv'): file_list.append(join(dirs, file))
-                
+                if basename(file).endswith(".csv"):
+                    file_list.append(join(dirs, file))
+
         return file_list
 
     #########################
 
     def load_dataset(self):
-        LOGGER.debug('Loading the dataset which will be used for training...')
+        LOGGER.debug("Loading the dataset which will be used for training...")
 
         labels = list()
         vectors = list()
@@ -235,12 +253,16 @@ class BLSTMClassifierModel(DatasetProcessing):
         while len(file_processing_list) != 0:
             filepath = file_processing_list.pop(0)
 
-            # TODO: Workaround to get the class. 
-            if ('good' in filepath): labels.append(0)
-            else: labels.append(1)
+            # TODO: Workaround to get the class.
+            if "good" in filepath:
+                labels.append(0)
+            else:
+                labels.append(1)
 
-            LOGGER.debug("Reading embeddings from %s (%d items left)..." 
-                         % (filepath, len(file_processing_list)))
+            LOGGER.debug(
+                "Reading embeddings from %s (%d items left)..."
+                % (filepath, len(file_processing_list))
+            )
 
             df = pd.read_csv(filepath)
 
@@ -248,7 +270,7 @@ class BLSTMClassifierModel(DatasetProcessing):
 
             del df
 
-        LOGGER.debug('Reshaping vectors...')
+        LOGGER.debug("Reshaping vectors...")
 
         vectors = np.dstack(vectors)
         vectors = vectors.reshape(-1, self.embedding_length, self.vector_length)
@@ -263,18 +285,22 @@ class BLSTMClassifierModel(DatasetProcessing):
     def build_model(self, embedding_length, vector_length):
         model = Sequential()
 
-        model.add(Bidirectional(LSTM(self.neurons), input_shape=(embedding_length, vector_length)))
+        model.add(
+            Bidirectional(
+                LSTM(self.neurons), input_shape=(embedding_length, vector_length)
+            )
+        )
         model.add(Dense(self.neurons))
         model.add(LeakyReLU())
         model.add(Dropout(self.dropout))
         model.add(Dense(self.neurons))
         model.add(LeakyReLU())
         model.add(Dropout(self.dropout))
-        model.add(Dense(2, activation='softmax'))
+        model.add(Dense(2, activation="softmax"))
 
         adamax = Adamax(lr=self.learning_rate)
 
-        model.compile(adamax, 'categorical_crossentropy', metrics=['accuracy'])
+        model.compile(adamax, "categorical_crossentropy", metrics=["accuracy"])
 
         return model
 
@@ -285,14 +311,16 @@ class BLSTMClassifierModel(DatasetProcessing):
 
         values = model.evaluate(X_test, y_test, batch_size=batch_size)
 
-        LOGGER.info('Accuracy: %02.03f%%' % (values[1] * 100))
+        LOGGER.info("Accuracy: %02.03f%%" % (values[1] * 100))
 
         predictions = (model.predict(X_test, batch_size=batch_size)).round()
 
-        tn, fp, fn, tp = confusion_matrix(np.argmax(y_test, axis=1), np.argmax(predictions, axis=1)).ravel()
+        tn, fp, fn, tp = confusion_matrix(
+            np.argmax(y_test, axis=1), np.argmax(predictions, axis=1)
+        ).ravel()
 
-        LOGGER.info('False positive rate : %02.03f%%' %  (fp / (fp + tn) * 100))
-        LOGGER.info('False negative rate is: %02.03f%%' % (fn / (fn + tp)* 100))
+        LOGGER.info("False positive rate : %02.03f%%" % (fp / (fp + tn) * 100))
+        LOGGER.info("False negative rate is: %02.03f%%" % (fn / (fn + tp) * 100))
 
         recall = tp / (tp + fn)
         precision = tp / (tp + fp)
@@ -309,16 +337,12 @@ class BLSTMClassifierModel(DatasetProcessing):
 
     #########################
 
-    def execute(
-        self,
-        name,
-        batch_size = 32,
-        epochs = 3,
-        **kwargs
-    ):
+    def execute(self, name, batch_size=32, epochs=3, **kwargs):
         vectors, labels = self.load_dataset()
 
-        X_train, X_test, y_train, y_test = train_test_split(vectors, labels, test_size=0.2, random_state=101)
+        X_train, X_test, y_train, y_test = train_test_split(
+            vectors, labels, test_size=0.2, random_state=101
+        )
 
         y_train = to_categorical(y_train)
         y_test = to_categorical(y_test)
@@ -327,22 +351,25 @@ class BLSTMClassifierModel(DatasetProcessing):
 
         model = self.build_model(self.embedding_length, self.vector_length)
 
-        LOGGER.info("Training the Bidirectional LSTM on %d items over %d epochs. Testing on %d items..." 
-                    % (len(X_train), epochs, len(X_test)))
+        LOGGER.info(
+            "Training the Bidirectional LSTM on %d items over %d epochs. Testing on %d items..."
+            % (len(X_train), epochs, len(X_test))
+        )
 
         model.fit(X_train, y_train, batch_size=batch_size, epochs=epochs)
 
-        LOGGER.info('Training complete. Saving the model weights...')
+        LOGGER.info("Training complete. Saving the model weights...")
 
         model_dir = join(self.dataset.model_dir, name)
 
         model.save_weights(model_dir)
 
-        LOGGER.info('Evaluating...')
+        LOGGER.info("Evaluating...")
 
         self.evaluate(model, model_dir, batch_size, X_test, y_test)
-        
-        #if self.model_cls is None: raise Exception("Parameter 'model_cls' is undefined")
+
+        # if self.model_cls is None: raise Exception("Parameter 'model_cls' is undefined")
+
 
 #########################################
 class ClassifierModel(DatasetProcessing):

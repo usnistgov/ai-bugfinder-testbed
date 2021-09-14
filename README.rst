@@ -1,42 +1,6 @@
 AI Bugfinder
 ============
 
-TLDR
-----
-.. code:: bash
-
-  # Setup the dataset path
-  export DATASET='data/ai-dataset'
-
-  # Extract sinks from the SARD
-  # Data are currently located at /home/ygp/Documents/ai/manifests
-  find /sard/manifests -maxdepth 1 -type d -printf '%f\n' | grep -v '^\.$' | nice parallel --lb -I {} "jq -r '.runs[0] | (.properties.id|tostring) + \",\" + (.results[0].locations[0].physicalLocation | .artifactLocation.uri + \",\" + (.region.startLine|tostring))' {}/manifest.sarif" | grep -v ,,null > ${DATASET}/sinks.csv
-
-  # Build the docker images
-  docker-compose -f images/docker-compose.yml build --force
-
-  # Prepare the dataset
-  python clean_dataset.py  --no-cpp --no-litterals ${DATASET}
-
-  # Run Joern to parse the dataset and load it into Neo4j
-  python run_joern.py --version 0.4.0 ${DATASET}
-
-  # Tag the sinks based on SARD data (until the log files have no errors left)
-  python run_sinktagging.py --log_failed /tmp/sink.failed.15m.log --timeout 15m --sinks ${DATASET|/sinks.csv ${DATASET}
-  python run_sinktagging.py --run_failed /tmp/sink.failed.15m.log --log_failed /tmp/sink.failed.24h.log --timeout 24h --sinks ${DATASET}sinks.csv ${DATASET}
-  python run_sinktagging.py --run_failed /tmp/sink.failed.24h.log --log_failed /tmp/sink.failed.7d.log  --timeout  7d --sinks ${DATASET}sinks.csv ${DATASET}
-
-  # Connect data and control flows at function calls
-  python run_interproc.py --log_failed /tmp/failed.15m.log --timeout 15m ${DATASET}
-  python run_interproc.py --run_failed /tmp/failed.15m.log --timeout 24h --log_failed /tmp/failed.24h.log ${DATASET}
-  python run_interproc.py --run_failed /tmp/failed.24h.log --timeout  7d --log_failed /tmp/failed.7d.log  ${DATASET}
-
-  # Annotate the AST
-  python run_ast_markup.py -v 3 ${DATASET}
-
-  # Extract the features
-  python run_feature_extraction.py --extractor iprc ${DATASET}
-
 Disclaimer
 ----------
 
@@ -50,6 +14,7 @@ Pre-requisites
 -  APT packages:
 
    -  ``unzip``
+   -  ``parallel``
 
 -  Docker: https://docs.docker.com/install/#supported-platforms
 -  Docker-compose: https://docs.docker.com/compose/install/
@@ -176,6 +141,32 @@ available and works as such:
        --no-litterals \  # Replace litterals from C code
        --no-main  # Remove main functions
 
+N.B.: If interprocedural features are computed, make sure to leave interprocedural test 
+cases (do not use `--no-interprocedural`) and do not remove main functions (do not use
+`--no-main`).
+
+Identify sinks (interprocedural features)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To extract interprocedural features, it is necessary to first identify all sinks in a
+given dataset. SARD test cases have a SARIF manifest bundled with the code that allows
+to perform sink identification. Run the following command to do so.
+
+.. code:: bash
+
+    export DATASET=/path/to/dataset
+    export SARIF_DIR=/path/to/sarif_manifests
+
+    find ${SARIF_DIR} -maxdepth 1 -type d -printf '%f\n' | grep '^[0-9]\+$' \
+        | nice parallel --lb -I {} \
+            "jq -r '.runs[0] | (.properties.id|tostring) + \",\" \
+                + (.results[0].locations[0].physicalLocation | .artifactLocation.uri \
+                + \",\" + (.region.startLine|tostring))' ${SARIF_DIR}/{}/manifest.sarif" \
+        | grep -v ,,null > ${DATASET}/sinks.csv
+
+
+N.B.: Manifests are still being created and not available to the general public
+
 Run Joern
 ~~~~~~~~~
 
@@ -186,6 +177,44 @@ Run Joern
 Run the tool with
 ``python ./run_joern.py /path/to/dataset -v ${JOERN_VERSION}``. Use
 ``--help`` to see which version are available.
+
+Sink tagging (interprocedural features)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To link data and control flow to compute interprocedural features, it is necessary to
+tag the sinks, using the CSV obtain earlier. Sink tagging can be done using:
+
+.. code:: bash
+
+    DATASET=/path/to/datsaset
+
+    # Tag sinks with a maximum runtime of 15min
+    python run_sinktagging.py --log_failed /tmp/sink.failed.15m.log \
+        --timeout 15m --sinks ${DATASET}/sinks.csv ${DATASET}
+
+    # Retry tagging sinks for a longer period, using previous log files
+    python run_sinktagging.py --run_failed /tmp/sink.failed.15m.log \
+        --log_failed /tmp/sink.failed.24h.log \
+        --timeout 24h --sinks ${DATASET}/sinks.csv ${DATASET}
+
+
+
+Link data and control flows (interprocedural features)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To link data and control flow, the following commands need to be run:
+
+.. code:: bash
+
+    DATASET=/path/to/dataset
+
+    # Connect data and control flows at function calls
+    python run_interproc.py --log_failed /tmp/failed.15m.log \
+        --timeout 15m ${DATASET}
+
+    # Retry linking flows for a longer period, using previous log files
+    python run_interproc.py --run_failed /tmp/failed.15m.log \
+        --timeout 24h --log_failed /tmp/failed.24h.log ${DATASET}
 
 AST Markup
 ~~~~~~~~~~
@@ -219,18 +248,19 @@ task. The features need to be extracted with the following command:
 Reduce feature dimension
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-To fasten training of the model, feature reduction can be applied with the following command:
+To fasten training of the model, feature reduction can be applied with the following
+command:
 
 .. code:: bash
 
    # Create the feature maps
    python ./run_feature_selection.py /path/to/dataset \
        -s ${FEATURE_SELECTOR} \  # Choose a feature selector.
-       ${FEATURES_SELECTOR_ARGS} \  # Parametrize the selector correctly (use --help for more details)
+       ${FEATURES_SELECTOR_ARGS} \  # Parametrize the selector correctly
        -m  # To create the feature maps.
 
-N.B.: Several feature reducer can be applied successively if necessary. Use `--dry-run` to preview the final training
-set dimension.
+N.B.: Several feature reducer can be applied successively if necessary. Use `--dry-run`
+to preview the final training set dimension.
 
 Run model training
 ~~~~~~~~~~~~~~~~~~
@@ -244,7 +274,7 @@ typing:
        -m ${MODEL}  # Model to train. See help for details.
 
 Training the word2vec model
-~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 If you want to train a word2vec model in this dataset, there's no need to run Joern.
 After you finished preparing the dataset with the ``clean_dataset.py`` script, 
@@ -262,10 +292,10 @@ script:
    python ./clean_dataset_for_word2vec.py /path/to/dataset \
        --no-comments \  # Remove comments
        --replace-funcs \  # Replace functions by a FUN token
-       --replace-vars \  # Replace variables by a VAR token
+       --replace-vars  # Replace variables by a VAR token
 
 Tokenizing the dataset
-~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
 
 After finishing the cleanup, it's necessary to separate the code in tokens to be
 used as input for the word2vec model. That can be done by an additional parameter
@@ -278,7 +308,7 @@ run:
        --tokenize 
 
 Training the word2vec model
-~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 After the tokenization process, you can train the word2vec model, using
 the ``run_model_training.py`` script with word2vec as the parameter.
@@ -291,7 +321,7 @@ Run the command:
        -n {MODEL_NAME} \  # path where the model will be saved
 
 Generate the embeddings for the BLSTM model
-~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 After the model training is complete, it's necessary to generate
 embeddings which will be used as input for the BLSTM model. These
@@ -301,21 +331,21 @@ Execute the following script:
 .. code:: bash
 
    python ./run_embeddings.py /path/to/dataset \
-       -m {MODEL_DIR} \  # Previous trained word2vec model
+       -m {MODEL_DIR}  # Previous trained word2vec model
 
 Train the BLSTM model
-~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
 
 After generating the embeddings, the BLSTM model is ready to use.
 Execute the following script:
 
 .. code:: bash
 
-   python ./run_embeddings.py /path/to/dataset \
+   python ./run_model_training.py /path/to/dataset \
        -m bidirectional_lstm \  # BLSTM
        -n {MODEL_NAME} \ # path where the model will be saved
        -e {EPOCHS} \ # number of epochs
-       -b {BATCH_SIZE} \ # Size of the batch used for training
+       -b {BATCH_SIZE} # Size of the batch used for training
 
 Troubleshooting
 ---------------

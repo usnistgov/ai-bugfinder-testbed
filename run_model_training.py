@@ -24,7 +24,7 @@ if __name__ == "__main__":
         "linear_classifier": LinearClassifierTraining,
         "deep_neural_network": DNNClassifierTraining,
         "bidirectional_lstm": BLSTMClassifierTraining,
-        "word2vec": Word2VecTraining
+        "word2vec": Word2VecTraining,
     }
 
     # Setup the argument parser

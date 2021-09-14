@@ -57,7 +57,9 @@ if __name__ == "__main__":
     if args.map_features:
         operation_params["need_map_features"] = True
 
-    if args.timeout:
+    # FIXME modify docker processing to have extra container configuration without
+    #   raising error.
+    if args.timeout and args.extractor == "iprc":
         operation_params["container_config"] = {"timeout": args.timeout}
 
     if len(operation_params.keys()) > 0:

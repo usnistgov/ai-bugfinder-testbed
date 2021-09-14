@@ -20,14 +20,18 @@ class LSTMClassifierTraining(ClassifierModel):
     def build_model(self, neurons, input_size):
         model = keras.models.Sequential()
 
-        model.add(keras.layers.Bidirectional(keras.layers.LSTM(neurons, activation='tanh', return_sequences=True), input_shape=(input_size, 1)))
+        model.add(
+            keras.layers.Bidirectional(
+                keras.layers.LSTM(neurons, activation="tanh", return_sequences=True),
+                input_shape=(input_size, 1),
+            )
+        )
         model.add(keras.layers.Bidirectional(keras.layers.LSTM(neurons)))
-        model.add(keras.layers.Dense(64, activation='tanh'))
-        model.add(keras.layers.Dense(1, activation='sigmoid'))
+        model.add(keras.layers.Dense(64, activation="tanh"))
+        model.add(keras.layers.Dense(1, activation="sigmoid"))
 
-        model.compile(loss='binary_crossentropy',
-                    optimizer='adam',
-                    metrics=['accuracy'])
+        model.compile(
+            loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"]
+        )
 
         return model
-
