@@ -1,6 +1,7 @@
-image: python:3.6
+image: python:3.6-slim
 
 stages:
+  - quality
   - tests
 
 before_script:
@@ -10,8 +11,11 @@ before_script:
   - pip install -r ./requirements-dev.txt
   - cd images; /tmp/docker-compose build; cd - &>/dev/null
 
+quality:
+  stage: quality
+  script: black . --check
+
 tests:
   stage: tests
-  script: pytest
-
+  script: pytest ./tests
 

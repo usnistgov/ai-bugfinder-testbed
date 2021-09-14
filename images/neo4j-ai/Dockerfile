@@ -5,7 +5,7 @@ ARG LIB_FOLDER="/var/lib/neo4j/lib"
 
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
-        unzip wget \
+        unzip wget parallel \
     && rm -rf \
         /var/lib/apt/lists/* \
         ${LIB_FOLDER}/opencsv-2.3.jar \

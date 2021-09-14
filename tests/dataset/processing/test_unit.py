@@ -4,6 +4,7 @@ from os.path import join
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
+from bugfinder import settings
 from bugfinder.dataset import CWEClassificationDataset
 from bugfinder.dataset.processing import (
     DatasetFileProcessing,
@@ -54,7 +55,7 @@ class TestDatasetFileProcessingExecute(TestCase):
 
     def tearDown(self) -> None:
         try:
-            remove(join(self.dataset_path, "summary.json"))
+            remove(join(self.dataset_path, settings.SUMMARY_FILE))
         except FileNotFoundError:
             pass  # Ignore FileNotFound errors
 

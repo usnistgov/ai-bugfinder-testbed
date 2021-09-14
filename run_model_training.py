@@ -5,8 +5,12 @@ import logging
 import os
 
 from bugfinder.dataset import CWEClassificationDataset as Dataset
+
 from bugfinder.models.dnn_classifier import DNNClassifierTraining
 from bugfinder.models.linear_classifier import LinearClassifierTraining
+from bugfinder.models.word2vec import Word2VecTraining
+from bugfinder.models.blstm_classifier import BLSTMClassifierTraining
+
 from bugfinder.settings import LOGGER
 from bugfinder.utils.processing import is_operation_valid
 
@@ -19,16 +23,25 @@ if __name__ == "__main__":
     options = {  # Dictionary linking input arguments to processing classes
         "linear_classifier": LinearClassifierTraining,
         "deep_neural_network": DNNClassifierTraining,
+        "bidirectional_lstm": BLSTMClassifierTraining,
+        "word2vec": Word2VecTraining,
     }
 
     # Setup the argument parser
     parser = argparse.ArgumentParser()
     parser.add_argument("dataset_path", help="path to the dataset to clean")
     parser.add_argument(
-        "--model", "-m", choices=options.keys(), required=True, help="model to use",
+        "--model",
+        "-m",
+        choices=options.keys(),
+        required=True,
+        help="model to use",
     )
     parser.add_argument(
-        "--name", "-n", required=True, help="name of the saved model",
+        "--name",
+        "-n",
+        required=True,
+        help="name of the saved model",
     )
     parser.add_argument(
         "--batch-size",
@@ -46,7 +59,12 @@ if __name__ == "__main__":
         help="max number of items to train with",
     )
     parser.add_argument(
-        "--epochs", "-e", type=int, default=1, required=False, help="number of epochs",
+        "--epochs",
+        "-e",
+        type=int,
+        default=1,
+        required=False,
+        help="number of epochs",
     )
     parser.add_argument(
         "--keep-best-model",

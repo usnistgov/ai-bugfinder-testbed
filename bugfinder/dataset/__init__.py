@@ -1,14 +1,16 @@
 """
 """
 import json
+import re
 from enum import IntEnum
 from os import listdir, walk
 from os.path import exists, isdir, join, dirname, realpath
 
 import pandas as pd
 
+from bugfinder import settings
 from bugfinder.dataset.processing import DatasetProcessingCategory
-from bugfinder.settings import LOGGER, DATASET_DIRS
+from bugfinder.settings import LOGGER
 from bugfinder.utils.processing import is_processing_stack_valid
 from bugfinder.utils.statistics import get_time, display_time
 
@@ -21,7 +23,7 @@ class DatasetQueueRetCode(IntEnum):
 
 
 class CWEClassificationDataset(object):
-    ignored_dirs = list(DATASET_DIRS.values())
+    ignored_dirs = list(settings.DATASET_DIRS.values())
 
     def _index_dataset(self):
         LOGGER.debug("Indexing test cases...")
@@ -60,7 +62,7 @@ class CWEClassificationDataset(object):
             self.stats.append(len(self.test_cases) - sum(self.stats))
 
     def _index_features(self):
-        features_filename = join(self.feats_dir, "features.csv")
+        features_filename = join(self.feats_dir, settings.FEATURES_FILE)
 
         if not exists(features_filename):
             LOGGER.debug("Features file does not exist. Skipping dataframe loading...")
@@ -69,23 +71,33 @@ class CWEClassificationDataset(object):
         LOGGER.debug("Loading feature dataframe...")
         self.features = pd.read_csv(features_filename)
         self._validate_features()
-        self.feats_ver = 0
+
+        feature_history_version = [
+            int(re.sub(r"[^\.]+\.([0-9]+)\.csv", r"\1", feature_file))
+            for feature_file in listdir(self.feats_dir)
+            if feature_file != settings.FEATURES_FILE
+        ]
+
+        self.feats_version = (
+            max(feature_history_version) + 1 if len(feature_history_version) > 0 else 1
+        )
 
     def __init__(self, dataset_path, silent=False):
         start_time = get_time()
         logger_log_func = LOGGER.debug if silent else LOGGER.info
 
         self.path = join(dataset_path, "")
-        self.joern_dir = join(self.path, DATASET_DIRS["joern"])
-        self.neo4j_dir = join(self.path, DATASET_DIRS["neo4j"])
-        self.feats_dir = join(self.path, DATASET_DIRS["feats"])
-        self.model_dir = join(self.path, DATASET_DIRS["models"])
-        self.summary_filepath = join(self.path, "summary.json")
+        self.joern_dir = join(self.path, settings.DATASET_DIRS["joern"])
+        self.neo4j_dir = join(self.path, settings.DATASET_DIRS["neo4j"])
+        self.feats_dir = join(self.path, settings.DATASET_DIRS["feats"])
+        self.model_dir = join(self.path, settings.DATASET_DIRS["models"])
+        self.embeddings_dir = join(self.path, settings.DATASET_DIRS["embeddings"])
+        self.summary_filepath = join(self.path, settings.SUMMARY_FILE)
 
         self.classes = list()
         self.test_cases = set()
         self.features = pd.DataFrame()
-        self.feats_ver = 0
+        self.feats_version = 1
         self.stats = list()
         self.ops_queue = list()
         self.summary = None
@@ -117,8 +129,8 @@ class CWEClassificationDataset(object):
                 display_time(get_time() - _time),
                 len(self.test_cases),
                 len(self.classes),
-                self.features.shape[1],
-                self.feats_ver,
+                self.features.shape[1] - 2,
+                self.feats_version,
             )
         )
 
@@ -126,7 +138,10 @@ class CWEClassificationDataset(object):
         self.summary["metadata"] = {
             "test_cases": len(self.test_cases),
             "classes": len(self.classes),
-            "features": {"number": self.features.shape[1], "version": self.feats_ver},
+            "features": {
+                "number": self.features.shape[1],
+                "version": self.feats_version,
+            },
         }
 
     def load_summary(self):

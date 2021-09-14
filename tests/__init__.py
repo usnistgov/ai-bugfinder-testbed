@@ -7,6 +7,7 @@ from os.path import join
 from unittest.mock import patch
 
 from bugfinder.dataset.processing import DatasetProcessing
+from bugfinder.settings import SUMMARY_FILE
 
 
 class MockDatasetProcessing(DatasetProcessing):
@@ -25,7 +26,7 @@ def directory_shasum(directory):
 
     for root, dirs, files in os.walk(directory):
         for f in files:
-            if f == "summary.json":  # Ignore summary.json file
+            if f == SUMMARY_FILE:  # Ignore summary.json file
                 continue
 
             fpath = join(root, f)

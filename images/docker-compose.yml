@@ -8,6 +8,12 @@ services:
     build: ./joern-lite-v0.4.0
   neo4j-ai:
     image: neo4j-ai:latest
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    sysctls:
+      net.ipv6.conf.all.disable_ipv6: 1
+      net.ipv6.conf.all.forwarding: 1
     build: ./neo4j-ai
   right-fixer:
     image: right-fixer:latest

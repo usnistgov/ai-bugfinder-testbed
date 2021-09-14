@@ -14,6 +14,7 @@ Pre-requisites
 -  APT packages:
 
    -  ``unzip``
+   -  ``parallel``
 
 -  Docker: https://docs.docker.com/install/#supported-platforms
 -  Docker-compose: https://docs.docker.com/compose/install/
@@ -140,6 +141,32 @@ available and works as such:
        --no-litterals \  # Replace litterals from C code
        --no-main  # Remove main functions
 
+N.B.: If interprocedural features are computed, make sure to leave interprocedural test 
+cases (do not use `--no-interprocedural`) and do not remove main functions (do not use
+`--no-main`).
+
+Identify sinks (interprocedural features)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To extract interprocedural features, it is necessary to first identify all sinks in a
+given dataset. SARD test cases have a SARIF manifest bundled with the code that allows
+to perform sink identification. Run the following command to do so.
+
+.. code:: bash
+
+    export DATASET=/path/to/dataset
+    export SARIF_DIR=/path/to/sarif_manifests
+
+    find ${SARIF_DIR} -maxdepth 1 -type d -printf '%f\n' | grep '^[0-9]\+$' \
+        | nice parallel --lb -I {} \
+            "jq -r '.runs[0] | (.properties.id|tostring) + \",\" \
+                + (.results[0].locations[0].physicalLocation | .artifactLocation.uri \
+                + \",\" + (.region.startLine|tostring))' ${SARIF_DIR}/{}/manifest.sarif" \
+        | grep -v ,,null > ${DATASET}/sinks.csv
+
+
+N.B.: Manifests are still being created and not available to the general public
+
 Run Joern
 ~~~~~~~~~
 
@@ -150,6 +177,44 @@ Run Joern
 Run the tool with
 ``python ./run_joern.py /path/to/dataset -v ${JOERN_VERSION}``. Use
 ``--help`` to see which version are available.
+
+Sink tagging (interprocedural features)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To link data and control flow to compute interprocedural features, it is necessary to
+tag the sinks, using the CSV obtain earlier. Sink tagging can be done using:
+
+.. code:: bash
+
+    DATASET=/path/to/datsaset
+
+    # Tag sinks with a maximum runtime of 15min
+    python run_sinktagging.py --log_failed /tmp/sink.failed.15m.log \
+        --timeout 15m --sinks ${DATASET}/sinks.csv ${DATASET}
+
+    # Retry tagging sinks for a longer period, using previous log files
+    python run_sinktagging.py --run_failed /tmp/sink.failed.15m.log \
+        --log_failed /tmp/sink.failed.24h.log \
+        --timeout 24h --sinks ${DATASET}/sinks.csv ${DATASET}
+
+
+
+Link data and control flows (interprocedural features)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To link data and control flow, the following commands need to be run:
+
+.. code:: bash
+
+    DATASET=/path/to/dataset
+
+    # Connect data and control flows at function calls
+    python run_interproc.py --log_failed /tmp/failed.15m.log \
+        --timeout 15m ${DATASET}
+
+    # Retry linking flows for a longer period, using previous log files
+    python run_interproc.py --run_failed /tmp/failed.15m.log \
+        --timeout 24h --log_failed /tmp/failed.24h.log ${DATASET}
 
 AST Markup
 ~~~~~~~~~~
@@ -176,10 +241,26 @@ task. The features need to be extracted with the following command:
        -e ${FEATURE_EXTRACTOR} \  # Choose a feature extractor.
        -m  # To create the feature maps.
 
-   # Run the extractor and apply PCA to reduce dimensionality
+   # Run the extractor
    python ./run_feature_extraction.py /path/to/dataset \
        -e ${FEATURE_EXTRACTOR} \  # Choose a feature extractor
-       -p ${VECTOR_LENGTH}  # Specify the final number of features
+
+Reduce feature dimension
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+To fasten training of the model, feature reduction can be applied with the following
+command:
+
+.. code:: bash
+
+   # Create the feature maps
+   python ./run_feature_selection.py /path/to/dataset \
+       -s ${FEATURE_SELECTOR} \  # Choose a feature selector.
+       ${FEATURES_SELECTOR_ARGS} \  # Parametrize the selector correctly
+       -m  # To create the feature maps.
+
+N.B.: Several feature reducer can be applied successively if necessary. Use `--dry-run`
+to preview the final training set dimension.
 
 Run model training
 ~~~~~~~~~~~~~~~~~~
@@ -191,6 +272,80 @@ typing:
 
    python ./run_model_training.py /path/to/dataset \
        -m ${MODEL}  # Model to train. See help for details.
+
+Training the word2vec model
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you want to train a word2vec model in this dataset, there's no need to run Joern.
+After you finished preparing the dataset with the ``clean_dataset.py`` script, 
+it's necessary to run an additional script to deal with:
+
+- Removal of code comments
+- Replacement of variables names by similar tokens
+- Replacement of function names by similar tokens
+
+To handle this additional cleanup, you need to use the ``clean_dataset_for_word2vec.py`` 
+script:
+
+.. code:: bash
+
+   python ./clean_dataset_for_word2vec.py /path/to/dataset \
+       --no-comments \  # Remove comments
+       --replace-funcs \  # Replace functions by a FUN token
+       --replace-vars  # Replace variables by a VAR token
+
+Tokenizing the dataset
+~~~~~~~~~~~~~~~~~~~~~~
+
+After finishing the cleanup, it's necessary to separate the code in tokens to be
+used as input for the word2vec model. That can be done by an additional parameter
+in the ``clean_dataset_for_word2vec.py``, so after finishing the previous command,
+run:
+
+.. code:: bash
+
+   python ./clean_dataset_for_word2vec.py /path/to/dataset \
+       --tokenize 
+
+Training the word2vec model
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+After the tokenization process, you can train the word2vec model, using
+the ``run_model_training.py`` script with word2vec as the parameter.
+Run the command:
+
+.. code:: bash
+
+   python ./run_model_training.py /path/to/dataset \
+       -m word2vec \  # word2vec model
+       -n {MODEL_NAME} \  # path where the model will be saved
+
+Generate the embeddings for the BLSTM model
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+After the model training is complete, it's necessary to generate
+embeddings which will be used as input for the BLSTM model. These
+embeddings are saved in a folder with the dataset, in .CSV format.
+Execute the following script:
+
+.. code:: bash
+
+   python ./run_embeddings.py /path/to/dataset \
+       -m {MODEL_DIR}  # Previous trained word2vec model
+
+Train the BLSTM model
+~~~~~~~~~~~~~~~~~~~~~
+
+After generating the embeddings, the BLSTM model is ready to use.
+Execute the following script:
+
+.. code:: bash
+
+   python ./run_model_training.py /path/to/dataset \
+       -m bidirectional_lstm \  # BLSTM
+       -n {MODEL_NAME} \ # path where the model will be saved
+       -e {EPOCHS} \ # number of epochs
+       -b {BATCH_SIZE} # Size of the batch used for training
 
 Troubleshooting
 ---------------
