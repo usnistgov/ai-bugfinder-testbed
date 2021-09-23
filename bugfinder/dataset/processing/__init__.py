@@ -17,10 +17,10 @@ class DatasetProcessingCategory(Enum):
     TRAINING = "training"
 
     def __str__(self):
-        return self.value
+        return str(self.value)
 
 
-class DatasetProcessingDeprecation(object):
+class DatasetProcessingDeprecation:
     def __init__(self, notice, deprecated_in=None, removed_in=None):
         self.notice = notice
         self.deprecated_in = deprecated_in
@@ -43,7 +43,7 @@ class DatasetProcessing(ABC):
                 deprecation_notice += " since %s" % deprecation_warning.deprecated_in
 
             if deprecation_warning.removed_in:
-                if self.deprecation_warning.deprecated_in:
+                if deprecation_warning.deprecated_in:
                     deprecation_notice += ","
 
                 deprecation_notice += (
@@ -115,21 +115,21 @@ class DatasetProcessingWithContainer(DatasetProcessing):
                     )
 
                     started = True
-                except Exception as e:  # Try to restart the container if an error occured
+                except Exception as exc:  # Restart the container if an error occured
                     LOGGER.error(
-                        "An exception has occured while starting the container: %s."
-                        % str(e)
+                        "An exception has occured while starting the container: %s.",
+                        str(exc),
                     )
                     sleep(5)
                     self.start_retries -= 1
 
                     if self.start_retries == 0:
-                        raise e
+                        raise exc
 
             self.send_commands()
-        except Exception as e:
-            LOGGER.error("Error while running commands: %s." % str(e))
-            raise e
+        except Exception as exc:
+            LOGGER.error("Error while running commands: %s.", str(exc))
+            raise exc
         finally:
             if self.container is not None and self.detach:
                 stop_container_by_name(self.container_name)

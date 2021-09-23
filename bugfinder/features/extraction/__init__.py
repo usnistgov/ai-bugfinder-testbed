@@ -1,4 +1,4 @@
-"""
+""" Base classes for feature extraction
 """
 from concurrent.futures import ThreadPoolExecutor
 from os import mkdir
@@ -16,6 +16,8 @@ IMPLEMENTATION_ERROR = "%s needs to be implemented."
 
 
 class GraphFeatureExtractor(Neo4J3Processing):
+    """Feature extractor for Joern databases"""
+
     need_map_features = False
     feature_map_filepath = None
 
@@ -62,7 +64,7 @@ class GraphFeatureExtractor(Neo4J3Processing):
                 feature_map_dir, "%s.bin" % basename(dirname(self.dataset.path))
             )
             LOGGER.debug(
-                "No feature file specified. Using %s..." % self.feature_map_filepath
+                "No feature file specified. Using %s...", self.feature_map_filepath
             )
         else:
             self.feature_map_filepath = feature_map_filepath
@@ -125,13 +127,13 @@ class GraphFeatureExtractor(Neo4J3Processing):
         orig_labels_count = len(existing_labels)
 
         LOGGER.debug(
-            "Retrieved %d existintg labels. Adding new labels..." % orig_labels_count
+            "Retrieved %d existintg labels. Adding new labels...", orig_labels_count
         )
 
         existing_labels += labels
         existing_labels = set(existing_labels)
 
-        LOGGER.debug("New label count is %d." % len(existing_labels))
+        LOGGER.debug("New label count is %d.", len(existing_labels))
 
         if len(existing_labels) == orig_labels_count:
             return
@@ -166,6 +168,10 @@ class GraphFeatureExtractor(Neo4J3Processing):
 
 
 class FlowGraphFeatureExtractor(GraphFeatureExtractor):
+    """Base extractor to retrieve control or data flow features from a Joern
+    database.
+    """
+
     @abstractmethod
     def get_flowgraph_list_for_entrypoint(self, entrypoint):
         raise NotImplementedError(
@@ -211,8 +217,7 @@ class FlowGraphFeatureExtractor(GraphFeatureExtractor):
 
             if label not in labels:
                 LOGGER.debug(
-                    "Feature '%s' not found in label reference file and ignored."
-                    % label
+                    "Feature '%s' not found in label reference file and ignored.", label
                 )
                 continue
 
@@ -233,8 +238,9 @@ class FlowGraphFeatureExtractor(GraphFeatureExtractor):
             return None
 
         LOGGER.info(
-            "Retrieved %d entrypoints and %d labels. Querying for "
-            "flowgraphs..." % (len(entrypoint_list), len(labels))
+            "Retrieved %d entrypoints and %d labels. Querying for " "flowgraphs...",
+            len(entrypoint_list),
+            len(labels),
         )
 
         with ThreadPoolExecutor(max_workers=POOL_SIZE) as executor:
@@ -245,8 +251,9 @@ class FlowGraphFeatureExtractor(GraphFeatureExtractor):
             features = list(res)
 
         LOGGER.info(
-            "Extracted %dx%d features matrix. Finalizing features..."
-            % (len(features), len(features[0]))
+            "Extracted %dx%d features matrix. Finalizing features...",
+            len(features),
+            len(features[0]),
         )
 
         return self.finalize_features(features, labels)
@@ -262,8 +269,7 @@ class FlowGraphFeatureExtractor(GraphFeatureExtractor):
         entrypoint_list = self._get_entrypoint_list()
 
         LOGGER.info(
-            "Retrieved %d entrypoints. Querying for flowgraphs..."
-            % len(entrypoint_list)
+            "Retrieved %d entrypoints. Querying for flowgraphs...", len(entrypoint_list)
         )
 
         # Get the interesting flow graphs for each function
@@ -271,6 +277,6 @@ class FlowGraphFeatureExtractor(GraphFeatureExtractor):
             res = executor.map(self.map_features_worker, entrypoint_list)
             labels = set(itertools.chain(*res))
 
-        LOGGER.info("Extracted %d labels." % len(labels))
+        LOGGER.info("Extracted %d labels.", len(labels))
 
         return list(labels)

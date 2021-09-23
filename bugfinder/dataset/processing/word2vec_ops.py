@@ -168,8 +168,9 @@ class RemoveComments(DatasetProcessing):
         while len(file_processing_list) != 0:
             filepath = file_processing_list.pop(0)
             LOGGER.debug(
-                "Removing comments in %s (%d items left)..."
-                % (filepath, len(file_processing_list))
+                "Removing comments in %s (%d items left)...",
+                filepath,
+                len(file_processing_list),
             )
 
             self.process_file(join(self.dataset.path, filepath))
@@ -184,8 +185,8 @@ class RemoveComments(DatasetProcessing):
         def _replacer(match):
             if match.group(2) is not None:
                 return ""
-            else:
-                return match.group(1)
+
+            return match.group(1)
 
         with open(filepath, "r") as in_file:
             code = in_file.read()
@@ -221,13 +222,15 @@ class ReplaceFunctions(DatasetProcessing):
         while len(file_processing_list) != 0:
             filepath = file_processing_list.pop(0)
             LOGGER.debug(
-                "Replacing functions in %s (%d items left)..."
-                % (filepath, len(file_processing_list))
+                "Replacing functions in %s (%d items left)...",
+                filepath,
+                len(file_processing_list),
             )
 
             self.process_file(join(self.dataset.path, filepath))
 
-    def process_file(self, filepath):
+    @staticmethod
+    def process_file(filepath):
         tmp_filepath = "%s.tmp" % filepath
 
         function_symbols = dict()
@@ -264,7 +267,7 @@ class ReplaceFunctions(DatasetProcessing):
 
                 replaced_code.append(ascii_line)
 
-        LOGGER.debug("%d functions replaced in %s" % (function_count, filepath))
+        LOGGER.debug("%d functions replaced in %s", function_count, filepath)
 
         with open(tmp_filepath, "w") as out_file:
             out_file.writelines(replaced_code)
@@ -287,13 +290,15 @@ class ReplaceVariables(DatasetProcessing):
         while len(file_processing_list) != 0:
             filepath = file_processing_list.pop(0)
             LOGGER.debug(
-                "Replacing variables in %s (%d items left)..."
-                % (filepath, len(file_processing_list))
+                "Replacing variables in %s (%d items left)...",
+                filepath,
+                len(file_processing_list),
             )
 
             self.process_file(join(self.dataset.path, filepath))
 
-    def process_file(self, filepath):
+    @staticmethod
+    def process_file(filepath):
         tmp_filepath = "%s.tmp" % filepath
 
         var_symbols = dict()
@@ -332,7 +337,7 @@ class ReplaceVariables(DatasetProcessing):
 
                 replaced_code.append(ascii_line)
 
-        LOGGER.debug("%d variables replaced in %s" % (var_count, filepath))
+        LOGGER.debug("%d variables replaced in %s", var_count, filepath)
 
         with open(tmp_filepath, "w") as out_file:
             out_file.writelines(replaced_code)

@@ -13,8 +13,7 @@ from bugfinder.settings import LOGGER, POOL_SIZE
 from bugfinder.utils.progressbar import MultiBar
 
 
-def sinktagging_worker(bar, tc_name, tc_info, port):
-
+def sinktagging_worker(progress_bar, tc_name, tc_info, port):
     db = Graph(
         scheme="http",
         host="0.0.0.0",
@@ -23,25 +22,29 @@ def sinktagging_worker(bar, tc_name, tc_info, port):
 
     tcid = tc_info["tcid"]
     if not tc_info["sinks"]:
-        LOGGER.warning("No sinks for test case: %s / %d" % (tc_name, tcid))
+        LOGGER.warning("No sinks for test case: %s / %d", tc_name, tcid)
 
     sinks_left = len(tc_info["sinks"])
     if sinks_left > 1:
-        LOGGER.debug("> Sinks for %s: %d" % (tc_name, sinks_left))
-    bar.subscribe(max=sinks_left)
+        LOGGER.debug("> Sinks for %s: %d", tc_name, sinks_left)
+    progress_bar.subscribe(max=sinks_left)
     for sink in tc_info["sinks"]:
         for tries in range(4):
             try:
                 sleep(tries ** 2)
                 # FIXME Note that the line number for mixed test case can
-                # be wrong because the good code was removed from bad test
-                # cases. In Juliet, the bad code comes first, so the line
-                # number is usually correct, even after removing the good
-                # code.
+                #   be wrong because the good code was removed from bad test
+                #   cases. In Juliet, the bad code comes first, so the line
+                #   number is usually correct, even after removing the good
+                #   code.
                 query = """
                     MATCH (tc:GenericNode {type:"Testcase",label:"bad",name:"%s"})
                     WHERE ID(tc)=%d
-                    MATCH (tc)<-[:IS_FILE_OF]-(:GenericNode {type:"File",basename:"%s"})-[:IS_FILE_OF]->(:GenericNode {type:"Function"})-[:IS_FUNCTION_OF_CFG]->(e:UpstreamNode {type:"CFGEntryNode"})
+                    MATCH (tc)<-[:IS_FILE_OF]-(
+                        :GenericNode {type:"File",basename:"%s"}
+                    )-[:IS_FILE_OF]->(:GenericNode {type:"Function"})-[
+                        :IS_FUNCTION_OF_CFG
+                    ]->(e:UpstreamNode {type:"CFGEntryNode"})
                     WITH DISTINCT e
                     MATCH (e)-[:CONTROLS*]->(n1:GenericNode)
                     WHERE EXISTS(n1.lineno) AND n1.lineno=%d
@@ -59,17 +62,17 @@ def sinktagging_worker(bar, tc_name, tc_info, port):
             except (RemoteDisconnected, ProtocolError):
                 continue
             except (KeyboardInterrupt, Exception) as e:
-                LOGGER.debug("Testcase %d sink tagging failed: %s" % (tcid, str(e)))
-                bar.next(n=sinks_left)
-                bar.unsubscribe()
+                LOGGER.debug("Testcase %d sink tagging failed: %s", tcid, str(e))
+                progress_bar.next(n=sinks_left)
+                progress_bar.unsubscribe()
                 return tcid, tc_name, str(e)
         else:
-            LOGGER.debug("Testcase %d sink tagging failed: timeout" % tcid)
-            bar.next(n=sinks_left)
-            bar.unsubscribe()
+            LOGGER.debug("Testcase %d sink tagging failed: timeout", tcid)
+            progress_bar.next(n=sinks_left)
+            progress_bar.unsubscribe()
             return tcid, tc_name, "All tries exhausted."
-        bar.next()
-    bar.unsubscribe()
+        progress_bar.next()
+    progress_bar.unsubscribe()
     return None
 
 
@@ -129,14 +132,14 @@ class SinkTaggingProcessing(Neo4J3Processing):
                     """
                 ).data()
             }
-        LOGGER.debug("%d testcases retrieved." % len(tc_list))
+        LOGGER.debug("%d testcases retrieved.", len(tc_list))
 
         LOGGER.info("Loading sinks...")
-        with open(self.sinksfile, "r") as sf:
-            sinklist = list(sf)
-        for s in sinklist:
+        with open(self.sinksfile, "r") as sink_fp:
+            sinklist = list(sink_fp)
+        for sink in sinklist:
             try:
-                fields = s.split(",")
+                fields = sink.split(",")
                 assert len(fields) == 3
                 sardid = int(fields[0])
                 sardtc = "%06d" % sardid
@@ -168,29 +171,32 @@ class SinkTaggingProcessing(Neo4J3Processing):
                     ):
                         tc_list[jtcnam]["sinks"].append(entry)
             except Exception as e:
-                LOGGER.warning("Problem parsing line '%s': %s" % (s[:-1], str(e)))
+                LOGGER.warning("Problem parsing line '%s': %s", sink[:-1], str(e))
                 continue
-        LOGGER.info("%d sinks loaded." % len(sinklist))
+        LOGGER.info("%d sinks loaded.", len(sinklist))
 
         port = self.machine_ports[self.container_ports.index("7474")]
 
         LOGGER.debug("Processing...")
-        bar = MultiBar("Processing", max=1)
+        progress_bar = MultiBar("Processing", max=1)
         pool = Pool(POOL_SIZE)
         status = pool.starmap_async(
             sinktagging_worker,
-            [[bar, tc_name, tc_info, port] for tc_name, tc_info in tc_list.items()],
+            [
+                [progress_bar, tc_name, tc_info, port]
+                for tc_name, tc_info in tc_list.items()
+            ],
             chunksize=1,
         )
         pool.close()
 
         # Display progress until we are done
-        bar.next()
+        progress_bar.next()
         try:
-            bar.refresh()
+            progress_bar.refresh()
         except KeyboardInterrupt:
             pass
-        bar.finish()
+        progress_bar.finish()
         pool.join()
 
         # Write failed queries to a log file if specified
