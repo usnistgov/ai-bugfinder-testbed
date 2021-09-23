@@ -29,7 +29,8 @@ Once the Python environment is setup and the repository downloaded, run
 ``pip install -r requirements.txt``.
 
 To install the development dependencies, run 
-``pip install -r requirements-dev.txt``.
+``pip install -r requirements.dev.txt``.
+
 
 Installation
 ------------
