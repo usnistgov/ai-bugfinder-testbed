@@ -1,12 +1,13 @@
 """
 """
-import csv
-import pickle
-import itertools
-from abc import abstractmethod
+from concurrent.futures import ThreadPoolExecutor
 from os import mkdir
 from os.path import join, exists, basename, dirname
-from concurrent.futures import ThreadPoolExecutor
+
+import csv
+import itertools
+import pickle
+from abc import abstractmethod
 
 from bugfinder.neo4j import Neo4J3Processing
 from bugfinder.settings import LOGGER, ROOT_DIR, POOL_SIZE

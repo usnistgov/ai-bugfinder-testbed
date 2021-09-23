@@ -1,12 +1,12 @@
 """
 """
-import json
-import re
-from enum import IntEnum
 from os import listdir, walk
 from os.path import exists, isdir, join, dirname, realpath
 
+import json
 import pandas as pd
+import re
+from enum import IntEnum
 
 from bugfinder import settings
 from bugfinder.dataset.processing import DatasetProcessingCategory

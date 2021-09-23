@@ -1,17 +1,16 @@
 """
 """
-from http.client import RemoteDisconnected
 from multiprocessing import Pool
-from time import sleep
 
+import os
+from http.client import RemoteDisconnected
 from py2neo import Graph
+from time import sleep
 from urllib3.exceptions import ProtocolError
 
 from bugfinder.neo4j import Neo4J3Processing
 from bugfinder.settings import LOGGER, POOL_SIZE
 from bugfinder.utils.progressbar import MultiBar
-
-import os
 
 
 def sinktagging_worker(bar, tc_name, tc_info, port):

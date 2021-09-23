@@ -1,4 +1,5 @@
 from os.path import exists, isdir
+
 from shutil import rmtree, copytree
 
 from bugfinder.settings import LOGGER

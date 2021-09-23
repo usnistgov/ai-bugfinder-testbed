@@ -1,9 +1,10 @@
 """ Common settings shared by the scripts
 """
-import os
+from os.path import dirname, abspath
+
 import logging.config
 import multiprocessing
-from os.path import dirname, abspath
+import os
 
 ROOT_DIR = "%s/.." % dirname(abspath(__file__))
 

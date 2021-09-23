@@ -1,6 +1,7 @@
+from os.path import exists, join, isdir, basename
+
 import os
 import random
-from os.path import exists, join, isdir, basename
 from shutil import rmtree, copytree, copyfile
 
 from bugfinder.dataset import CWEClassificationDataset as Dataset

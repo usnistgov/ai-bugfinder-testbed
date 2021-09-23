@@ -1,7 +1,6 @@
 """ 
 Bidirectional LSTM classifier.
 """
-import tensorflow as tf
 
 from bugfinder.models import BLSTMClassifierModel
 

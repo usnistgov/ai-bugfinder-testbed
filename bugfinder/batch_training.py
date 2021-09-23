@@ -1,9 +1,10 @@
 """
 """
-import csv
-import sys
 from multiprocessing import Pool
 from os.path import isfile, join
+
+import csv
+import sys
 
 from bugfinder.settings import LOGGER
 

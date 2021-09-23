@@ -1,9 +1,7 @@
-from logging import DEBUG
-
-from bugfinder.models import Word2VecModel
 from bugfinder.models import Word2VecEmbeddings
-
+from bugfinder.models import Word2VecModel
 from bugfinder.settings import LOGGER
+
 
 #########################################
 class Word2VecTraining(Word2VecModel):

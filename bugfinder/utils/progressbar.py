@@ -1,5 +1,5 @@
 from multiprocessing import Queue
-from math import floor, log10
+
 from progress.bar import Bar
 from time import sleep
 

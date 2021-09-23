@@ -1,8 +1,9 @@
 """
 """
+from os.path import exists, join
+
 import re
 from abc import abstractmethod
-from os.path import exists, join
 from pickle import dump, load
 
 from bugfinder.neo4j import Neo4J3Processing

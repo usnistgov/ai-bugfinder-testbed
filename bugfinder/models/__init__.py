@@ -1,29 +1,25 @@
 """ Abstract classifier model for the dataset.
 """
-from abc import abstractmethod
-
 from os import listdir, makedirs, walk
 from os.path import join, exists, splitext, dirname, abspath, basename
 
-from shutil import rmtree, copytree
-
-import tensorflow as tf
 import numpy as np
 import pandas as pd
-
+import tensorflow as tf
+from abc import abstractmethod
 from gensim.models import Word2Vec
-
-from tensorflow.keras.utils import to_categorical
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout, LSTM, Bidirectional, LeakyReLU
-from tensorflow.keras.optimizers import Adamax
-
+from shutil import rmtree, copytree
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.model_selection import train_test_split
+from tensorflow.keras.layers import Dense, Dropout, LSTM, Bidirectional, LeakyReLU
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.optimizers import Adamax
+from tensorflow.keras.utils import to_categorical
 
 from bugfinder.dataset.processing import DatasetProcessing, DatasetProcessingCategory
 from bugfinder.settings import LOGGER
 from bugfinder.utils.statistics import has_better_metrics
+
 
 #########################################
 class Word2VecModel(DatasetProcessing):

@@ -1,10 +1,11 @@
 """ Utility for Docker containers
 """
-from bugfinder.settings import LOGGER
 from os.path import realpath
-from time import sleep
 
 import docker
+from time import sleep
+
+from bugfinder.settings import LOGGER
 
 
 def start_container(

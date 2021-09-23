@@ -1,10 +1,9 @@
 from abc import abstractmethod
-
 from py2neo import Graph
 
+from bugfinder import settings
 from bugfinder.dataset.processing import DatasetProcessingWithContainer
 from bugfinder.dataset.processing.dataset_ops import RightFixer
-from bugfinder import settings
 from bugfinder.utils.containers import wait_log_display
 
 

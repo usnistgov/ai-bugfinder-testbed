@@ -1,7 +1,8 @@
-from abc import ABC, abstractmethod
-from enum import Enum
 from os import listdir
 from os.path import join
+
+from abc import ABC, abstractmethod
+from enum import Enum
 from random import randint
 from time import sleep
 

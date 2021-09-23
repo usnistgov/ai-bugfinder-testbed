@@ -1,10 +1,10 @@
 """
 """
-from http.client import RemoteDisconnected
 from multiprocessing import Pool
-from time import sleep
 
+from http.client import RemoteDisconnected
 from py2neo import Graph
+from time import sleep
 from urllib3.exceptions import ProtocolError
 
 from bugfinder.neo4j import Neo4J3Processing
