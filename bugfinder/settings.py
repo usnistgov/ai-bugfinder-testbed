@@ -38,16 +38,22 @@ LOGGER_CONFIG = {
     },
 }
 
+POOL_SIZE = int(os.getenv("POOL_SIZE", multiprocessing.cpu_count()))
+
 NEO4J_V3_MEMORY = "4G"
+NEO4J_V3_CORES = POOL_SIZE
+NEO4J_DEFAULT_TIMEOUT = "2h"
 
 DATASET_DIRS = {
     "joern": "joern.db",
     "neo4j": "neo4j_v3.db",
     "feats": "features",
     "models": "models",
+    "embeddings": "embeddings",
 }
 
-POOL_SIZE = int(os.getenv("POOL_SIZE", multiprocessing.cpu_count()))
+SUMMARY_FILE = "summary.json"
+FEATURES_FILE = "features.csv"
 
 logging.config.dictConfig(LOGGER_CONFIG)
 LOGGER = logging.getLogger("app")

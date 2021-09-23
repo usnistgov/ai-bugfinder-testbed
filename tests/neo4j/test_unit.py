@@ -5,7 +5,7 @@ from py2neo import Graph
 
 from bugfinder.dataset import CWEClassificationDataset
 from bugfinder.neo4j import Neo4J3Processing
-from bugfinder.settings import NEO4J_V3_MEMORY
+from bugfinder import settings
 
 
 class MockNeo4J3Processing(Neo4J3Processing):
@@ -43,10 +43,11 @@ class TestNeo4J3ProcessingConfigureContainer(TestCase):
         self.assertDictEqual(
             self.dataset_processing.environment,
             {
-                "NEO4J_dbms_memory_pagecache_size": NEO4J_V3_MEMORY,
-                "NEO4J_dbms_memory_heap_max__size": NEO4J_V3_MEMORY,
+                "NEO4J_dbms_memory_pagecache_size": settings.NEO4J_V3_MEMORY,
+                "NEO4J_dbms_memory_heap_max__size": settings.NEO4J_V3_MEMORY,
                 "NEO4J_dbms_allow__upgrade": "true",
                 "NEO4J_dbms_shell_enabled": "true",
+                "NEO4J_dbms_transaction_timeout": settings.NEO4J_DEFAULT_TIMEOUT,
                 "NEO4J_AUTH": "none",
             },
         )
@@ -54,7 +55,9 @@ class TestNeo4J3ProcessingConfigureContainer(TestCase):
     def test_ports_correct(self):
         self.dataset_processing.configure_container()
 
-        self.assertListEqual(self.dataset_processing.container_ports, ["7474", "7687"])
+        self.assertListEqual(
+            self.dataset_processing.container_ports, ["7474", "7687", "7473"]
+        )
 
     def test_volume_correct(self):
         self.dataset_processing.configure_container()

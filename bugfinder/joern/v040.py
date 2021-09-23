@@ -57,7 +57,7 @@ class JoernDatasetProcessing(JoernDefaultDatasetProcessing):
 
                         if "\tStatement\t" in line:
                             warn_count += 1
-                            LOGGER.warn(
+                            LOGGER.warning(
                                 "Parsing error in '%s'"
                                 % line[:-1].replace("\t", " ").strip()
                             )

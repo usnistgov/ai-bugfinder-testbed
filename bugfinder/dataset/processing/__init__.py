@@ -50,7 +50,7 @@ class DatasetProcessing(ABC):
                 )
 
             deprecation_notice += ". Notice: %s" % deprecation_warning.notice
-            LOGGER.warn(deprecation_notice)
+            LOGGER.warning(deprecation_notice)
 
     @abstractmethod
     def execute(self, *args, **kwargs):
@@ -83,9 +83,14 @@ class DatasetProcessingWithContainer(DatasetProcessing):
 
     container = None
 
-    def execute(self, command_args=None):
+    def execute(self, command_args=None, container_config=None):
         try:
-            self.configure_container()
+            # Handle container configuration depending on wether a manual configuration
+            # has been provided or not
+            if container_config is None:
+                self.configure_container()
+            else:
+                self.configure_container_with_dict(container_config)
             started = False
 
             self.container_name = "%s-%s" % (
@@ -142,6 +147,14 @@ class DatasetProcessingWithContainer(DatasetProcessing):
     @abstractmethod
     def configure_container(self):
         raise NotImplementedError("Method 'configure_container' not implemented.")
+
+    def configure_container_with_dict(self, container_config):
+        LOGGER.warning(
+            "Manual configuration is not handled by the container. The class should "
+            "implement 'configure_container_with_dict(self, container_config)' to handle"
+            "manual configuration"
+        )
+        return self.configure_container()
 
     def configure_command(self, command):
         raise Exception("Command %s not handled by container")
