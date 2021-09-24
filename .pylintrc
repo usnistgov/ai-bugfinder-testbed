@@ -286,10 +286,10 @@ ignore-comments=yes
 ignore-docstrings=yes
 
 # Ignore imports when computing similarities.
-ignore-imports=no
+ignore-imports=yes
 
 # Minimum lines number of a similarity.
-min-similarity-lines=4
+min-similarity-lines=10
 
 
 [FORMAT]
@@ -393,6 +393,12 @@ function-naming-style=snake_case
 good-names=i,
            j,
            k,
+           df,
+           tn,
+           tp,
+           fn,
+           fp,
+           db,
            ex,
            Run,
            _
