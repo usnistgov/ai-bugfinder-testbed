@@ -430,13 +430,13 @@ class ClassifierModel(DatasetProcessing):
 
         self.columns = input_train.columns
 
-        self.train_fn = tf.estimator.inputs.pandas_input_fn(
+        self.train_fn = tf.compat.v1.estimator.inputs.pandas_input_fn(
             x=input_train,
             y=output_train,
             shuffle=True,
             batch_size=batch_size,
         )
-        self.test_fn = tf.estimator.inputs.pandas_input_fn(
+        self.test_fn = tf.compat.v1.estimator.inputs.pandas_input_fn(
             x=input_test, y=output_test, shuffle=False, batch_size=batch_size
         )
 
