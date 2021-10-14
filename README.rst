@@ -18,12 +18,28 @@ Pre-requisites
 
 -  Docker: https://docs.docker.com/install/#supported-platforms
 -  Docker-compose: https://docs.docker.com/compose/install/
--  Python >= 3.6: https://www.python.org/downloads/
--  Virtual environment:
+-  Python >= 3.9: https://www.python.org/downloads/
 
-   -  With ``venv``: https://virtualenv.pypa.io/en/stable/installation/
-   -  With ``conda``:
-      https://conda.io/docs/user-guide/install/index.html
+Pipenv
+~~~~~~
+
+The dependencies are managed using ``pipenv`` as the recommended tool. To set
+up the environment with ``pipenv``, use the following commands:
+
+.. code-block:: bash
+
+    pip install -U pipenv
+    pipenv install --dev  # --dev is optional and installs dev dependencies.
+    pipenv shell
+
+Virtual environments
+~~~~~~~~~~~~~~~~~~~~
+
+Other virtual environment solutions can also be used:
+
+-  With ``venv``: https://virtualenv.pypa.io/en/stable/installation/
+-  With ``conda``:
+  https://conda.io/docs/user-guide/install/index.html
 
 Once the Python environment is setup and the repository downloaded, run
 ``pip install -r requirements.txt``.
@@ -39,8 +55,8 @@ Run the tests
 ~~~~~~~~~~~~~
 
 Substantial tests have been developed to ensure the code is working properly.
-To run the tests, use command ``pytest``. While no error should occur upon
-running the tests, some warnings might appear.
+To run the tests, use command ``pytest ./tests``. While no error should occur
+upon running the tests, some warnings might appear.
 
 The development dependencies need to be installed to run these tests.
 
@@ -197,8 +213,6 @@ tag the sinks, using the CSV obtain earlier. Sink tagging can be done using:
     python run_sinktagging.py --run_failed /tmp/sink.failed.15m.log \
         --log_failed /tmp/sink.failed.24h.log \
         --timeout 24h --sinks ${DATASET}/sinks.csv ${DATASET}
-
-
 
 Link data and control flows (interprocedural features)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
