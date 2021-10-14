@@ -8,6 +8,18 @@ SP_CHARS = "!@#$%^&*()_+-="
 
 
 def get_rand_string(length, lower=True, upper=True, numbers=True, special=True):
+    """Create random string of a given length
+
+    Args:
+        length:
+        lower:
+        upper:
+        numbers:
+        special:
+
+    Returns:
+        str -
+    """
     lowercase = string.ascii_lowercase
     uppercase = string.ascii_uppercase
     numbers_chars = NB_CHARS
