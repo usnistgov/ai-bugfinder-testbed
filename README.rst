@@ -64,16 +64,17 @@ Download the dataset
 ~~~~~~~~~~~~~~~~~~~~
 
 There are several datasets  to choose from:
+
 * The CWE-121 is a set of buffer overflow test cases (2838 buggy test cases,
-2838 clean test cases). It is a good place to begin the exploration of this
-repository. Download it by typing `./scripts/download_cwe121.sh`.
+  2838 clean test cases). It is a good place to begin the exploration of this
+  repository. Download it by typing `./scripts/download_cwe121.sh`.
 * The `Juliet Dataset for C/C++ <https://samate.nist.gov/SRD/testsuite.php>`__
-is a much larger dataset containing multiple types of bugs. It can be
-downloaded with `./scripts/download_juliet.sh` and contains 64099 buggy test
-cases and 64099 clean test cases.
+  is a much larger dataset containing multiple types of bugs. It can be
+  downloaded with `./scripts/download_juliet.sh` and contains 64099 buggy test
+  cases and 64099 clean test cases.
 * A better dataset, focused on buffer overflows, is packaged with this
-repository. It contains 6507 buggy test cases and 5905 clean test cases and
-can be installed using `./scripts/setup_ai_dataset.sh`.
+  repository. It contains 6507 buggy test cases and 5905 clean test cases and
+  can be installed using `./scripts/setup_ai_dataset.sh`.
 
 Note: More information about the packaged AI dataset focused on buffer
 overflows is avaible at https://gitlab.nist.gov/gitlab/samate/ai-dataset/.
