@@ -78,14 +78,18 @@ class TestNeo4J3ProcessingSendCommands(TestCase):
         self.dataset_processing.configure_container()
         self.dataset_processing.assign_ports()
 
+    @patch("bugfinder.neo4j.Graph")
     @patch("bugfinder.neo4j.wait_log_display")
-    def test_wait_for_log_display_called(self, mock_wait_log_display):
+    def test_wait_for_log_display_called(self, mock_wait_log_display, mock_graph):
+        mock_graph.return_value = None
         self.dataset_processing.send_commands()
         self.assertTrue(mock_wait_log_display.called)
 
+    @patch("bugfinder.neo4j.Graph")
     @patch("bugfinder.neo4j.wait_log_display")
-    def test_neo4j_db_initialized(self, mock_wait_log_display):
+    def test_neo4j_db_initialized(self, mock_wait_log_display, mock_graph):
         mock_wait_log_display.return_value = None
+        mock_graph.return_value = "mock_graph"
         self.dataset_processing.send_commands()
 
-        self.assertEqual(type(self.dataset_processing.neo4j_db), Graph)
+        self.assertEqual(self.dataset_processing.neo4j_db, "mock_graph")
