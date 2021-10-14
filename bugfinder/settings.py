@@ -1,11 +1,12 @@
 """ Common settings shared by the scripts
 """
-import os
-import logging.config
-import multiprocessing
 from os.path import dirname, abspath
 
-ROOT_DIR = "%s/.." % dirname(abspath(__file__))
+import logging.config
+import multiprocessing
+import os
+
+ROOT_DIR = f"{dirname(abspath(__file__))}/.."
 
 LOGGER_CONFIG = {
     "version": 1,
@@ -24,7 +25,7 @@ LOGGER_CONFIG = {
         "file": {
             "class": "logging.handlers.RotatingFileHandler",
             "formatter": "default",
-            "filename": "%s/debug.log" % ROOT_DIR,
+            "filename": f"{ROOT_DIR}/debug.log",
             "maxBytes": 25000,
             "backupCount": 3,
         },

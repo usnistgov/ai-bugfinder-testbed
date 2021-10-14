@@ -1,13 +1,14 @@
 """
 """
 from concurrent.futures import ThreadPoolExecutor
+from os import mkdir
+from os.path import join, exists
+
+import csv
 
 from bugfinder import settings
 from bugfinder.neo4j import Neo4J3Processing
 from bugfinder.settings import LOGGER, POOL_SIZE
-from os.path import join, exists
-from os import mkdir
-import csv
 
 
 class FeatureExtractor(Neo4J3Processing):

@@ -1,9 +1,10 @@
 """
 """
-import re
-from abc import abstractmethod
 from os import remove, listdir
 from os.path import basename, dirname, splitext, join
+
+import re
+from abc import abstractmethod
 from shutil import rmtree
 
 from bugfinder.dataset.processing import DatasetFileProcessing

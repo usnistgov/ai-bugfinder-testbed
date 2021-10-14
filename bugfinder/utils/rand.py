@@ -8,15 +8,27 @@ SP_CHARS = "!@#$%^&*()_+-="
 
 
 def get_rand_string(length, lower=True, upper=True, numbers=True, special=True):
-    lc = string.ascii_lowercase
-    uc = string.ascii_uppercase
-    nb = NB_CHARS
-    sp = SP_CHARS
+    """Create random string of a given length
+
+    Args:
+        length:
+        lower:
+        upper:
+        numbers:
+        special:
+
+    Returns:
+        str -
+    """
+    lowercase = string.ascii_lowercase
+    uppercase = string.ascii_uppercase
+    numbers_chars = NB_CHARS
+    special_chars = SP_CHARS
 
     chars = ""
-    chars += lc if lower else ""
-    chars += uc if upper else ""
-    chars += nb if numbers else ""
-    chars += sp if special else ""
+    chars += lowercase if lower else ""
+    chars += uppercase if upper else ""
+    chars += numbers_chars if numbers else ""
+    chars += special_chars if special else ""
 
     return "".join(choice(chars) for _ in range(length))

@@ -1,5 +1,7 @@
 """
 """
+from importlib import import_module
+
 import pandas as pd
 from sklearn.feature_selection import SelectFromModel
 
@@ -9,7 +11,6 @@ from bugfinder.utils.feature_selection import (
     selection_estimators,
     retrieve_original_columns_name,
 )
-from importlib import import_module
 
 
 class FeatureSelector(AbstractFeatureSelector):

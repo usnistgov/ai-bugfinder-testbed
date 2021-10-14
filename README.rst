@@ -18,18 +18,35 @@ Pre-requisites
 
 -  Docker: https://docs.docker.com/install/#supported-platforms
 -  Docker-compose: https://docs.docker.com/compose/install/
--  Python >= 3.6: https://www.python.org/downloads/
--  Virtual environment:
+-  Python >= 3.9: https://www.python.org/downloads/
 
-   -  With ``venv``: https://virtualenv.pypa.io/en/stable/installation/
-   -  With ``conda``:
-      https://conda.io/docs/user-guide/install/index.html
+Pipenv
+~~~~~~
+
+The dependencies are managed using ``pipenv`` as the recommended tool. To set
+up the environment with ``pipenv``, use the following commands:
+
+.. code-block:: bash
+
+    pip install -U pipenv
+    pipenv install --dev  # --dev is optional and installs dev dependencies.
+    pipenv shell
+
+Virtual environments
+~~~~~~~~~~~~~~~~~~~~
+
+Other virtual environment solutions can also be used:
+
+-  With ``venv``: https://virtualenv.pypa.io/en/stable/installation/
+-  With ``conda``:
+  https://conda.io/docs/user-guide/install/index.html
 
 Once the Python environment is setup and the repository downloaded, run
 ``pip install -r requirements.txt``.
 
 To install the development dependencies, run 
-``pip install -r requirements-dev.txt``.
+``pip install -r requirements.dev.txt``.
+
 
 Installation
 ------------
@@ -38,8 +55,8 @@ Run the tests
 ~~~~~~~~~~~~~
 
 Substantial tests have been developed to ensure the code is working properly.
-To run the tests, use command ``pytest``. While no error should occur upon
-running the tests, some warnings might appear.
+To run the tests, use command ``pytest ./tests``. While no error should occur
+upon running the tests, some warnings might appear.
 
 The development dependencies need to be installed to run these tests.
 
@@ -47,16 +64,17 @@ Download the dataset
 ~~~~~~~~~~~~~~~~~~~~
 
 There are several datasets  to choose from:
+
 * The CWE-121 is a set of buffer overflow test cases (2838 buggy test cases,
-2838 clean test cases). It is a good place to begin the exploration of this
-repository. Download it by typing `./scripts/download_cwe121.sh`.
+  2838 clean test cases). It is a good place to begin the exploration of this
+  repository. Download it by typing `./scripts/download_cwe121.sh`.
 * The `Juliet Dataset for C/C++ <https://samate.nist.gov/SRD/testsuite.php>`__
-is a much larger dataset containing multiple types of bugs. It can be
-downloaded with `./scripts/download_juliet.sh` and contains 64099 buggy test
-cases and 64099 clean test cases.
+  is a much larger dataset containing multiple types of bugs. It can be
+  downloaded with `./scripts/download_juliet.sh` and contains 64099 buggy test
+  cases and 64099 clean test cases.
 * A better dataset, focused on buffer overflows, is packaged with this
-repository. It contains 6507 buggy test cases and 5905 clean test cases and
-can be installed using `./scripts/setup_ai_dataset.sh`.
+  repository. It contains 6507 buggy test cases and 5905 clean test cases and
+  can be installed using `./scripts/setup_ai_dataset.sh`.
 
 Note: More information about the packaged AI dataset focused on buffer
 overflows is avaible at https://gitlab.nist.gov/gitlab/samate/ai-dataset/.
@@ -196,8 +214,6 @@ tag the sinks, using the CSV obtain earlier. Sink tagging can be done using:
     python run_sinktagging.py --run_failed /tmp/sink.failed.15m.log \
         --log_failed /tmp/sink.failed.24h.log \
         --timeout 24h --sinks ${DATASET}/sinks.csv ${DATASET}
-
-
 
 Link data and control flows (interprocedural features)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

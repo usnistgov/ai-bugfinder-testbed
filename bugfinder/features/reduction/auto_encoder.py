@@ -4,9 +4,9 @@ from copy import deepcopy
 from os.path import exists
 
 import pandas as pd
-from bugfinder.features.reduction import AbstractFeatureSelector
 from tensorflow import keras
 
+from bugfinder.features.reduction import AbstractFeatureSelector
 from bugfinder.settings import LOGGER
 
 

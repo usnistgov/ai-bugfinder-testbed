@@ -1,6 +1,7 @@
-import re
 from os import listdir
 from os.path import join, splitext
+
+import re
 from shutil import move
 
 from bugfinder.dataset.processing import DatasetProcessing

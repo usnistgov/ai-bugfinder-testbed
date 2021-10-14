@@ -1,12 +1,12 @@
+""" Base classes for managing dataset
 """
-"""
-import json
-import re
-from enum import IntEnum
 from os import listdir, walk
 from os.path import exists, isdir, join, dirname, realpath
 
+import json
 import pandas as pd
+import re
+from enum import IntEnum
 
 from bugfinder import settings
 from bugfinder.dataset.processing import DatasetProcessingCategory
@@ -22,14 +22,14 @@ class DatasetQueueRetCode(IntEnum):
     OPERATION_FAIL = 3
 
 
-class CWEClassificationDataset(object):
+class CWEClassificationDataset:
     ignored_dirs = list(settings.DATASET_DIRS.values())
 
     def _index_dataset(self):
         LOGGER.debug("Indexing test cases...")
 
         if not exists(self.path):
-            msg = "%s does not exists" % self.path
+            msg = "%s does not exists", self.path
             LOGGER.error(msg)
             raise FileNotFoundError(msg)
 
@@ -124,14 +124,12 @@ class CWEClassificationDataset(object):
 
         LOGGER.debug(
             "Dataset index build in %s. %d test_cases, %d classes, "
-            "%d features (v%d)."
-            % (
-                display_time(get_time() - _time),
-                len(self.test_cases),
-                len(self.classes),
-                self.features.shape[1] - 2,
-                self.feats_version,
-            )
+            "%d features (v%d).",
+            display_time(get_time() - _time),
+            len(self.test_cases),
+            len(self.classes),
+            self.features.shape[1] - 2,
+            self.feats_version,
         )
 
         self.load_summary()
@@ -166,8 +164,9 @@ class CWEClassificationDataset(object):
 
     def get_features_info(self):
         LOGGER.info(
-            "Analyzing features (%dx%d matrix)..."
-            % (self.features.shape[0], self.features.shape[1])
+            "Analyzing features (%dx%d matrix)...",
+            self.features.shape[0],
+            self.features.shape[1],
         )
 
         self._validate_features()
@@ -186,8 +185,9 @@ class CWEClassificationDataset(object):
         features_info["non_empty_cols"] -= 2
 
         LOGGER.info(
-            "Features contain %d empty columns, %d non-empty columns."
-            % (features_info["empty_cols"], features_info["non_empty_cols"])
+            "Features contain %d empty columns, %d non-empty columns.",
+            features_info["empty_cols"],
+            features_info["non_empty_cols"],
         )
 
         return features_info
@@ -273,9 +273,9 @@ class CWEClassificationDataset(object):
                     operation_instance.processing_stats,
                     DatasetQueueRetCode.OK,
                 )
-            except Exception as e:
+            except Exception as exc:
                 LOGGER.error(
-                    "Operation %d/%d failed: %s." % (current_op, total_op, str(e))
+                    "Operation %d/%d failed: %s.", current_op, total_op, str(exc)
                 )
 
                 # Clear the operation queue and exit

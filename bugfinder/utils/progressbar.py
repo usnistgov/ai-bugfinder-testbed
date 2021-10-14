@@ -1,5 +1,5 @@
 from multiprocessing import Queue
-from math import floor, log10
+
 from progress.bar import Bar
 from time import sleep
 
@@ -25,7 +25,10 @@ class BestBar(SlowBar):
     b_stats = {}
 
     # New suffix with ETA
-    suffix = "%(percent).1f%% - ETA %(slow_eta)s - Best: %(best_val)+.fx (age: %(best_age)d stats: %(best_stats)s)"
+    suffix = (
+        "%(percent).1f%% - ETA %(slow_eta)s - Best: %(best_val)+.fx "
+        "(age: %(best_age)d stats: %(best_stats)s)"
+    )
 
     # Utility function to properly display the ETA
     @property
@@ -61,7 +64,8 @@ class BestBar(SlowBar):
             self.b_age = 0
         elif age is not None:
             self.b_age = age
-        super(BestBar, self).next(n=n)
+
+        super().next(n=n)
 
 
 class MultiBar(SlowBar):
@@ -74,8 +78,8 @@ class MultiBar(SlowBar):
     def jobz(self):
         return "%d/%d" % (self.done, self.jobs)
 
-    def subscribe(self, max):
-        self.queue.put({"extend": max})
+    def subscribe(self, item):
+        self.queue.put({"extend": item})
 
     def unsubscribe(self):
         self.queue.put({"done": None})

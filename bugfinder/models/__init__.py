@@ -1,29 +1,25 @@
 """ Abstract classifier model for the dataset.
 """
-from abc import abstractmethod
-
 from os import listdir, makedirs, walk
 from os.path import join, exists, splitext, dirname, abspath, basename
 
-from shutil import rmtree, copytree
-
-import tensorflow as tf
 import numpy as np
 import pandas as pd
-
+import tensorflow as tf
+from abc import abstractmethod
 from gensim.models import Word2Vec
-
-from tensorflow.keras.utils import to_categorical
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout, LSTM, Bidirectional, LeakyReLU
-from tensorflow.keras.optimizers import Adamax
-
+from shutil import rmtree, copytree
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.model_selection import train_test_split
+from tensorflow.keras.layers import Dense, Dropout, LSTM, Bidirectional, LeakyReLU
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.optimizers import Adamax
+from tensorflow.keras.utils import to_categorical
 
 from bugfinder.dataset.processing import DatasetProcessing, DatasetProcessingCategory
 from bugfinder.settings import LOGGER
 from bugfinder.utils.statistics import has_better_metrics
+
 
 #########################################
 class Word2VecModel(DatasetProcessing):
@@ -94,7 +90,7 @@ class Word2VecModel(DatasetProcessing):
 
 
 #########################################
-class Word2VecEmbeddings(DatasetProcessing):
+class Word2VecEmbeddingsBase(DatasetProcessing):
     def __init__(self, dataset):
         super().__init__(dataset)
 
@@ -119,19 +115,20 @@ class Word2VecEmbeddings(DatasetProcessing):
 
         model = Word2Vec.load(join(self.dataset.model_dir, kwargs["model"]))
 
-        for item in range(len(token_list)):
+        for item, token in enumerate(token_list):
             LOGGER.debug(
-                "Creating the embeddings for %s. %d items left for processing..."
-                % (token_list[item]["path"], (len(token_list) - item))
+                "Creating the embeddings for %s. %d items left for processing...",
+                token["path"],
+                (len(token_list) - item),
             )
 
             try:
-                vectors = self.vectorize(model, token_list[item])
+                vectors = self.vectorize(model, token)
             except:
                 LOGGER.debug("Key not found. Skipping...")
                 continue
 
-            tmp = {"path": token_list[item]["path"], "embeddings": vectors}
+            tmp = {"path": token["path"], "embeddings": vectors}
 
             embeddings.append(tmp)
 
@@ -139,8 +136,9 @@ class Word2VecEmbeddings(DatasetProcessing):
 
         for item in range(len(embeddings)):
             LOGGER.debug(
-                "Processing %s file. %d items remaining..."
-                % (embeddings[item]["path"], (len(embeddings) - item))
+                "Processing %s file. %d items remaining...",
+                embeddings[item]["path"],
+                (len(embeddings) - item),
             )
             self.save_dataframe(embeddings[item])
 
@@ -188,16 +186,13 @@ class Word2VecEmbeddings(DatasetProcessing):
             processed_tokens = dict()
             processed_tokens["path"] = splitext(filepath)[0]
 
-            # processed_tokens['class'] = filepath.split('/')[0]
-            # LOGGER.debug(filepath.split('/')[0])
-
             with open(join(self.dataset.path, filepath), "r") as in_file:
                 code = in_file.readlines()
 
                 tokens = [token.strip() for token in code]
 
                 LOGGER.debug(
-                    "%s file read. Retrieved %d tokens." % (filepath, len(tokens))
+                    "%s file read. Retrieved %d tokens.", filepath, len(tokens)
                 )
 
                 processed_tokens["tokens"] = tokens
@@ -230,7 +225,8 @@ class BLSTMClassifierModel(DatasetProcessing):
 
     #########################
 
-    def retrieve_file_list(self, input_path):
+    @staticmethod
+    def retrieve_file_list(input_path):
         file_list = []
 
         for dirs, subdirs, files in walk(input_path):
@@ -260,8 +256,9 @@ class BLSTMClassifierModel(DatasetProcessing):
                 labels.append(1)
 
             LOGGER.debug(
-                "Reading embeddings from %s (%d items left)..."
-                % (filepath, len(file_processing_list))
+                "Reading embeddings from %s (%d items left)...",
+                filepath,
+                len(file_processing_list),
             )
 
             df = pd.read_csv(filepath)
@@ -306,33 +303,32 @@ class BLSTMClassifierModel(DatasetProcessing):
 
     #########################
 
-    def evaluate(self, model, weights_path, batch_size, X_test, y_test):
+    @staticmethod
+    def evaluate(model, weights_path, batch_size, x_test, y_test):
         model.load_weights(weights_path)
 
-        values = model.evaluate(X_test, y_test, batch_size=batch_size)
+        values = model.evaluate(x_test, y_test, batch_size=batch_size)
 
-        LOGGER.info("Accuracy: %02.03f%%" % (values[1] * 100))
+        LOGGER.info("Accuracy: %02.03f%%", (values[1] * 100))
 
-        predictions = (model.predict(X_test, batch_size=batch_size)).round()
+        predictions = (model.predict(x_test, batch_size=batch_size)).round()
 
         tn, fp, fn, tp = confusion_matrix(
             np.argmax(y_test, axis=1), np.argmax(predictions, axis=1)
         ).ravel()
 
-        LOGGER.info("False positive rate : %02.03f%%" % (fp / (fp + tn) * 100))
-        LOGGER.info("False negative rate is: %02.03f%%" % (fn / (fn + tp) * 100))
+        LOGGER.info("False positive rate : %02.03f%%", (fp / (fp + tn) * 100))
+        LOGGER.info("False negative rate is: %02.03f%%", (fn / (fn + tp) * 100))
 
         recall = tp / (tp + fn)
         precision = tp / (tp + fp)
         fscore = (2 * precision * recall) / (precision + recall)
 
         LOGGER.info(
-            "Precision: %02.03f%%; Recall: %02.03f%%; F-score: %02.03f%% "
-            % (
-                precision * 100,
-                recall * 100,
-                fscore * 100,
-            )
+            "Precision: %02.03f%%; Recall: %02.03f%%; F-score: %02.03f%% ",
+            precision * 100,
+            recall * 100,
+            fscore * 100,
         )
 
     #########################
@@ -340,7 +336,7 @@ class BLSTMClassifierModel(DatasetProcessing):
     def execute(self, name, batch_size=32, epochs=3, **kwargs):
         vectors, labels = self.load_dataset()
 
-        X_train, X_test, y_train, y_test = train_test_split(
+        x_train, x_test, y_train, y_test = train_test_split(
             vectors, labels, test_size=0.2, random_state=101
         )
 
@@ -352,11 +348,14 @@ class BLSTMClassifierModel(DatasetProcessing):
         model = self.build_model(self.embedding_length, self.vector_length)
 
         LOGGER.info(
-            "Training the Bidirectional LSTM on %d items over %d epochs. Testing on %d items..."
-            % (len(X_train), epochs, len(X_test))
+            "Training the Bidirectional LSTM on %d items over %d epochs. "
+            "Testing on %d items...",
+            len(x_train),
+            epochs,
+            len(x_test),
         )
 
-        model.fit(X_train, y_train, batch_size=batch_size, epochs=epochs)
+        model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs)
 
         LOGGER.info("Training complete. Saving the model weights...")
 
@@ -366,9 +365,7 @@ class BLSTMClassifierModel(DatasetProcessing):
 
         LOGGER.info("Evaluating...")
 
-        self.evaluate(model, model_dir, batch_size, X_test, y_test)
-
-        # if self.model_cls is None: raise Exception("Parameter 'model_cls' is undefined")
+        self.evaluate(model, model_dir, batch_size, x_test, y_test)
 
 
 #########################################
@@ -418,34 +415,35 @@ class ClassifierModel(DatasetProcessing):
         )
 
         LOGGER.info(
-            "Training %s on %d items over %d epochs. Testing on %d items, focusing on %s..."
-            % (
-                self.model_cls.__name__,
+            "Training %s on %d items over %d epochs. Testing on %d items, "
+            "focusing on %s...",
+            self.model_cls.__name__,
+            (
                 len(input_train)
                 if max_items is None
-                else min(max_items, len(input_train)),
-                epochs,
-                len(input_test),
-                ",".join(result_focus),
-            )
+                else min(max_items, len(input_train))
+            ),
+            epochs,
+            len(input_test),
+            ",".join(result_focus),
         )
 
         self.columns = input_train.columns
 
-        self.train_fn = tf.estimator.inputs.pandas_input_fn(
+        self.train_fn = tf.compat.v1.estimator.inputs.pandas_input_fn(
             x=input_train,
             y=output_train,
             shuffle=True,
             batch_size=batch_size,
         )
-        self.test_fn = tf.estimator.inputs.pandas_input_fn(
+        self.test_fn = tf.compat.v1.estimator.inputs.pandas_input_fn(
             x=input_test, y=output_test, shuffle=False, batch_size=batch_size
         )
 
         # Initialize model dir and backup dir
         model_dir = join(self.dataset.model_dir, name)
         if reset and exists(model_dir):
-            LOGGER.info("Removing %s..." % model_dir)
+            LOGGER.info("Removing %s...", model_dir)
             rmtree(model_dir)
 
         model_dir_bkp = "%s.bkp" % model_dir
@@ -492,7 +490,7 @@ class ClassifierModel(DatasetProcessing):
 
         # Train the model for the given number of epochs
         for epoch_num in range(epochs):
-            LOGGER.info("Training dataset for epoch %d/%d..." % (epoch_num + 1, epochs))
+            LOGGER.info("Training dataset for epoch %d/%d...", epoch_num + 1, epochs)
             model.train(input_fn=self.train_fn, steps=max_items)
 
         # Evaluate the model and save the predictions
@@ -530,15 +528,13 @@ class ClassifierModel(DatasetProcessing):
 
         LOGGER.info(
             "Precision: %02.03f%% (%02.03f%%); Recall: %02.03f%% (%02.03f%%); "
-            "F-score: %02.03f%% (%02.03f%%)."
-            % (
-                current["precision"],
-                last["precision"],
-                current["recall"],
-                last["recall"],
-                current["f1-score"],
-                last["f1-score"],
-            )
+            "F-score: %02.03f%% (%02.03f%%).",
+            current["precision"],
+            last["precision"],
+            current["recall"],
+            last["recall"],
+            current["f1-score"],
+            last["f1-score"],
         )
 
         if keep_best_model and not has_better_metrics(
