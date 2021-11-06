@@ -36,12 +36,12 @@ class FeatureExtractor(Neo4J3Processing):
             WHERE entry.functionId="%s" AND NOT (exit)-[:FLOWS_TO]->()
             WITH p, randomUUID() AS path_id, ANY(n IN NODES(p) WHERE "BugSinkNode" IN LABELS(n)) AS bad
             UNWIND NODES(p) AS n
-            OPTIONAL MATCH (n)<-[inflow:REACHES]-()
-            OPTIONAL MATCH (n)-[outflow:REACHES]->()
-            WITH DISTINCT path_id, bad, n, PROPERTIES(inflow) AS inflow, PROPERTIES(outflow) AS outflow
-            WHERE inflow IS NOT null OR outflow IS NOT null
-            RETURN path_id, bad, id(n), n.ast, COLLECT(DISTINCT inflow) AS inflow, COLLECT(DISTINCT outflow) AS outflow
-        """
+            OPTIONAL MATCH (n)<-[inflow_r:REACHES]-(inflow_n)
+            OPTIONAL MATCH (n)-[outflow_r:REACHES]->()
+            WITH DISTINCT path_id, bad, n, inflow_n, PROPERTIES(inflow_r) AS inflow_r, PROPERTIES(outflow_r) AS outflow_r
+            WHERE inflow_r IS NOT null OR outflow_r IS NOT null
+            RETURN path_id, bad, id(n), n.ast, COLLECT(DISTINCT [inflow_n.ast, inflow_r.var, inflow_r.size]) AS inflow, COLLECT(DISTINCT outflow_r.size) AS outflow
+        """ # Add size of input
         return self.neo4j_db.run(flowgraph_command % entrypoint["id"]).data()
 
     def extract_features_worker(self, args):
