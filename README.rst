@@ -153,7 +153,9 @@ available and works as such:
 
 .. code:: bash
 
-   python ./clean_dataset.py /path/to/dataset \
+   export DATASET=/path/to/dataset
+
+   python ./clean_dataset.py ${DATASET} \
        --no-cpp \  # Remove CPP test cases
        --no-interprocedural \  # Remove interprocedural test cases
        --no-litterals \  # Replace litterals from C code
@@ -172,7 +174,6 @@ to perform sink identification. Run the following command to do so.
 
 .. code:: bash
 
-    export DATASET=/path/to/dataset
     export SARIF_DIR=/path/to/sarif_manifests
 
     find ${SARIF_DIR} -maxdepth 1 -type d -printf '%f\n' | grep '^[0-9]\+$' \
@@ -193,7 +194,7 @@ Run Joern
 *data/graph.db*. A Neo4j DB then loads the data for further processing.
 
 Run the tool with
-``python ./run_joern.py /path/to/dataset -v ${JOERN_VERSION}``. Use
+``python ./run_joern.py ${DATASET} -v ${JOERN_VERSION}``. Use
 ``--help`` to see which version are available.
 
 Sink tagging (interprocedural features)
@@ -203,8 +204,6 @@ To link data and control flow to compute interprocedural features, it is necessa
 tag the sinks, using the CSV obtain earlier. Sink tagging can be done using:
 
 .. code:: bash
-
-    DATASET=/path/to/datsaset
 
     # Tag sinks with a maximum runtime of 15min
     python run_sinktagging.py --log_failed /tmp/sink.failed.15m.log \
@@ -221,8 +220,6 @@ Link data and control flows (interprocedural features)
 To link data and control flow, the following commands need to be run:
 
 .. code:: bash
-
-    DATASET=/path/to/dataset
 
     # Connect data and control flows at function calls
     python run_interproc.py --log_failed /tmp/failed.15m.log \
@@ -241,7 +238,7 @@ with the additional markup:
 
 .. code:: bash
 
-   python ./run_ast_markup.py /path/to/dataset \
+   python ./run_ast_markup.py ${DATASET} \
        -v ${AST_VERSION}  # AST markup version. See --help for details.
 
 Extract feature
@@ -253,12 +250,12 @@ task. The features need to be extracted with the following command:
 .. code:: bash
 
    # Create the feature maps
-   python ./run_feature_extraction.py /path/to/dataset \
+   python ./run_feature_extraction.py ${DATASET} \
        -e ${FEATURE_EXTRACTOR} \  # Choose a feature extractor.
        -m  # To create the feature maps.
 
    # Run the extractor
-   python ./run_feature_extraction.py /path/to/dataset \
+   python ./run_feature_extraction.py ${DATASET} \
        -e ${FEATURE_EXTRACTOR} \  # Choose a feature extractor
 
 Reduce feature dimension
@@ -270,7 +267,7 @@ command:
 .. code:: bash
 
    # Create the feature maps
-   python ./run_feature_selection.py /path/to/dataset \
+   python ./run_feature_selection.py ${DATASET} \
        -s ${FEATURE_SELECTOR} \  # Choose a feature selector.
        ${FEATURES_SELECTOR_ARGS} \  # Parametrize the selector correctly
        -m  # To create the feature maps.
@@ -286,7 +283,7 @@ typing:
 
 .. code:: bash
 
-   python ./run_model_training.py /path/to/dataset \
+   python ./run_model_training.py ${DATASET} \
        -m ${MODEL}  # Model to train. See help for details.
 
 Training the word2vec model
@@ -305,7 +302,7 @@ script:
 
 .. code:: bash
 
-   python ./clean_dataset_for_word2vec.py /path/to/dataset \
+   python ./clean_dataset_for_word2vec.py ${DATASET} \
        --no-comments \  # Remove comments
        --replace-funcs \  # Replace functions by a FUN token
        --replace-vars  # Replace variables by a VAR token
@@ -320,7 +317,7 @@ run:
 
 .. code:: bash
 
-   python ./clean_dataset_for_word2vec.py /path/to/dataset \
+   python ./clean_dataset_for_word2vec.py ${DATASET} \
        --tokenize 
 
 Training the word2vec model
@@ -332,7 +329,7 @@ Run the command:
 
 .. code:: bash
 
-   python ./run_model_training.py /path/to/dataset \
+   python ./run_model_training.py ${DATASET} \
        -m word2vec \  # word2vec model
        -n {MODEL_NAME} \  # path where the model will be saved
 
@@ -346,7 +343,7 @@ Execute the following script:
 
 .. code:: bash
 
-   python ./run_embeddings.py /path/to/dataset \
+   python ./run_embeddings.py ${DATASET} \
        -m {MODEL_DIR}  # Previous trained word2vec model
 
 Train the BLSTM model
@@ -357,7 +354,7 @@ Execute the following script:
 
 .. code:: bash
 
-   python ./run_model_training.py /path/to/dataset \
+   python ./run_model_training.py ${DATASET} \
        -m bidirectional_lstm \  # BLSTM
        -n {MODEL_NAME} \ # path where the model will be saved
        -e {EPOCHS} \ # number of epochs

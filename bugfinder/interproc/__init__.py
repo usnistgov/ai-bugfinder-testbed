@@ -23,7 +23,7 @@ def interproc_worker(progress_bar, cmds, tcid, q, port):
         host="0.0.0.0",
         port=port,
     )
-    progress_bar.subscribe(max=len(cmds))
+    progress_bar.subscribe(len(cmds))
     for idx in range(q, len(cmds)):
         cmd = cmds[idx]
         for tries in range(4):
@@ -81,7 +81,7 @@ class InterprocProcessing(Neo4J3Processing):
 
         if self.interproc_cmds_pre:
             LOGGER.debug("Preprocessing...")
-            progress_bar = SlowBar("Preprocessing")
+            progress_bar = SlowBar("Preprocessing", max=len(self.interproc_cmds_pre))
             for cmd in self.interproc_cmds_pre:
                 self.neo4j_db.run(cmd)
                 progress_bar.next()
@@ -100,8 +100,8 @@ class InterprocProcessing(Neo4J3Processing):
                 tc_list = [
                     [tc["id"], 0]
                     for tc in self.neo4j_db.run(
-                        """ 
-                        match (tc:GenericNode {type:"Testcase"}) 
+                        """
+                        MATCH (tc:GenericNode {type:"Testcase"})
                         return distinct id(tc) as id, tc.name as name
                         """
                     ).data()
@@ -144,7 +144,7 @@ class InterprocProcessing(Neo4J3Processing):
 
         if self.interproc_cmds_post:
             LOGGER.debug("Postprocessing...")
-            progress_bar = SlowBar("Postprocessing")
+            progress_bar = SlowBar("Postprocessing", max=len(self.interproc_cmds_post))
             for cmd in self.interproc_cmds_post:
                 self.neo4j_db.run(cmd)
                 progress_bar.next()
@@ -156,319 +156,342 @@ class InterprocProcessing(Neo4J3Processing):
 class InterprocMerger(InterprocProcessing):
 
     interproc_cmds_pre = [
+        # Add a DEF relationship so string functions
+        # "define" their desination symbol
         """
-            match (cexpr:GenericNode {type:"CallExpression"})-[
+            MATCH (cexpr:GenericNode {type:"CallExpression"})-[
                 :IS_AST_PARENT
             ]->(func:GenericNode {type:"Callee"})
-            where func.code in [
+            WHERE func.code IN [
                 "memcpy","memmove","gets","fgets","fgetws","sprintf",
                 "swprintf","strcat","wcscat","strncat","wcsncat","strcpy",
                 "wcscpy","strncpy","wcsncpy","wcstombs"
             ]
-            with distinct cexpr
-            match (cexpr)-[:IS_AST_PARENT]->(
+            WITH DISTINCT cexpr
+            MATCH (cexpr)-[:IS_AST_PARENT]->(
                 :GenericNode {type:"ArgumentList"}
             )-[:IS_AST_PARENT]->(
                 arg:GenericNode {type:"Argument",childNum:"0"}
             )
-            match (arg)-[:USE]->(sym:GenericNode {type:"Symbol"})<-[:USE]-(
+            MATCH (arg)-[:USE]->(sym:GenericNode {type:"Symbol"})<-[:USE]-(
                 expr:DownstreamNode
             )
-            where expr.type in [
+            WHERE expr.type IN [
                 "ExpressionStatement","IdentifierDeclStatement","ForInit",
                 "Condition"
             ]
-            and (expr)-[:IS_AST_PARENT*]->(cexpr)
-            merge (expr)-[r:DEF]->(sym)
+            AND (expr)-[:IS_AST_PARENT*]->(cexpr)
+            MERGE (expr)-[r:DEF]->(sym)
         """,
+        # Add a DEF relationship so "scan" functions
+        # "define" their desination symbol
         """
-            match (cexpr:GenericNode {type:"CallExpression"})-[
+            MATCH (cexpr:GenericNode {type:"CallExpression"})-[
                 :IS_AST_PARENT
             ]->(func:GenericNode {type:"Callee"})
-            where func.code in [
+            WHERE func.code IN [
                 "scanf","wscanf","fscanf","fwscanf","sscanf","swscanf"
             ]
-            with distinct cexpr, case when func.code in [
+            WITH DISTINCT cexpr, case when func.code IN [
                 "scanf","wscanf"
-            ] then 1 else 2 end as offset
-            match (cexpr)-[:IS_AST_PARENT]->(
+            ] then 1 else 2 end AS offset
+            MATCH (cexpr)-[:IS_AST_PARENT]->(
                 :GenericNode {type:"ArgumentList"}
             )-[:IS_AST_PARENT]->(arg:GenericNode {type:"Argument"})
-            where arg.childNum > offset
-            match (arg)-[:USE]->(sym:GenericNode {type:"Symbol"})<-[
+            WHERE arg.childNum > offset
+            MATCH (arg)-[:USE]->(sym:GenericNode {type:"Symbol"})<-[
                 :USE
             ]-(expr:DownstreamNode)
-            where expr.type in [
+            WHERE expr.type IN [
                 "ExpressionStatement","IdentifierDeclStatement","ForInit",
                 "Condition"
             ]
-            and (expr)-[:IS_AST_PARENT*]->(cexpr)
-            merge (expr)-[r:DEF]->(sym)
+            AND (expr)-[:IS_AST_PARENT*]->(cexpr)
+            MERGE (expr)-[r:DEF]->(sym)
         """,
     ]
 
     interproc_cmds_tc = [
+        # Connect control flow from caller to callee
         """
-            // Connect control flow from caller to callee
-            match (tc:GenericNode {type:"Testcase"})<-[
+            MATCH (tc:GenericNode {type:"Testcase"})<-[
                 :IS_FILE_OF
             ]-(:GenericNode {type:"File"})-[:IS_FILE_OF]->(
                 func:GenericNode {type:"Function"}
             )-[:IS_FUNCTION_OF_CFG]->(
                 callee:UpstreamNode {type:"CFGEntryNode"}
-            ) // Get all function declarations in the testcase
-            where id(tc)=%d
-            with tc,func,callee
-            match (tc)<-[:IS_FILE_OF]-(:GenericNode {type:"File"})-[
+            ) // Get all function declarations IN the testcase
+            WHERE ID(tc)=%d
+            WITH tc,func,callee
+            MATCH (tc)<-[:IS_FILE_OF]-(:GenericNode {type:"File"})-[
                 :IS_FILE_OF
             ]->(:GenericNode {type:"Function"})-[
                 :IS_FUNCTION_OF_CFG
             ]->(entry:UpstreamNode {type:"CFGEntryNode"})
-            with func,callee,entry
-            match (entry)-[:CONTROLS*]->(caller:DownstreamNode)
-            where caller.type in ["ExpressionStatement","Condition"]
-            with func,callee,caller
-            match (caller)-[:IS_AST_PARENT*]->(cexpr:GenericNode {type:"CallExpression"})
-            where not (cexpr)<-[:IS_AST_PARENT*]-(
+            WITH func,callee,entry
+            MATCH (entry)-[:CONTROLS*]->(caller:DownstreamNode)
+            WHERE caller.type IN ["ExpressionStatement","Condition"]
+            WITH func,callee,caller
+            MATCH (caller)-[:IS_AST_PARENT*]->(cexpr:GenericNode {type:"CallExpression"})
+            WHERE NOT (cexpr)<-[:IS_AST_PARENT*]-(
                 :GenericNode {type:"CallExpression"}
             ) // Dodge nested function calls
-            with func,callee,caller,cexpr
-            match (cexpr)-[r:IS_AST_PARENT]->(
+            WITH func,callee,caller,cexpr
+            MATCH (cexpr)-[r:IS_AST_PARENT]->(
                 :GenericNode {type:"Callee",code:func.code}
             ) // Get all function calls within the testcase
-            with callee,caller
-            merge (caller)-[
+            WITH callee,caller
+            MERGE (caller)-[
                 intercall:FLOWS_TO
-            ]->(callee) // Connect the callee's entry point (head) to where it is called
-            with callee,caller,intercall
-            match (callee)-[:CONTROLS*]->(last:DownstreamNode)
-            with callee,caller,intercall,last
-            match (last)-[
+            ]->(callee) // Connect the callee's entry point (head) to WHERE it is called
+            WITH callee,caller,intercall
+            MATCH (callee)-[:CONTROLS*]->(last:DownstreamNode)
+            WITH callee,caller,intercall,last
+            MATCH (last)-[
                 :FLOWS_TO|DOM
             ]->(exit:DownstreamNode {type:"CFGExitNode"}) // Find the callee's exit point
-            with caller,intercall,exit
-            match (caller)-[
+            WITH caller,intercall,exit
+            MATCH (caller)-[
                 nextrel:FLOWS_TO
             ]->(
                 next:DownstreamNode
-            ) // Find the caller's next node in its control flow graph
-            where next.type<>"CFGEntryNode"
-            with DISTINCT caller,intercall,exit,nextrel,next
-            merge (exit)-[
-                interreturn:FLOWS_TO {callerid:id(intercall)}
+            ) // Find the caller's next node IN its control flow graph
+            WHERE next.type<>"CFGEntryNode"
+            WITH DISTINCT caller,intercall,exit,nextrel,next
+            MERGE (exit)-[
+                interreturn:FLOWS_TO {callerid:ID(intercall)}
             ]->(next) // Connect the callee's tail to the caller's next node
-            merge (caller)-[:SHORTCUT]->(next)
-            // Delete the edge between the function call and its next step, 
-            // so that the control flow graph now goes through the callee and 
+            MERGE (caller)-[:SHORTCUT]->(next)
+            // Delete the edge between the function call AND its next step,
+            // so that the control flow graph now goes through the callee AND
             // returns to the callers next step
-            delete nextrel
+            DELETE nextrel
         """,
+        # Handle global variables by first finding their initialization,
+        # then creating dataflow to nodes that use them.
         """
-            // Handle global variables by first finding their initialization, 
-            // then creating dataflow to nodes that use them.
-            match (tc:GenericNode {type:"Testcase"})<-[:IS_FILE_OF]-(
+            MATCH (tc:GenericNode {type:"Testcase"})<-[:IS_FILE_OF]-(
                 :GenericNode {type:"File"}
             )-[:IS_FILE_OF]->(
                 :GenericNode {type:"Function",code:"main"}
             )-[:IS_FUNCTION_OF_CFG]->(main:UpstreamNode {type:"CFGEntryNode"})
-            where id(tc)=%d
-            with distinct main
-            match (main)-[:FLOWS_TO*]->(
+            WHERE ID(tc)=%d
+            WITH DISTINCT main
+            MATCH (main)-[:FLOWS_TO*]->(
                 n1:GenericNode
             )-[:DEF]->(
                 sym1:GenericNode {type:"Symbol"}
             ) // Find the initialization of the global variable
-            where not left(sym1.code,2)="* "
-                and not sym1.code contains " . "
-                and not sym1.code=toupper(sym1.code)
-                and not sym1.code in ["NULL","L","stdin","& wsaData"]
-                and not (sym1)<-[:DEF]-(:GenericNode {type:"IdentifierDeclStatement"})
-                and not (sym1)<-[:DEF]-(:GenericNode {type:"Parameter"})
-                and not (sym1)<-[:USE]-(:GenericNode)-[
+            WHERE NOT LEFT(sym1.code,2)="* "
+                AND NOT sym1.code contains " . "
+                AND NOT sym1.code=TOUPPER(sym1.code)
+                AND NOT sym1.code IN ["NULL","L","stdin","& wsaData"]
+                AND NOT (sym1)<-[:DEF]-(:GenericNode {type:"IdentifierDeclStatement"})
+                AND NOT (sym1)<-[:DEF]-(:GenericNode {type:"Parameter"})
+                AND NOT (sym1)<-[:USE]-(:GenericNode)-[
                     :IS_AST_PARENT*
                 ]->(:GenericNode {type:"Callee",code:sym1.code})
-            with n1, sym1
-            match p=(n1)-[:FLOWS_TO*]->(n2:GenericNode)-[:USE]->(
+            WITH n1, sym1
+            MATCH p=(n1)-[:FLOWS_TO*]->(n2:GenericNode)-[:USE]->(
                 sym2:GenericNode {type:"Symbol",code:sym1.code}
             ) // Find the next node n2 that uses the global variable
-            where n1<>n2 and none(n in nodes(p)[1..-1] 
-            where (n)-[:DEF]->(
+            WHERE n1<>n2 AND NONE(n IN NODES(p)[1..-1]
+            WHERE (n)-[:DEF]->(
                 :GenericNode {type:"Symbol",code:sym1.code})
-            ) // Ensure the value has not been modified since n1
-            merge (n1)-[:REACHES {var:sym1.code}]->(n2)
+            ) // Ensure the value has NOT been modified since n1
+            MERGE (n1)-[:REACHES {var:sym1.code}]->(n2)
         """,
+        # Handle use of *var
         """
-            // Handle use of *var
-            match (tc:GenericNode {type:"Testcase"})<-[:IS_FILE_OF]-(
+            MATCH (tc:GenericNode {type:"Testcase"})<-[:IS_FILE_OF]-(
                 :GenericNode {type:"File"}
             )-[:IS_FILE_OF]->(
                 :GenericNode {type:"Function"}
             )-[:IS_FUNCTION_OF_CFG]->(entry:UpstreamNode {type:"CFGEntryNode"})
-            where id(tc)=%d
-            with distinct entry
-            match (entry)-[:CONTROLS*]->(n:DownstreamNode)
-            with distinct n
-            match (n)-[:DEF|USE]->(sym0:GenericNode {type:"Symbol"})
-            with distinct sym0
-            match (sym0)<-[r0:DEF]-(expr:DownstreamNode)-[r1:USE]->(
+            WHERE ID(tc)=%d
+            WITH DISTINCT entry
+            MATCH (entry)-[:CONTROLS*]->(n:DownstreamNode)
+            WITH DISTINCT n
+            MATCH (n)-[:DEF|USE]->(sym0:GenericNode {type:"Symbol"})
+            WITH DISTINCT sym0
+            MATCH (sym0)<-[r0:DEF]-(expr:DownstreamNode)-[r1:USE]->(
                 sym1:GenericNode {type:"Symbol"}
             )
-            where expr.type in ["ExpressionStatement","Condition"] 
-                and sym0.code="* "+sym1.code
-            merge (expr)-[r2:DEF]->(sym1)
+            WHERE expr.type IN ["ExpressionStatement","Condition"]
+                AND sym0.code="* "+sym1.code
+            MERGE (expr)-[r2:DEF]->(sym1)
         """,
+        # Handle use of &var
         """
-            // Handle use of &var
-            match (tc:GenericNode {type:"Testcase"})<-[
+            MATCH (tc:GenericNode {type:"Testcase"})<-[
                 :IS_FILE_OF
             ]-(:GenericNode {type:"File"})-[
                 :IS_FILE_OF
             ]->(:GenericNode {type:"Function"})-[
                 :IS_FUNCTION_OF_CFG
             ]->(entry:UpstreamNode {type:"CFGEntryNode"})
-            where id(tc)=%d
-            with distinct entry
-            match (entry)-[:CONTROLS*]->(n:DownstreamNode)
-            with distinct n
-            match (n)-[
+            WHERE ID(tc)=%d
+            WITH DISTINCT entry
+            MATCH (entry)-[:CONTROLS*]->(n:DownstreamNode)
+            WITH DISTINCT n
+            MATCH (n)-[
                 :IS_AST_PARENT*
             ]->(uop:GenericNode {type:"UnaryOperator",code:"&"})
-            with distinct uop
-            match (uop)<-[:IS_AST_PARENT]-(
+            WITH DISTINCT uop
+            MATCH (uop)<-[:IS_AST_PARENT]-(
                 uexpr:GenericNode {type:"UnaryOperationExpression"}
             )-[:IS_AST_PARENT]->(idf:GenericNode {type:"Identifier"})
-            with uexpr,idf
-            match (uexpr)<-[:IS_AST_PARENT*]-(expr:DownstreamNode)
-            where expr.type in [
+            WITH uexpr,idf
+            MATCH (uexpr)<-[:IS_AST_PARENT*]-(expr:DownstreamNode)
+            WHERE expr.type IN [
                 "ExpressionStatement","IdentifierDeclStatement","ForInit",
                 "Condition"
             ]
-            with expr,idf
-            match (expr)-[:USE]->(
+            WITH expr,idf
+            MATCH (expr)-[:USE]->(
                 adr_sym:GenericNode {type:"Symbol",code:"& "+idf.code}
             )
-            with expr,adr_sym,idf
-            match (expr)<-[:FLOWS_TO*]-(def:DownstreamNode)
-            where expr<>def and def.type in ["IdentifierDeclStatement","Parameter"]
-            match (def)-[:DEF]->(def_sym:GenericNode {type:"Symbol",code:idf.code})
-            merge (def)-[rdef:DEF {var:idf.code}]->(adr_sym)
-            merge (def)-[dflr:REACHES {var:adr_sym.code}]->(expr)
-            with distinct expr
-            match (ptr_sym:GenericNode {type:"Symbol"})<-[:DEF]-(expr)
-            match (expr)-[:FLOWS_TO*]-(usr:DownstreamNode {type:"ExpressionStatement"})
-            where expr<>usr
-            match (usr)-[:USE]->(
+            WITH expr,adr_sym,idf
+            MATCH (expr)<-[:FLOWS_TO*]-(def:DownstreamNode)
+            WHERE expr<>def AND def.type IN ["IdentifierDeclStatement","Parameter"]
+            MATCH (def)-[:DEF]->(def_sym:GenericNode {type:"Symbol",code:idf.code})
+            MERGE (def)-[rdef:DEF {var:idf.code}]->(adr_sym)
+            MERGE (def)-[dflr:REACHES {var:adr_sym.code}]->(expr)
+            WITH DISTINCT expr
+            MATCH (ptr_sym:GenericNode {type:"Symbol"})<-[:DEF]-(expr)
+            MATCH (expr)-[:FLOWS_TO*]-(usr:DownstreamNode {type:"ExpressionStatement"})
+            WHERE expr<>usr
+            MATCH (usr)-[:USE]->(
                 star_sym:GenericNode {type:"Symbol",code:"* "+ptr_sym.code}
             )
-            merge (expr)-[sdef:DEF {var:ptr_sym.code}]->(star_sym)
+            MERGE (expr)-[sdef:DEF {var:ptr_sym.code}]->(star_sym)
         """,
+        # Add missing dataflow
         """
-            // Add missing dataflow
-            match (tc:GenericNode {type:"Testcase"})<-[
+            MATCH (tc:GenericNode {type:"Testcase"})<-[
                 :IS_FILE_OF
             ]-(:GenericNode {type:"File"})-[
                 :IS_FILE_OF
             ]->(:GenericNode {type:"Function"})-[
                 :IS_FUNCTION_OF_CFG
             ]->(entry:UpstreamNode {type:"CFGEntryNode"})
-            where id(tc)=%d
-            with distinct entry
-            match (entry)-[:CONTROLS*]->(n:DownstreamNode)
-            with distinct n
-            match (n)-[:DEF|USE]->(sym:GenericNode {type:"Symbol"})
-            with distinct sym
-            match (sym)<-[use:USE]-(clr:GenericNode)
-            match (sym)<-[def:DEF]-(src:DownstreamNode)
-            match (clr)<-[cf:FLOWS_TO*]-(src)
-            where clr<>src
-            merge (src)-[ndf:REACHES {var:sym.code}]->(clr)
+            WHERE ID(tc)=%d
+            WITH DISTINCT entry
+            MATCH (entry)-[:CONTROLS*]->(n:DownstreamNode)
+            WITH DISTINCT n
+            MATCH (n)-[:DEF|USE]->(sym:GenericNode {type:"Symbol"})
+            WITH DISTINCT sym
+            MATCH (sym)<-[use:USE]-(clr:GenericNode)
+            MATCH (sym)<-[def:DEF]-(src:DownstreamNode)
+            MATCH (clr)<-[cf:FLOWS_TO*]-(src)
+            WHERE clr<>src
+            MERGE (src)-[ndf:REACHES {var:sym.code}]->(clr)
         """,
+        # Connect arguments to dataflow on the caller side
         """
-            // Connect arguments to dataflow on the caller side
-            match (tc:GenericNode {type:"Testcase"})<-[
+            MATCH (tc:GenericNode {type:"Testcase"})<-[
                 :IS_FILE_OF
             ]-(:GenericNode {type:"File"})-[
                 :IS_FILE_OF
             ]->(:GenericNode {type:"Function"})-[
                 :IS_FUNCTION_OF_CFG
             ]->(entry:UpstreamNode {type:"CFGEntryNode"})
-            where id(tc)=%d
-            with distinct entry
-            match (entry)-[:CONTROLS*]->(caller:DownstreamNode)
-            where caller.type in ["ExpressionStatement","Condition"]
-            with distinct caller
-            match (caller)-[:IS_AST_PARENT*]->(cexpr:GenericNode {type:"CallExpression"})
-            where not (cexpr)<-[:IS_AST_PARENT*]-(:GenericNode {type:"CallExpression"})
-            with caller,cexpr
-            match (caller)-[calrel:FLOWS_TO]->(callee:UpstreamNode {type:"CFGEntryNode"})
-            with caller,cexpr,calrel,callee
-            match (cexpr)-[:IS_AST_PARENT]->(
+            WHERE ID(tc)=%d
+            WITH DISTINCT entry
+            MATCH (entry)-[:CONTROLS*]->(caller:DownstreamNode)
+            WHERE caller.type IN ["ExpressionStatement","Condition"]
+            WITH DISTINCT caller
+            MATCH (caller)-[:IS_AST_PARENT*]->(cexpr:GenericNode {type:"CallExpression"})
+            WHERE NOT (cexpr)<-[:IS_AST_PARENT*]-(:GenericNode {type:"CallExpression"})
+            WITH caller,cexpr
+            MATCH (caller)-[calrel:FLOWS_TO]->(callee:UpstreamNode {type:"CFGEntryNode"})
+            WITH caller,cexpr,calrel,callee
+            MATCH (cexpr)-[:IS_AST_PARENT]->(
                 arglst:GenericNode {type:"ArgumentList"}
             )-[:IS_AST_PARENT]->(
                 arg:GenericNode {type:"Argument"}
             )-[:USE]->(sym:GenericNode {type:"Symbol"})<-[:USE]-(
                 caller
             )<-[df0:REACHES]-(src:DownstreamNode)-[:DEF]->(sym)
-            delete df0
-            with caller,calrel,callee,arg,src
-            match (callee)-[:FLOWS_TO|CONTROLS]->(
+            DELETE df0
+            WITH caller,calrel,callee,arg,src
+            MATCH (callee)-[:FLOWS_TO|CONTROLS]->(
                 param:DownstreamNode {type:"Parameter",childNum:arg.childNum}
             )-[:DEF]->(sym:GenericNode {type:"Symbol"})
-            with caller,calrel,callee,src,param,sym
-            merge (src)-[:REACHES {var:sym.code}]->(param)
-            with caller,calrel,callee,param,sym
-            match (param)-[rpr:REACHES]->()
+            WITH caller,calrel,callee,src,param,sym
+            MERGE (src)-[:REACHES {var:sym.code}]->(param)
+            WITH caller,calrel,callee,param,sym
+            MATCH (param)-[rpr:REACHES]->()
             set rpr.src=sym.code
-            with caller,calrel,callee
-            match (callee)-[:CONTROLS*]->(ret:DownstreamNode {type:"ReturnStatement"})
-            where callee<>ret
-            merge (ret)-[:REACHES {callerid:id(calrel)}]->(caller)
+            WITH caller,calrel,callee
+            MATCH (callee)-[:CONTROLS*]->(ret:DownstreamNode {type:"ReturnStatement"})
+            WHERE callee<>ret
+            MERGE (ret)-[:REACHES {callerid:ID(calrel)}]->(caller)
         """,
+        # Remove redundant dataflow/shortcuts
         """
-            // Remove redundant dataflow/shortcuts
-            match (tc:GenericNode {type:"Testcase"})<-[
+            MATCH (tc:GenericNode {type:"Testcase"})<-[
                 :IS_FILE_OF
             ]-(:GenericNode {type:"File"})-[
                 :IS_FILE_OF
             ]->(:GenericNode {type:"Function",code:"main"})-[
                 :IS_FUNCTION_OF_CFG
             ]->(main:UpstreamNode {type:"CFGEntryNode"})
-            where id(tc)=%d
-            with distinct main
-            match (main)-[
-                :FLOWS_TO*
-            ]->(
-                src:GenericNode
-            ) // Find sources (start of data flow on the control flow path)
-            where (src)-[:REACHES]->() and not (src)<-[:REACHES]-()
-            with distinct src
-            match pm1=(src)-[
-                r1:REACHES*
-            ]->(dst:GenericNode) // Find destinations (end of dataflow)
-            where not (dst)-[:REACHES]->()
-                and all(idx in range(1,size(r1)-1) 
-                where r1[idx-1].var in [
-                    r1[idx].var, r1[idx].src
-                ]) // Ensure we follow the same variable
-            with distinct src, dst, r1[-1].var as var, pm1 
-                order by length(pm1) // Order paths my length
-            // Group path by source, destination and variable
-            with distinct src, dst, var, collect(pm1) as paths 
-            unwind range(0, size(paths)-2) as idx
-            with src, dst, paths[idx] as shorter, paths[idx+1] as longer
-            where all(
-                n in nodes(shorter) where n in nodes(longer)
-            ) // Check if the shorter path is a subset of the longer path
-            with src, dst, filter(
-                r in relationships(shorter) where not r in relationships(longer)
-            ) as xr // Retrieve extraneous relationship / shortcuts in the shorter path 
-            foreach(r in xr | delete r) // Delete the shortcuts
+            WHERE ID(tc)=%d
+            WITH DISTINCT main
+            // Find sources (start of data flow on the control flow path)
+            MATCH (main)-[:FLOWS_TO*]->(src:GenericNode)
+            WHERE (src)-[:REACHES]->() AND NOT (src)<-[:REACHES]-()
+            WITH DISTINCT src
+            // Find destinations (end of dataflow)
+            MATCH pm1=(src)-[r1:REACHES*]->(dst:GenericNode)
+            WHERE NOT (dst)-[:REACHES]->()
+                AND ALL(idx IN RANGE(1,SIZE(r1)-1)
+                // Ensure we follow the same variable
+                WHERE r1[idx-1].var IN [r1[idx].var, r1[idx].src])
+            WITH DISTINCT src, dst, r1[-1].var AS var, pm1
+                ORDER BY LENGTH(pm1) // Order paths by length
+            // Group path by source, destination AND variable
+            WITH DISTINCT src, dst, var, COLLECT(pm1) AS paths
+            UNWIND RANGE(0, SIZE(paths)-2) AS idx
+            WITH src, dst, paths[idx] AS shorter, paths[idx+1] AS longer
+            // Check if the shorter path is a subset of the longer path
+            WHERE ALL(n IN NODES(shorter) WHERE n IN NODES(longer))
+            // Retrieve extraneous relationship / shortcuts IN the shorter path
+            WITH src, dst, FILTER(
+                r IN RELATIONSHIPS(shorter) WHERE NOT r IN RELATIONSHIPS(longer)
+            ) AS xr
+            // Delete the shortcuts
+            FOREACH(r IN xr | DELETE r)
         """,
+        # Propagate dataflow sizes
+        """
+            MATCH (tc:GenericNode {type:"Testcase"})<-[
+                :IS_FILE_OF
+            ]-(:GenericNode {type:"File"})-[
+                :IS_FILE_OF
+            ]->(:GenericNode {type:"Function",code:"main"})-[
+                :IS_FUNCTION_OF_CFG
+            ]->(main:UpstreamNode {type:"CFGEntryNode"})
+            WHERE ID(tc)=%d
+            WITH DISTINCT main
+            MATCH (main)-[:FLOWS_TO*]->(:GenericNode)-[r1:REACHES]->(n:GenericNode)-[r2:REACHES]->()
+            WHERE EXISTS(r1.size) AND NOT EXISTS(r2.size)
+              AND r1.var IN [r2.var, r2.src]
+            SET r2.size=r1.size
+            WITH DISTINCT n, r1, r2
+            MATCH p=(n)-[r2]->(:GenericNode)-[:REACHES*]->(:GenericNode)
+            WHERE ALL(idx IN RANGE(1, SIZE(RELATIONSHIPS(p))-1)
+              WHERE NOT EXISTS(RELATIONSHIPS(p)[idx].size)
+                AND RELATIONSHIPS(p)[idx-1].var IN [RELATIONSHIPS(p)[idx].var, RELATIONSHIPS(p)[idx].src])
+            UNWIND RELATIONSHIPS(p) AS r3
+            SET r3.size=r1.size
+        """
     ]
 
     interproc_cmds_post = [
+        # Label data sinks
         """
-            // Label data sinks
             MATCH (s:GenericNode)-[:REACHES]->(d:GenericNode)
             WHERE s<>d AND NOT (d)-[:REACHES]->(:GenericNode)
             SET d:DataSinkNode
