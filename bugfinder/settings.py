@@ -26,16 +26,12 @@ LOGGER_CONFIG = {
             "class": "logging.handlers.RotatingFileHandler",
             "formatter": "default",
             "filename": f"{ROOT_DIR}/debug.log",
-#            "maxBytes": 25000,
-#            "backupCount": 0,
+            #            "maxBytes": 25000,
+            #            "backupCount": 0,
         },
     },
     "loggers": {
-        "app": {
-            "level": "DEBUG",
-            "handlers": ["console", "file"],
-            "propagate": "no",
-        }
+        "app": {"level": "DEBUG", "handlers": ["console", "file"], "propagate": "no",}
     },
 }
 

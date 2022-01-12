@@ -18,11 +18,7 @@ from bugfinder.utils.progressbar import SlowBar, MultiBar
 
 
 def interproc_worker(progress_bar, cmds, tcid, q, port):
-    db = Graph(
-        scheme="http",
-        host="0.0.0.0",
-        port=port,
-    )
+    db = Graph(scheme="http", host="0.0.0.0", port=port,)
     progress_bar.subscribe(len(cmds))
     for idx in range(q, len(cmds)):
         cmd = cmds[idx]
@@ -486,7 +482,7 @@ class InterprocMerger(InterprocProcessing):
                 AND RELATIONSHIPS(p)[idx-1].var IN [RELATIONSHIPS(p)[idx].var, RELATIONSHIPS(p)[idx].src])
             UNWIND RELATIONSHIPS(p) AS r3
             SET r3.size=r1.size
-        """
+        """,
     ]
 
     interproc_cmds_post = [

@@ -86,11 +86,7 @@ class FeatureExtractorGetLabelFromFlowgraph(TestCase):
     def test_format_is_correct(self):
         expected_label = "source-flow1-sink"
         returned_label = self.dataset_processing.get_label_from_flowgraph(
-            {
-                "source": "source",
-                "sink": "sink",
-                "flow": "flow1",
-            }
+            {"source": "source", "sink": "sink", "flow": "flow1",}
         )
 
         self.assertEqual(returned_label, expected_label)

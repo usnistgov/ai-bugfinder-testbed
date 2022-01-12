@@ -2,13 +2,14 @@
 """
 
 import tensorflow as tf
-#from sklearn.metrics import classification_report
-#from sklearn.model_selection import train_test_split
+
+# from sklearn.metrics import classification_report
+# from sklearn.model_selection import train_test_split
 
 from bugfinder.dataset.processing import DatasetProcessing, DatasetProcessingCategory
 from bugfinder.settings import LOGGER
 from bugfinder.models.sequential import SequentialModel
-from bugfinder.dataset.processing.interproc_utils import process_features 
+from bugfinder.dataset.processing.interproc_utils import process_features
 
 
 class InterprocLSTMTraining(SequentialModel):
@@ -43,7 +44,8 @@ class InterprocLSTMTraining(SequentialModel):
         self.processing_stats["last_results"] = {}
 
         input_train, input_test, output_train, output_test = process_features(
-                kwargs["features_file"], kwargs["feature_map_file"], test_data_ratio=.33)
+            kwargs["features_file"], kwargs["feature_map_file"], test_data_ratio=0.33
+        )
 
         # Initialize model dir and backup dir
         # FIXME make sure your model can save to/load from the 'model_dir'
@@ -58,11 +60,13 @@ class InterprocLSTMTraining(SequentialModel):
         layers = [
             tf.keras.layers.InputLayer(input_shape=input_train.shape[-2:]),
             # Masking layer to avoid training on padding
-            tf.keras.layers.Masking(mask_value=0.),
+            tf.keras.layers.Masking(mask_value=0.0),
             # Shape [batch, path, features] => [batch, time, lstm_units]
-            tf.keras.layers.LSTM(16, return_sequences=True, dropout=.33, recurrent_dropout=.33),
+            tf.keras.layers.LSTM(
+                16, return_sequences=True, dropout=0.33, recurrent_dropout=0.33
+            ),
             # Shape => [batch, path, features]
-            #tf.keras.layers.Dense(units=16)
+            # tf.keras.layers.Dense(units=16)
         ]
         model = self.init_model(layers, None, **kwargs)
         model.compile(
@@ -83,7 +87,7 @@ class InterprocLSTMTraining(SequentialModel):
                 x=input_train,
                 y=output_train,
                 epochs=1,
-                validation_split=.33,
+                validation_split=0.33,
                 shuffle=True,
                 use_multiprocessing=True,
             )
@@ -91,10 +95,6 @@ class InterprocLSTMTraining(SequentialModel):
         # Evaluate the model and save the predictions
         LOGGER.info(
             model.evaluate(
-                x=input_test,
-                y=output_test,
-                use_multiprocessing=True,
-                return_dict=True,
+                x=input_test, y=output_test, use_multiprocessing=True, return_dict=True,
             )
         )
-

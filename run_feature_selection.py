@@ -22,9 +22,7 @@ from bugfinder.features.reduction.recursive_feature_elimination import (
 from bugfinder.features.reduction.sequential_feature_selector import (
     FeatureSelector as SequentialFeatureSelector,
 )
-from bugfinder.features.reduction.auto_encoder import (
-    FeatureSelector as AutoEncoder,
-)
+from bugfinder.features.reduction.auto_encoder import FeatureSelector as AutoEncoder
 from bugfinder.utils.feature_selection import selection_estimators
 from bugfinder.utils.processing import is_operation_valid
 
@@ -48,10 +46,7 @@ if __name__ == "__main__":
     }
 
     feature_selectors = {  # Available feature selection and options
-        "pca": {
-            "class": PCA,
-            "options": [generic_options["dimension"]],
-        },
+        "pca": {"class": PCA, "options": [generic_options["dimension"]],},
         "variance": {
             "class": VarianceThreshold,
             "options": [
@@ -67,11 +62,7 @@ if __name__ == "__main__":
                 {
                     "args": ["--function", "-fn"],
                     "kwargs": {
-                        "choices": [
-                            "chi2",
-                            "f_classif",
-                            "mutual_info_classif",
-                        ],
+                        "choices": ["chi2", "f_classif", "mutual_info_classif",],
                         "help": "score function",
                     },
                 },

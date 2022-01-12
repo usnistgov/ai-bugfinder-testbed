@@ -235,9 +235,8 @@ class CWEClassificationDataset:
 
             operation_category = operation_class.metadata["category"]
 
-            if (
-                operation_category not in self.summary.keys()
-                and operation_category != str(DatasetProcessingCategory.__NONE__)
+            if operation_category not in self.summary.keys() and operation_category != str(
+                DatasetProcessingCategory.__NONE__
             ):
                 self.summary[operation_category] = list()
 

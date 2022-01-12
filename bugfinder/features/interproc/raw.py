@@ -36,7 +36,7 @@ class FeatureExtractor(Neo4J3Processing):
         return self.neo4j_db.run(list_entrypoints_cmd).data()
 
     def get_flowgraph_list_for_entrypoint(self, entrypoint):
-        # Returns all control flows throughout all test cases. Each flow or 
+        # Returns all control flows throughout all test cases. Each flow or
         # path has a hopefully unique random ID path_id. Steps of each path
         # are returned on separate, sequential rows. Paths have to be put back
         # together later on using their path_id. Each row contains the following:
@@ -89,7 +89,9 @@ class FeatureExtractor(Neo4J3Processing):
                     # FIXME We discard pointer/reference indicators and consider
                     # a pointer to a variable the same as the variable itself
                     # Note: return values from function calls are None
-                    ivar = inflow[VAR].split(' ')[-1] if inflow[VAR] is not None else None
+                    ivar = (
+                        inflow[VAR].split(" ")[-1] if inflow[VAR] is not None else None
+                    )
                     if ivar in ivars:
                         # This variable is already known, handle its size
                         if inflow[SIZ] is not None:
@@ -97,7 +99,7 @@ class FeatureExtractor(Neo4J3Processing):
                                 # Size was unknown until now, update it
                                 ivars[ivar]["size"] = inflow[SIZ]
                             else:
-                                # Ensure the size of this inflow is the 
+                                # Ensure the size of this inflow is the
                                 # same as any size previously recorded
                                 assert inflow[SIZ] == ivars[ivar]["size"]
                         # Add the inflow node to the list for this variable
@@ -106,8 +108,9 @@ class FeatureExtractor(Neo4J3Processing):
                     else:
                         # New variable, create a new entry
                         ivars[ivar] = {
-                                "size": 0 if inflow[SIZ] is None else inflow[SIZ],
-                                "nodes": [inflow[AST]]}
+                            "size": 0 if inflow[SIZ] is None else inflow[SIZ],
+                            "nodes": [inflow[AST]],
+                        }
                 # Store the inflows in the order they are used by the node
                 step["inflow"] = [ivars[iv] for iv in step["iorder"] if iv in ivars]
 
@@ -126,7 +129,8 @@ class FeatureExtractor(Neo4J3Processing):
                         f"Large inflow for path {path_id}: node={step['id']} "
                         f"ast={step['ast']} inflow={step['inflow']}. "
                         f"Check that the test case has been fully processed "
-                        f"or that this is not another Joern bug.")
+                        f"or that this is not another Joern bug."
+                    )
                 with self.catlock:
                     if cat in self.cats:
                         if inflow not in self.cats[cat]:
@@ -147,13 +151,14 @@ class FeatureExtractor(Neo4J3Processing):
 
         LOGGER.info(
             f"Retrieved {len(entrypoint_list)} "
-            f"entrypoints. Querying for flowgraphs...")
+            f"entrypoints. Querying for flowgraphs..."
+        )
 
         # Extract features from each test case in a separate thread
         with ThreadPoolExecutor(max_workers=POOL_SIZE) as executor:
-            #res = executor.map(self.extract_features_worker, entrypoint_list)
+            # res = executor.map(self.extract_features_worker, entrypoint_list)
             res = thread_map(self.extract_features_worker, entrypoint_list)
-            features = {k:v for d in res for k,v in d.items()}
+            features = {k: v for d in res for k, v in d.items()}
 
         LOGGER.info(f"Retrieved {len(features)} paths.")
 
@@ -175,9 +180,8 @@ class FeatureExtractor(Neo4J3Processing):
     def write_extraction_outputs(self, features):
         output_file = join(self.dataset.feats_dir, "interproc-features.json")
         with open(output_file, "w") as json_file:
-            json.dump(features, json_file, sort_keys=True, indent='  ')
+            json.dump(features, json_file, sort_keys=True, indent="  ")
 
         featmap_file = join(self.dataset.feats_dir, "interproc-feature-map.json")
         with open(featmap_file, "w") as json_file:
-            json.dump(self.cats, json_file, sort_keys=True, indent='  ')
-
+            json.dump(self.cats, json_file, sort_keys=True, indent="  ")
