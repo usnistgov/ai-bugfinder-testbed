@@ -28,47 +28,47 @@ def process_features(features_file, feature_map_file, test_data_ratio=.33):
     LOGGER.info(f"Longest seq.: {max_pathlen}")
 
     # x: ast, inflow, outflow, end_of_path for each step
-    x_len = len(fmap) + max_inflow*(1+len(fmap)) + max_outflow + 1
-    LOGGER.info(f"Feature size: {x_len}x{max_pathlen}")
+    x_len = max_pathlen * (len(fmap) + max_inflow*(1+len(fmap)) + max_outflow)
+    LOGGER.info(f"Feature size: {x_len}")
     # y: sink for each step
-    y_len = 1
-    x = np.zeros((len(feat), max_pathlen, x_len))
-    y = np.zeros((len(feat), max_pathlen, y_len))
-    for p_idx, path in enumerate(feat.values()):
-        for s_idx, step in enumerate(path):
-            _x = x[p_idx][s_idx]
-            _y = y[p_idx][s_idx]
-            _x_idx, _y_idx = 0, 0
+    y_len = max_pathlen * 1
+    x = np.zeros((len(feat), x_len))
+    y = np.zeros((len(feat), y_len))
+    xy_idx = 0
+    for path_id, path in feat.items():
+        _x = x[xy_idx]
+        _y = y[xy_idx]
+        xy_idx += 1
+        _x_idx, _y_idx = 0, 0
+        for step in path:
             # Append a flag describing if the current node/step is a sink
             _y[_y_idx] = 1. if step["sink"] else 0.
+            _y_idx += 1
             # Convert node's AST to one-hot tensor
-            _x[_x_idx:_x_idx+len(fmap)] = nmap[step["ast"]]
-            _x_idx += len(fmap)
+            x_len = len(fmap)
+            _x[_x_idx:_x_idx+x_len] = nmap[step["ast"]]
+            _x_idx += x_len
             # Calculate the largest data size to enable scaling
             max_size = float(max(
                     max(step["outflow"]) if step["outflow"] else 0.,
                     max([ifl["size"] for ifl in step["inflow"]]) if step["inflow"] else 0.))
-            for i_idx in range(max_inflow):
-                if i_idx < len(step["inflow"]):
-                    inflow = step["inflow"][i_idx]
-                    # Inflow tensor: [size, multiplexed one-hot tensor of inflow node's AST]
-                    # Size is scaled between 0. and 1.
-                    _x[_x_idx] = float(inflow["size"]) / max_size if max_size > 0. else 0.
-                    # Append the current inflow tensor to the full input tensor
-                    for ast in inflow["nodes"]:
-                        # Multiplex one-hot vector of all inflow nodes' AST
-                        _x[_x_idx+1:_x_idx+len(fmap)+1] += nmap[ast]
-                _x_idx += len(fmap) + 1
-            for o_idx in range(max_outflow):
-                if o_idx < len(step["outflow"]):
-                    outflow_size = step["outflow"][o_idx]
-                    # Outflow tensor: [size]
-                    _x[_x_idx] = float(outflow_size) / max_size if max_size > 0. else 0.
+            for inflow in step["inflow"]:
+                # Inflow tensor: [size, multiplexed one-hot tensor of inflow node's AST]
+                # Size is scaled between 0. and 1.
+                _x[_x_idx] = float(inflow["size"]) / max_size if max_size > 0. else 0.
+                _x_idx += 1
+                # Append the current inflow tensor to the full input tensor
+                for ast in inflow["nodes"]:
+                    # Multiplex one-hot vector of all inflow nodes' AST
+                    x_len = len(fmap)
+                    _x[_x_idx:_x_idx+x_len] += nmap[ast]
+                    _x_idx += x_len
+            for outflow_size in step["outflow"]:
+                # Outflow tensor: [size]
+                _x[_x_idx] = float(outflow_size) / max_size if max_size > 0. else 0.
                 _x_idx += 1
             # Append a flag describing whether this step is the last in the path
             _x[_x_idx] = 0.
-            _x_idx += 1
-            assert _x_idx == x_len
         # Flip the flag to indicate this was the last step in the path
         _x[-1] = 1.
 

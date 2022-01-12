@@ -62,7 +62,7 @@ class FeatureExtractor(Neo4J3Processing):
             OPTIONAL MATCH (n)<-[inflow_r:REACHES]-(inflow_n)
             OPTIONAL MATCH (n)-[outflow_r:REACHES]->()
             WITH DISTINCT path_id, sink, n, iorder, inflow_n, PROPERTIES(inflow_r) AS inflow_r, PROPERTIES(outflow_r) AS outflow_r
-            WHERE inflow_r IS NOT null OR outflow_r IS NOT null
+            WHERE inflow_r IS NOT NULL OR outflow_r IS NOT NULL
             RETURN path_id, sink, id(n) AS id, n.ast AS ast, iorder, COLLECT(DISTINCT [inflow_n.ast, inflow_r.var, inflow_r.size]) AS inflow, COLLECT(DISTINCT outflow_r.size) AS outflow
         """
         return self.neo4j_db.run(flowgraph_command % entrypoint["id"]).data()
