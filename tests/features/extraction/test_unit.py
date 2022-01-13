@@ -592,7 +592,7 @@ class FlowGraphFeatureExtractorExtractFeatures(TestCase):
         mock_finalize_features.return_value = None
         mock_get_flowgraph_list_for_entrypoint.return_value = []
         mock_initialize_features.return_value = []
-        mock_get_entrypoint_list.return_value = ["entrypoint"]
+        mock_get_entrypoint_list.return_value = [{"function_id": 12, "entry_id": 34}]
         mock_get_labels_from_feature_map.return_value = []
         self.dataset_processing.extract_features()
 
@@ -621,7 +621,7 @@ class FlowGraphFeatureExtractorExtractFeatures(TestCase):
         mock_finalize_features.return_value = None
         mock_get_flowgraph_list_for_entrypoint.return_value = []
         mock_initialize_features.return_value = []
-        mock_get_entrypoint_list.return_value = ["entrypoint"]
+        mock_get_entrypoint_list.return_value = [{"function_id": 12, "entry_id": 34}]
         mock_get_labels_from_feature_map.return_value = []
         self.dataset_processing.extract_features()
 
@@ -656,7 +656,7 @@ class FlowGraphFeatureExtractorExtractFeatures(TestCase):
         mock_get_label_from_flowgraph.return_value = None
         mock_get_flowgraph_list_for_entrypoint.return_value = ["mock_flowgraph"]
         mock_initialize_features.return_value = []
-        mock_get_entrypoint_list.return_value = ["entrypoint"]
+        mock_get_entrypoint_list.return_value = [{"function_id": 12, "entry_id": 34}]
         mock_get_labels_from_feature_map.return_value = []
         self.dataset_processing.extract_features()
 
@@ -697,7 +697,7 @@ class FlowGraphFeatureExtractorExtractFeatures(TestCase):
         mock_get_label_from_flowgraph.return_value = "mock_label"
         mock_get_flowgraph_list_for_entrypoint.return_value = ["mock_flowgraph"]
         mock_initialize_features.return_value = [0]
-        mock_get_entrypoint_list.return_value = ["entrypoint"]
+        mock_get_entrypoint_list.return_value = [{"function_id": 12, "entry_id": 34}]
         mock_get_labels_from_feature_map.return_value = ["mock_label"]
         self.dataset_processing.extract_features()
 
@@ -726,7 +726,7 @@ class FlowGraphFeatureExtractorExtractFeatures(TestCase):
         mock_finalize_features.return_value = None
         mock_get_flowgraph_list_for_entrypoint.return_value = []
         mock_initialize_features.return_value = []
-        mock_get_entrypoint_list.return_value = ["entrypoint"]
+        mock_get_entrypoint_list.return_value = [{"function_id": 12, "entry_id": 34}]
         mock_get_labels_from_feature_map.return_value = []
         self.dataset_processing.extract_features()
 
@@ -769,7 +769,7 @@ class FlowGraphFeatureExtractorExtractFeatures(TestCase):
             "mock_flowgraph_2",
         ]
         mock_initialize_features.return_value = [0]
-        mock_get_entrypoint_list.return_value = ["entrypoint"]
+        mock_get_entrypoint_list.return_value = [{"function_id": 12, "entry_id": 34}]
         mock_get_labels_from_feature_map.return_value = ["mock_label_1"]
 
         returned_features = self.dataset_processing.extract_features()

@@ -37,7 +37,7 @@ class FeatureExtractorGetFlowgraphListForEntrypoint(TestCase):
 
     @patch("bugfinder.neo4j.Neo4J3Processing.neo4j_db")
     def test_neo4j_db_run_is_called(self, mock_neo4j_db):
-        self.dataset_processing.get_flowgraph_list_for_entrypoint({"id": None})
+        self.dataset_processing.get_flowgraph_list_for_entrypoint({"function_id": None})
 
         self.assertTrue(mock_neo4j_db.run.called)
 
@@ -56,7 +56,7 @@ class FeatureExtractorGetFlowgraphListForEntrypoint(TestCase):
         mock_neo4j_db.run.side_effect = lambda _: MockNeo4JRunData()
 
         returned_flowgraphs = self.dataset_processing.get_flowgraph_list_for_entrypoint(
-            {"id": None}
+            {"function_id": None}
         )
 
         self.assertListEqual(returned_flowgraphs, expected_flowgraphs)
