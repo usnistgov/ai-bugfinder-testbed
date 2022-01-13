@@ -11,4 +11,6 @@ RUN apt-get update \
         ${LIB_FOLDER}/opencsv-2.3.jar \
     && wget http://dist.neo4j.org/jexp/shell/neo4j-shell-tools_3.0.1.zip \
         -O ${ZIP_FILE} \
-    && unzip ${ZIP_FILE} -d ${LIB_FOLDER}
+    && unzip ${ZIP_FILE} -d ${LIB_FOLDER} \
+    && wget https://github.com/neo4j-contrib/neo4j-apoc-procedures/releases/download/3.5.0.11/apoc-3.5.0.11-all.jar \
+      -O /var/lib/neo4j/plugins/apoc-3.5.0.11-all.jar
