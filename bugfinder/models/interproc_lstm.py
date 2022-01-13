@@ -95,6 +95,9 @@ class InterprocLSTMTraining(SequentialModel):
         # Evaluate the model and save the predictions
         LOGGER.info(
             model.evaluate(
-                x=input_test, y=output_test, use_multiprocessing=True, return_dict=True,
+                x=input_test,
+                y=output_test,
+                use_multiprocessing=True,
+                return_dict=True,
             )
         )

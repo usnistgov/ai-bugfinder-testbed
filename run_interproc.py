@@ -37,7 +37,9 @@ if __name__ == "__main__":
                 "log_input": args.run_failed,
                 "log_output": args.log_failed,
             },
-            "container_config": {"timeout": args.timeout,},
+            "container_config": {
+                "timeout": args.timeout,
+            },
         },
     )
     dataset.process()

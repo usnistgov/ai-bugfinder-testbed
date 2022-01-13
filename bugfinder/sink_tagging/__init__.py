@@ -14,7 +14,11 @@ from bugfinder.utils.progressbar import MultiBar
 
 
 def sinktagging_worker(progress_bar, tc_name, tc_info, port):
-    db = Graph(scheme="http", host="0.0.0.0", port=port,)
+    db = Graph(
+        scheme="http",
+        host="0.0.0.0",
+        port=port,
+    )
 
     tcid = tc_info["tcid"]
     if not tc_info["sinks"]:
@@ -107,14 +111,20 @@ class SinkTaggingProcessing(Neo4J3Processing):
             with open(self.log_input, "r") as inlog:
                 failed = list(inlog)
             tc_list = {
-                ln.split(",")[1]: {"tcid": int(ln.split(",")[0]), "sinks": [],}
+                ln.split(",")[1]: {
+                    "tcid": int(ln.split(",")[0]),
+                    "sinks": [],
+                }
                 for ln in failed
             }
         else:
             # Read test cases from the database otherwise
             LOGGER.info("Retrieving testcases...")
             tc_list = {
-                tc["name"]: {"tcid": tc["id"], "sinks": [],}
+                tc["name"]: {
+                    "tcid": tc["id"],
+                    "sinks": [],
+                }
                 for tc in self.neo4j_db.run(
                     """
                         MATCH (tc:GenericNode {type:"Testcase",label:"bad"})

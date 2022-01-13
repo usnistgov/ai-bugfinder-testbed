@@ -105,7 +105,11 @@ class GraphFeatureExtractorGetEntrypointList(TestCase):
 class GraphFeatureExtractorCreateFeatureMapFile(TestCase):
     def setUp(self) -> None:
         patch_paths(
-            self, ["bugfinder.dataset.LOGGER", "bugfinder.features.extraction.LOGGER",],
+            self,
+            [
+                "bugfinder.dataset.LOGGER",
+                "bugfinder.features.extraction.LOGGER",
+            ],
         )
 
         self.dataset_path = "./tests/fixtures/dataset01"

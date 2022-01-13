@@ -46,7 +46,10 @@ if __name__ == "__main__":
     }
 
     feature_selectors = {  # Available feature selection and options
-        "pca": {"class": PCA, "options": [generic_options["dimension"]],},
+        "pca": {
+            "class": PCA,
+            "options": [generic_options["dimension"]],
+        },
         "variance": {
             "class": VarianceThreshold,
             "options": [
@@ -62,7 +65,11 @@ if __name__ == "__main__":
                 {
                     "args": ["--function", "-fn"],
                     "kwargs": {
-                        "choices": ["chi2", "f_classif", "mutual_info_classif",],
+                        "choices": [
+                            "chi2",
+                            "f_classif",
+                            "mutual_info_classif",
+                        ],
                         "help": "score function",
                     },
                 },

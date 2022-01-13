@@ -41,7 +41,8 @@ class FeatureExtractorExecute(TestCase):
         mock_copy.assert_called_with(
             join(self.dataset.feats_dir, "features.csv"),
             join(
-                self.dataset.feats_dir, "features.%d.csv" % self.dataset.feats_version,
+                self.dataset.feats_dir,
+                "features.%d.csv" % self.dataset.feats_version,
             ),
         )
 

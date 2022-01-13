@@ -29,7 +29,8 @@ class CopyDataset(DatasetProcessing):
         # Fix rights of the original dataset
         orig_dataset = Dataset(self.dataset.path, silent=True)
         orig_dataset.queue_operation(
-            RightFixer, {"command_args": ". %s %s" % (os.getuid(), os.getgid())},
+            RightFixer,
+            {"command_args": ". %s %s" % (os.getuid(), os.getgid())},
         )
         orig_dataset.process(silent=True)
 

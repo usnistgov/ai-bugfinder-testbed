@@ -18,7 +18,11 @@ from bugfinder.utils.progressbar import SlowBar, MultiBar
 
 
 def interproc_worker(progress_bar, cmds, tcid, q, port):
-    db = Graph(scheme="http", host="0.0.0.0", port=port,)
+    db = Graph(
+        scheme="http",
+        host="0.0.0.0",
+        port=port,
+    )
     progress_bar.subscribe(len(cmds))
     for idx in range(q, len(cmds)):
         cmd = cmds[idx]

@@ -64,7 +64,9 @@ class TestNeo4J3ProcessingConfigureContainer(TestCase):
 
         self.assertDictEqual(
             self.dataset_processing.volumes,
-            {self.dataset.neo4j_dir: "/data/databases/graph.db",},
+            {
+                self.dataset.neo4j_dir: "/data/databases/graph.db",
+            },
         )
 
 
