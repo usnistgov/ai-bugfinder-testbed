@@ -65,7 +65,7 @@ class FeatureExtractor(Neo4J3Processing):
             WHERE inflow_r IS NOT NULL OR outflow_r IS NOT NULL
             RETURN path_id, sink, id(n) AS id, n.ast AS ast, iorder, COLLECT(DISTINCT [inflow_n.ast, inflow_r.var, inflow_r.size]) AS inflow, COLLECT(DISTINCT outflow_r.size) AS outflow
         """
-        return self.neo4j_db.run(flowgraph_command % entrypoint["id"]).data()
+        return self.neo4j_db.run(flowgraph_command % entrypoint["function_id"]).data()
 
     def extract_features_worker(self, args):
         # Extract all annotated control flows for a particular test case

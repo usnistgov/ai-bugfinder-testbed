@@ -22,7 +22,7 @@ class FeatureExtractor(FlowGraphFeatureExtractor):
         for flow in self.FLOWS:
             flow_information = {"flow": flow}
             flowgraph_data_list = self.neo4j_db.run(
-                flowgraph_command % (flow, entrypoint["id"])
+                flowgraph_command % (flow, entrypoint["function_id"])
             ).data()
 
             for flowgraph_data in flowgraph_data_list:
