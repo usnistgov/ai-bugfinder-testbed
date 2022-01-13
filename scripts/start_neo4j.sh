@@ -17,6 +17,9 @@ docker run -dt --name ${CONTAINER_NAME} \
     -e NEO4J_dbms_allow__upgrade=true \
     -e NEO4J_dbms_shell_enabled=true \
     -e NEO4J_dbms_transaction_timeout=2h \
+    -e NEO4J_dbms_query__cache__size=0 \
+    -e NEO4J_cypher_min__replan__interval=24h \
+    -e NEO4J_cypher_statistics__divergence__threshold=1.0 \
     -e NEO4J_AUTH=none \
     -p 7474:7474 -p 7473:7473 -p 7687:7687 \
     -v ${DATABASE_FOLDER}:/data/databases/graph.db \
