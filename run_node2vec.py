@@ -97,7 +97,7 @@ if __name__ == "__main__":
         "seed": args.seed,
     }
     op_args.update(kwargs)
-    
+
     operation = {
         "class": options[args.model],
         "args": op_args,

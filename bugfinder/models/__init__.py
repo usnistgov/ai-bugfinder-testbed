@@ -54,27 +54,31 @@ class Node2VecModel(DatasetProcessing):
         edges = self.get_all_edges()
 
         graph = nx.Graph()
-        graph = nx.from_pandas_edgelist(edges, 'start', 'end')
+        graph = nx.from_pandas_edgelist(edges, "start", "end")
 
         LOGGER.debug("Number of nodes in the graph: %d nodes", len(graph.nodes()))
         LOGGER.debug("Number of edges in the graph: %d edges", len(graph.edges))
 
         LOGGER.info("Initializing node2vec model...")
 
-        node2vec = Node2VecImplementation(graph,
-                                        dimensions=self.vector_length,
-                                        walk_length=self.walk_length,
-                                        num_walks=self.num_walks,
-                                        p=self.p,
-                                        q=self.q,
-                                        seed=self.seed)
+        node2vec = Node2VecImplementation(
+            graph,
+            dimensions=self.vector_length,
+            walk_length=self.walk_length,
+            num_walks=self.num_walks,
+            p=self.p,
+            q=self.q,
+            seed=self.seed,
+        )
 
-        model = node2vec.fit(window=self.window_dim,
-                            min_count=self.min_count,
-                            vector_size=self.vector_length,
-                            workers=self.workers,
-                            sg=self.algorithm,
-                            seed=self.seed)
+        model = node2vec.fit(
+            window=self.window_dim,
+            min_count=self.min_count,
+            vector_size=self.vector_length,
+            workers=self.workers,
+            sg=self.algorithm,
+            seed=self.seed,
+        )
 
         LOGGER.info("Training complete. Saving the model...")
 
@@ -102,23 +106,30 @@ class Node2VecModel(DatasetProcessing):
 
             in_path = join(self.dataset.path, filepath)
 
-            if 'edges' in in_path:
-                csv_edge_file = pd.read_csv(in_path, sep='\t', usecols=['start', 'end', 'type'])
+            if "edges" in in_path:
+                csv_edge_file = pd.read_csv(
+                    in_path, sep="\t", usecols=["start", "end", "type"]
+                )
 
                 if not csv_edge_file.empty:
-                    csv_edge_file = csv_edge_file.loc[(csv_edge_file['type'] == 'REACHES') |
-                                                    (csv_edge_file['type'] == 'FLOWS_TO')]
+                    csv_edge_file = csv_edge_file.loc[
+                        (csv_edge_file["type"] == "REACHES")
+                        | (csv_edge_file["type"] == "FLOWS_TO")
+                    ]
                     LOGGER.debug(
-                        "Processing %s: %d edges found.", filepath, len(csv_edge_file.index)
+                        "Processing %s: %d edges found.",
+                        filepath,
+                        len(csv_edge_file.index),
                     )
 
                     edges_list.append(csv_edge_file)
                 else:
-                    LOGGER.debug(
-                        "Ignoring %s: Empty dataframe.", filepath
-                    )
+                    LOGGER.debug("Ignoring %s: Empty dataframe.", filepath)
 
-        LOGGER.info('List of edges succesfully created. %d files read. Creating dataframe...', len(edges_list))
+        LOGGER.info(
+            "List of edges succesfully created. %d files read. Creating dataframe...",
+            len(edges_list),
+        )
 
         edges_dataframe = pd.concat(edges_list, axis=0, ignore_index=True)
 
@@ -126,7 +137,9 @@ class Node2VecModel(DatasetProcessing):
 
         return edges_dataframe
 
+
 #########################################
+
 
 class Node2VecEmbeddingsBase(DatasetProcessing):
     def __init__(self, dataset):
@@ -208,20 +221,24 @@ class Node2VecEmbeddingsBase(DatasetProcessing):
 
             in_path = join(self.dataset.path, filepath)
 
-            if 'edges' in in_path:
-                csv_edge_file = pd.read_csv(in_path, sep='\t', usecols=['start', 'end', 'type'])
+            if "edges" in in_path:
+                csv_edge_file = pd.read_csv(
+                    in_path, sep="\t", usecols=["start", "end", "type"]
+                )
 
                 if not csv_edge_file.empty:
-                    csv_edge_file = csv_edge_file.loc[(csv_edge_file['type'] == 'REACHES') |
-                                                    (csv_edge_file['type'] == 'FLOWS_TO')]
+                    csv_edge_file = csv_edge_file.loc[
+                        (csv_edge_file["type"] == "REACHES")
+                        | (csv_edge_file["type"] == "FLOWS_TO")
+                    ]
 
                     # TODO: find a way to create the unique node list without creating the graph
                     graph = nx.Graph()
-                    graph = nx.from_pandas_edgelist(csv_edge_file, 'start', 'end')
+                    graph = nx.from_pandas_edgelist(csv_edge_file, "start", "end")
 
                     file_nodes = list(graph.nodes())
 
-                    processed_nodes['nodes'] = file_nodes
+                    processed_nodes["nodes"] = file_nodes
 
                     nodes_list.append(processed_nodes)
 
@@ -252,6 +269,7 @@ class Node2VecEmbeddingsBase(DatasetProcessing):
             vectors[node] = model.wv[str(nodes["nodes"][node])]
 
         return vectors
+
 
 #########################################
 class Word2VecModel(DatasetProcessing):
@@ -319,6 +337,7 @@ class Word2VecModel(DatasetProcessing):
                 token_list.append(tokens)
 
         return token_list
+
 
 #########################################
 class Word2VecEmbeddingsBase(DatasetProcessing):

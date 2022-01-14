@@ -11,10 +11,7 @@ from bugfinder.settings import LOGGER
 from bugfinder.utils.processing import is_operation_valid
 
 if __name__ == "__main__":
-    options = {
-        "word2vec": Word2VecEmbeddings,
-        "node2vec": Node2VecEmbeddings
-    }
+    options = {"word2vec": Word2VecEmbeddings, "node2vec": Node2VecEmbeddings}
 
     parser = argparse.ArgumentParser()
 
@@ -62,7 +59,7 @@ if __name__ == "__main__":
         "name": args.name,
         "model": args.model,
         "emb_length": args.emb_length,
-        "vec_length": args.vec_length
+        "vec_length": args.vec_length,
     }
 
     op_args.update(kwargs)
