@@ -23,9 +23,11 @@ class GraphFeatureExtractor(Neo4J3Processing):
 
     def _get_entrypoint_list_worker(self, testcase):
         list_entrypoint_cmd = """
-            MATCH (f {type:"Function"})-[:IS_FUNCTION_OF_CFG]->(entry {type:'CFGEntryNode'})
+            MATCH (f {type:"Function"})-[
+                    :IS_FUNCTION_OF_CFG
+                ]->(entry {type:'CFGEntryNode'})
             WHERE id(f)=%d AND NOT (entry)<-[:FLOWS_TO]-()
-            RETURN entry.functionId AS id
+            RETURN entry.functionId AS function_id, id(entry) as entry_id
         """
         testcase_info = {"filepath": testcase["filepath"]}
 
@@ -206,13 +208,20 @@ class FlowGraphFeatureExtractor(GraphFeatureExtractor):
         return features
 
     def extract_features_worker(self, args):
+        """Feature extraction worker for a single entrypoint"""
         entrypoint = args[0]
         labels = args[1]
 
         features_row_entrypoint = self.initialize_features(entrypoint, labels)
 
+        flowgraph_list = self.get_flowgraph_list_for_entrypoint(entrypoint)
+        LOGGER.debug(
+            f"Retrieved {len(flowgraph_list)} flowgraphs for entrypoint "
+            f"{entrypoint['function_id']}"
+        )
+
         # Record and count each unique flow graph
-        for flowgraph in self.get_flowgraph_list_for_entrypoint(entrypoint):
+        for flowgraph in flowgraph_list:
             label = self.get_label_from_flowgraph(flowgraph)
 
             if label not in labels:

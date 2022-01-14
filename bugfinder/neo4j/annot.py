@@ -88,6 +88,7 @@ class Neo4JAnnotations(Neo4J3Processing):
         """
             match (n:GenericNode {type:"IdentifierDeclStatement"})
             where n.code =~ '.* \\\\[ [0-9]* \\\\].*'
+            //where n.code =~ '.* \\[ [0-9]* \\].*'
             with n, split(split(n.code,' [')[0],' ')[-1] as var, toInteger(split(split(n.code,'[ ')[1],' ]')[0]) as sz
             match p=(n)-[:REACHES* {var:var}]->()
             unwind relationships(p) as r

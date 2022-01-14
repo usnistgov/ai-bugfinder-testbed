@@ -53,9 +53,8 @@ class AbstractASTMarkup(Neo4J3Processing):
             "Found %d AST. Prepared %d command bundles."
             % (len(ast_list), len(cmd_list))
         )
-        cmd_index = 0
-
-        for operation_list in cmd_list:
+        # LOGGER.info(cmd_list)
+        for cmd_index, operation_list in enumerate(cmd_list):
             LOGGER.debug("Preparing operations...")
 
             # For each item, create the correct notation
@@ -72,12 +71,12 @@ class AbstractASTMarkup(Neo4J3Processing):
             try:
                 self.neo4j_db.run(self.SET_AST_MARKUP_CMD % ast_update_dict)
             except Exception as e:
-                LOGGER.info(str(e))
+                LOGGER.info(f"Command {cmd_index}: {str(e)}")
+                import traceback
 
-            cmd_index += 1
-            LOGGER.info(
-                "AST command %d/%d successfully run." % (cmd_index, len(cmd_list))
-            )
+                traceback.print_exc()
+            # else:
+            #    LOGGER.info(f"AST command {cmd_index}/{len(cmd_list)} successfully run.")
 
         LOGGER.info("AST updated.")
 

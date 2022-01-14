@@ -27,7 +27,7 @@ def sinktagging_worker(progress_bar, tc_name, tc_info, port):
     sinks_left = len(tc_info["sinks"])
     if sinks_left > 1:
         LOGGER.debug("> Sinks for %s: %d", tc_name, sinks_left)
-    progress_bar.subscribe(max=sinks_left)
+    progress_bar.subscribe(sinks_left)
     for sink in tc_info["sinks"]:
         for tries in range(4):
             try:

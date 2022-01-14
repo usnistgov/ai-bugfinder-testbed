@@ -36,7 +36,7 @@ class FeatureExtractor(FlowGraphFeatureExtractor):
             RETURN source, flow, sink
         """
 
-        return self.neo4j_db.run(flowgraph_command % entrypoint["id"]).data()
+        return self.neo4j_db.run(flowgraph_command % entrypoint["function_id"]).data()
 
     def get_flowgraph_count(self, flowgraph):
         return 1

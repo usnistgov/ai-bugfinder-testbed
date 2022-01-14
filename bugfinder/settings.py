@@ -26,8 +26,8 @@ LOGGER_CONFIG = {
             "class": "logging.handlers.RotatingFileHandler",
             "formatter": "default",
             "filename": f"{ROOT_DIR}/debug.log",
-            "maxBytes": 25000,
-            "backupCount": 3,
+            #            "maxBytes": 25000,
+            #            "backupCount": 0,
         },
     },
     "loggers": {

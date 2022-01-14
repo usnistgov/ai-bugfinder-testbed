@@ -22,9 +22,7 @@ from bugfinder.features.reduction.recursive_feature_elimination import (
 from bugfinder.features.reduction.sequential_feature_selector import (
     FeatureSelector as SequentialFeatureSelector,
 )
-from bugfinder.features.reduction.auto_encoder import (
-    FeatureSelector as AutoEncoder,
-)
+from bugfinder.features.reduction.auto_encoder import FeatureSelector as AutoEncoder
 from bugfinder.utils.feature_selection import selection_estimators
 from bugfinder.utils.processing import is_operation_valid
 

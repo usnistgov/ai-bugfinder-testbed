@@ -1,4 +1,4 @@
-""" Script to run feature extraction
+""" Script to run model training
 """
 import argparse
 import logging
@@ -10,6 +10,7 @@ from bugfinder.models.dnn_classifier import DNNClassifierTraining
 from bugfinder.models.linear_classifier import LinearClassifierTraining
 from bugfinder.models.word2vec import Word2VecTraining
 from bugfinder.models.blstm_classifier import BLSTMClassifierTraining
+from bugfinder.models.interproc_lstm import InterprocLSTMTraining
 
 from bugfinder.settings import LOGGER
 from bugfinder.utils.processing import is_operation_valid
@@ -24,6 +25,7 @@ if __name__ == "__main__":
         "linear_classifier": LinearClassifierTraining,
         "deep_neural_network": DNNClassifierTraining,
         "bidirectional_lstm": BLSTMClassifierTraining,
+        "interproc_lstm": InterprocLSTMTraining,
         "word2vec": Word2VecTraining,
     }
 
@@ -67,6 +69,22 @@ if __name__ == "__main__":
         help="number of epochs",
     )
     parser.add_argument(
+        "--emb_length",
+        "-el",
+        type=int,
+        default=300,
+        required=False,
+        help="embedding length of the input",
+    )
+    parser.add_argument(
+        "--vec_length",
+        "-vl",
+        type=int,
+        default=50,
+        required=False,
+        help="embedding length of the input",
+    )
+    parser.add_argument(
         "--keep-best-model",
         "-k",
         required=False,
@@ -90,6 +108,20 @@ if __name__ == "__main__":
         help="architecture of the DNN",
     )
 
+    parser.add_argument(
+        "--features-file",
+        "-f",
+        required=False,
+        help="file containing the features",
+    )
+
+    parser.add_argument(
+        "--feature-map-file",
+        "-p",
+        required=False,
+        help="file containing the feature map",
+    )
+
     args = parser.parse_args()
     kwargs = dict()
 
@@ -106,8 +138,12 @@ if __name__ == "__main__":
         "batch_size": args.batch_size,
         "max_items": args.limit,
         "epochs": args.epochs,
+        "emb_length": args.emb_length,
+        "vec_length": args.vec_length,
         "keep_best_model": args.keep_best_model,
         "reset": args.reset,
+        "features_file": args.features_file,
+        "feature_map_file": args.feature_map_file,
     }
     op_args.update(kwargs)
 
