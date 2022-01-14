@@ -5,14 +5,25 @@ import os
 from bugfinder.dataset import CWEClassificationDataset as Dataset
 
 from bugfinder.models.word2vec import Word2VecEmbeddings
+from bugfinder.models.node2vec import Node2VecEmbeddings
 
 from bugfinder.settings import LOGGER
 from bugfinder.utils.processing import is_operation_valid
 
 if __name__ == "__main__":
-    options = {"word2vec": Word2VecEmbeddings}
+    options = {
+        "word2vec": Word2VecEmbeddings,
+        "node2vec": Node2VecEmbeddings
+    }
 
     parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "--name",
+        "-n",
+        required=True,
+        help="Which type of embeddings to generate (word2vec or node2vec)",
+    )
 
     parser.add_argument(
         "dataset_path",
@@ -33,6 +44,14 @@ if __name__ == "__main__":
         type=int,
         help="Size of the embedding vector to be created",
     )
+    parser.add_argument(
+        "--vec_length",
+        "-vl",
+        required=False,
+        default=50,
+        type=int,
+        help="Size of the embedding vector to be created",
+    )
 
     args = parser.parse_args()
     kwargs = dict()
@@ -40,15 +59,16 @@ if __name__ == "__main__":
     dataset = Dataset(args.dataset_path)
 
     op_args = {
-        "name": "word2vec",
+        "name": args.name,
         "model": args.model,
         "emb_length": args.emb_length,
+        "vec_length": args.vec_length
     }
 
     op_args.update(kwargs)
 
     operation = {
-        "class": options["word2vec"],
+        "class": options[args.name],
         "args": op_args,
     }
 

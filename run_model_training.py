@@ -69,6 +69,22 @@ if __name__ == "__main__":
         help="number of epochs",
     )
     parser.add_argument(
+        "--emb_length",
+        "-el",
+        type=int,
+        default=300,
+        required=False,
+        help="embedding length of the input",
+    )
+    parser.add_argument(
+        "--vec_length",
+        "-vl",
+        type=int,
+        default=50,
+        required=False,
+        help="embedding length of the input",
+    )
+    parser.add_argument(
         "--keep-best-model",
         "-k",
         required=False,
@@ -122,6 +138,8 @@ if __name__ == "__main__":
         "batch_size": args.batch_size,
         "max_items": args.limit,
         "epochs": args.epochs,
+        "emb_length": args.emb_length,
+        "vec_length": args.vec_length,
         "keep_best_model": args.keep_best_model,
         "reset": args.reset,
         "features_file": args.features_file,
