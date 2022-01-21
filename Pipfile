@@ -7,6 +7,9 @@ verify_ssl = true
 black = "==21.6b0"
 pylint = "~=2.10.0"
 pytest = "*"
+sphinx = "*"
+"sphinxcontrib.napoleon" = "*"
+sphinx-rtd-theme = "*"
 
 [packages]
 docker = "*"

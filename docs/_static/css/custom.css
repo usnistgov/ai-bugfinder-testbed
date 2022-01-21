@@ -1,0 +1,40 @@
+body img {
+    margin: 2rem auto !important;
+}
+
+/** Ensure the icon is vertically centered since the searchbox is not there **/
+.wy-side-nav-search a {
+    font-size: 135% !important;
+    margin-bottom: 0 !important;
+}
+
+/** Make sure the theme is playing ball with NIST header and footer **/
+.document {
+    min-height: 26rem;
+}
+
+.wy-nav-side {
+    top: 45px !important;
+}
+
+.wy-nav-content-wrap {
+    padding-top: 45px !important;
+}
+
+.nist-header {
+    position: fixed !important;
+    width: 100% !important;
+    z-index: 500 !important;
+}
+
+.nist-footer {
+    padding: 10px 0 !important;
+    max-width: 800px !important;
+
+    z-index: 500 !important ;
+}
+
+.nist-footer__logo img {
+    width: 150px !important;
+    margin: 0 auto !important;
+}

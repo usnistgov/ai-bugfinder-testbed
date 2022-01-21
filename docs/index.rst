@@ -1,9 +1,7 @@
-.. include:: ../README.rst
-
+.. include:: readme.rst
 
 .. toctree::
-    :maxdepth: 2
+    :hidden:
+    :maxdepth: 1
 
     readme
-    bugfinder/index
-    tests/index
