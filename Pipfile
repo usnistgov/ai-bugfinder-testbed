@@ -24,6 +24,7 @@ py2neo = "*"
 scikit-learn = "*"
 tensorflow = "*"
 networkx = "*"
+tqdm = "*"
 
 [requires]
 python_version = "3.9"
