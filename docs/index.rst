@@ -2,6 +2,7 @@
 
 .. toctree::
     :hidden:
-    :maxdepth: 1
+    :maxdepth: 2
 
     readme
+    api/index
