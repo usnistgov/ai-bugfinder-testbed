@@ -10,6 +10,7 @@ pytest = "*"
 sphinx = "*"
 "sphinxcontrib.napoleon" = "*"
 sphinx-rtd-theme = "*"
+coverage = "*"
 
 [packages]
 docker = "*"
