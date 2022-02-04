@@ -142,6 +142,3 @@ been implemented. This repository offers two ways of creating pipelines:
 .. include:: _static/scripts/sample.sh
     :code: bash
 
-This README only brushes the surface of the abilities of this AI bugfinder. For
-more details on pipeline design and the availabe processing steps, please refer
-to `<https://samate.ipages.nist.gov/ai-bugfinder/>`_.

@@ -11,7 +11,7 @@ docs_readme="${DIR_PATH}/readme.rst"
 
 echo "Introduction" > ${docs_readme}
 echo "============" >> ${docs_readme}
-tail -n+3  ${repo_readme} >> ${docs_readme}
+tail -n+3  ${repo_readme} | head -n-3 >> ${docs_readme}
 sed -i -r 's;docs/(_static);\1;g' ${docs_readme}
 
 # Generate RST files based on Python files
