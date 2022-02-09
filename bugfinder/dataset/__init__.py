@@ -45,7 +45,7 @@ class CWEClassificationDataset:
             self.classes.append(item)
 
             # Retrieve the list of files in the directory
-            for root, dirs, files in walk(item_path):
+            for root, _, files in walk(item_path):
                 # Specify full path for test cases and ignore UNIX hidden files
                 files = [
                     dirname(join(root, f).replace(self.path, ""))
@@ -94,27 +94,27 @@ class CWEClassificationDataset:
         self.embeddings_dir = join(self.path, settings.DATASET_DIRS["embeddings"])
         self.summary_filepath = join(self.path, settings.SUMMARY_FILE)
 
-        self.classes = list()
+        self.classes = []
         self.test_cases = set()
         self.features = pd.DataFrame()
         self.feats_version = 1
-        self.stats = list()
-        self.ops_queue = list()
+        self.stats = []
+        self.ops_queue = []
         self.summary = None
 
         self.rebuild_index()
 
         logger_log_func(
-            "Dataset initialized in %s." % display_time(get_time() - start_time)
+            "Dataset initialized in %s.", display_time(get_time() - start_time)
         )
 
     def rebuild_index(self):
         LOGGER.debug("Rebuilding index...")
         _time = get_time()
 
-        self.classes = list()
+        self.classes = []
         self.test_cases = set()
-        self.stats = list()
+        self.stats = []
 
         self._index_dataset()
         self._index_features()
@@ -147,15 +147,15 @@ class CWEClassificationDataset:
             self.reset_summary()
             return
 
-        with open(self.summary_filepath, "r") as summary_fp:
+        with open(self.summary_filepath, "r", encoding="utf-8") as summary_fp:
             self.summary = json.load(summary_fp)
 
     def save_summary(self):
-        with open(self.summary_filepath, "w") as summary_fp:
+        with open(self.summary_filepath, "w", encoding="utf-8") as summary_fp:
             json.dump(self.summary, summary_fp, indent=2)
 
     def reset_summary(self):
-        self.summary = {"metadata": dict(), "processing": list(), "training": dict()}
+        self.summary = {"metadata": {}, "processing": [], "training": {}}
         self.save_summary()
 
     def _validate_features(self):
@@ -194,7 +194,7 @@ class CWEClassificationDataset:
 
     def get_classes(self):
         """List classes identified in the dataset and their id"""
-        class_dict = dict()
+        class_dict = {}
 
         for cat_class in self.classes:
             class_dict[cat_class] = self.classes.index(cat_class)
@@ -202,11 +202,11 @@ class CWEClassificationDataset:
         return class_dict
 
     def clear_queue(self):
-        self.ops_queue = list()
+        self.ops_queue = []
 
     def queue_operation(self, op_class, op_args=None):
         if op_args is None:
-            op_args = dict()
+            op_args = {}
 
         self.ops_queue.append({"class": op_class, "args": op_args})
 
@@ -239,7 +239,7 @@ class CWEClassificationDataset:
                 operation_category not in self.summary.keys()
                 and operation_category != str(DatasetProcessingCategory.__NONE__)
             ):
-                self.summary[operation_category] = list()
+                self.summary[operation_category] = []
 
             operation_call = {
                 "class": "%s.%s"
@@ -252,8 +252,10 @@ class CWEClassificationDataset:
             current_op += 1
 
             logger_log_func(
-                "Running operation %d/%d (%s)..."
-                % (current_op, total_op, operation_call["class"])
+                "Running operation %d/%d (%s)...",
+                current_op,
+                total_op,
+                operation_call["class"],
             )
 
             op_start_time = get_time()  # Time single operation
@@ -284,13 +286,13 @@ class CWEClassificationDataset:
                     operation_call,
                     operation_category,
                     get_time() - op_start_time,
-                    dict(),
+                    {},
                     DatasetQueueRetCode.OPERATION_FAIL,
                 )
                 return DatasetQueueRetCode.OPERATION_FAIL
 
         logger_log_func(
-            "%d operations run in %s." % (total_op, display_time(get_time() - _time))
+            "%d operations run in %s.", total_op, display_time(get_time() - _time)
         )
 
         return DatasetQueueRetCode.OK
@@ -309,7 +311,7 @@ class CWEClassificationDataset:
             if op_call["args"]["name"] not in self.summary[op_category].keys():
                 self.summary[op_category][op_call["args"]["name"]] = {
                     "last_results": None,
-                    "sessions": list(),
+                    "sessions": [],
                 }
 
             self.summary[op_category][op_call["args"]["name"]][

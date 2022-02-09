@@ -13,7 +13,7 @@ from bugfinder.settings import LOGGER
 
 class DatasetFileRemover(DatasetFileProcessing):
     def _remove_file(self, filepath):
-        LOGGER.debug("Removing file '%s'..." % basename(filepath))
+        LOGGER.debug("Removing file '%s'...", basename(filepath))
         remove(filepath)
 
         # Inspect parent directory to check for emptyness
@@ -25,7 +25,7 @@ class DatasetFileRemover(DatasetFileProcessing):
 
         # If directory is empty (or only contains .h files) it is deleted
         # and the test case is removes from the dataset.
-        LOGGER.debug("Removing empty directory at '%s'..." % dirpath)
+        LOGGER.debug("Removing empty directory at '%s'...", dirpath)
         rmtree(dirpath)
 
     @abstractmethod
@@ -39,7 +39,7 @@ class DatasetFileRemover(DatasetFileProcessing):
 
 class RemoveCppFiles(DatasetFileRemover):
     def execute(self):
-        LOGGER.debug("Removing CPP files from dataset at '%s'..." % self.dataset.path)
+        LOGGER.debug("Removing CPP files from dataset at '%s'...", self.dataset.path)
         super().execute()
         LOGGER.info("CPP files successfully removed.")
 
@@ -54,8 +54,8 @@ class RemoveCppFiles(DatasetFileRemover):
 class RemoveInterproceduralTestCases(DatasetFileRemover):
     def execute(self):
         LOGGER.debug(
-            "Removing interprocedural test cases from dataset at '%s'..."
-            % self.dataset.path
+            "Removing interprocedural test cases from dataset at '%s'...",
+            self.dataset.path,
         )
         super().execute()
         LOGGER.info("Interprocedural test cases successfully removed.")

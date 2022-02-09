@@ -30,8 +30,7 @@ class DatasetProcessingDeprecation:
 class DatasetProcessing(ABC):
     def __init__(self, dataset, deprecation_warning=None):
         self.metadata = {"category": str(DatasetProcessingCategory.PROCESSING)}
-        self.processing_stats = dict()
-
+        self.processing_stats = {}
         self.dataset = dataset
 
         if deprecation_warning:

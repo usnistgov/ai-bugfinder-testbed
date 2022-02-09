@@ -22,8 +22,10 @@ class CopyDataset(DatasetProcessing):
 
     def execute(self, to_path, force=False):
         LOGGER.debug(
-            "Copying dataset at %s to %s (force=%d)..."
-            % (self.dataset.path, to_path, int(force))
+            "Copying dataset at %s to %s (force=%d)...",
+            self.dataset.path,
+            to_path,
+            int(force),
         )
 
         # Fix rights of the original dataset
@@ -48,21 +50,23 @@ class CopyDataset(DatasetProcessing):
                     rmtree(to_path)
             else:
                 raise FileExistsError(
-                    "%s already exists. Run with force=True to overwrite the "
-                    "existing directory." % to_path
+                    f"{to_path} already exists. Run with force=True to overwrite the "
+                    f"existing directory."
                 )
 
         copytree(self.dataset.path, to_path)
-
         LOGGER.info("Dataset copy succeeded.")
 
 
 class ExtractSampleDataset(DatasetProcessing):
     def execute(self, to_path, sample_nb, shuffle=True, force=False):
         LOGGER.debug(
-            "Extracting %d samples from dataset %s to %s (shuffle=%d, "
-            "force=%d)..."
-            % (sample_nb, self.dataset.path, to_path, int(shuffle), int(force))
+            "Extracting %d samples from dataset %s to %s (shuffle=%d, " "force=%d)...",
+            sample_nb,
+            self.dataset.path,
+            to_path,
+            int(shuffle),
+            int(force),
         )
 
         if exists(to_path):
@@ -70,8 +74,8 @@ class ExtractSampleDataset(DatasetProcessing):
                 rmtree(to_path)
             else:
                 raise FileExistsError(
-                    "%s already exists. Run with force=True to overwrite the "
-                    "directory" % to_path
+                    f"{to_path} already exists. Run with force=True to overwrite the "
+                    f"directory."
                 )
 
         # Retrieve number of test cases per class. Approximated to simplify
@@ -117,8 +121,11 @@ class ExtractSampleDataset(DatasetProcessing):
 class InverseDataset(DatasetProcessing):
     def execute(self, to_path, from_path, force=False):
         LOGGER.debug(
-            "Extracting inverse dataset of %s from %s to %s (force=%d)"
-            % (self.dataset.path, from_path, to_path, int(force))
+            "Extracting inverse dataset of %s from %s to %s (force=%d)",
+            self.dataset.path,
+            from_path,
+            to_path,
+            int(force),
         )
         _time = get_time()
 
@@ -127,15 +134,15 @@ class InverseDataset(DatasetProcessing):
                 rmtree(to_path)
             else:
                 raise FileExistsError(
-                    "%s already exists. Run with force=True to overwrite the "
-                    "existing directory." % to_path
+                    f"{to_path} already exists. Run with force=True to overwrite the "
+                    f"existing directory."
                 )
 
         if not exists(from_path):
-            raise FileNotFoundError("%s does not exists." % from_path)
+            raise FileNotFoundError(f"{from_path} does not exists.")
 
         if not isdir(from_path):
-            raise NotADirectoryError("%s is not a directory." % from_path)
+            raise NotADirectoryError(f"{from_path} is not a directory.")
 
         from_dataset = Dataset(from_path)
         inverse_test_cases = [
@@ -166,7 +173,7 @@ class RightFixer(DatasetProcessingWithContainer):
 
     def configure_command(self, command):
         self.command = join("/data", command)
-        LOGGER.debug("Input command: %s." % self.command)
+        LOGGER.debug("Input command: %s.", self.command)
 
     def send_commands(self):
         LOGGER.debug("Right fixed for Neo4j DB.")
