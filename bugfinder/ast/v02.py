@@ -1,14 +1,18 @@
-"""
+""" Module containing the second version of the AST markup algorithm.
 """
 from bugfinder.ast import AbstractASTMarkup
 
 
 class Neo4JASTMarkup(AbstractASTMarkup):
+    """Class for version 2 of the AST markup."""
+
     def configure_container(self):
+        """Setup container variables"""
         super().configure_container()
         self.container_name = "ast-markup-v02"
 
     def get_ast_information(self):
+        """Retrieve AST information"""
         get_main_nodes_info = """
             MATCH (m)-[:FLOWS_TO]->(n) 
             WITH collect(m)+collect(n) AS mn
@@ -45,10 +49,27 @@ class Neo4JASTMarkup(AbstractASTMarkup):
         ]
 
     def build_ast_markup(self, ast_item):
+        """Build the AST markup
+
+        Args:
+            ast_item:
+        """
+
         def sort_by_child_num(item):
+            """Retrieve the child number.
+
+            Args:
+                item:
+            """
             return int(item["child_num"])
 
         def build_tree(node, ast_list):
+            """Rebuilds the AST tree from the node list.
+
+            Args:
+                node:
+                ast_list:
+            """
             node_children = [  # Retieve children of current node
                 ast_node for ast_node in ast_list if ast_node["parent"] == node["id"]
             ]
