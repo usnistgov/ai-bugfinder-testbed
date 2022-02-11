@@ -46,3 +46,10 @@ def is_processing_stack_valid(operation_list, silent=False):
         "Operation queue validated in %s." % display_time(get_time() - _time)
     )
     return True
+
+
+def kwargs_contain_keys(kwargs: dict[str, any], key_list: list[str]) -> bool:
+    key_set = set(key_list)
+    kwargs_set = set(kwargs.keys())
+
+    return len(key_set - kwargs_set) == 0 and len(kwargs_set - key_set) == 0

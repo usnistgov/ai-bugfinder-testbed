@@ -16,6 +16,8 @@ from bugfinder.utils.statistics import get_time, display_time
 
 
 class DatasetQueueRetCode(IntEnum):
+    """ Enumeration to determine the state of the processing queue.
+    """
     OK = 0
     EMPTY_QUEUE = 1
     INVALID_QUEUE = 2
@@ -23,9 +25,13 @@ class DatasetQueueRetCode(IntEnum):
 
 
 class CWEClassificationDataset:
+    """ Main dataset class.
+    """
     ignored_dirs = list(settings.DATASET_DIRS.values())
 
     def _index_dataset(self):
+        """ Browse the dataset to build various indexes
+        """
         LOGGER.debug("Indexing test cases...")
 
         if not exists(self.path):
@@ -62,6 +68,8 @@ class CWEClassificationDataset:
             self.stats.append(len(self.test_cases) - sum(self.stats))
 
     def _index_features(self):
+        """ Browse the dataset to index features.
+        """
         features_filename = join(self.feats_dir, settings.FEATURES_FILE)
 
         if not exists(features_filename):
@@ -83,6 +91,8 @@ class CWEClassificationDataset:
         )
 
     def __init__(self, dataset_path, silent=False):
+        """ Inititialization method
+        """
         start_time = get_time()
         logger_log_func = LOGGER.debug if silent else LOGGER.info
 
@@ -109,6 +119,8 @@ class CWEClassificationDataset:
         )
 
     def rebuild_index(self):
+        """ Rebuild index
+        """
         LOGGER.debug("Rebuilding index...")
         _time = get_time()
 
@@ -143,6 +155,8 @@ class CWEClassificationDataset:
         }
 
     def load_summary(self):
+        """ Load summary file
+        """
         if not exists(self.summary_filepath):
             self.reset_summary()
             return
@@ -151,18 +165,26 @@ class CWEClassificationDataset:
             self.summary = json.load(summary_fp)
 
     def save_summary(self):
+        """ Save summary file
+        """
         with open(self.summary_filepath, "w", encoding="utf-8") as summary_fp:
             json.dump(self.summary, summary_fp, indent=2)
 
     def reset_summary(self):
+        """ Reset summary file
+        """
         self.summary = {"metadata": {}, "processing": [], "training": {}}
         self.save_summary()
 
     def _validate_features(self):
+        """ Ensure feature are valid
+        """
         if self.features.shape[1] < 3:
             raise IndexError("Feature file must contain at least 3 columns")
 
     def get_features_info(self):
+        """ Retrieve feature information
+        """
         LOGGER.info(
             "Analyzing features (%dx%d matrix)...",
             self.features.shape[0],
@@ -202,15 +224,21 @@ class CWEClassificationDataset:
         return class_dict
 
     def clear_queue(self):
+        """ Clear processing queue
+        """
         self.ops_queue = []
 
     def queue_operation(self, op_class, op_args=None):
+        """ Queue operation
+        """
         if op_args is None:
             op_args = {}
 
         self.ops_queue.append({"class": op_class, "args": op_args})
 
     def process(self, silent=False):
+        """ Run all processing in the processing queue
+        """
         logger_log_func = LOGGER.debug if silent else LOGGER.info
 
         _time = get_time()
@@ -298,6 +326,8 @@ class CWEClassificationDataset:
         return DatasetQueueRetCode.OK
 
     def append_summary(self, op_call, op_category, exec_time, op_stats, return_code=-1):
+        """ Append new processing to summary file
+        """
         processing_ops_summary = {
             "dataset_path": realpath(self.path),
             "operation": op_call,

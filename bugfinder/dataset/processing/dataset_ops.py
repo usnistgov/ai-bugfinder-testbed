@@ -1,3 +1,5 @@
+""" Processing classes to perform operations on entire datasets.
+"""
 from os.path import exists, join, isdir, basename
 
 import os
@@ -15,12 +17,16 @@ from bugfinder.utils.statistics import get_time
 
 
 class CopyDataset(DatasetProcessing):
+    """ Processing class to copy entire datasets.
+    """
     def __init__(self, dataset):
         super().__init__(dataset)
 
         self.metadata["category"] = str(DatasetProcessingCategory.__NONE__)
 
     def execute(self, to_path, force=False):
+        """ Run the processing
+        """
         LOGGER.debug(
             "Copying dataset at %s to %s (force=%d)...",
             self.dataset.path,
@@ -59,7 +65,12 @@ class CopyDataset(DatasetProcessing):
 
 
 class ExtractSampleDataset(DatasetProcessing):
+    """ Processing to create a subset of a given dataset.
+    """
+
     def execute(self, to_path, sample_nb, shuffle=True, force=False):
+        """ Run the processing.
+        """
         LOGGER.debug(
             "Extracting %d samples from dataset %s to %s (shuffle=%d, " "force=%d)...",
             sample_nb,
@@ -119,7 +130,13 @@ class ExtractSampleDataset(DatasetProcessing):
 
 
 class InverseDataset(DatasetProcessing):
+    """ Processing class to create a subset of a dataset by including test cases that
+    are not present in a given subset.
+    """
+
     def execute(self, to_path, from_path, force=False):
+        """ Run the processing
+        """
         LOGGER.debug(
             "Extracting inverse dataset of %s from %s to %s (force=%d)",
             self.dataset.path,
@@ -166,14 +183,23 @@ class InverseDataset(DatasetProcessing):
 
 
 class RightFixer(DatasetProcessingWithContainer):
+    """ Processing to change the ownership of every file.
+    """
+
     def configure_container(self):
+        """ Set the variables for the container
+        """
         self.image_name = "right-fixer:latest"
         self.container_name = "right-fixer"
         self.volumes = {self.dataset.path: "/data"}
 
     def configure_command(self, command):
+        """ Create the command to be run
+        """
         self.command = join("/data", command)
         LOGGER.debug("Input command: %s.", self.command)
 
     def send_commands(self):
+        """ Process the command
+        """
         LOGGER.debug("Right fixed for Neo4j DB.")

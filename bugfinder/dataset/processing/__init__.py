@@ -1,3 +1,5 @@
+""" Abstract classes for creating processing steps.
+"""
 from os import listdir
 from os.path import join
 
@@ -12,6 +14,8 @@ from bugfinder.utils.rand import get_rand_string
 
 
 class DatasetProcessingCategory(Enum):
+    """ Possible types of processing classes
+    """
     __NONE__ = "__null__"
     PROCESSING = "processing"
     TRAINING = "training"
@@ -21,6 +25,8 @@ class DatasetProcessingCategory(Enum):
 
 
 class DatasetProcessingDeprecation:
+    """ Add a deprecation notice to a given class
+    """
     def __init__(self, notice, deprecated_in=None, removed_in=None):
         self.notice = notice
         self.deprecated_in = deprecated_in
@@ -28,7 +34,17 @@ class DatasetProcessingDeprecation:
 
 
 class DatasetProcessing(ABC):
+    """ Abstract class for all dataset processing.
+    """
+
     def __init__(self, dataset, deprecation_warning=None):
+        """ Class constructor
+
+        Args:
+            dataset:
+            deprecation_warning:
+        """
+
         self.metadata = {"category": str(DatasetProcessingCategory.PROCESSING)}
         self.processing_stats = {}
         self.dataset = dataset
@@ -54,11 +70,21 @@ class DatasetProcessing(ABC):
 
     @abstractmethod
     def execute(self, *args, **kwargs):
+        """ Execute the processing. Needs to be implemented by the subclass.
+
+        Args:
+            args:
+            kwargs:
+        """
         raise NotImplementedError("Method 'execute' not implemented.")
 
 
 class DatasetFileProcessing(DatasetProcessing):
+    """ Abstract processing class for handling file changes.
+    """
     def execute(self):
+        """ Execute the 'process_file' method on all files of the dataset
+        """
         for test_case in self.dataset.test_cases:
             for filepath in listdir(join(self.dataset.path, test_case)):
                 self.process_file(join(self.dataset.path, test_case, filepath))
@@ -67,10 +93,18 @@ class DatasetFileProcessing(DatasetProcessing):
 
     @abstractmethod
     def process_file(self, filepath):
+        """ Process a file with the given `filepath`. Needs to be implemented by the
+        subclass.
+
+        Args:
+            filepath:
+        """
         raise NotImplementedError("Method 'process_file' not implemented.")
 
 
 class DatasetProcessingWithContainer(DatasetProcessing):
+    """ Abstract class for processing data using a Docker container.
+    """
     start_retries = 3
     image_name = ""
     container_name = ""
@@ -84,6 +118,12 @@ class DatasetProcessingWithContainer(DatasetProcessing):
     container = None
 
     def execute(self, command_args=None, container_config=None):
+        """ Execute the processing using the processing container.
+
+        Args:
+            command_args:
+            container_config:
+        """
         try:
             # Handle container configuration depending on wether a manual configuration
             # has been provided or not
@@ -146,9 +186,18 @@ class DatasetProcessingWithContainer(DatasetProcessing):
 
     @abstractmethod
     def configure_container(self):
+        """ Configure the given container automatically. Needs to be implemented by the
+        subclass.
+        """
         raise NotImplementedError("Method 'configure_container' not implemented.")
 
     def configure_container_with_dict(self, container_config):
+        """ Configure the given container manually. Needs to be implemented by the
+        subclass.
+
+        Args:
+            container_config:
+        """
         LOGGER.warning(
             "Manual configuration is not handled by the container. The class should "
             "implement 'configure_container_with_dict(self, container_config)' to handle"
@@ -157,8 +206,16 @@ class DatasetProcessingWithContainer(DatasetProcessing):
         return self.configure_container()
 
     def configure_command(self, command):
+        """ Configure the command to be sent to the container. Needs to be implemented
+        by the subclass.
+
+        Args:
+            command:
+        """
         raise Exception("Command %s not handled by container")
 
     @abstractmethod
     def send_commands(self):
+        """ Send the commands to container. Needs to be implemented by the subclass.
+        """
         raise NotImplementedError("Method 'send_commands' not implemented.")
