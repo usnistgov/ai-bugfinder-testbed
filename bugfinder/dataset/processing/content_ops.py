@@ -11,8 +11,7 @@ from bugfinder.settings import LOGGER
 
 
 class ReplaceLitterals(DatasetProcessing):
-    """ Replace unrecognized litterals in the test cases
-    """
+    """Replace unrecognized litterals in the test cases"""
 
     replacements = {
         r"(.*)L\'([^\']*)\'(.*)": "\\g<1>L('\\g<2>')\\g<3>",
@@ -20,8 +19,7 @@ class ReplaceLitterals(DatasetProcessing):
     }
 
     def execute(self):
-        """ Execute the processing
-        """
+        """Execute the processing"""
         LOGGER.debug("Replacing litterals in code...")
         file_processing_list = [
             join(test_case, filepath)
@@ -47,8 +45,7 @@ class ReplaceLitterals(DatasetProcessing):
         LOGGER.info("Litterals successfully replaced.")
 
     def process_file(self, filepath):
-        """ Replace litteral in a single file
-        """
+        """Replace litteral in a single file"""
         tmp_filepath = f"{filepath}.tmp"
         out_lines = []
         repl_count = 0
@@ -75,21 +72,19 @@ class ReplaceLitterals(DatasetProcessing):
 
 
 class RemoveMainFunction(DatasetFileProcessing):
-    """ Processing to remove the main function from a dataset.
-    """
+    """Processing to remove the main function from a dataset."""
+
     main_fn_entry = "#ifdef INCLUDEMAIN\n"
     main_fn_exit = "#endif\n"
 
     def execute(self):
-        """ Run the processing
-        """
+        """Run the processing"""
         LOGGER.debug("Removing main function in dataset at '%s'...", self.dataset.path)
         super().execute()
         LOGGER.info("Main function successfully removed.")
 
     def process_file(self, filepath):
-        """ Process a single file
-        """
+        """Process a single file"""
         if splitext(filepath)[1] not in [".c", ".cpp", ".h", ".hpp"]:
             LOGGER.debug("File '%s' is not a code file. Ignoring...", filepath)
             return
