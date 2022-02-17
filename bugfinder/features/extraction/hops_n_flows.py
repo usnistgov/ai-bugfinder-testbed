@@ -1,5 +1,6 @@
+""" Feature extractor module for HopNFlows algorithm
 """
-"""
+from sys import exit
 from copy import deepcopy
 
 from bugfinder.features.extraction import FlowGraphFeatureExtractor
@@ -7,11 +8,14 @@ from bugfinder.settings import LOGGER
 
 
 class FeatureExtractor(FlowGraphFeatureExtractor):
+    """HopNFlows feature extractor"""
+
     flows = ["CONTROLS", "FLOWS_TO", "REACHES"]
     min_hops = 1
     max_hops = -1
 
     def configure_container(self):
+        """Setting up the container variables"""
         super().configure_container()
         self.container_name = "fext-hops-n-flows"
 
@@ -24,6 +28,7 @@ class FeatureExtractor(FlowGraphFeatureExtractor):
         feature_map_filepath=None,
         need_map_features=False,
     ):
+        """Run the feature extraction algorithm"""
         if not flows:
             LOGGER.debug(
                 "No flows selected, using 'CONTROLS', 'FLOWS_TO' and 'REACHES' by "
@@ -40,10 +45,13 @@ class FeatureExtractor(FlowGraphFeatureExtractor):
             LOGGER.error("Should select a max_hops value greater than min_hops.")
             exit(1)
 
-        LOGGER.debug(f"flows: {str(flows)}, min_hops: {min_hops}, max_hops: {max_hops}")
+        LOGGER.debug(
+            "flows: %s, min_hops: %d, max_hops: %d", str(flows), min_hops, max_hops
+        )
         super().execute(command_args, feature_map_filepath, need_map_features)
 
     def get_flowgraph_list_for_entrypoint(self, entrypoint):
+        """Extract flowgraphs for a given entrypoint"""
         flowgraph_command = f"""
             MATCH (n) WHERE id(n)={entrypoint["entry_id"]}
             CALL apoc.path.subgraphAll(
@@ -72,7 +80,7 @@ class FeatureExtractor(FlowGraphFeatureExtractor):
         ]
 
         # Create a map linking a node to all of their outbound relationships
-        relationship_map = dict()
+        relationship_map = {}
         for relationship in relationship_list:
             if relationship[0] in relationship_map.keys():
                 relationship_map[relationship[0]].append(relationship)
@@ -85,7 +93,7 @@ class FeatureExtractor(FlowGraphFeatureExtractor):
 
         # Loop to raise the length of the relationship as long as possible
         while len(previous_relationships) > 0:
-            next_relationships = list()
+            next_relationships = []
 
             for relationship in previous_relationships:
                 if self.max_hops != -1 and len(relationship[2]) == self.max_hops:
@@ -147,9 +155,11 @@ class FeatureExtractor(FlowGraphFeatureExtractor):
         return flowgraph_list
 
     def get_flowgraph_count(self, flowgraph):
+        """Retrieve the flowgraph count."""
         return flowgraph["count"]
 
     def get_label_from_flowgraph(self, flowgraph):
+        """Create the label for the flowgraph."""
         source = flowgraph["source"]
         sink = flowgraph["sink"]
         flow = flowgraph["flow"]
@@ -157,6 +167,7 @@ class FeatureExtractor(FlowGraphFeatureExtractor):
         return "%s-%s-%s" % (source, flow, sink)
 
     def finalize_features(self, features, labels):
+        """Perform final touches on the features before saving them to CSV."""
         # normalized_features = list()
         #
         # # Find all labels related to each type of flow

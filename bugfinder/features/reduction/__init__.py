@@ -1,3 +1,5 @@
+""" Abstract classes for feature reduction.
+"""
 from os.path import join, realpath
 
 import pandas as pd
@@ -9,6 +11,8 @@ from bugfinder.settings import LOGGER
 
 
 class AbstractFeatureSelector(DatasetProcessing):
+    """Base class for feature selection."""
+
     @abstractmethod
     def select_feature(self, *args, **kwargs) -> pd.DataFrame:
         raise NotImplementedError("Method 'select_feature' needs to be implemented.")
@@ -45,4 +49,4 @@ class AbstractFeatureSelector(DatasetProcessing):
         )
         output_features.to_csv(output_features_filepath, index=False)
 
-        LOGGER.info(f"Feature file saved to '{output_features_filepath}'.")
+        LOGGER.info("Feature file saved to %s.", output_features_filepath)

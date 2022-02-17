@@ -1,4 +1,4 @@
-"""
+""" Module for sequential feature selector
 """
 from importlib import import_module
 
@@ -14,12 +14,19 @@ from bugfinder.utils.feature_selection import (
 
 
 class FeatureSelector(AbstractFeatureSelector):
+    """Sequential feature selector"""
+
     def select_feature(
         self, input_features, input_results, dry_run, model, direction, features
     ) -> pd.DataFrame:
+        """Feature selection algorithm."""
         LOGGER.debug(
-            f"Running SequentialFeatureSelector with model {model}, running {direction} "
-            f"and selecting {features}/{input_features.shape[1]} features..."
+            "Running SequentialFeatureSelector with model %s, running %s "
+            "and selecting %d/%d features...",
+            model,
+            direction,
+            features,
+            input_features.shape[1],
         )
 
         # Load package
@@ -46,7 +53,11 @@ class FeatureSelector(AbstractFeatureSelector):
             index=input_features.index,
         )
         LOGGER.info(
-            f"Applied SequentialFeatureSelector with model {model}, running {direction} "
-            f"and selected {output_features.shape[1]}/{input_features.shape[1]} features."
+            "Applied SequentialFeatureSelector with model %s, running %s "
+            "and selected %d/%d features.",
+            model,
+            direction,
+            output_features.shape[1],
+            input_features.shape[1],
         )
         return output_features

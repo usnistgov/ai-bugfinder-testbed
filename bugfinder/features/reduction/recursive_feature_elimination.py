@@ -1,4 +1,4 @@
-"""
+""" Module for recursive feature elimination.
 """
 from importlib import import_module
 
@@ -14,12 +14,18 @@ from bugfinder.utils.feature_selection import (
 
 
 class FeatureSelector(AbstractFeatureSelector):
+    """Feature selector executing recursive feature elimination."""
+
     def select_feature(
         self, input_features, input_results, dry_run, model, cross_validation, features
     ) -> pd.DataFrame:
+        """Select the feature to keep."""
         LOGGER.debug(
-            f"Running RecursiveFeatureElimination with model {model}, selecting "
-            f"{features} features (cross_validation={cross_validation})..."
+            "Running RecursiveFeatureElimination with model %s, selecting "
+            "%d features (cross_validation=%f)...",
+            model,
+            features,
+            cross_validation,
         )
 
         # Load package
@@ -49,8 +55,12 @@ class FeatureSelector(AbstractFeatureSelector):
             index=input_features.index,
         )
         LOGGER.info(
-            f"Applied RecursiveFeatureElimination with model {model}, selecting "
-            f"{features} features (cross_validation={cross_validation}): retrieved "
-            f"{len(output_features.columns)}/{input_features.shape[1]} features."
+            "Applied RecursiveFeatureElimination with model %s, selecting "
+            "%d features (cross_validation=%f): retrieved %d/%d features.",
+            model,
+            features,
+            cross_validation,
+            len(output_features.columns),
+            input_features.shape[1],
         )
         return output_features

@@ -1,4 +1,4 @@
-"""
+""" Module containing principal component analysis (PCA) feature selector
 """
 import pandas as pd
 from sklearn.decomposition import PCA
@@ -8,10 +8,13 @@ from bugfinder.settings import LOGGER
 
 
 class FeatureSelector(AbstractFeatureSelector):
+    """PCA feature selector"""
+
     def select_feature(
         self, input_features, input_results, dry_run, dimension
     ) -> pd.DataFrame:
-        LOGGER.info(f"Running PCA to output {dimension} features...")
+        """Feature selection algorithm."""
+        LOGGER.info("Running PCA to output %d features...", dimension)
         pca_op = PCA(n_components=dimension)
         pca_op.fit(input_features)
 
@@ -21,7 +24,8 @@ class FeatureSelector(AbstractFeatureSelector):
             index=input_features.index,
         )
         LOGGER.info(
-            f"PCA operation terminated, computed {output_features.shape[1]} "
-            f"out of {input_features.shape[1]} features"
+            "PCA operation terminated, computed %d out of %d features",
+            output_features.shape[1],
+            input_features.shape[1],
         )
         return output_features

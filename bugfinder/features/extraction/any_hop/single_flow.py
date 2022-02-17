@@ -1,23 +1,27 @@
-"""
+""" Any hop single flow feature extractor module
 """
 from bugfinder.features.extraction import FlowGraphFeatureExtractor
 
 
 class FeatureExtractor(FlowGraphFeatureExtractor):
+    """Any hop single flow feature extractor"""
+
     FLOWS = ["CONTROLS", "FLOWS_TO", "REACHES"]
 
     def configure_container(self):
+        """Configure container variable"""
         super().configure_container()
         self.container_name = "fext-any-hop-single-flow"
 
     def get_flowgraph_list_for_entrypoint(self, entrypoint):
+        """Create list of flow graphs for a given entrypoint"""
         flowgraph_command = """
                MATCH p = (root1:UpstreamNode)-[:%s*]->(root2:DownstreamNode)
                WHERE root1.functionId="%s"
                RETURN distinct root1.ast AS source, root2.ast AS sink,
                    count(p) as count
            """
-        flowgraph_list = list()
+        flowgraph_list = []
 
         for flow in self.FLOWS:
             flow_information = {"flow": flow}
@@ -33,9 +37,11 @@ class FeatureExtractor(FlowGraphFeatureExtractor):
         return flowgraph_list
 
     def get_flowgraph_count(self, flowgraph):
+        """Count the number of flowgraphs"""
         return flowgraph["count"]
 
     def get_label_from_flowgraph(self, flowgraph):
+        """Create the label for a given flow graph"""
         source = flowgraph["source"]
         sink = flowgraph["sink"]
         flow = flowgraph["flow"]
@@ -44,7 +50,8 @@ class FeatureExtractor(FlowGraphFeatureExtractor):
 
     @staticmethod
     def finalize_features(features, labels):
-        normalized_features = list()
+        """Finalize feature before exporting to CSV file"""
+        normalized_features = []
 
         flows = ["CONTROLS", "REACHES", "FLOWS_TO"]
 
