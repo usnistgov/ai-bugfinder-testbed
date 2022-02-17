@@ -625,7 +625,10 @@ class BLSTMClassifierModel(DatasetProcessing):
 
 #########################################
 class ClassifierModel(DatasetProcessing):
+    """Abstract class for classifier models"""
+
     def __init__(self, dataset):
+        """Class instantiation method"""
         super().__init__(dataset)
 
         self.metadata["category"] = str(DatasetProcessingCategory.TRAINING)
@@ -636,6 +639,7 @@ class ClassifierModel(DatasetProcessing):
 
     @abstractmethod
     def init_model(self, name, **kwargs):
+        """Setup the model. Abstract method."""
         raise NotImplementedError()
 
     def execute(
@@ -649,6 +653,7 @@ class ClassifierModel(DatasetProcessing):
         reset=False,
         **kwargs,
     ):
+        """Train the model."""
         last_results = None
 
         if self.model_cls is None:

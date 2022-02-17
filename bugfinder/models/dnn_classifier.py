@@ -6,12 +6,16 @@ from bugfinder.models import ClassifierModel
 
 
 class DNNClassifierTraining(ClassifierModel):
+    """Multilayer perceptron classifier"""
+
     def __init__(self, dataset):
+        """Class initialization method"""
         super().__init__(dataset)
 
         self.model_cls = tf.estimator.DNNClassifier
 
     def init_model(self, model_dir, **kwargs):
+        """Setup the model"""
         if "architecture" not in kwargs.keys():
             kwargs["architecture"] = [10, 10, 10]
 
