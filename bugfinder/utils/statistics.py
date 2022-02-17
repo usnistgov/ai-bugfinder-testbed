@@ -4,6 +4,7 @@ from time import time
 
 
 def divide(dividend, divisor):
+    """Division function to return quotient and remainder"""
     quotient = int(dividend / divisor)
     remainder = dividend % divisor
 
@@ -20,30 +21,32 @@ def get_time():
 
 
 def display_time(time_in_ms):
+    """Display time in a human friendly manner."""
     secs, msecs = divide(time_in_ms, 1000)
 
     if secs == 0:
-        return "%dms" % msecs
+        return f"{msecs}ms"
 
     mins, secs = divide(secs, 60)
 
     if mins == 0:
-        return "%d.%03ds" % (secs, msecs)
+        return f"{secs}.{msecs:03d}s"
 
     hours, mins = divide(mins, 60)
 
     if hours == 0:
-        return "%dm%02ds" % (mins, secs)
+        return f"{mins}m{secs:02d}s"
 
     days, hours = divide(hours, 24)
 
     if days == 0:
-        return "%dh%02dm%02ds" % (hours, mins, secs)
+        return f"{hours}h{mins:02d}m{secs:02d}s"
 
-    return "%d days %02dh%02dm%02ds" % (days, hours, mins, secs)
+    return f"{days} days {hours:02d}h{mins:02d}m{secs:02d}s"
 
 
 def has_better_metrics(eval_keys, current_metrics, last_metrics=None):
+    """Evaluate two metrics datastructure depending on a set of keys."""
     if last_metrics is None:
         return True
 
