@@ -16,10 +16,7 @@ class TestCWEClassificationDatasetInit(TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         patch_paths(
-            cls(), [
-                "bugfinder.dataset.LOGGER",
-                "bugfinder.utils.processing.LOGGER"
-            ]
+            cls(), ["bugfinder.dataset.LOGGER", "bugfinder.utils.processing.LOGGER"]
         )
 
         with patch(
@@ -75,10 +72,7 @@ class TestCWEClassificationDatasetInit(TestCase):
 class TestCWEClassificationDatasetRebuildIndex(TestCase):
     def setUp(self) -> None:
         patch_paths(
-            self, [
-                "bugfinder.dataset.LOGGER",
-                "bugfinder.utils.processing.LOGGER"
-            ]
+            self, ["bugfinder.dataset.LOGGER", "bugfinder.utils.processing.LOGGER"]
         )
 
     def tearDown(self) -> None:
@@ -142,10 +136,7 @@ class TestCWEClassificationDatasetRebuildIndex(TestCase):
 class TestCWEClassificationDatasetGetFeaturesInfo(TestCase):
     def setUp(self) -> None:
         patch_paths(
-            self, [
-                "bugfinder.dataset.LOGGER",
-                "bugfinder.utils.processing.LOGGER"
-            ]
+            self, ["bugfinder.dataset.LOGGER", "bugfinder.utils.processing.LOGGER"]
         )
 
     def tearDown(self) -> None:
@@ -174,10 +165,7 @@ class TestCWEClassificationDatasetGetFeaturesInfo(TestCase):
 class TestCWEClassificationDatasetQueueOperation(TestCase):
     def setUp(self) -> None:
         patch_paths(
-            self, [
-                "bugfinder.dataset.LOGGER",
-                "bugfinder.utils.processing.LOGGER"
-            ]
+            self, ["bugfinder.dataset.LOGGER", "bugfinder.utils.processing.LOGGER"]
         )
 
         self.dataset_path = "./tests/fixtures/dataset01"
@@ -203,10 +191,7 @@ class TestCWEClassificationDatasetQueueOperation(TestCase):
 class TestCWEClassificationDatasetProcess(TestCase):
     def setUp(self) -> None:
         patch_paths(
-            self, [
-                "bugfinder.dataset.LOGGER",
-                "bugfinder.utils.processing.LOGGER"
-            ]
+            self, ["bugfinder.dataset.LOGGER", "bugfinder.utils.processing.LOGGER"]
         )
 
         self.dataset_path = "./tests/fixtures/dataset01"

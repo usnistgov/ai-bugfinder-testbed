@@ -8,10 +8,7 @@ from tests import patch_paths
 class TestNeo4JASTMarkupConfigureContainer(TestCase):
     def setUp(self) -> None:
         patch_paths(
-            self, [
-                "bugfinder.ast.LOGGER",
-                "bugfinder.dataset.processing.LOGGER"
-            ]
+            self, ["bugfinder.ast.LOGGER", "bugfinder.dataset.processing.LOGGER"]
         )
 
         self.dataset_processing = Neo4JASTMarkup(None)
@@ -33,10 +30,7 @@ class TestNeo4JASTMarkupConfigureContainer(TestCase):
 class TestNeo4JASTMarkupGetAstInformation(TestCase):
     def setUp(self) -> None:
         patch_paths(
-            self, [
-                "bugfinder.ast.LOGGER",
-                "bugfinder.dataset.processing.LOGGER"
-            ]
+            self, ["bugfinder.ast.LOGGER", "bugfinder.dataset.processing.LOGGER"]
         )
 
         self.dataset_processing = Neo4JASTMarkup(None)
@@ -95,10 +89,7 @@ class TestNeo4JASTMarkupGetAstInformation(TestCase):
 class TestNeo4JASTMarkupBuildAstMarkup(TestCase):
     def setUp(self) -> None:
         patch_paths(
-            self, [
-                "bugfinder.ast.LOGGER",
-                "bugfinder.dataset.processing.LOGGER"
-            ]
+            self, ["bugfinder.ast.LOGGER", "bugfinder.dataset.processing.LOGGER"]
         )
 
         self.dataset_processing = Neo4JASTMarkup(None)

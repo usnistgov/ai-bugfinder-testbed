@@ -20,11 +20,7 @@ class TestStartContainer(unittest.TestCase):
         cls.container_name = "mock_container_name"
 
     def setUp(self) -> None:
-        patch_paths(
-            self, [
-                "bugfinder.utils.containers.LOGGER"
-            ]
-        )
+        patch_paths(self, ["bugfinder.utils.containers.LOGGER"])
 
     @patch("docker.models.containers.ContainerCollection.run")
     def test_default_parameters(self, mock_docker_run):
@@ -135,11 +131,7 @@ class TestStartContainer(unittest.TestCase):
 
 class TestWaitLogDisplay(unittest.TestCase):
     def setUp(self) -> None:
-        patch_paths(
-            self, [
-                "bugfinder.utils.containers.LOGGER"
-            ]
-        )
+        patch_paths(self, ["bugfinder.utils.containers.LOGGER"])
 
     def test_string_returns_exits_before_timeout(self):
         container_mock = Mock()
@@ -170,11 +162,7 @@ class TestWaitLogDisplay(unittest.TestCase):
 
 class TestStopContainerByName(unittest.TestCase):
     def setUp(self) -> None:
-        patch_paths(
-            self, [
-                "bugfinder.utils.containers.LOGGER"
-            ]
-        )
+        patch_paths(self, ["bugfinder.utils.containers.LOGGER"])
 
     @patch("docker.models.containers.ContainerCollection.get")
     def test_valid_name_exits_correctly(self, mock_container):

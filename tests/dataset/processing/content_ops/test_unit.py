@@ -19,7 +19,7 @@ class TestReplaceLitteralsExecute(TestCase):
             self,
             [
                 "bugfinder.dataset.processing.content_ops.LOGGER",
-                "bugfinder.dataset.LOGGER"
+                "bugfinder.dataset.LOGGER",
             ],
         )
 
@@ -42,9 +42,7 @@ class TestReplaceLitteralsExecute(TestCase):
             pass  # Ignore FileNotFound errors
 
     @patch("bugfinder.dataset.processing.content_ops.ReplaceLitterals.process_file")
-    def test_process_file_called_correctly(
-        self, mock_process_file
-    ):
+    def test_process_file_called_correctly(self, mock_process_file):
         mock_process_file.return_value = 0
 
         dataset_processing = ReplaceLitterals(self.dataset)
@@ -54,9 +52,7 @@ class TestReplaceLitteralsExecute(TestCase):
         mock_process_file.assert_has_calls(mock_process_file_calls, any_order=True)
 
     @patch("bugfinder.dataset.processing.content_ops.ReplaceLitterals.process_file")
-    def test_file_reprocessed_after_replacement(
-        self, mock_process_file
-    ):
+    def test_file_reprocessed_after_replacement(self, mock_process_file):
         processed_args = []
 
         def mock_process_file_fn(filepath):
@@ -131,7 +127,7 @@ class TestRemoveMainFunctionExecute(TestCase):
             self,
             [
                 "bugfinder.dataset.processing.content_ops.LOGGER",
-                "bugfinder.dataset.LOGGER"
+                "bugfinder.dataset.LOGGER",
             ],
         )
 

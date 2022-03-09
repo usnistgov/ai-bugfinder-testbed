@@ -51,11 +51,7 @@ class TestDatasetFileProcessingExecute(TestCase):
             self.processed_file.append(filepath)
 
     def setUp(self) -> None:
-        patch_paths(
-            self, [
-                "bugfinder.dataset.LOGGER"
-            ]
-        )
+        patch_paths(self, ["bugfinder.dataset.LOGGER"])
 
         self.dataset_path = "./tests/fixtures/dataset01"
 

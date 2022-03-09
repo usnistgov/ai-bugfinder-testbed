@@ -18,9 +18,7 @@ class TestJoernDefaultDatasetProcessingConfigureContainer(TestCase):
     def setUp(self) -> None:
         patch_paths(
             self,
-            [
-                "bugfinder.dataset.processing.LOGGER"
-            ],
+            ["bugfinder.dataset.processing.LOGGER"],
         )
         mock_dataset = MockDataset()
         self.dataset_processing = MockJoernDatasetProcessing(mock_dataset)

@@ -9,10 +9,8 @@ from tests import patch_paths
 class TestNeo4J3ImporterDefault(TestCase):
     def setUp(self) -> None:
         patch_paths(
-            self, [
-                "bugfinder.neo4j.importer.LOGGER",
-                "bugfinder.dataset.processing.LOGGER"
-            ]
+            self,
+            ["bugfinder.neo4j.importer.LOGGER", "bugfinder.dataset.processing.LOGGER"],
         )
 
         self.dataset_processing = Neo4J3Importer(None)
@@ -27,10 +25,8 @@ class TestNeo4J3ImporterDefault(TestCase):
 class TestNeo4J3ImporterConfigureContainer(TestCase):
     def setUp(self) -> None:
         patch_paths(
-            self, [
-                "bugfinder.neo4j.importer.LOGGER",
-                "bugfinder.dataset.processing.LOGGER"
-            ]
+            self,
+            ["bugfinder.neo4j.importer.LOGGER", "bugfinder.dataset.processing.LOGGER"],
         )
 
         self.dataset = Mock(spec=CWEClassificationDataset)
@@ -72,10 +68,8 @@ class TestNeo4J3ImporterConfigureContainer(TestCase):
 class TestNeo4J3ImporterSendCommands(TestCase):
     def setUp(self) -> None:
         patch_paths(
-            self, [
-                "bugfinder.neo4j.importer.LOGGER",
-                "bugfinder.dataset.processing.LOGGER"
-            ]
+            self,
+            ["bugfinder.neo4j.importer.LOGGER", "bugfinder.dataset.processing.LOGGER"],
         )
 
         self.dataset_processing = Neo4J3Importer(None)

@@ -22,10 +22,7 @@ class TestAbstractASTMarkupSendCommands(TestCase):
 
     def setUp(self) -> None:
         patch_paths(
-            self, [
-                "bugfinder.ast.LOGGER",
-                "bugfinder.dataset.processing.LOGGER"
-            ]
+            self, ["bugfinder.ast.LOGGER", "bugfinder.dataset.processing.LOGGER"]
         )
 
         dataset = Mock(spec=CWEClassificationDataset)
@@ -68,10 +65,7 @@ class TestAbstractASTMarkupSendCommands(TestCase):
 class TestASTSetExporterExecute(TestCase):
     def setUp(self) -> None:
         patch_paths(
-            self, [
-                "bugfinder.ast.LOGGER",
-                "bugfinder.dataset.processing.LOGGER"
-            ]
+            self, ["bugfinder.ast.LOGGER", "bugfinder.dataset.processing.LOGGER"]
         )
 
         self.dataset_processing = ASTSetExporter(None)
@@ -92,10 +86,7 @@ class TestASTSetExporterExecute(TestCase):
 class TestASTSetExporterConfigureContainer(TestCase):
     def setUp(self) -> None:
         patch_paths(
-            self, [
-                "bugfinder.ast.LOGGER",
-                "bugfinder.dataset.processing.LOGGER"
-            ]
+            self, ["bugfinder.ast.LOGGER", "bugfinder.dataset.processing.LOGGER"]
         )
 
         self.dataset_processing = ASTSetExporter(None)
@@ -115,11 +106,12 @@ class TestASTSetExporterConfigureContainer(TestCase):
 class TestASTSetExporterSendCommands(TestCase):
     def setUp(self) -> None:
         patch_paths(
-            self, [
+            self,
+            [
                 "builtins.open",
                 "bugfinder.ast.LOGGER",
-                "bugfinder.dataset.processing.LOGGER"
-            ]
+                "bugfinder.dataset.processing.LOGGER",
+            ],
         )
 
         self.dataset_processing = ASTSetExporter(None)

@@ -2,7 +2,9 @@ from unittest import TestCase
 from unittest.mock import Mock, patch
 
 from bugfinder.dataset import CWEClassificationDataset
-from bugfinder.features.extraction.hops_n_flows import FeatureExtractor as HopsNFlowsExtractor
+from bugfinder.features.extraction.hops_n_flows import (
+    FeatureExtractor as HopsNFlowsExtractor,
+)
 from tests import patch_paths
 
 
@@ -52,13 +54,13 @@ class TestFeatureExtractorExecute(TestCase):
     def test_no_flows_mean_all_flows(self):
         original_flows = self.dataset_processing.flows
         self.dataset_processing.execute()
-        
+
         self.assertEqual(self.dataset_processing.flows, original_flows)
 
     def test_specific_flows_overwrite_all_flows(self):
         original_flows = self.dataset_processing.flows
         self.dataset_processing.execute(flows=["FLOWS_TO"])
-        
+
         self.assertNotEqual(self.dataset_processing.flows, original_flows)
 
     def test_specific_flows_works(self):
@@ -67,17 +69,12 @@ class TestFeatureExtractorExecute(TestCase):
 
         self.assertEqual(self.dataset_processing.flows, input_flows)
 
-
-    @patch(
-        "bugfinder.features.extraction.hops_n_flows.exit"
-    )
+    @patch("bugfinder.features.extraction.hops_n_flows.exit")
     def test_negative_min_hop_fails(self, mock_exit):
         self.dataset_processing.execute(min_hops=-1)
         self.assertTrue(mock_exit.called)
 
-    @patch(
-        "bugfinder.features.extraction.hops_n_flows.exit"
-    )
+    @patch("bugfinder.features.extraction.hops_n_flows.exit")
     def test_max_hops_gt_min_hops_fails(self, mock_exit):
         self.dataset_processing.execute(min_hops=5, max_hops=2)
         self.assertTrue(mock_exit.called)
@@ -126,10 +123,11 @@ class TestFeatureExtractorGetFlowgraphListForEntrypoint(TestCase):
             self.data_return_value = data_return_value
 
         def data(self):
-            return [{
-                "nodes": self.nodes.values(),
-                "relationships": self.rels
-            }] if self.data_return_value is None else self.data_return_value
+            return (
+                [{"nodes": self.nodes.values(), "relationships": self.rels}]
+                if self.data_return_value is None
+                else self.data_return_value
+            )
 
     def setUp(self) -> None:
         patch_paths(
@@ -150,46 +148,36 @@ class TestFeatureExtractorGetFlowgraphListForEntrypoint(TestCase):
     @patch("bugfinder.features.extraction.hops_n_flows.FeatureExtractor.neo4j_db")
     def test_neo4j_db_run_called(self, mock_neo4j_db):
         mock_neo4j_db.run.side_effect = [self.MockNeo4JRunData()]
-        mock_entrypoint = {
-            "entry_id": "mock_entry_id"
-        }
+        mock_entrypoint = {"entry_id": "mock_entry_id"}
         self.dataset_processing.get_flowgraph_list_for_entrypoint(mock_entrypoint)
         self.assertTrue(mock_neo4j_db.run.called)
 
     @patch("bugfinder.features.extraction.hops_n_flows.FeatureExtractor.neo4j_db")
     def test_zero_subgraph_returned_fails(self, mock_neo4j_db):
-        mock_neo4j_db.run.side_effect = [self.MockNeo4JRunData(
-            data_return_value=[]
-        )]
-        mock_entrypoint = {
-            "entry_id": "mock_entry_id"
-        }
+        mock_neo4j_db.run.side_effect = [self.MockNeo4JRunData(data_return_value=[])]
+        mock_entrypoint = {"entry_id": "mock_entry_id"}
         with self.assertRaises(AssertionError):
             self.dataset_processing.get_flowgraph_list_for_entrypoint(mock_entrypoint)
 
     @patch("bugfinder.features.extraction.hops_n_flows.FeatureExtractor.neo4j_db")
     def test_several_subgraph_returned_fails(self, mock_neo4j_db):
-        mock_neo4j_db.run.side_effect = [self.MockNeo4JRunData(
-            data_return_value=["mock_graph_a", "mock_graph_b"]
-        )]
-        mock_entrypoint = {
-            "entry_id": "mock_entry_id"
-        }
+        mock_neo4j_db.run.side_effect = [
+            self.MockNeo4JRunData(data_return_value=["mock_graph_a", "mock_graph_b"])
+        ]
+        mock_entrypoint = {"entry_id": "mock_entry_id"}
         with self.assertRaises(AssertionError):
             self.dataset_processing.get_flowgraph_list_for_entrypoint(mock_entrypoint)
 
     @patch("bugfinder.features.extraction.hops_n_flows.FeatureExtractor.neo4j_db")
     def test_default_hops_returns_flowgraph_list(self, mock_neo4j_db):
         mock_neo4j_db.run.side_effect = [self.MockNeo4JRunData()]
-        mock_entrypoint = {
-            "entry_id": "mock_entry_id"
-        }
+        mock_entrypoint = {"entry_id": "mock_entry_id"}
 
         expected_result = [
-            {'source': 'a', 'sink': 'b', 'flow': 'MockRel', 'count': 1},
-            {'source': 'b', 'sink': 'c', 'flow': 'MockRel', 'count': 1},
-            {'source': 'a', 'sink': 'd', 'flow': 'MockRel', 'count': 1},
-            {'source': 'a', 'sink': 'c', 'flow': 'MockRel', 'count': 2}
+            {"source": "a", "sink": "b", "flow": "MockRel", "count": 1},
+            {"source": "b", "sink": "c", "flow": "MockRel", "count": 1},
+            {"source": "a", "sink": "d", "flow": "MockRel", "count": 1},
+            {"source": "a", "sink": "c", "flow": "MockRel", "count": 2},
         ]
 
         result = self.dataset_processing.get_flowgraph_list_for_entrypoint(
@@ -201,15 +189,13 @@ class TestFeatureExtractorGetFlowgraphListForEntrypoint(TestCase):
     @patch("bugfinder.features.extraction.hops_n_flows.FeatureExtractor.neo4j_db")
     def test_max_hops_set_returns_flowgraph_list(self, mock_neo4j_db):
         mock_neo4j_db.run.side_effect = [self.MockNeo4JRunData()]
-        mock_entrypoint = {
-            "entry_id": "mock_entry_id"
-        }
+        mock_entrypoint = {"entry_id": "mock_entry_id"}
         self.dataset_processing.max_hops = 1
 
         expected_result = [
-            {'source': 'a', 'sink': 'b', 'flow': 'MockRel', 'count': 1},
-            {'source': 'b', 'sink': 'c', 'flow': 'MockRel', 'count': 1},
-            {'source': 'a', 'sink': 'd', 'flow': 'MockRel', 'count': 1},
+            {"source": "a", "sink": "b", "flow": "MockRel", "count": 1},
+            {"source": "b", "sink": "c", "flow": "MockRel", "count": 1},
+            {"source": "a", "sink": "d", "flow": "MockRel", "count": 1},
         ]
 
         result = self.dataset_processing.get_flowgraph_list_for_entrypoint(
@@ -221,14 +207,10 @@ class TestFeatureExtractorGetFlowgraphListForEntrypoint(TestCase):
     @patch("bugfinder.features.extraction.hops_n_flows.FeatureExtractor.neo4j_db")
     def test_min_hops_set_returns_flowgraph_list(self, mock_neo4j_db):
         mock_neo4j_db.run.side_effect = [self.MockNeo4JRunData()]
-        mock_entrypoint = {
-            "entry_id": "mock_entry_id"
-        }
+        mock_entrypoint = {"entry_id": "mock_entry_id"}
         self.dataset_processing.min_hops = 2
 
-        expected_result = [
-            {'source': 'a', 'sink': 'c', 'flow': 'MockRel', 'count': 2}
-        ]
+        expected_result = [{"source": "a", "sink": "c", "flow": "MockRel", "count": 2}]
 
         result = self.dataset_processing.get_flowgraph_list_for_entrypoint(
             mock_entrypoint
@@ -253,16 +235,10 @@ class TestFeatureExtractorGetFlowgraphCount(TestCase):
         self.dataset_processing = HopsNFlowsExtractor(dataset)
 
     def test_returns_flowgraph_count(self):
-        mock_flowgraph = {
-            "source": "src",
-            "flow": "FLOWS_TO",
-            "sink": "snk"
-        }
+        mock_flowgraph = {"source": "src", "flow": "FLOWS_TO", "sink": "snk"}
         expected_result = "src-FLOWS_TO-snk"
 
-        result = self.dataset_processing.get_label_from_flowgraph(
-            mock_flowgraph
-        )
+        result = self.dataset_processing.get_label_from_flowgraph(mock_flowgraph)
 
         self.assertEqual(result, expected_result)
 

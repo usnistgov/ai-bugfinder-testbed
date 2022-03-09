@@ -9,10 +9,8 @@ from tests import patch_paths
 class TestNeo4J2ConverterDefault(TestCase):
     def setUp(self) -> None:
         patch_paths(
-            self, [
-                "bugfinder.neo4j.converter.LOGGER",
-                "bugfinder.dataset.processing.LOGGER"
-            ]
+            self,
+            ["bugfinder.neo4j.converter.LOGGER", "bugfinder.dataset.processing.LOGGER"],
         )
 
         self.dataset_processing = Neo4J2Converter(None)
@@ -24,10 +22,8 @@ class TestNeo4J2ConverterDefault(TestCase):
 class TestNeo4J2ConverterConfigureContainer(TestCase):
     def setUp(self) -> None:
         patch_paths(
-            self, [
-                "bugfinder.neo4j.converter.LOGGER",
-                "bugfinder.dataset.processing.LOGGER"
-            ]
+            self,
+            ["bugfinder.neo4j.converter.LOGGER", "bugfinder.dataset.processing.LOGGER"],
         )
 
         self.dataset = Mock(spec=CWEClassificationDataset)
@@ -72,10 +68,8 @@ class TestNeo4J2ConverterConfigureContainer(TestCase):
 class TestNeo4J2ConverterSendCommands(TestCase):
     def setUp(self) -> None:
         patch_paths(
-            self, [
-                "bugfinder.neo4j.converter.LOGGER",
-                "bugfinder.dataset.processing.LOGGER"
-            ]
+            self,
+            ["bugfinder.neo4j.converter.LOGGER", "bugfinder.dataset.processing.LOGGER"],
         )
 
         self.dataset = Mock(spec=CWEClassificationDataset)
@@ -153,10 +147,8 @@ class TestNeo4J2ConverterSendCommands(TestCase):
 class TestNeo4J3ConverterConfigureContainer(TestCase):
     def setUp(self) -> None:
         patch_paths(
-            self, [
-                "bugfinder.neo4j.converter.LOGGER",
-                "bugfinder.dataset.processing.LOGGER"
-            ]
+            self,
+            ["bugfinder.neo4j.converter.LOGGER", "bugfinder.dataset.processing.LOGGER"],
         )
 
         dataset = Mock(spec=CWEClassificationDataset)
@@ -182,10 +174,8 @@ class TestNeo4J3ConverterConfigureContainer(TestCase):
 class TestNeo4J3ConverterSendCommands(TestCase):
     def setUp(self) -> None:
         patch_paths(
-            self, [
-                "bugfinder.neo4j.converter.LOGGER",
-                "bugfinder.dataset.processing.LOGGER"
-            ]
+            self,
+            ["bugfinder.neo4j.converter.LOGGER", "bugfinder.dataset.processing.LOGGER"],
         )
 
         self.dataset_processing = Neo4J3Converter(None)

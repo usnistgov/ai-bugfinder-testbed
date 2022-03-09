@@ -184,8 +184,7 @@ class FeatureExtractor(FlowGraphFeatureExtractor):
         }
         # Map retrieving the type of flow for each label index.
         label_flow_map = [
-            [flow for flow in self.flows if flow in label][0]
-            for label in labels
+            [flow for flow in self.flows if flow in label][0] for label in labels
         ]
 
         for sample in features:  # Loop over all samples
