@@ -41,11 +41,15 @@ class FeatureSelector(AbstractFeatureSelector):
         )
         autoencoder.compile(optimizer="adam", loss="mse")
 
+        # Shuffle input features.
         features = input_features.sample(frac=1)
+
+        # Split samples to train and test data set.
         training_samples = int(features.shape[0] * 0.75)
         training_set = features.iloc[:training_samples, :]
         test_set = features.iloc[training_samples:, :]
 
+        # Fitting the auto-encoder. Input and output should be the same.
         autoencoder.fit(
             training_set,
             training_set,
@@ -54,6 +58,7 @@ class FeatureSelector(AbstractFeatureSelector):
             validation_data=(test_set, test_set),
         )
 
+        # Return the trained encoder.
         return encoder
 
     def select_feature(

@@ -7,7 +7,11 @@ from tests import patch_paths
 class TestJoernDatasetProcessingConfigureContainer(TestCase):
     def setUp(self) -> None:
         patch_paths(
-            self, ["bugfinder.joern.JoernDefaultDatasetProcessing.configure_container"]
+            self, [
+                "bugfinder.joern.JoernDefaultDatasetProcessing.configure_container",
+                "bugfinder.joern.v031.LOGGER",
+                "bugfinder.dataset.processing.LOGGER"
+            ]
         )
 
         self.dataset_processing = JoernDatasetProcessing(None)

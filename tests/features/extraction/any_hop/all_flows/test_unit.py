@@ -10,7 +10,13 @@ from tests import patch_paths
 
 class FeatureExtractorConfigureContainer(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, ["bugfinder.features.extraction.LOGGER"])
+        patch_paths(
+            self,
+            [
+                "bugfinder.features.extraction.LOGGER",
+                "bugfinder.dataset.processing.LOGGER",
+            ],
+        )
 
         dataset = Mock(spec=CWEClassificationDataset)
         dataset.ops_queue = list()
@@ -31,7 +37,13 @@ class FeatureExtractorConfigureContainer(TestCase):
 
 class FeatureExtractorGetFlowgraphListForEntrypoint(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, ["bugfinder.features.extraction.LOGGER"])
+        patch_paths(
+            self,
+            [
+                "bugfinder.features.extraction.LOGGER",
+                "bugfinder.dataset.processing.LOGGER",
+            ],
+        )
 
         self.dataset_processing = AnyHopAllFlowsFeatureExtractor(None)
 
@@ -44,7 +56,13 @@ class FeatureExtractorGetFlowgraphListForEntrypoint(TestCase):
 
 class FeatureExtractorGetFlowgraphCount(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, ["bugfinder.features.extraction.LOGGER"])
+        patch_paths(
+            self,
+            [
+                "bugfinder.features.extraction.LOGGER",
+                "bugfinder.dataset.processing.LOGGER",
+            ],
+        )
 
         self.dataset_processing = AnyHopAllFlowsFeatureExtractor(None)
 
@@ -58,7 +76,13 @@ class FeatureExtractorGetFlowgraphCount(TestCase):
 
 class FeatureExtractorGetLabelFromFlowgraph(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, ["bugfinder.features.extraction.LOGGER"])
+        patch_paths(
+            self,
+            [
+                "bugfinder.features.extraction.LOGGER",
+                "bugfinder.dataset.processing.LOGGER",
+            ],
+        )
 
         self.dataset_processing = AnyHopAllFlowsFeatureExtractor(None)
 

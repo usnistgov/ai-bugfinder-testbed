@@ -3,13 +3,20 @@
 import unittest
 
 from bugfinder.utils.processing import is_operation_valid, is_processing_stack_valid
-from tests import MockDatasetProcessing
+from tests import MockDatasetProcessing, patch_paths
 
 
 class TestIsOperationValid(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.operation_class = MockDatasetProcessing
+
+    def setUp(self) -> None:
+        patch_paths(
+            self, [
+                "bugfinder.utils.processing.LOGGER"
+            ]
+        )
 
     def test_valid_dict_operation(self):
         operation = {"class": self.operation_class, "args": {}}
@@ -52,6 +59,13 @@ class TestIsProcessingStackValid(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.operation_class = MockDatasetProcessing
+
+    def setUp(self) -> None:
+        patch_paths(
+            self, [
+                "bugfinder.utils.processing.LOGGER"
+            ]
+        )
 
     def test_valid_stack(self):
         operation_list = [

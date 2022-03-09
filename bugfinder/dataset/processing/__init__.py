@@ -68,7 +68,7 @@ class DatasetProcessing(ABC):
             LOGGER.warning(deprecation_notice)
 
     @abstractmethod
-    def execute(self, *args, **kwargs):
+    def execute(self, *args, **kwargs):  # pragma: no cover
         """Execute the processing. Needs to be implemented by the subclass.
 
         Args:
@@ -90,7 +90,7 @@ class DatasetFileProcessing(DatasetProcessing):
         self.dataset.rebuild_index()
 
     @abstractmethod
-    def process_file(self, filepath):
+    def process_file(self, filepath):  # pragma: no cover
         """Process a file with the given `filepath`. Needs to be implemented by the
         subclass.
 
@@ -183,7 +183,7 @@ class DatasetProcessingWithContainer(DatasetProcessing):
         return assigned_ports
 
     @abstractmethod
-    def configure_container(self):
+    def configure_container(self):  # pragma: no cover
         """Configure the given container automatically. Needs to be implemented by the
         subclass.
         """
@@ -213,6 +213,6 @@ class DatasetProcessingWithContainer(DatasetProcessing):
         raise Exception("Command %s not handled by container")
 
     @abstractmethod
-    def send_commands(self):
+    def send_commands(self):  # pragma: no cover
         """Send the commands to container. Needs to be implemented by the subclass."""
         raise NotImplementedError("Method 'send_commands' not implemented.")

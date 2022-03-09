@@ -167,43 +167,51 @@ class FeatureExtractor(FlowGraphFeatureExtractor):
         return "%s-%s-%s" % (source, flow, sink)
 
     def finalize_features(self, features, labels):
-        """Perform final touches on the features before saving them to CSV."""
-        # normalized_features = list()
-        #
-        # # Find all labels related to each type of flow
-        # labels_in_flow = [
-        #     [labels.index(label) for label in labels if flow in label]
-        #     for flow in self.FLOWS
-        # ]
-        #
-        # # Determine index of each labels
-        # labels_index = [0] * len(labels)
-        # for flow_index in range(len(labels_in_flow) - 1):
-        #     for label_index in labels_in_flow[flow_index + 1]:
-        #         labels_index[label_index] = flow_index + 1
-        #
-        # for feature_row in features:
-        #     trimmed_feature_row = feature_row[:-2]
-        #
-        #     summed_row = [
-        #         sum(
-        #             [
-        #                 trimmed_feature_row[label_index]
-        #                 for label_index in labels_in_flow[flow_index]
-        #             ]
-        #         )
-        #         for flow_index in range(len(self.FLOWS))
-        #     ]
-        #
-        #     normalized_features.append(
-        #         [
-        #             trimmed_feature_row[i] / summed_row[labels_index[i]]
-        #             if summed_row[labels_index[i]] != 0
-        #             else 0
-        #             for i in range(len(trimmed_feature_row))
-        #         ]
-        #         + feature_row[-2:]
-        #     )
-        #
-        # return normalized_features
-        return features
+        """Perform final touches on the features before saving them to CSV.
+
+        Args:
+            features:
+            labels:
+
+        Returns:
+        """
+        normalized_features = list()
+
+        # Map grouping every label per flow.
+        labels_per_flow = {
+            flow: [labels.index(label) for label in labels if flow in label]
+            for flow in self.flows
+        }
+        # Map retrieving the type of flow for each label index.
+        label_flow_map = [
+            [flow for flow in self.flows if flow in label][0]
+            for label in labels
+        ]
+
+        for sample in features:  # Loop over all samples
+            # Remove output columns
+            sample_inputs = sample[:-2]
+
+            # Compute the total number of statement for each type of flow.
+            total_statement_per_flow = {
+                flow: sum(
+                    [
+                        sample_inputs[label_index]
+                        for label_index in labels_per_flow[flow]
+                    ]
+                )
+                for flow in self.flows
+            }
+
+            # Normalize every input feature per sample and per type of flow.
+            normalized_features.append(
+                [
+                    sample_input / total_statement_per_flow[label_flow_map[label_index]]
+                    if total_statement_per_flow[label_flow_map[label_index]] != 0
+                    else 0
+                    for label_index, sample_input in enumerate(sample_inputs)
+                ]
+                + sample[-2:]
+            )
+
+        return normalized_features

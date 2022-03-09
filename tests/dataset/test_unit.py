@@ -9,12 +9,19 @@ from bugfinder import settings
 from bugfinder.dataset import CWEClassificationDataset, DatasetQueueRetCode
 from bugfinder.dataset.processing import DatasetProcessing
 from bugfinder.settings import DATASET_DIRS
-from tests import MockDatasetProcessing
+from tests import MockDatasetProcessing, patch_paths
 
 
 class TestCWEClassificationDatasetInit(TestCase):
     @classmethod
     def setUpClass(cls) -> None:
+        patch_paths(
+            cls(), [
+                "bugfinder.dataset.LOGGER",
+                "bugfinder.utils.processing.LOGGER"
+            ]
+        )
+
         with patch(
             "bugfinder.dataset.CWEClassificationDataset.rebuild_index"
         ) as mock_rebuild_index:
@@ -67,9 +74,12 @@ class TestCWEClassificationDatasetInit(TestCase):
 
 class TestCWEClassificationDatasetRebuildIndex(TestCase):
     def setUp(self) -> None:
-        patch_logger = patch("bugfinder.dataset.LOGGER")
-        patch_logger.start()
-        self.addCleanup(patch_logger.stop)
+        patch_paths(
+            self, [
+                "bugfinder.dataset.LOGGER",
+                "bugfinder.utils.processing.LOGGER"
+            ]
+        )
 
     def tearDown(self) -> None:
         try:
@@ -131,9 +141,12 @@ class TestCWEClassificationDatasetRebuildIndex(TestCase):
 
 class TestCWEClassificationDatasetGetFeaturesInfo(TestCase):
     def setUp(self) -> None:
-        patch_logger = patch("bugfinder.dataset.LOGGER")
-        patch_logger.start()
-        self.addCleanup(patch_logger.stop)
+        patch_paths(
+            self, [
+                "bugfinder.dataset.LOGGER",
+                "bugfinder.utils.processing.LOGGER"
+            ]
+        )
 
     def tearDown(self) -> None:
         try:
@@ -160,9 +173,12 @@ class TestCWEClassificationDatasetGetFeaturesInfo(TestCase):
 
 class TestCWEClassificationDatasetQueueOperation(TestCase):
     def setUp(self) -> None:
-        patch_logger = patch("bugfinder.dataset.LOGGER")
-        patch_logger.start()
-        self.addCleanup(patch_logger.stop)
+        patch_paths(
+            self, [
+                "bugfinder.dataset.LOGGER",
+                "bugfinder.utils.processing.LOGGER"
+            ]
+        )
 
         self.dataset_path = "./tests/fixtures/dataset01"
         self.dataset = CWEClassificationDataset(self.dataset_path)
@@ -186,9 +202,12 @@ class TestCWEClassificationDatasetQueueOperation(TestCase):
 
 class TestCWEClassificationDatasetProcess(TestCase):
     def setUp(self) -> None:
-        patch_logger = patch("bugfinder.dataset.LOGGER")
-        patch_logger.start()
-        self.addCleanup(patch_logger.stop)
+        patch_paths(
+            self, [
+                "bugfinder.dataset.LOGGER",
+                "bugfinder.utils.processing.LOGGER"
+            ]
+        )
 
         self.dataset_path = "./tests/fixtures/dataset01"
         self.dataset = CWEClassificationDataset(self.dataset_path)

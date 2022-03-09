@@ -8,6 +8,13 @@ from tests import patch_paths
 
 class TestNeo4J3ImporterDefault(TestCase):
     def setUp(self) -> None:
+        patch_paths(
+            self, [
+                "bugfinder.neo4j.importer.LOGGER",
+                "bugfinder.dataset.processing.LOGGER"
+            ]
+        )
+
         self.dataset_processing = Neo4J3Importer(None)
 
     def test_db_name_correct(self):
@@ -19,6 +26,13 @@ class TestNeo4J3ImporterDefault(TestCase):
 
 class TestNeo4J3ImporterConfigureContainer(TestCase):
     def setUp(self) -> None:
+        patch_paths(
+            self, [
+                "bugfinder.neo4j.importer.LOGGER",
+                "bugfinder.dataset.processing.LOGGER"
+            ]
+        )
+
         self.dataset = Mock(spec=CWEClassificationDataset)
         self.dataset.neo4j_dir = "mock_neo4j_dir"
         self.dataset.joern_dir = "mock_joern_dir"
@@ -57,7 +71,12 @@ class TestNeo4J3ImporterConfigureContainer(TestCase):
 
 class TestNeo4J3ImporterSendCommands(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, ["bugfinder.neo4j.importer.LOGGER"])
+        patch_paths(
+            self, [
+                "bugfinder.neo4j.importer.LOGGER",
+                "bugfinder.dataset.processing.LOGGER"
+            ]
+        )
 
         self.dataset_processing = Neo4J3Importer(None)
 

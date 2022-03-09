@@ -21,7 +21,12 @@ class TestAbstractASTMarkupSendCommands(TestCase):
             return None
 
     def setUp(self) -> None:
-        patch_paths(self, ["bugfinder.ast.LOGGER"])
+        patch_paths(
+            self, [
+                "bugfinder.ast.LOGGER",
+                "bugfinder.dataset.processing.LOGGER"
+            ]
+        )
 
         dataset = Mock(spec=CWEClassificationDataset)
         dataset.ops_queue = list()
@@ -62,6 +67,13 @@ class TestAbstractASTMarkupSendCommands(TestCase):
 
 class TestASTSetExporterExecute(TestCase):
     def setUp(self) -> None:
+        patch_paths(
+            self, [
+                "bugfinder.ast.LOGGER",
+                "bugfinder.dataset.processing.LOGGER"
+            ]
+        )
+
         self.dataset_processing = ASTSetExporter(None)
 
     @patch("bugfinder.neo4j.Neo4J3Processing.execute")
@@ -79,6 +91,13 @@ class TestASTSetExporterExecute(TestCase):
 
 class TestASTSetExporterConfigureContainer(TestCase):
     def setUp(self) -> None:
+        patch_paths(
+            self, [
+                "bugfinder.ast.LOGGER",
+                "bugfinder.dataset.processing.LOGGER"
+            ]
+        )
+
         self.dataset_processing = ASTSetExporter(None)
 
     @patch("bugfinder.neo4j.Neo4J3Processing.configure_container")
@@ -95,7 +114,14 @@ class TestASTSetExporterConfigureContainer(TestCase):
 
 class TestASTSetExporterSendCommands(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, ["builtins.open"])
+        patch_paths(
+            self, [
+                "builtins.open",
+                "bugfinder.ast.LOGGER",
+                "bugfinder.dataset.processing.LOGGER"
+            ]
+        )
+
         self.dataset_processing = ASTSetExporter(None)
         self.dataset_processing.ast_file = "mock_file"
 

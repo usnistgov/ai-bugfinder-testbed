@@ -10,7 +10,7 @@ from bugfinder.utils.containers import (
     wait_log_display,
     stop_container_by_name,
 )
-from tests import mock_return_fn_args_as_dict
+from tests import mock_return_fn_args_as_dict, patch_paths
 
 
 class TestStartContainer(unittest.TestCase):
@@ -18,6 +18,13 @@ class TestStartContainer(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.image_name = "mock_image_name"
         cls.container_name = "mock_container_name"
+
+    def setUp(self) -> None:
+        patch_paths(
+            self, [
+                "bugfinder.utils.containers.LOGGER"
+            ]
+        )
 
     @patch("docker.models.containers.ContainerCollection.run")
     def test_default_parameters(self, mock_docker_run):
@@ -127,6 +134,13 @@ class TestStartContainer(unittest.TestCase):
 
 
 class TestWaitLogDisplay(unittest.TestCase):
+    def setUp(self) -> None:
+        patch_paths(
+            self, [
+                "bugfinder.utils.containers.LOGGER"
+            ]
+        )
+
     def test_string_returns_exits_before_timeout(self):
         container_mock = Mock()
         container_mock.logs.return_value = "logs content".encode("utf-8")
@@ -155,6 +169,13 @@ class TestWaitLogDisplay(unittest.TestCase):
 
 
 class TestStopContainerByName(unittest.TestCase):
+    def setUp(self) -> None:
+        patch_paths(
+            self, [
+                "bugfinder.utils.containers.LOGGER"
+            ]
+        )
+
     @patch("docker.models.containers.ContainerCollection.get")
     def test_valid_name_exits_correctly(self, mock_container):
         mock_container_object = Mock()

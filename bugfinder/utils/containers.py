@@ -58,7 +58,7 @@ def start_container(
     return run_result
 
 
-def wait_log_display(container, log_string, max_wait_time=300):
+def wait_log_display(container, log_string, max_wait_time=300):  # pragma: no cover
     """Wait for the container to output a given string."""
     LOGGER.debug(
         "Waiting for container '%s' to display '%s' (max_wait_time=%d)...",

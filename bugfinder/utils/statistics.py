@@ -1,5 +1,7 @@
 """ Utilities for statistic purposes.
 """
+from typing import List
+
 from time import time
 
 
@@ -45,7 +47,11 @@ def display_time(time_in_ms):
     return f"{days} days {hours:02d}h{mins:02d}m{secs:02d}s"
 
 
-def has_better_metrics(eval_keys, current_metrics, last_metrics=None):
+def has_better_metrics(
+    eval_keys: list[str],
+    current_metrics: dict[str, float],
+    last_metrics: dict[str, float] = None,
+) -> bool:
     """Evaluate two metrics datastructure depending on a set of keys."""
     if last_metrics is None:
         return True
