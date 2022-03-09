@@ -16,7 +16,7 @@ sed -i -r 's;docs/(_static);\1;g' ${docs_readme}
 
 # Generate RST files based on Python files
 echo "Generating new documentation files..."
-for pyf in $(find ${REPO_PATH}/ -type f -name "*.py" | grep -vE "${REPO_PATH}/(docs|dist)")
+for pyf in $(find ${REPO_PATH}/ -type f -name "*.py" | grep "${REPO_PATH}/bugfinder")
 do
   RST_FILE="$(echo "${pyf}" | sed -r "s;${REPO_PATH}/(.*\.)py$;\1rst;")"
   RST_PATH="${API_PATH}/${RST_FILE}"
