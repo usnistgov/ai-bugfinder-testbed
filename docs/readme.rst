@@ -58,9 +58,9 @@ Once the Python environment is setup and the repository downloaded, run:
 
 There are several datasets  to choose from:
 
-* The CWE-121 is a set of buffer overflow test cases (2838 buggy test cases,
-  2838 clean test cases). It is a good place to begin the exploration of this
-  repository. Download it by typing ``./scripts/download_cwe121.sh``.
+* The CWE-121 dataset is a set of buffer overflow test cases (2838 buggy test
+  cases, 2838 clean test cases). It is a good place to begin the exploration of
+  this repository. Download it by typing ``./scripts/download_cwe121.sh``.
 * The `Juliet Dataset for C/C++ <https://samate.nist.gov/SRD/testsuite.php>`__
   is a much larger dataset containing multiple types of bugs. It can be
   downloaded with ``./scripts/download_juliet.sh`` and contains 64099 buggy
@@ -114,7 +114,8 @@ will always be organized as such:
 - Dataset processing mainly revolves around cleaning, parsing and annotating
   the dataset.
 - Feature extraction consists in building a set of CSV files containing
-  properties (features) of each item of the dataset.
+  properties (features) of each item of the dataset. Various techniques can then
+  be used to reduce the number of features and fasten the training step.
 - Model training uses the CSV files as input to train the weights of the model.
 - Model testing and validation evaluates the model performance on unseen
   samples of the dataset.
@@ -140,5 +141,5 @@ been implemented. This repository offers two ways of creating pipelines:
   `<_static/scripts/sample.sh>`_.
 
 .. include:: _static/scripts/sample.sh
-    :code: bash
+    :code: shell
 

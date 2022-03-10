@@ -22,7 +22,7 @@ from bugfinder.joern.v040 import JoernDatasetProcessing as Joern040DatasetProces
 input_dataset_path = "/path/to/dataset.in"
 output_dataset_path = "/path/to/dataset.out"
 
-# Extract 50 sample from the dataset
+# Extract 50 samples from the dataset.
 input_dataset = Dataset(input_dataset_path)
 input_dataset.queue_operation(
     ExtractSampleDataset,
@@ -35,24 +35,24 @@ right_fixer_op = {
     "op_args": {"command_args": "neo4j_v3.db 101 101"},
 }
 
-# Cleanup the dataset by removing C++ files and replacing litterals
+# Cleanup the dataset by removing C++ files and replacing litterals.
 output_dataset = Dataset(output_dataset_path)
 output_dataset.queue_operation(RemoveCppFiles)
 output_dataset.queue_operation(ReplaceLitterals)
-# Run version 0.4.0 of the Joern processor
+# Run version 0.4.0 of the Joern processor.
 output_dataset.queue_operation(Joern040DatasetProcessing)
 output_dataset.queue_operation(Neo4J3Importer)
 output_dataset.queue_operation(**right_fixer_op)
 output_dataset.queue_operation(Neo4JAnnotations)
-# Use AST markup v2 to annotate the graph
+# Use AST markup v2 to annotate the graph.
 output_dataset.queue_operation(**right_fixer_op)
 output_dataset.queue_operation(Neo4JASTMarkupV02)
-# Run feature extraction
+# Run feature extraction.
 output_dataset.queue_operation(HopsNFlowsExtractor, {"need_map_features": True})
 output_dataset.queue_operation(HopsNFlowsExtractor)
-# Run feature selection to fasten training
+# Run feature selection to fasten training.
 output_dataset.queue_operation(PCA, {"dimension": 50, "dry_run": False})
-# Run model training and display metrics
+# Run model training and display metrics.
 output_dataset.queue_operation(
     LinearClassifierTraining,
     {
