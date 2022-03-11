@@ -48,9 +48,7 @@ class TestNeo4JASTMarkupGetAstInformation(TestCase):
                 return [
                     {
                         "id": "mock_id",
-                        "type": "mock_type",
-                        "parent": "mock_parent",
-                        "child_num": "mock_child_num",
+                        "type": "mock_type"
                     }
                 ]
 
