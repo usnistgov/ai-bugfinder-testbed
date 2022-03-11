@@ -1,5 +1,10 @@
-""" Script to clean a dataset from problematic code samples
+""" Script to clean a dataset from problematic code samples.
 """
+from os.path import dirname, join
+import sys
+
+sys.path.append(join(dirname(__file__), ".."))
+
 import argparse
 
 from bugfinder.dataset import CWEClassificationDataset as Dataset
@@ -11,6 +16,7 @@ from bugfinder.dataset.processing.file_ops import (
     RemoveCppFiles,
     RemoveInterproceduralTestCases,
 )
+
 
 if __name__ == "__main__":
     options = {  # Dictionary linking input arguments to processing classes

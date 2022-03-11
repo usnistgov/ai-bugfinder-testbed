@@ -1,30 +1,35 @@
+""" Script to markup nodes with an AST structure
+"""
+
+from os.path import dirname, join
+import sys
+
+sys.path.append(join(dirname(__file__), ".."))
+
 import argparse
 
+from bugfinder.ast.v01 import Neo4JASTMarkup as Neo4JASTMarkupV01
+from bugfinder.ast.v02 import Neo4JASTMarkup as Neo4JASTMarkupV02
+from bugfinder.ast.v03 import Neo4JASTMarkup as Neo4JASTMarkupV03
 from bugfinder.dataset import CWEClassificationDataset as Dataset
 from bugfinder.dataset.processing.dataset_ops import RightFixer
-from bugfinder.joern.v031 import JoernDatasetProcessing as Joern031DatasetProcessing
-from bugfinder.joern.v040 import JoernDatasetProcessing as Joern040DatasetProcessing
-from bugfinder.neo4j.annot import Neo4JAnnotations
-from bugfinder.neo4j.converter import Neo4J2Converter, Neo4J3Converter
-from bugfinder.neo4j.importer import Neo4J3Importer
 from bugfinder.utils.processing import is_processing_stack_valid
 
 if __name__ == "__main__":
-    options = {  # Dictionary linking input arguments to processing classes
-        "0.3.1": [
-            Joern031DatasetProcessing,
-            Neo4J2Converter,
+    options = [  # List of processing classes
+        [
             {"class": RightFixer, "args": {"command_args": "neo4j_v3.db 101 101"}},
-            Neo4J3Converter,
-            Neo4JAnnotations,
+            Neo4JASTMarkupV01,
         ],
-        "0.4.0": [
-            Joern040DatasetProcessing,
-            Neo4J3Importer,
+        [
             {"class": RightFixer, "args": {"command_args": "neo4j_v3.db 101 101"}},
-            Neo4JAnnotations,
+            Neo4JASTMarkupV02,
         ],
-    }
+        [
+            {"class": RightFixer, "args": {"command_args": "neo4j_v3.db 101 101"}},
+            Neo4JASTMarkupV03,
+        ],
+    ]
 
     # Setup the argument parser
     parser = argparse.ArgumentParser()
@@ -32,20 +37,21 @@ if __name__ == "__main__":
     parser.add_argument(
         "--version",
         "-v",
-        choices=options.keys(),
+        choices=range(1, len(options) + 1),
+        type=int,
         required=True,
         help="path to the dataset to clean",
     )
 
     args = parser.parse_args()
 
-    # Instantiate dataset class and run joern processing
+    # Instantiate dataset class and run AST markup processing
     dataset = Dataset(args.dataset_path)
 
-    if not is_processing_stack_valid(options[args.version]):
+    if not is_processing_stack_valid(options[args.version - 1]):
         raise TypeError("Invalid processing stack.")
 
-    for operation in options[args.version]:
+    for operation in options[args.version - 1]:
         if isinstance(operation, dict):
             dataset.queue_operation(operation["class"], operation["args"])
         else:  # operation is a DataProcessing class

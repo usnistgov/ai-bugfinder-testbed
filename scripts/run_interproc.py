@@ -1,10 +1,14 @@
 """ Script to connect data and control flows through function calls
 """
+from os.path import dirname, join
+import sys
+
+sys.path.append(join(dirname(__file__), ".."))
+
 import argparse
 
 from bugfinder.interproc import InterprocMerger
 from bugfinder.dataset.processing.dataset_ops import RightFixer
-from bugfinder.utils.processing import is_processing_stack_valid
 from bugfinder.dataset import CWEClassificationDataset as Dataset
 
 if __name__ == "__main__":

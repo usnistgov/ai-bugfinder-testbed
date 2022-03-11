@@ -1,3 +1,8 @@
+from os.path import dirname, join
+import sys
+
+sys.path.append(join(dirname(__file__), ".."))
+
 import argparse
 import logging
 import os

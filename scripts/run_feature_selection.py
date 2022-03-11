@@ -1,14 +1,25 @@
 """ Script to run feature selection
 """
-from copy import deepcopy
+from os.path import dirname, join
+import sys
+
+sys.path.append(join(dirname(__file__), ".."))
 
 import argparse
 import re
+from copy import deepcopy
 
 from bugfinder.dataset import CWEClassificationDataset as Dataset
+from bugfinder.features.reduction.auto_encoder import FeatureSelector as AutoEncoder
 from bugfinder.features.reduction.pca import FeatureSelector as PCA
+from bugfinder.features.reduction.recursive_feature_elimination import (
+    FeatureSelector as RecursiveFeatureElimination,
+)
 from bugfinder.features.reduction.select_from_model import (
     FeatureSelector as SelectFromModel,
+)
+from bugfinder.features.reduction.sequential_feature_selector import (
+    FeatureSelector as SequentialFeatureSelector,
 )
 from bugfinder.features.reduction.univariate_select import (
     FeatureSelector as UnivariateSelect,
@@ -16,13 +27,6 @@ from bugfinder.features.reduction.univariate_select import (
 from bugfinder.features.reduction.variance_threshold import (
     FeatureSelector as VarianceThreshold,
 )
-from bugfinder.features.reduction.recursive_feature_elimination import (
-    FeatureSelector as RecursiveFeatureElimination,
-)
-from bugfinder.features.reduction.sequential_feature_selector import (
-    FeatureSelector as SequentialFeatureSelector,
-)
-from bugfinder.features.reduction.auto_encoder import FeatureSelector as AutoEncoder
 from bugfinder.utils.feature_selection import selection_estimators
 from bugfinder.utils.processing import is_operation_valid
 
