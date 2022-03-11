@@ -586,7 +586,7 @@ class BLSTMClassifierModel(DatasetProcessing):
     def execute(self, name, **kwargs):
         # self.embedding_length = kwargs["emb_length"]
 
-        self.embedding_length = kwargs.get('emb_length', 300)
+        self.embedding_length = kwargs.get("emb_length", 300)
         self.vector_length = kwargs.get("vec_length", 50)
         self.epochs = kwargs.get("epochs", 10)
         self.batch_size = kwargs.get("batch_size", 64)

@@ -411,20 +411,20 @@ class TestTokenizeProcessFile(TestCase):
         self.assertTrue(exists("%s.tmp" % self.original_file))
 
     def test_regex_construction_single_char(self):
-        ops = ['a', 'b', 'c', '!', '=']
-        regs = '(a)|(b)|(c)|(!)|(=)'
+        ops = ["a", "b", "c", "!", "="]
+        regs = "(a)|(b)|(c)|(!)|(=)"
 
         self.assertEqual(self.dataset_processing.to_regex(ops), regs)
 
     def test_regex_construction_double_char(self):
-        ops = ['ab', 'cd', '||', '!=', '|=']
-        regs = '(ab)|(cd)|(\\|\\|)|(!=)|(\\|=)'
+        ops = ["ab", "cd", "||", "!=", "|="]
+        regs = "(ab)|(cd)|(\\|\\|)|(!=)|(\\|=)"
 
         self.assertEqual(self.dataset_processing.to_regex(ops), regs)
 
     def test_regex_construction_triple_char(self):
-        ops = ['abc', '|=<', '>>=']
-        regs = '(abc)|(\\|=<)|(>>=)'
+        ops = ["abc", "|=<", ">>="]
+        regs = "(abc)|(\\|=<)|(>>=)"
 
         self.assertEqual(self.dataset_processing.to_regex(ops), regs)
 
