@@ -6,4 +6,3 @@ API documentation
     :maxdepth: 2
 
     bugfinder/index
-    tests/index

@@ -5,4 +5,7 @@
     :maxdepth: 2
 
     readme
+    pipelines
+    processing
+    examples/index
     api/index
