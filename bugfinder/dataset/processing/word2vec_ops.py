@@ -234,7 +234,7 @@ class ReplaceFunctions(DatasetProcessing):
         tmp_filepath = "%s.tmp" % filepath
 
         function_symbols = dict()
-        function_count = 1
+        function_count = 0
 
         replaced_code = []
 
@@ -254,10 +254,11 @@ class ReplaceFunctions(DatasetProcessing):
                         len({function_name}.difference(keywords)) != 0
                     ):
                         if function_name not in function_symbols.keys():
+                            function_count += 1
+
                             function_symbols[function_name] = "FUN" + str(
                                 function_count
                             )
-                            function_count += 1
 
                         ascii_line = re.sub(
                             r"\b(" + function_name + r")\b(?=\s*\()",
@@ -273,6 +274,8 @@ class ReplaceFunctions(DatasetProcessing):
             out_file.writelines(replaced_code)
 
         move(tmp_filepath, filepath)
+
+        return function_count
 
 
 ##################################################################################
@@ -302,7 +305,7 @@ class ReplaceVariables(DatasetProcessing):
         tmp_filepath = "%s.tmp" % filepath
 
         var_symbols = dict()
-        var_count = 1
+        var_count = 0
 
         replaced_code = []
 
@@ -324,8 +327,8 @@ class ReplaceVariables(DatasetProcessing):
                         len({var_name[0]}.difference(main_args)) != 0
                     ):
                         if var_name[0] not in var_symbols.keys():
-                            var_symbols[var_name[0]] = "VAR" + str(var_count)
                             var_count += 1
+                            var_symbols[var_name[0]] = "VAR" + str(var_count)
 
                         ascii_line = re.sub(
                             r"\b("
@@ -343,3 +346,5 @@ class ReplaceVariables(DatasetProcessing):
             out_file.writelines(replaced_code)
 
         move(tmp_filepath, filepath)
+
+        return var_count

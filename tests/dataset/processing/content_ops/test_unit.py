@@ -11,6 +11,14 @@ from bugfinder.dataset.processing.content_ops import (
 )
 from bugfinder.settings import ROOT_DIR
 from tests import patch_paths
+from bugfinder.dataset.processing.word2vec_ops import (
+    RemoveComments,
+    ReplaceFunctions,
+    ReplaceVariables,
+)
+from bugfinder.dataset.processing.token_ops import (
+    TokenizeText,
+)
 
 
 class TestReplaceLitteralsExecute(TestCase):
@@ -204,3 +212,227 @@ class TestRemoveMainFunctionProcessFile(TestCase):
             mod_lines = mod_file.readlines()
 
         self.assertEqual(orig_lines, mod_lines)
+
+
+class TestRemoveCommentsProcessFile(TestCase):
+    def _default_patch(self):
+        patches_path = [
+            "bugfinder.dataset.processing.word2vec_ops.move",
+            "bugfinder.dataset.processing.word2vec_ops.LOGGER",
+            "bugfinder.dataset.LOGGER",
+        ]
+
+        for patch_path in patches_path:
+            patch_item = patch(patch_path)
+            patch_item.start()
+            self.addCleanup(patch_item.stop)
+
+    def setUp(self) -> None:
+        self._default_patch()
+        dataset_path = "./tests/fixtures/dataset05"
+
+        dataset = Mock(spec=CWEClassificationDataset)
+        dataset.path = dataset_path
+
+        self.dataset_processing = RemoveComments(dataset)
+
+        self.original_file = join(dataset_path, "class01/tc01", "item.c")
+
+    def tearDown(self) -> None:
+        try:
+            remove("%s.tmp" % self.original_file)
+        except FileNotFoundError:
+            pass
+
+    def test_create_temp_file(self):
+        self.dataset_processing.process_file(self.original_file)
+
+        self.assertTrue(exists("%s.tmp" % self.original_file))
+
+    def test_original_file_not_equal(self):
+        self.dataset_processing.process_file(self.original_file)
+
+        with open(self.original_file) as unprocessed_file:
+            unprocessed_file.readlines()
+
+        with open("%s.tmp" % self.original_file) as processed_file:
+            processed_file.readlines()
+
+        self.assertNotEqual(unprocessed_file, processed_file)
+
+
+class TestReplaceFunctionsProcessFile(TestCase):
+    def _default_patch(self):
+        patches_path = [
+            "bugfinder.dataset.processing.word2vec_ops.move",
+            "bugfinder.dataset.processing.word2vec_ops.LOGGER",
+            "bugfinder.dataset.LOGGER",
+        ]
+
+        for patch_path in patches_path:
+            patch_item = patch(patch_path)
+            patch_item.start()
+            self.addCleanup(patch_item.stop)
+
+    def setUp(self) -> None:
+        self._default_patch()
+        dataset_path = "./tests/fixtures/dataset05"
+
+        dataset = Mock(spec=CWEClassificationDataset)
+        dataset.path = dataset_path
+
+        self.dataset_processing = ReplaceFunctions(dataset)
+
+        self.original_file = join(dataset_path, "class01/tc01", "item.c")
+
+    def tearDown(self) -> None:
+        try:
+            remove("%s.tmp" % self.original_file)
+        except FileNotFoundError:
+            pass
+
+    def test_create_temp_file(self):
+        self.dataset_processing.process_file(self.original_file)
+
+        self.assertTrue(exists("%s.tmp" % self.original_file))
+
+    def test_number_of_replaced_functions_not_zero(self):
+        func_count = self.dataset_processing.process_file(self.original_file)
+
+        self.assertNotEqual(func_count, 0)
+
+    def test_number_of_functions_replaced_is_correct(self):
+        func_count = self.dataset_processing.process_file(self.original_file)
+
+        self.assertEqual(func_count, 2)
+
+    def test_original_file_not_equal(self):
+        self.dataset_processing.process_file(self.original_file)
+
+        with open(self.original_file) as unprocessed_file:
+            unprocessed_file.readlines()
+
+        with open("%s.tmp" % self.original_file) as processed_file:
+            processed_file.readlines()
+
+        self.assertNotEqual(unprocessed_file, processed_file)
+
+
+class TestReplaceVariablesProcessFile(TestCase):
+    def _default_patch(self):
+        patches_path = [
+            "bugfinder.dataset.processing.word2vec_ops.move",
+            "bugfinder.dataset.processing.word2vec_ops.LOGGER",
+            "bugfinder.dataset.LOGGER",
+        ]
+
+        for patch_path in patches_path:
+            patch_item = patch(patch_path)
+            patch_item.start()
+            self.addCleanup(patch_item.stop)
+
+    def setUp(self) -> None:
+        self._default_patch()
+        dataset_path = "./tests/fixtures/dataset05"
+
+        dataset = Mock(spec=CWEClassificationDataset)
+        dataset.path = dataset_path
+
+        self.dataset_processing = ReplaceVariables(dataset)
+
+        self.original_file = join(dataset_path, "class01/tc01", "item.c")
+
+    def tearDown(self) -> None:
+        try:
+            remove("%s.tmp" % self.original_file)
+        except FileNotFoundError:
+            pass
+
+    def test_create_temp_file(self):
+        self.dataset_processing.process_file(self.original_file)
+
+        self.assertTrue(exists("%s.tmp" % self.original_file))
+
+    def test_number_of_replaced_variables_not_zero(self):
+        var_count = self.dataset_processing.process_file(self.original_file)
+
+        self.assertNotEqual(var_count, 0)
+
+    def test_number_of_replaced_variables_is_correct(self):
+        var_count = self.dataset_processing.process_file(self.original_file)
+
+        self.assertEqual(var_count, 17)
+
+    def test_original_file_not_equal(self):
+        self.dataset_processing.process_file(self.original_file)
+
+        with open(self.original_file) as unprocessed_file:
+            unprocessed_file.readlines()
+
+        with open("%s.tmp" % self.original_file) as processed_file:
+            processed_file.readlines()
+
+        self.assertNotEqual(unprocessed_file, processed_file)
+
+
+class TestTokenizeProcessFile(TestCase):
+    def _default_patch(self):
+        patches_path = [
+            "bugfinder.dataset.processing.token_ops.move",
+            "bugfinder.dataset.processing.token_ops.LOGGER",
+            "bugfinder.dataset.LOGGER",
+        ]
+
+        for patch_path in patches_path:
+            patch_item = patch(patch_path)
+            patch_item.start()
+            self.addCleanup(patch_item.stop)
+
+    def setUp(self) -> None:
+        self._default_patch()
+        dataset_path = "./tests/fixtures/dataset05"
+
+        dataset = Mock(spec=CWEClassificationDataset)
+        dataset.path = dataset_path
+
+        self.dataset_processing = TokenizeText(dataset)
+
+        self.original_file = join(dataset_path, "class01/tc02", "item.c")
+
+    def tearDown(self) -> None:
+        try:
+            remove("%s.tmp" % self.original_file)
+        except FileNotFoundError:
+            pass
+
+    def test_create_temp_file(self):
+        self.dataset_processing.process_file(self.original_file)
+
+        self.assertTrue(exists("%s.tmp" % self.original_file))
+
+    def test_regex_construction_single_char(self):
+        ops = ['a', 'b', 'c', '!', '=']
+        regs = '(a)|(b)|(c)|(!)|(=)'
+
+        self.assertEqual(self.dataset_processing.to_regex(ops), regs)
+
+    def test_regex_construction_double_char(self):
+        ops = ['ab', 'cd', '||', '!=', '|=']
+        regs = '(ab)|(cd)|(\\|\\|)|(!=)|(\\|=)'
+
+        self.assertEqual(self.dataset_processing.to_regex(ops), regs)
+
+    def test_regex_construction_triple_char(self):
+        ops = ['abc', '|=<', '>>=']
+        regs = '(abc)|(\\|=<)|(>>=)'
+
+        self.assertEqual(self.dataset_processing.to_regex(ops), regs)
+
+    def test_tokenize_content(self):
+        self.dataset_processing.process_file(self.original_file)
+
+        with open("%s.tmp" % self.original_file) as processed_file:
+            lines = processed_file.readlines()
+
+            for line in lines:
+                self.assertEqual(len(line.split()), 1)
