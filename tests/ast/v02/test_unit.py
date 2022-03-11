@@ -45,12 +45,7 @@ class TestNeo4JASTMarkupGetAstInformation(TestCase):
         class MockNeo4JRunData(object):
             @staticmethod
             def data():
-                return [
-                    {
-                        "id": "mock_id",
-                        "type": "mock_type"
-                    }
-                ]
+                return [{"id": "mock_id", "type": "mock_type"}]
 
         mock_neo4j_db.run.side_effect = [
             MockNeo4JRunData(),
