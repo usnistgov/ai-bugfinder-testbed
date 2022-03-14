@@ -91,6 +91,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     kwargs = dict()
 
+    # Instantiate dataset class for model training
     dataset = Dataset(args.dataset_path)
 
     op_args = {
