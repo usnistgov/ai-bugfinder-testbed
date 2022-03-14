@@ -236,7 +236,7 @@ class TestRemoveCommentsProcessFile(TestCase):
 
         self.dataset_processing = RemoveComments(dataset)
 
-        self.original_file = join(dataset_path, "class01/tc01", "item.c")
+        self.original_file = join(dataset_path, "class01/tc01", "item04.c")
 
     def tearDown(self) -> None:
         try:
@@ -283,7 +283,7 @@ class TestReplaceFunctionsProcessFile(TestCase):
 
         self.dataset_processing = ReplaceFunctions(dataset)
 
-        self.original_file = join(dataset_path, "class01/tc01", "item.c")
+        self.original_file = join(dataset_path, "class01/tc01", "item04.c")
 
     def tearDown(self) -> None:
         try:
@@ -304,7 +304,7 @@ class TestReplaceFunctionsProcessFile(TestCase):
     def test_number_of_functions_replaced_is_correct(self):
         func_count = self.dataset_processing.process_file(self.original_file)
 
-        self.assertEqual(func_count, 2)
+        self.assertEqual(func_count, 5)
 
     def test_original_file_not_equal(self):
         self.dataset_processing.process_file(self.original_file)
@@ -340,7 +340,7 @@ class TestReplaceVariablesProcessFile(TestCase):
 
         self.dataset_processing = ReplaceVariables(dataset)
 
-        self.original_file = join(dataset_path, "class01/tc01", "item.c")
+        self.original_file = join(dataset_path, "class01/tc01", "item04.c")
 
     def tearDown(self) -> None:
         try:
@@ -361,7 +361,7 @@ class TestReplaceVariablesProcessFile(TestCase):
     def test_number_of_replaced_variables_is_correct(self):
         var_count = self.dataset_processing.process_file(self.original_file)
 
-        self.assertEqual(var_count, 17)
+        self.assertEqual(var_count, 42)
 
     def test_original_file_not_equal(self):
         self.dataset_processing.process_file(self.original_file)
