@@ -566,7 +566,14 @@ class Word2VecEmbeddingsBase(DatasetProcessing):
 
 #########################################
 class BLSTMClassifierModel(DatasetProcessing):
+    """Class which implements the Bidirectional LSTM model.
+
+    Args:
+        DatasetProcessing (_type_): _description_
+    """
+
     def __init__(self, dataset):
+        """Class initialization method"""
         super().__init__(dataset)
 
         self.dropout = 0.5
@@ -583,12 +590,23 @@ class BLSTMClassifierModel(DatasetProcessing):
 
     @abstractmethod
     def init_model(self, name, **kwargs):
+        """Setup the model. Abstract method."""
         raise NotImplementedError()
 
     #########################
 
     @staticmethod
-    def retrieve_file_list(input_path):
+    def _retrieve_file_list(input_path):
+        """Reads every file in the input path given as input and returns a list with
+        the path of all CSV files in the tree directory. Should be used in this context on
+        the created embeddings directory
+
+        Args:
+            input_path (str): string with the path of the dataset
+
+        Returns:
+            filelist(str): list of strings with all CSV files
+        """
         file_list = []
 
         for dirs, subdirs, files in walk(input_path):
@@ -600,13 +618,20 @@ class BLSTMClassifierModel(DatasetProcessing):
 
     #########################
 
-    def load_dataset(self):
+    def _load_dataset(self):
+        """Reads the file list and processes them to generate the dataset which will be used in the LSTM training phase.
+        The embeddings and the labels are saved in a numpy array, which will be reshaped after finishing the read from disk.
+
+        Returns:
+            vectors(np.array): vectors containing the embeddings from the processed instances
+            labels(np.array): vector containing the labels for each instance
+        """
         LOGGER.debug("Loading the dataset which will be used for training...")
 
         labels = list()
         vectors = list()
 
-        file_processing_list = self.retrieve_file_list(self.dataset.embeddings_dir)
+        file_processing_list = self._retrieve_file_list(self.dataset.embeddings_dir)
 
         while len(file_processing_list) != 0:
             filepath = file_processing_list.pop(0)
@@ -641,7 +666,16 @@ class BLSTMClassifierModel(DatasetProcessing):
 
     #########################
 
-    def build_model(self, embedding_length, vector_length):
+    def _build_model(self, embedding_length, vector_length):
+        """Build the model using the Sequential() object
+
+        Args:
+            embedding_length (int): Embedding length which is used for the input layer
+            vector_length (int): Vector length  which is used for the input layer
+
+        Returns:
+            model(Sequential): Keras model
+        """
         model = Sequential()
 
         model.add(
@@ -667,6 +701,15 @@ class BLSTMClassifierModel(DatasetProcessing):
 
     @staticmethod
     def evaluate(model, weights_path, batch_size, x_test, y_test):
+        """Evaluates the model using several metrics.
+
+        Args:
+            model (Sequential): the model representation
+            weights_path (str): path for the model's weight file to be loaded
+            batch_size (int): batch size of the testing set
+            x_test (np.array): testing instances
+            y_test (np.array): testing labels
+        """
         model.load_weights(weights_path)
 
         values = model.evaluate(x_test, y_test, batch_size=batch_size)
@@ -696,6 +739,11 @@ class BLSTMClassifierModel(DatasetProcessing):
     #########################
 
     def execute(self, name, **kwargs):
+        """Run the model training and evaluation.
+
+        Args:
+            name (str): This parameter will be the name of the model saved in disk.
+        """
         # self.embedding_length = kwargs["emb_length"]
 
         self.embedding_length = kwargs.get("emb_length", 300)
@@ -703,7 +751,7 @@ class BLSTMClassifierModel(DatasetProcessing):
         self.epochs = kwargs.get("epochs", 10)
         self.batch_size = kwargs.get("batch_size", 64)
 
-        vectors, labels = self.load_dataset()
+        vectors, labels = self._load_dataset()
 
         x_train, x_test, y_train, y_test = train_test_split(
             vectors, labels, test_size=0.2, random_state=101
@@ -714,7 +762,7 @@ class BLSTMClassifierModel(DatasetProcessing):
 
         LOGGER.info("Building the Bidirectional LSTM...")
 
-        model = self.build_model(self.embedding_length, self.vector_length)
+        model = self._build_model(self.embedding_length, self.vector_length)
 
         LOGGER.info(
             "Training the Bidirectional LSTM on %d items over %d epochs. "
