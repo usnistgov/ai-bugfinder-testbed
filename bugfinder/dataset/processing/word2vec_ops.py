@@ -155,7 +155,10 @@ main_args = frozenset({"argc", "argv"})
 
 
 class RemoveComments(DatasetProcessing):
+    """Processing to remove comments from a certain dataset based on RegEx."""
+
     def execute(self):
+        """RUn the processing"""
         LOGGER.debug("Starting removing comments from files...")
 
         file_processing_list = [
@@ -209,7 +212,10 @@ class RemoveComments(DatasetProcessing):
 
 
 class ReplaceFunctions(DatasetProcessing):
+    """Processing to replace user-created functions from a dataset."""
+
     def execute(self):
+        """Run the processing"""
         LOGGER.debug("Replacing functions from file...")
 
         file_processing_list = [
@@ -231,6 +237,14 @@ class ReplaceFunctions(DatasetProcessing):
 
     @staticmethod
     def process_file(filepath):
+        """Process a single file looking for user-created functions and replace them with a token FUN to reduce uniqueness in the corpus.
+
+        Args:
+            filepath (str): Path of the file to be processed
+
+        Returns:
+            int: number of functions replaced
+        """
         tmp_filepath = "%s.tmp" % filepath
 
         function_symbols = dict()
@@ -280,7 +294,10 @@ class ReplaceFunctions(DatasetProcessing):
 
 ##################################################################################
 class ReplaceVariables(DatasetProcessing):
+    """Processing to replace user-created functions from a dataset."""
+
     def execute(self):
+        """Run the processing."""
         LOGGER.debug("Replacing variables from file...")
 
         file_processing_list = [
@@ -302,6 +319,14 @@ class ReplaceVariables(DatasetProcessing):
 
     @staticmethod
     def process_file(filepath):
+        """Process a single file looking for user-created variables and replace them with a token VAR to reduce uniqueness in the corpus.
+
+        Args:
+            filepath (str): Path of the file to be processed
+
+        Returns:
+            int: number of variables replaced
+        """
         tmp_filepath = "%s.tmp" % filepath
 
         var_symbols = dict()
