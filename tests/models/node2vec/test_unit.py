@@ -145,9 +145,7 @@ class Node2VecEmbeddingExecute(TestCase):
     def test_embedding_vector_valid_size(self, mock_save_df):
         mock_save_df.return_value = None
 
-        embeddings = self.dataset_processing.execute(
-            self.model_name, **self.dataset_processing_kwargs
-        )
+        embeddings = self.dataset_processing.execute(**self.dataset_processing_kwargs)
 
         self.assertIsNotNone(embeddings)
 
@@ -159,17 +157,13 @@ class Node2VecEmbeddingExecute(TestCase):
         )
 
     def test_embeddings_folder_exists(self):
-        self.dataset_processing.execute(
-            self.model_name, **self.dataset_processing_kwargs
-        )
+        self.dataset_processing.execute(**self.dataset_processing_kwargs)
 
         self.assertTrue(exists(self.dataset.embeddings_dir))
 
     def test_embedding_is_saved_as_file(self):
         embeddings_files = 0
-        self.dataset_processing.execute(
-            self.model_name, **self.dataset_processing_kwargs
-        )
+        self.dataset_processing.execute(**self.dataset_processing_kwargs)
 
         for dirs, subdirs, files in walk(self.dataset.embeddings_dir):
             for file in files:

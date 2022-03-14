@@ -152,13 +152,13 @@ class Word2VecEmbeddingExecute(TestCase):
         self.assertEqual(embeddings.shape[1], self.dataset_processing.vector_length)
 
     def test_embeddings_folder_exists(self):
-        self.dataset_processing.execute(self.model_name, **self.model_kwargs)
+        self.dataset_processing.execute(**self.model_kwargs)
 
         self.assertTrue(exists(self.dataset.embeddings_dir))
 
     def test_embedding_is_saved_as_file(self):
         embeddings_files = 0
-        self.dataset_processing.execute(self.model_name, **self.model_kwargs)
+        self.dataset_processing.execute(**self.model_kwargs)
 
         for dirs, subdirs, files in walk(self.dataset.embeddings_dir):
             for file in files:
