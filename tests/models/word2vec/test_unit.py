@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import Mock
 
-from os import walk
+from os import walk, remove
 from os.path import join, exists, basename
 
 from shutil import rmtree
@@ -37,15 +37,19 @@ class Word2VecTrainingExecute(TestCase):
         self.dataset.path = "./tests/fixtures/dataset05/"
         self.dataset.test_cases = ["./class01/tc05", "./class02/tc05"]
 
-        self.clean_file = join(self.dataset.path, "./class01/tc05/underrun_st.c")
-        self.model_name = "w2v_mock"
+        self.tokenized_file = join(self.dataset.path, "./class01/tc05/item01.c")
 
-        self.dataset.model_dir = "mock_model_dir"
+        self.model_name = "w2v_mock"
+        self.dataset.model_dir = "./tests/fixtures/dataset05/mock_model_dir"
 
         self.dataset_processing = MockWord2VecModel(self.dataset)
 
     def tearDown(self) -> None:
-        return super().tearDown()
+        try:
+            remove(join(self.dataset.model_dir, self.model_name))
+            rmtree(self.dataset.model_dir)
+        except FileNotFoundError:
+            pass
 
     def test_input_is_tokenized(self):
         pass
@@ -62,10 +66,12 @@ class Word2VecTrainingExecute(TestCase):
         self.assertTrue(exists(self.dataset.model_dir))
 
     def test_model_valid_output_size(self):
+        self.dataset_processing.execute(self.model_name)
+
         vectors = []
         model = Word2Vec.load(join(self.dataset.model_dir, self.model_name))
 
-        with open(self.clean_file) as token_file:
+        with open(self.tokenized_file) as token_file:
             tokens = token_file.read().splitlines()
 
         for token in tokens:
@@ -99,18 +105,19 @@ class Word2VecEmbeddingExecute(TestCase):
         patch_paths(self, ["bugfinder.models.LOGGER"])
 
         self.dataset = Mock(spec=CWEClassificationDataset)
+        self.dataset_processing = MockWord2VecEmbedding(self.dataset)
 
         self.dataset.path = "./tests/fixtures/dataset05/"
         self.dataset.test_cases = ["./class01/tc05", "./class02/tc05"]
 
-        self.clean_file = join(self.dataset.path, "./class01/tc05/underrun_st.c")
+        self.tokenized_file = join(self.dataset.path, "./class01/tc05/item01.c")
 
-        self.model_kwargs = {"model": "w2v_mock"}
-        self.model_name = "w2v_mock"
-        self.dataset.model_dir = "mock_model_dir"
-        self.dataset.embeddings_dir = "mock_emb_dir"
+        self.model_name = "word2vec_test.bin"
 
-        self.dataset_processing = MockWord2VecEmbedding(self.dataset)
+        self.dataset.model_dir = "./tests/fixtures/dataset05/models"
+        self.dataset.embeddings_dir = "./tests/fixtures/dataset05/mock_emb_dir"
+
+        self.model_kwargs = {"model": "word2vec_test.bin"}
 
     def tearDown(self) -> None:
         try:
@@ -134,7 +141,7 @@ class Word2VecEmbeddingExecute(TestCase):
 
         model = Word2Vec.load(join(self.dataset.model_dir, self.model_name))
 
-        with open(self.clean_file) as token_file:
+        with open(self.tokenized_file) as token_file:
             content = token_file.read().splitlines()
 
         tokens["tokens"] = content
@@ -153,7 +160,7 @@ class Word2VecEmbeddingExecute(TestCase):
         embeddings_files = 0
         self.dataset_processing.execute(self.model_name, **self.model_kwargs)
 
-        for dirs, subdirs, files in walk(self.dataset.path):
+        for dirs, subdirs, files in walk(self.dataset.embeddings_dir):
             for file in files:
                 if basename(file).endswith(".csv"):
                     embeddings_files += 1

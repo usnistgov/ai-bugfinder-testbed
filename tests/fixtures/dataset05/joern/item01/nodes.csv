@@ -1,0 +1,52 @@
+command	key	type	code	location	functionId	childNum	isCFGNode	operator	baseType	completeType	identifier
+ANR	3	File	/code/bad/000328/basic-00054-med.c								
+ANR	4	Function	function1	50:0:1812:1872							
+ANR	5	FunctionDef	function1 (char * buf)		4	0					
+ANR	6	CompoundStatement		51:0:1839:1872	4	0					
+ANR	7	ExpressionStatement	buf [ 17 ] = 'A'	53:2:1857:1870	4	0	True				
+ANR	8	AssignmentExpression	buf [ 17 ] = 'A'		4	0		=			
+ANR	9	ArrayIndexing	buf [ 17 ]		4	0					
+ANR	10	Identifier	buf		4	0					
+ANR	11	PrimaryExpression	17		4	1					
+ANR	12	PrimaryExpression	'A'		4	1					
+ANR	13	ReturnType	void		4	1					
+ANR	14	Identifier	function1		4	2					
+ANR	15	ParameterList	char * buf		4	3					
+ANR	16	Parameter	char * buf	50:15:1827:1836	4	0	True				
+ANR	17	ParameterType	char *		4	0					
+ANR	18	Identifier	buf		4	1					
+ANR	19	CFGEntryNode	ENTRY		4		True				
+ANR	20	CFGExitNode	EXIT		4		True				
+ANR	21	Symbol	buf		4						
+ANR	22	Symbol	* buf		4						
+ANR	23	Function	main	56:0:1875:1960							
+ANR	24	FunctionDef	"main (int argc , char * argv [ ])"		23	0					
+ANR	25	CompoundStatement		57:0:1908:1960	23	0					
+ANR	26	IdentifierDeclStatement	char buf [ 10 ] ;	58:2:1912:1924	23	0	True				
+ANR	27	IdentifierDecl	buf [ 10 ]		23	0					
+ANR	28	IdentifierDeclType	char [ 10 ]		23	0					
+ANR	29	Identifier	buf		23	1					
+ANR	30	PrimaryExpression	10		23	2					
+ANR	31	ExpressionStatement	function1 ( buf )	61:2:1930:1944	23	1	True				
+ANR	32	CallExpression	function1 ( buf )		23	0					
+ANR	33	Callee	function1		23	0					
+ANR	34	Identifier	function1		23	0					
+ANR	35	ArgumentList	buf		23	1					
+ANR	36	Argument	buf		23	0					
+ANR	37	Identifier	buf		23	0					
+ANR	38	ReturnStatement	return 0 ;	64:2:1950:1958	23	2	True				
+ANR	39	PrimaryExpression	0		23	0					
+ANR	40	ReturnType	int		23	1					
+ANR	41	Identifier	main		23	2					
+ANR	42	ParameterList	"int argc , char * argv [ ]"		23	3					
+ANR	43	Parameter	int argc	56:9:1884:1891	23	0	True				
+ANR	44	ParameterType	int		23	0					
+ANR	45	Identifier	argc		23	1					
+ANR	46	Parameter	char * argv [ ]	56:19:1894:1905	23	1	True				
+ANR	47	ParameterType	char * [ ]		23	0					
+ANR	48	Identifier	argv		23	1					
+ANR	49	CFGEntryNode	ENTRY		23		True				
+ANR	50	CFGExitNode	EXIT		23		True				
+ANR	51	Symbol	argc		23						
+ANR	52	Symbol	buf		23						
+ANR	53	Symbol	argv		23						

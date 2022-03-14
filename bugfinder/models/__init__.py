@@ -51,10 +51,9 @@ class Node2VecModel(DatasetProcessing):
 
         LOGGER.info("Creating the graph representation for training...")
 
-        edges = self.get_all_edges()
+        edges = self._get_all_edges()
 
-        graph = nx.Graph()
-        graph = nx.from_pandas_edgelist(edges, "start", "end")
+        graph = self._create_graph_object(edges)
 
         LOGGER.debug("Number of nodes in the graph: %d nodes", len(graph.nodes()))
         LOGGER.debug("Number of edges in the graph: %d edges", len(graph.edges))
@@ -80,18 +79,20 @@ class Node2VecModel(DatasetProcessing):
             seed=self.seed,
         )
 
-        LOGGER.info("Training complete. Saving the model...")
+        LOGGER.info("Training complete.")
 
         model_dir = join(self.dataset.model_dir, name)
 
         if not exists(self.dataset.model_dir):
             makedirs(self.dataset.model_dir)
 
+        LOGGER.info("Saving the model at %s...", model_dir)
+
         model.save(model_dir)
 
     #########################
 
-    def get_all_edges(self):
+    def _get_all_edges(self):
         edges_list = list()
 
         file_processing_list = [
@@ -136,6 +137,14 @@ class Node2VecModel(DatasetProcessing):
         del edges_list
 
         return edges_dataframe
+
+    #########################
+
+    def _create_graph_object(self, edges):
+        graph = nx.Graph()
+        graph = nx.from_pandas_edgelist(edges, "start", "end")
+
+        return graph
 
 
 #########################################
@@ -196,6 +205,8 @@ class Node2VecEmbeddingsBase(DatasetProcessing):
             )
 
             self._save_dataframe(embeddings[item])
+
+        return embeddings
 
     #########################
 
