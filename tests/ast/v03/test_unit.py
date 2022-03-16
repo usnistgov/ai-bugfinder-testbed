@@ -3,8 +3,9 @@ from unittest.mock import patch
 
 from bugfinder.ast.v03 import Neo4JASTMarkup
 
-# WARNING This test was copied from ast.v02 and the 
+# WARNING This test was copied from ast.v02 and the
 # data structures have not been updated for ast.v03
+
 
 class TestNeo4JASTMarkupConfigureContainer(TestCase):
     def setUp(self) -> None:
