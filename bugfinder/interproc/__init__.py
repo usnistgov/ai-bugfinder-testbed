@@ -28,7 +28,7 @@ def interproc_worker(progress_bar, cmds, tcid, q, port):
         cmd = cmds[idx]
         for tries in range(4):
             try:
-                sleep(tries ** 2)
+                sleep(tries**2)
                 db.run(cmd % tcid)
                 LOGGER.debug("Testcase %d Query %d succeeded.", tcid, idx)
                 break

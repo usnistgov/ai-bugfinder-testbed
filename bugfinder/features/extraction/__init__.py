@@ -22,6 +22,7 @@ class GraphFeatureExtractor(Neo4J3Processing):
     feature_map_filepath = None
 
     def _get_entrypoint_list_worker(self, testcase):
+        """Worker retrieving the list of entrypoint for a given test case"""
         list_entrypoint_cmd = """
             MATCH (f {type:"Function"})-[
                     :IS_FUNCTION_OF_CFG
@@ -40,6 +41,7 @@ class GraphFeatureExtractor(Neo4J3Processing):
         ]
 
     def _get_entrypoint_list(self):
+        """Retrieve list of entrypoints"""
         list_testcases_cmd = """
             MATCH (f {type:"File"})-[:IS_FILE_OF]->(n {type:"Function"}) 
             WHERE n.code<>"main"
@@ -56,6 +58,7 @@ class GraphFeatureExtractor(Neo4J3Processing):
         return entrypoint_list
 
     def _create_feature_map_file(self, feature_map_filepath):
+        """Create the feature map file"""
         if feature_map_filepath is None:
             feature_map_dir = join(ROOT_DIR, "feature_maps")
 
@@ -74,12 +77,14 @@ class GraphFeatureExtractor(Neo4J3Processing):
     def execute(
         self, command_args=None, feature_map_filepath=None, need_map_features=False
     ):
+        """Execute the feature extraction"""
         self._create_feature_map_file(feature_map_filepath)
         self.need_map_features = need_map_features
 
         super().execute(command_args=command_args)
 
     def send_commands(self):
+        """Send commands to the container"""
         super().send_commands()
 
         if not self.need_map_features:
@@ -93,6 +98,7 @@ class GraphFeatureExtractor(Neo4J3Processing):
             self.save_labels_to_feature_map(labels)
 
     def check_extraction_inputs(self):
+        """Verify and version feature file"""
         # Check if features directory exists. Create it if it does not.
         if not exists(self.dataset.feats_dir):
             mkdir(self.dataset.feats_dir)
@@ -104,6 +110,7 @@ class GraphFeatureExtractor(Neo4J3Processing):
         return join(self.dataset.feats_dir, "features.csv")
 
     def write_extraction_outputs(self, features):
+        """Write features to CSV file"""
         output_file = join(self.dataset.feats_dir, "features.csv")
 
         with open(output_file, "w") as csv_file:
@@ -125,6 +132,7 @@ class GraphFeatureExtractor(Neo4J3Processing):
             csv_writer.writerows(features)
 
     def save_labels_to_feature_map(self, labels):
+        """Save all labels to feature map"""
         existing_labels = self.get_labels_from_feature_map()
         orig_labels_count = len(existing_labels)
 
@@ -145,6 +153,7 @@ class GraphFeatureExtractor(Neo4J3Processing):
             pickle.dump(existing_labels, feature_map_file)
 
     def get_labels_from_feature_map(self):
+        """Retrieve labels stored in feature map"""
         feature_map_filepath = join(ROOT_DIR, self.feature_map_filepath)
 
         if not exists(feature_map_filepath):
@@ -156,16 +165,19 @@ class GraphFeatureExtractor(Neo4J3Processing):
         return list(labels)
 
     def configure_container(self):
+        """Setup main container variables."""
         self.fix_data_folder_rights()
 
         super().configure_container()
 
     @abstractmethod
     def extract_features(self):
+        """Extract features. Abstract method."""
         raise NotImplementedError(IMPLEMENTATION_ERROR % "extract_features")
 
     @abstractmethod
     def map_features(self):
+        """Map features. Abstract method."""
         raise NotImplementedError(IMPLEMENTATION_ERROR % "map_features")
 
 
@@ -176,12 +188,16 @@ class FlowGraphFeatureExtractor(GraphFeatureExtractor):
 
     @abstractmethod
     def get_flowgraph_list_for_entrypoint(self, entrypoint):
+        """Retrieve the list of flowgraph for a given entrypoint. Must be implemented
+        by the subclasses.
+        """
         raise NotImplementedError(
             IMPLEMENTATION_ERROR % "get_flowgraph_list_for_entrypoint"
         )
 
     @abstractmethod
     def get_label_from_flowgraph(self, flowgraph):
+        """Create label for a given flowgraph. Must be implemented by the subclasses."""
         raise NotImplementedError(IMPLEMENTATION_ERROR % "get_label_from_flowgraph")
 
     def initialize_features(self, entrypoint, label_list):
@@ -201,10 +217,14 @@ class FlowGraphFeatureExtractor(GraphFeatureExtractor):
 
     @abstractmethod
     def get_flowgraph_count(self, flowgraph):
+        """Retrieve the number of a given flowgraph. Must be implemented by the
+        subclasses.
+        """
         raise NotImplementedError(IMPLEMENTATION_ERROR % "get_flowgraph_count")
 
     @staticmethod
     def finalize_features(features, labels):
+        """Finalize features."""
         return features
 
     def extract_features_worker(self, args):
@@ -216,8 +236,9 @@ class FlowGraphFeatureExtractor(GraphFeatureExtractor):
 
         flowgraph_list = self.get_flowgraph_list_for_entrypoint(entrypoint)
         LOGGER.debug(
-            f"Retrieved {len(flowgraph_list)} flowgraphs for entrypoint "
-            f"{entrypoint['function_id']}"
+            "Retrieved %d flowgraphs for entrypoint %s.",
+            len(flowgraph_list),
+            entrypoint["function_id"],
         )
 
         # Record and count each unique flow graph
@@ -239,6 +260,7 @@ class FlowGraphFeatureExtractor(GraphFeatureExtractor):
         return features_row_entrypoint
 
     def extract_features(self):
+        """Extract features"""
         labels = self.get_labels_from_feature_map()
         entrypoint_list = self._get_entrypoint_list()
 
@@ -268,12 +290,14 @@ class FlowGraphFeatureExtractor(GraphFeatureExtractor):
         return self.finalize_features(features, labels)
 
     def map_features_worker(self, entrypoint):
+        """Worker to map features"""
         labels = []
         for flowgraph in self.get_flowgraph_list_for_entrypoint(entrypoint):
             labels.append(self.get_label_from_flowgraph(flowgraph))
         return labels
 
     def map_features(self):
+        """Map features"""
         # List of feature labels to return
         entrypoint_list = self._get_entrypoint_list()
 

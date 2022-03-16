@@ -31,7 +31,7 @@ def sinktagging_worker(progress_bar, tc_name, tc_info, port):
     for sink in tc_info["sinks"]:
         for tries in range(4):
             try:
-                sleep(tries ** 2)
+                sleep(tries**2)
                 # FIXME Note that the line number for mixed test case can
                 #   be wrong because the good code was removed from bad test
                 #   cases. In Juliet, the bad code comes first, so the line

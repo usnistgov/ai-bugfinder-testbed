@@ -1,5 +1,6 @@
+""" Feature extractor module for HopNFlows algorithm
 """
-"""
+from sys import exit
 from copy import deepcopy
 
 from bugfinder.features.extraction import FlowGraphFeatureExtractor
@@ -7,11 +8,14 @@ from bugfinder.settings import LOGGER
 
 
 class FeatureExtractor(FlowGraphFeatureExtractor):
+    """HopNFlows feature extractor"""
+
     flows = ["CONTROLS", "FLOWS_TO", "REACHES"]
     min_hops = 1
     max_hops = -1
 
     def configure_container(self):
+        """Setting up the container variables"""
         super().configure_container()
         self.container_name = "fext-hops-n-flows"
 
@@ -24,6 +28,7 @@ class FeatureExtractor(FlowGraphFeatureExtractor):
         feature_map_filepath=None,
         need_map_features=False,
     ):
+        """Run the feature extraction algorithm"""
         if not flows:
             LOGGER.debug(
                 "No flows selected, using 'CONTROLS', 'FLOWS_TO' and 'REACHES' by "
@@ -40,10 +45,13 @@ class FeatureExtractor(FlowGraphFeatureExtractor):
             LOGGER.error("Should select a max_hops value greater than min_hops.")
             exit(1)
 
-        LOGGER.debug(f"flows: {str(flows)}, min_hops: {min_hops}, max_hops: {max_hops}")
+        LOGGER.debug(
+            "flows: %s, min_hops: %d, max_hops: %d", str(flows), min_hops, max_hops
+        )
         super().execute(command_args, feature_map_filepath, need_map_features)
 
     def get_flowgraph_list_for_entrypoint(self, entrypoint):
+        """Extract flowgraphs for a given entrypoint"""
         flowgraph_command = f"""
             MATCH (n) WHERE id(n)={entrypoint["entry_id"]}
             CALL apoc.path.subgraphAll(
@@ -72,7 +80,7 @@ class FeatureExtractor(FlowGraphFeatureExtractor):
         ]
 
         # Create a map linking a node to all of their outbound relationships
-        relationship_map = dict()
+        relationship_map = {}
         for relationship in relationship_list:
             if relationship[0] in relationship_map.keys():
                 relationship_map[relationship[0]].append(relationship)
@@ -85,7 +93,7 @@ class FeatureExtractor(FlowGraphFeatureExtractor):
 
         # Loop to raise the length of the relationship as long as possible
         while len(previous_relationships) > 0:
-            next_relationships = list()
+            next_relationships = []
 
             for relationship in previous_relationships:
                 if self.max_hops != -1 and len(relationship[2]) == self.max_hops:
@@ -147,9 +155,11 @@ class FeatureExtractor(FlowGraphFeatureExtractor):
         return flowgraph_list
 
     def get_flowgraph_count(self, flowgraph):
+        """Retrieve the flowgraph count."""
         return flowgraph["count"]
 
     def get_label_from_flowgraph(self, flowgraph):
+        """Create the label for the flowgraph."""
         source = flowgraph["source"]
         sink = flowgraph["sink"]
         flow = flowgraph["flow"]
@@ -157,42 +167,50 @@ class FeatureExtractor(FlowGraphFeatureExtractor):
         return "%s-%s-%s" % (source, flow, sink)
 
     def finalize_features(self, features, labels):
-        # normalized_features = list()
-        #
-        # # Find all labels related to each type of flow
-        # labels_in_flow = [
-        #     [labels.index(label) for label in labels if flow in label]
-        #     for flow in self.FLOWS
-        # ]
-        #
-        # # Determine index of each labels
-        # labels_index = [0] * len(labels)
-        # for flow_index in range(len(labels_in_flow) - 1):
-        #     for label_index in labels_in_flow[flow_index + 1]:
-        #         labels_index[label_index] = flow_index + 1
-        #
-        # for feature_row in features:
-        #     trimmed_feature_row = feature_row[:-2]
-        #
-        #     summed_row = [
-        #         sum(
-        #             [
-        #                 trimmed_feature_row[label_index]
-        #                 for label_index in labels_in_flow[flow_index]
-        #             ]
-        #         )
-        #         for flow_index in range(len(self.FLOWS))
-        #     ]
-        #
-        #     normalized_features.append(
-        #         [
-        #             trimmed_feature_row[i] / summed_row[labels_index[i]]
-        #             if summed_row[labels_index[i]] != 0
-        #             else 0
-        #             for i in range(len(trimmed_feature_row))
-        #         ]
-        #         + feature_row[-2:]
-        #     )
-        #
-        # return normalized_features
-        return features
+        """Perform final touches on the features before saving them to CSV.
+
+        Args:
+            features:
+            labels:
+
+        Returns:
+        """
+        normalized_features = list()
+
+        # Map grouping every label per flow.
+        labels_per_flow = {
+            flow: [labels.index(label) for label in labels if flow in label]
+            for flow in self.flows
+        }
+        # Map retrieving the type of flow for each label index.
+        label_flow_map = [
+            [flow for flow in self.flows if flow in label][0] for label in labels
+        ]
+
+        for sample in features:  # Loop over all samples
+            # Remove output columns
+            sample_inputs = sample[:-2]
+
+            # Compute the total number of statement for each type of flow.
+            total_statement_per_flow = {
+                flow: sum(
+                    [
+                        sample_inputs[label_index]
+                        for label_index in labels_per_flow[flow]
+                    ]
+                )
+                for flow in self.flows
+            }
+
+            # Normalize every input feature per sample and per type of flow.
+            normalized_features.append(
+                [
+                    sample_input / total_statement_per_flow[label_flow_map[label_index]]
+                    if total_statement_per_flow[label_flow_map[label_index]] != 0
+                    else 0
+                    for label_index, sample_input in enumerate(sample_inputs)
+                ]
+                + sample[-2:]
+            )
+
+        return normalized_features

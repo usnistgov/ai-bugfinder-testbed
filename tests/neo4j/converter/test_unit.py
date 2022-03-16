@@ -8,6 +8,11 @@ from tests import patch_paths
 
 class TestNeo4J2ConverterDefault(TestCase):
     def setUp(self) -> None:
+        patch_paths(
+            self,
+            ["bugfinder.neo4j.converter.LOGGER", "bugfinder.dataset.processing.LOGGER"],
+        )
+
         self.dataset_processing = Neo4J2Converter(None)
 
     def test_start_string_correct(self):
@@ -16,6 +21,11 @@ class TestNeo4J2ConverterDefault(TestCase):
 
 class TestNeo4J2ConverterConfigureContainer(TestCase):
     def setUp(self) -> None:
+        patch_paths(
+            self,
+            ["bugfinder.neo4j.converter.LOGGER", "bugfinder.dataset.processing.LOGGER"],
+        )
+
         self.dataset = Mock(spec=CWEClassificationDataset)
         self.dataset.joern_dir = "mock_joern_dir"
         self.dataset_processing = Neo4J2Converter(self.dataset)
@@ -57,6 +67,11 @@ class TestNeo4J2ConverterConfigureContainer(TestCase):
 
 class TestNeo4J2ConverterSendCommands(TestCase):
     def setUp(self) -> None:
+        patch_paths(
+            self,
+            ["bugfinder.neo4j.converter.LOGGER", "bugfinder.dataset.processing.LOGGER"],
+        )
+
         self.dataset = Mock(spec=CWEClassificationDataset)
         self.dataset.joern_dir = "mock_joern_dir"
         self.dataset.neo4j_dir = "mock_neo4j_dir"
@@ -131,6 +146,11 @@ class TestNeo4J2ConverterSendCommands(TestCase):
 
 class TestNeo4J3ConverterConfigureContainer(TestCase):
     def setUp(self) -> None:
+        patch_paths(
+            self,
+            ["bugfinder.neo4j.converter.LOGGER", "bugfinder.dataset.processing.LOGGER"],
+        )
+
         dataset = Mock(spec=CWEClassificationDataset)
         dataset.ops_queue = list()
 
@@ -153,7 +173,10 @@ class TestNeo4J3ConverterConfigureContainer(TestCase):
 
 class TestNeo4J3ConverterSendCommands(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, ["bugfinder.neo4j.converter.LOGGER"])
+        patch_paths(
+            self,
+            ["bugfinder.neo4j.converter.LOGGER", "bugfinder.dataset.processing.LOGGER"],
+        )
 
         self.dataset_processing = Neo4J3Converter(None)
 

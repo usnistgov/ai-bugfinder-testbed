@@ -1,4 +1,4 @@
-"""
+""" Module for variance threshold
 """
 import pandas as pd
 from sklearn.feature_selection import VarianceThreshold
@@ -9,10 +9,13 @@ from bugfinder.utils.feature_selection import retrieve_original_columns_name
 
 
 class FeatureSelector(AbstractFeatureSelector):
+    """Variance threshold feature selector"""
+
     def select_feature(
         self, input_features, input_results, dry_run, threshold
     ) -> pd.DataFrame:
-        LOGGER.debug(f"Running VarianceThreshold with threshold value {threshold}...")
+        """Feature selection algorithm"""
+        LOGGER.debug("Running VarianceThreshold with threshold value %f...", threshold)
 
         variance_op = VarianceThreshold(threshold=(threshold * (1 - threshold)))
         output_features_np = variance_op.fit_transform(input_features, input_results)
@@ -23,7 +26,9 @@ class FeatureSelector(AbstractFeatureSelector):
             index=input_features.index,
         )
         LOGGER.info(
-            f"Applied VarianceThreshold of {threshold}, retrieved "
-            f"{output_features.shape[1]}/{input_features.shape[1]} features."
+            "Applied VarianceThreshold of %f, retrieved %d/%d features.",
+            threshold,
+            output_features.shape[1],
+            input_features.shape[1],
         )
         return output_features

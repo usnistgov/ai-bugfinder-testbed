@@ -10,7 +10,7 @@ from bugfinder.dataset.processing import (
     DatasetFileProcessing,
     DatasetProcessingWithContainer,
 )
-from tests import MockDatasetProcessing
+from tests import MockDatasetProcessing, patch_paths
 
 
 class MockDatasetProcessingWithContainer(DatasetProcessingWithContainer):
@@ -51,6 +51,8 @@ class TestDatasetFileProcessingExecute(TestCase):
             self.processed_file.append(filepath)
 
     def setUp(self) -> None:
+        patch_paths(self, ["bugfinder.dataset.LOGGER"])
+
         self.dataset_path = "./tests/fixtures/dataset01"
 
     def tearDown(self) -> None:
@@ -59,9 +61,7 @@ class TestDatasetFileProcessingExecute(TestCase):
         except FileNotFoundError:
             pass  # Ignore FileNotFound errors
 
-    @patch("bugfinder.dataset.LOGGER")
-    def test_process_file_calls_equal_nb_of_files(self, mock_logger):
-        mock_logger.return_value = None
+    def test_process_file_calls_equal_nb_of_files(self):
         dataset_obj = CWEClassificationDataset(self.dataset_path)
         data_processing = self.MockDatasetFileProcessing(dataset_obj)
         data_processing.execute()

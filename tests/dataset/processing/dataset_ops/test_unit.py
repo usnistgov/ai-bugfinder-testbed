@@ -23,6 +23,7 @@ class TestCopyDatasetExecute(TestCase):
             [
                 "bugfinder.dataset.processing.dataset_ops.LOGGER",
                 "bugfinder.dataset.LOGGER",
+                "bugfinder.utils.containers.LOGGER",
                 "bugfinder.dataset.CWEClassificationDataset.process",
             ],
         )
@@ -66,6 +67,7 @@ class TestExtractSampleDatasetExecute(TestCase):
             [
                 "bugfinder.dataset.processing.dataset_ops.LOGGER",
                 "bugfinder.dataset.LOGGER",
+                "bugfinder.utils.containers.LOGGER",
             ],
         )
 
@@ -144,6 +146,7 @@ class TestInverseDatasetExecute(TestCase):
             [
                 "bugfinder.dataset.processing.dataset_ops.LOGGER",
                 "bugfinder.dataset.LOGGER",
+                "bugfinder.utils.containers.LOGGER",
             ],
         )
 
@@ -233,7 +236,9 @@ class TestRightFixer(TestCase):
             self,
             [
                 "bugfinder.dataset.processing.dataset_ops.LOGGER",
+                "bugfinder.dataset.processing.LOGGER",
                 "bugfinder.dataset.LOGGER",
+                "bugfinder.utils.containers.LOGGER",
             ],
         )
 

@@ -10,6 +10,11 @@ from tests import patch_paths
 
 class TestNeo4JAnnotationsConfigureContainer(TestCase):
     def setUp(self) -> None:
+        patch_paths(
+            self,
+            ["bugfinder.neo4j.annot.LOGGER", "bugfinder.dataset.processing.LOGGER"],
+        )
+
         dataset = Mock(spec=CWEClassificationDataset)
         dataset.ops_queue = list()
 
@@ -31,7 +36,10 @@ class TestNeo4JAnnotationsConfigureContainer(TestCase):
 
 class TestNeo4JAnnotationsSendCommand(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, ["bugfinder.neo4j.annot.LOGGER"])
+        patch_paths(
+            self,
+            ["bugfinder.neo4j.annot.LOGGER", "bugfinder.dataset.processing.LOGGER"],
+        )
 
         self.dataset_processing = Neo4JAnnotations(None)
 

@@ -1,3 +1,5 @@
+""" Processing operations for the content of the dataset
+"""
 from os import listdir
 from os.path import join, splitext
 
@@ -9,12 +11,15 @@ from bugfinder.settings import LOGGER
 
 
 class ReplaceLitterals(DatasetProcessing):
+    """Replace unrecognized litterals in the test cases"""
+
     replacements = {
         r"(.*)L\'([^\']*)\'(.*)": "\\g<1>L('\\g<2>')\\g<3>",
         r'(.*)L"([^"]*)"(.*)': '\\g<1>L("\\g<2>")\\g<3>',
     }
 
     def execute(self):
+        """Execute the processing"""
         LOGGER.debug("Replacing litterals in code...")
         file_processing_list = [
             join(test_case, filepath)
@@ -26,8 +31,9 @@ class ReplaceLitterals(DatasetProcessing):
         while len(file_processing_list) != 0:
             filepath = file_processing_list.pop(0)
             LOGGER.debug(
-                "Replacing litterals in %s (%d items left)..."
-                % (filepath, len(file_processing_list))
+                "Replacing litterals in %s (%d items left)...",
+                filepath,
+                len(file_processing_list),
             )
 
             repl_count = self.process_file(join(self.dataset.path, filepath))
@@ -39,12 +45,13 @@ class ReplaceLitterals(DatasetProcessing):
         LOGGER.info("Litterals successfully replaced.")
 
     def process_file(self, filepath):
-        tmp_filepath = "%s.tmp" % filepath
-        out_lines = list()
+        """Replace litteral in a single file"""
+        tmp_filepath = f"{filepath}.tmp"
+        out_lines = []
         repl_count = 0
 
         # Matching regexp on every line and replace them.
-        with open(filepath, "r") as in_file:
+        with open(filepath, "r", encoding="utf-8") as in_file:
             for line in in_file:
                 for src, dest in list(self.replacements.items()):
                     if re.match(src, line):
@@ -56,7 +63,7 @@ class ReplaceLitterals(DatasetProcessing):
         # If replacement were performed, we save them to the new file and
         # replace the old file by the new one.
         if repl_count != 0:
-            with open(tmp_filepath, "w") as out_file:
+            with open(tmp_filepath, "w", encoding="utf-8") as out_file:
                 out_file.writelines(out_lines)
 
             move(tmp_filepath, filepath)
@@ -65,27 +72,31 @@ class ReplaceLitterals(DatasetProcessing):
 
 
 class RemoveMainFunction(DatasetFileProcessing):
+    """Processing to remove the main function from a dataset."""
+
     main_fn_entry = "#ifdef INCLUDEMAIN\n"
     main_fn_exit = "#endif\n"
 
     def execute(self):
-        LOGGER.debug("Removing main function in dataset at '%s'..." % self.dataset.path)
+        """Run the processing"""
+        LOGGER.debug("Removing main function in dataset at '%s'...", self.dataset.path)
         super().execute()
         LOGGER.info("Main function successfully removed.")
 
     def process_file(self, filepath):
+        """Process a single file"""
         if splitext(filepath)[1] not in [".c", ".cpp", ".h", ".hpp"]:
-            LOGGER.debug("File %s is not a code file. Ignoring..." % filepath)
+            LOGGER.debug("File '%s' is not a code file. Ignoring...", filepath)
             return
 
-        LOGGER.debug("Removing main function in '%s'." % filepath)
-        tmp_filepath = "%s.tmp" % filepath
+        LOGGER.debug("Removing main function in '%s'.", filepath)
+        tmp_filepath = f"{filepath}.tmp"
         is_in_main_fn = False
-        out_lines = list()
+        out_lines = []
 
         # Remove every line between `self.main_fn_entry` and
         # `self.main_fn_exit`.
-        with open(filepath, "r") as in_file:
+        with open(filepath, "r", encoding="utf-8") as in_file:
             for line in in_file:
                 if not is_in_main_fn:
                     if line != self.main_fn_entry:
@@ -97,7 +108,7 @@ class RemoveMainFunction(DatasetFileProcessing):
                         is_in_main_fn = False
 
         # Save transformations to the new file and replace the old file
-        with open(tmp_filepath, "w") as out_file:
+        with open(tmp_filepath, "w", encoding="utf-8") as out_file:
             out_file.writelines(out_lines)
 
         move(tmp_filepath, filepath)

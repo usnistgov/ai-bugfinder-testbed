@@ -3,6 +3,8 @@ image: python:3.9-slim
 stages:
   - quality
   - tests
+  - docs
+  - pages
 
 before_script:
   - curl -L "https://github.com/docker/compose/releases/download/1.26.2/docker-compose-$(uname -s)-$(uname -m)" -o /tmp/docker-compose
@@ -19,4 +21,23 @@ quality:
 
 tests:
   stage: tests
-  script: pytest ./tests
+  script:
+    - coverage run --source=bugfinder -m pytest ./tests
+    - coverage report -m --fail-under=45
+
+docs:
+  stage: docs
+  script:
+    - cd docs
+    - make html
+  artifacts:
+    paths:
+      - dist/_docs/html
+
+pages:
+  stage: pages
+  script:
+    - mv dist/_docs/html public
+  artifacts:
+    paths:
+      - public

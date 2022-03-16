@@ -155,7 +155,10 @@ main_args = frozenset({"argc", "argv"})
 
 
 class RemoveComments(DatasetProcessing):
+    """Processing to remove comments from a certain dataset based on RegEx."""
+
     def execute(self):
+        """RUn the processing"""
         LOGGER.debug("Starting removing comments from files...")
 
         file_processing_list = [
@@ -209,7 +212,10 @@ class RemoveComments(DatasetProcessing):
 
 
 class ReplaceFunctions(DatasetProcessing):
+    """Processing to replace user-created functions from a dataset."""
+
     def execute(self):
+        """Run the processing"""
         LOGGER.debug("Replacing functions from file...")
 
         file_processing_list = [
@@ -231,10 +237,18 @@ class ReplaceFunctions(DatasetProcessing):
 
     @staticmethod
     def process_file(filepath):
+        """Process a single file looking for user-created functions and replace them with a token FUN to reduce uniqueness in the corpus.
+
+        Args:
+            filepath (str): Path of the file to be processed
+
+        Returns:
+            int: number of functions replaced
+        """
         tmp_filepath = "%s.tmp" % filepath
 
         function_symbols = dict()
-        function_count = 1
+        function_count = 0
 
         replaced_code = []
 
@@ -254,10 +268,11 @@ class ReplaceFunctions(DatasetProcessing):
                         len({function_name}.difference(keywords)) != 0
                     ):
                         if function_name not in function_symbols.keys():
+                            function_count += 1
+
                             function_symbols[function_name] = "FUN" + str(
                                 function_count
                             )
-                            function_count += 1
 
                         ascii_line = re.sub(
                             r"\b(" + function_name + r")\b(?=\s*\()",
@@ -274,10 +289,15 @@ class ReplaceFunctions(DatasetProcessing):
 
         move(tmp_filepath, filepath)
 
+        return function_count
+
 
 ##################################################################################
 class ReplaceVariables(DatasetProcessing):
+    """Processing to replace user-created functions from a dataset."""
+
     def execute(self):
+        """Run the processing."""
         LOGGER.debug("Replacing variables from file...")
 
         file_processing_list = [
@@ -299,10 +319,18 @@ class ReplaceVariables(DatasetProcessing):
 
     @staticmethod
     def process_file(filepath):
+        """Process a single file looking for user-created variables and replace them with a token VAR to reduce uniqueness in the corpus.
+
+        Args:
+            filepath (str): Path of the file to be processed
+
+        Returns:
+            int: number of variables replaced
+        """
         tmp_filepath = "%s.tmp" % filepath
 
         var_symbols = dict()
-        var_count = 1
+        var_count = 0
 
         replaced_code = []
 
@@ -324,8 +352,8 @@ class ReplaceVariables(DatasetProcessing):
                         len({var_name[0]}.difference(main_args)) != 0
                     ):
                         if var_name[0] not in var_symbols.keys():
-                            var_symbols[var_name[0]] = "VAR" + str(var_count)
                             var_count += 1
+                            var_symbols[var_name[0]] = "VAR" + str(var_count)
 
                         ascii_line = re.sub(
                             r"\b("
@@ -343,3 +371,5 @@ class ReplaceVariables(DatasetProcessing):
             out_file.writelines(replaced_code)
 
         move(tmp_filepath, filepath)
+
+        return var_count

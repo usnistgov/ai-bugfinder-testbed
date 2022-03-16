@@ -1,4 +1,4 @@
-"""
+""" Module containing abstract AST processing classes.
 """
 from os.path import exists, join
 
@@ -11,6 +11,8 @@ from bugfinder.settings import ROOT_DIR, LOGGER
 
 
 class AbstractASTMarkup(Neo4J3Processing):
+    """Abstract class to markup the AST"""
+
     SET_AST_MARKUP_CMD = """
        UNWIND %s as data
        MATCH (n)
@@ -20,13 +22,16 @@ class AbstractASTMarkup(Neo4J3Processing):
 
     @abstractmethod
     def get_ast_information(self):
+        """Retrieve AST information. Must be defined in the subclasses."""
         raise NotImplementedError("get_ast_information")
 
     @abstractmethod
     def build_ast_markup(self, ast_item):
+        """Build the AST markup. Must be defined in the subclasses."""
         raise NotImplementedError("build_ast_markup")
 
     def send_commands(self):
+        """Sends the command to the container."""
         self.fix_data_folder_rights()
 
         super().send_commands()
@@ -50,8 +55,7 @@ class AbstractASTMarkup(Neo4J3Processing):
             cmd_list.append(ast_list[lower:upper])
 
         LOGGER.info(
-            "Found %d AST. Prepared %d command bundles."
-            % (len(ast_list), len(cmd_list))
+            "Found %d AST. Prepared %d command bundles.", len(ast_list), len(cmd_list)
         )
         # LOGGER.info(cmd_list)
         for cmd_index, operation_list in enumerate(cmd_list):
@@ -70,13 +74,15 @@ class AbstractASTMarkup(Neo4J3Processing):
             LOGGER.debug("Updating AST...")
             try:
                 self.neo4j_db.run(self.SET_AST_MARKUP_CMD % ast_update_dict)
-            except Exception as e:
-                LOGGER.info(f"Command {cmd_index}: {str(e)}")
+            except Exception as exc:
+                LOGGER.info("Command %e failed: %s", cmd_index, str(exc))
                 import traceback
 
                 traceback.print_exc()
-            # else:
-            #    LOGGER.info(f"AST command {cmd_index}/{len(cmd_list)} successfully run.")
+            else:
+                LOGGER.info(
+                    "AST command %d/%d successfully run.", cmd_index, len(cmd_list)
+                )
 
         LOGGER.info("AST updated.")
 
@@ -92,14 +98,17 @@ class ASTSetExporter(Neo4J3Processing):
     ast_file = None
 
     def execute(self, command_args=None, ast_file="nodes_ast.bin"):
+        """Run the processing"""
         self.ast_file = ast_file
         super().execute(command_args)
 
     def configure_container(self):
+        """Setup the container variables"""
         super().configure_container()
         self.container_name = "ast-set-generator"
 
     def send_commands(self):
+        """Sends the commands"""
         super().send_commands()
         ast_node_filepath = join(ROOT_DIR, self.ast_file)
 
@@ -107,7 +116,7 @@ class ASTSetExporter(Neo4J3Processing):
             with open(ast_node_filepath, "rb") as ast_node_file:
                 ast_list = list(load(ast_node_file))
         else:
-            ast_list = list()
+            ast_list = []
 
         # Concatenate list of AST if it already exists
         ast_list += [

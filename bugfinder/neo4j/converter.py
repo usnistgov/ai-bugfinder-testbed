@@ -1,3 +1,5 @@
+""" Conversion module between Neo4J versions.
+"""
 from os import makedirs, walk, remove
 from os.path import join, splitext
 
@@ -9,9 +11,12 @@ from bugfinder.utils.dirs import copy_dir
 
 
 class Neo4J2Converter(DatasetProcessingWithContainer):
+    """Converter to Neo4J version 2.x"""
+
     START_STRING = "Remote interface ready"
 
     def configure_container(self):
+        """Setup container variables"""
         self.image_name = "neo4j:2.3"
         self.container_name = "neo2-converter"
         self.environment = {
@@ -24,6 +29,7 @@ class Neo4J2Converter(DatasetProcessingWithContainer):
         self.volumes = {self.dataset.joern_dir: "/data/graph.db"}
 
     def send_commands(self):
+        """Send commands to the container."""
         wait_log_display(self.container, self.START_STRING)
 
         LOGGER.debug("Importing DB into Neo4J v2.3...")
@@ -33,9 +39,9 @@ class Neo4J2Converter(DatasetProcessingWithContainer):
         if not copy_dir(self.dataset.joern_dir, self.dataset.neo4j_dir):
             raise Exception("Copy to neo4j-v3 failed.")
 
-        for dirname, sudirs, filelist in walk(self.dataset.neo4j_dir):
+        for dirname, _, filelist in walk(self.dataset.neo4j_dir):
             for filename in filelist:
-                (filetype, fileext) = splitext(filename)
+                (_, fileext) = splitext(filename)
 
                 if fileext == ".id":
                     remove(join(dirname, filename))
@@ -44,12 +50,16 @@ class Neo4J2Converter(DatasetProcessingWithContainer):
 
 
 class Neo4J3Converter(Neo4J3Processing):
+    """Converter for Neo4J v3.x"""
+
     def configure_container(self):
+        """Setup container variables."""
         self.fix_data_folder_rights()
 
         super().configure_container()
         self.container_name = "neo3-converter"
 
     def send_commands(self):
+        """Send commands to the container."""
         super().send_commands()
         LOGGER.info("Imported DB into Neo4J v3.")

@@ -1,3 +1,5 @@
+""" Module containing importing utilities for Neo4J
+"""
 from os.path import join
 
 from bugfinder.neo4j import Neo4J3Processing
@@ -5,10 +7,13 @@ from bugfinder.settings import LOGGER
 
 
 class Neo4J3Importer(Neo4J3Processing):
+    """Importer class to Neo4J v3.x"""
+
     db_name = "import.db"
     import_dir = "/var/lib/neo4j/import"
 
     def configure_container(self):
+        """Setup container variables."""
         super().configure_container()
 
         self.container_name = "neo3-importer"
@@ -18,6 +23,7 @@ class Neo4J3Importer(Neo4J3Processing):
         }
 
     def send_commands(self):
+        """Send commands to the container."""
         super().send_commands()
         LOGGER.debug("Importing CSV files...")
 

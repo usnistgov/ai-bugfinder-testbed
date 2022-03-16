@@ -60,10 +60,21 @@ triple_char_ops = {"<<=", ">>="}
 
 
 class TokenizeText(DatasetProcessing):
+    """Processing to transform the source code in tokens keeping certain operations unified."""
+
     def to_regex(self, ops):
+        """Joins a list of strings in a single one with separator to be used in a RegEx function.
+
+        Args:
+            ops (list): list of string
+
+        Returns:
+            str: joined string
+        """
         return r"|".join([f"({re.escape(op)})" for op in ops])
 
     def execute(self):
+        """Run thge processing"""
         LOGGER.debug("Starting tokenizing text from files...")
 
         file_processing_list = [
@@ -84,6 +95,12 @@ class TokenizeText(DatasetProcessing):
             self.process_file(join(self.dataset.path, filepath))
 
     def process_file(self, filepath):
+        """Process a single file transforming the content in tokens to create the corpus. Additional processing includes looking for certain types of operations like
+        <= or => which needs to be kept as a single token.
+
+        Args:
+            filepath (str): Path of the file to be processed
+        """
         tmp_filepath = "%s.tmp" % filepath
         tokens = []
 

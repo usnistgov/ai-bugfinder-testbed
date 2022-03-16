@@ -1,4 +1,4 @@
-"""
+""" Module for the auto-encoder
 """
 from copy import deepcopy
 from os.path import exists
@@ -11,7 +11,10 @@ from bugfinder.settings import LOGGER
 
 
 class FeatureSelector(AbstractFeatureSelector):
+    """Feature selection with auto-encoder"""
+
     def train_encoder(self, input_features, dimension, hidden_layers):
+        """Training function for the auto-encoder."""
         reverse_hidden_layers = deepcopy(hidden_layers)
         reverse_hidden_layers.reverse()
 
@@ -38,11 +41,15 @@ class FeatureSelector(AbstractFeatureSelector):
         )
         autoencoder.compile(optimizer="adam", loss="mse")
 
+        # Shuffle input features.
         features = input_features.sample(frac=1)
+
+        # Split samples to train and test data set.
         training_samples = int(features.shape[0] * 0.75)
         training_set = features.iloc[:training_samples, :]
         test_set = features.iloc[training_samples:, :]
 
+        # Fitting the auto-encoder. Input and output should be the same.
         autoencoder.fit(
             training_set,
             training_set,
@@ -51,18 +58,22 @@ class FeatureSelector(AbstractFeatureSelector):
             validation_data=(test_set, test_set),
         )
 
+        # Return the trained encoder.
         return encoder
 
     def select_feature(
         self, input_features, input_results, dry_run, dimension, layers, encoder_path
     ) -> pd.DataFrame:
+        """Feature selection algorithm"""
         layers = layers.split(",")
         arch = deepcopy(layers)
         arch.append(dimension)
 
         LOGGER.debug(
-            f"Applying AutoEncoder at {encoder_path} with architecture {str(arch)}, "
-            f"selecting {dimension} features (location: {encoder_path})..."
+            "Applying AutoEncoder at %s with architecture %s, selecting %d features...",
+            encoder_path,
+            str(arch),
+            dimension,
         )
 
         if not exists(encoder_path):
@@ -80,8 +91,11 @@ class FeatureSelector(AbstractFeatureSelector):
             index=input_features.index,
         )
         LOGGER.info(
-            f"Applied AutoEncoder at {encoder_path} with architecture {str(arch)} and "
-            f"computed {output_features.shape[1]} out of {input_features.shape[1]} "
-            f"features."
+            "Applied AutoEncoder at %s with architecture %s and computed %d out of %d "
+            "features.",
+            encoder_path,
+            str(arch),
+            output_features.shape[1],
+            input_features.shape[1],
         )
         return output_features

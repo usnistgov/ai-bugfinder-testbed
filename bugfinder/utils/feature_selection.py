@@ -1,13 +1,15 @@
-"""
+""" Utilities for feature selection.
 """
 
 
 def retrieve_original_columns_name(feature_selection_model, original_cols):
+    """Retrieve column name from given indexes"""
     selected_cols = feature_selection_model.get_support(indices=True)
     return [original_cols[idx] for idx in selected_cols]
 
 
 def selection_estimators():
+    """Available estimators for feature selection."""
     return {
         "LogisticRegression": {
             "package": "sklearn.linear_model",

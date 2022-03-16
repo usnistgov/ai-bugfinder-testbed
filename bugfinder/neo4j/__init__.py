@@ -1,3 +1,5 @@
+""" Module containing all Neo4J processing classes.
+"""
 from abc import abstractmethod
 from py2neo import Graph
 
@@ -8,11 +10,14 @@ from bugfinder.utils.containers import wait_log_display
 
 
 class Neo4J3Processing(DatasetProcessingWithContainer):
+    """Data processing calss for Neo4J v3.x"""
+
     start_string = "Remote interface available"
     neo4j_db = None
 
     @abstractmethod
     def configure_container(self):
+        """Setup container variables."""
         self.image_name = "neo4j-ai:latest"
         self.environment = {
             "NEO4J_dbms_memory_pagecache_size": settings.NEO4J_V3_MEMORY,
@@ -28,6 +33,7 @@ class Neo4J3Processing(DatasetProcessingWithContainer):
         }
 
     def fix_data_folder_rights(self):
+        """Fix rights to ensure the neo4j folder can be read."""
         current_ops_queue = self.dataset.ops_queue
 
         # Reset queue to add the right fixer step
@@ -41,6 +47,7 @@ class Neo4J3Processing(DatasetProcessingWithContainer):
         self.dataset.ops_queue = current_ops_queue
 
     def send_commands(self):
+        """Send commands to the container."""
         wait_log_display(self.container, self.start_string)
 
         self.neo4j_db = Graph(

@@ -1,4 +1,4 @@
-"""
+""" Module to select feature based on a specific estimator
 """
 from importlib import import_module
 
@@ -14,10 +14,13 @@ from bugfinder.utils.feature_selection import (
 
 
 class FeatureSelector(AbstractFeatureSelector):
+    """Feature selector based on a specific estimator"""
+
     def select_feature(
         self, input_features, input_results, dry_run, model
     ) -> pd.DataFrame:
-        LOGGER.debug(f"Running SelectFromModel with model {model}...")
+        """Feature selection algorithm"""
+        LOGGER.debug("Running SelectFromModel with model %s...", model)
 
         # Load package
         estimator_info = selection_estimators()[model]
@@ -41,7 +44,9 @@ class FeatureSelector(AbstractFeatureSelector):
             index=input_features.index,
         )
         LOGGER.info(
-            f"Applied SelectFromModel with model {model}: retrieved "
-            f"{len(output_features.columns)}/{input_features.shape[1]} features."
+            "Applied SelectFromModel with model %s: retrieved %d/%d features.",
+            model,
+            len(output_features.columns),
+            input_features.shape[1],
         )
         return output_features

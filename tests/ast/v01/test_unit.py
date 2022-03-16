@@ -2,10 +2,15 @@ from unittest import TestCase
 from unittest.mock import patch
 
 from bugfinder.ast.v01 import Neo4JASTMarkup
+from tests import patch_paths
 
 
 class TestNeo4JASTMarkupConfigureContainer(TestCase):
     def setUp(self) -> None:
+        patch_paths(
+            self, ["bugfinder.ast.LOGGER", "bugfinder.dataset.processing.LOGGER"]
+        )
+
         self.dataset_processing = Neo4JASTMarkup(None)
 
     @patch("bugfinder.ast.AbstractASTMarkup.configure_container")
@@ -22,6 +27,10 @@ class TestNeo4JASTMarkupConfigureContainer(TestCase):
 
 class TestNeo4JASTMarkupGetAstInformation(TestCase):
     def setUp(self) -> None:
+        patch_paths(
+            self, ["bugfinder.ast.LOGGER", "bugfinder.dataset.processing.LOGGER"]
+        )
+
         self.dataset_processing = Neo4JASTMarkup(None)
 
     @patch("bugfinder.neo4j.Neo4J3Processing.neo4j_db")
@@ -32,6 +41,10 @@ class TestNeo4JASTMarkupGetAstInformation(TestCase):
 
 class TestNeo4JASTMarkupBuildAstMarkup(TestCase):
     def setUp(self) -> None:
+        patch_paths(
+            self, ["bugfinder.ast.LOGGER", "bugfinder.dataset.processing.LOGGER"]
+        )
+
         self.dataset_processing = Neo4JASTMarkup(None)
 
     def test_returns_correct_datastructure(self):

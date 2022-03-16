@@ -20,8 +20,8 @@ class FeatureExtractorExecute(TestCase):
                 "bugfinder.dataset.CWEClassificationDataset._validate_features",
                 "bugfinder.features.reduction.pca.PCA",
                 "bugfinder.features.reduction.pca.pd.DataFrame",
-                # "bugfinder.dataset.LOGGER",
                 "bugfinder.features.reduction.pca.LOGGER",
+                "bugfinder.features.reduction.LOGGER",
             ],
         )
 

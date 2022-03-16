@@ -8,6 +8,7 @@ from bugfinder.utils.statistics import get_time, display_time
 
 
 def is_operation_valid(processing_operation):
+    """Ensure a processing operation is valid"""
     if isinstance(processing_operation, dict):
         assert (
             "class" in processing_operation.keys()
@@ -21,6 +22,7 @@ def is_operation_valid(processing_operation):
 
 
 def is_processing_stack_valid(operation_list, silent=False):
+    """Check validity of a processing stack (list of processing operation)"""
     logger_log_func = LOGGER.debug if silent else LOGGER.info
     _time = get_time()
 
@@ -28,12 +30,10 @@ def is_processing_stack_valid(operation_list, silent=False):
     for processing_operation in operation_list:
         try:
             LOGGER.debug(
-                "Checking operation %d/%d (%s)..."
-                % (
-                    processing_operation_index,
-                    len(operation_list),
-                    str(processing_operation),
-                )
+                "Checking operation %d/%d (%s)...",
+                processing_operation_index,
+                len(operation_list),
+                str(processing_operation),
             )
             is_operation_valid(processing_operation)
         except AssertionError:
@@ -43,6 +43,6 @@ def is_processing_stack_valid(operation_list, silent=False):
         processing_operation_index += 1
 
     logger_log_func(
-        "Operation queue validated in %s." % display_time(get_time() - _time)
+        "Operation queue validated in %s.", display_time(get_time() - _time)
     )
     return True

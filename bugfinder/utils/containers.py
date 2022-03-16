@@ -17,14 +17,13 @@ def start_container(
     command=None,
     detach=True,
 ):
-    LOGGER.debug(
-        "Starting container '%s' (image '%s')..." % (container_name, image_name)
-    )
+    """Start a container"""
+    LOGGER.debug("Starting container '%s' (image '%s')...", container_name, image_name)
     if volumes is None:
         volumes = {}
 
     # Get absolute path for volumes
-    volumes_realpath = dict()
+    volumes_realpath = {}
     for vol_key, vol_value in volumes.items():
         volumes_realpath[realpath(vol_key)] = vol_value
     volumes = volumes_realpath
@@ -37,7 +36,7 @@ def start_container(
 
     docker_cli = docker.from_env()
 
-    extra_args = dict()
+    extra_args = {}
     if command is not None:
         extra_args["command"] = command
 
@@ -59,11 +58,13 @@ def start_container(
     return run_result
 
 
-def wait_log_display(container, log_string, max_wait_time=300):
-    """ """
+def wait_log_display(container, log_string, max_wait_time=300):  # pragma: no cover
+    """Wait for the container to output a given string."""
     LOGGER.debug(
-        "Waiting for container '%s' to display '%s' (max_wait_time=%d)..."
-        % (container.name, log_string, max_wait_time)
+        "Waiting for container '%s' to display '%s' (max_wait_time=%d)...",
+        container.name,
+        log_string,
+        max_wait_time,
     )
 
     max_sleep_time = min(max_wait_time - 1, 12)
@@ -78,7 +79,8 @@ def wait_log_display(container, log_string, max_wait_time=300):
 
 
 def stop_container_by_name(container_name):
-    LOGGER.debug("Stopping container '%s'..." % container_name)
+    """Stop a container using its name"""
+    LOGGER.debug("Stopping container '%s'...", container_name)
     docker_cli = docker.from_env()
     container = docker_cli.containers.get(container_name)
 

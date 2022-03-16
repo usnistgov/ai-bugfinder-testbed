@@ -4,27 +4,30 @@ AI Bugfinder
 Disclaimer
 ----------
 
-This installation has been tested on Ubuntu 18.04LTS systems. The
-command listed in this README file should be adapted depending on the
-system used.
+This installation has been tested on Ubuntu 20.04LTS systems. The commands
+listed in this file should be adapted depending on the system used.
 
-Pre-requisites
---------------
+1. Pre-requisites
+-----------------
 
--  APT packages:
+1.1. System dependencies
+~~~~~~~~~~~~~~~~~~~~~~~~
 
-   -  ``unzip``
-   -  ``parallel``
+-  APT packages (using ``apt-get install ${pkg_name}``):
+
+   -  unzip
+   -  parallel
 
 -  Docker: https://docs.docker.com/install/#supported-platforms
 -  Docker-compose: https://docs.docker.com/compose/install/
 -  Python >= 3.9: https://www.python.org/downloads/
 
-Pipenv
-~~~~~~
+1.2. Pipenv
+~~~~~~~~~~~
 
-The dependencies are managed using ``pipenv`` as the recommended tool. To set
-up the environment with ``pipenv``, use the following commands:
+Using ``pipenv`` is the recommended way to manage the necessary Python
+dependencies. To set up the environment with ``pipenv``, use the following
+commands:
 
 .. code-block:: bash
 
@@ -32,55 +35,44 @@ up the environment with ``pipenv``, use the following commands:
     pipenv install --dev  # --dev is optional and installs dev dependencies.
     pipenv shell
 
-Virtual environments
-~~~~~~~~~~~~~~~~~~~~
+1.3. Virtual environments
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Other virtual environment solutions can also be used:
 
 -  With ``venv``: https://virtualenv.pypa.io/en/stable/installation/
--  With ``conda``:
-  https://conda.io/docs/user-guide/install/index.html
+-  With ``conda``: https://conda.io/docs/user-guide/install/index.html
 
-Once the Python environment is setup and the repository downloaded, run
-``pip install -r requirements.txt``.
+Once the Python environment is setup and the repository downloaded, run:
 
-To install the development dependencies, run 
-``pip install -r requirements.dev.txt``.
+.. code-block:: bash
 
+    pip install -r requirements.txt
+    pip install -r requirements.dev.txt  # Optional, installs dev dependencies.
 
-Installation
-------------
+2. Installation
+---------------
 
-Run the tests
-~~~~~~~~~~~~~
-
-Substantial tests have been developed to ensure the code is working properly.
-To run the tests, use command ``pytest ./tests``. While no error should occur
-upon running the tests, some warnings might appear.
-
-The development dependencies need to be installed to run these tests.
-
-Download the dataset
-~~~~~~~~~~~~~~~~~~~~
+2.1. Download the datasets
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 There are several datasets  to choose from:
 
-* The CWE-121 is a set of buffer overflow test cases (2838 buggy test cases,
-  2838 clean test cases). It is a good place to begin the exploration of this
-  repository. Download it by typing `./scripts/download_cwe121.sh`.
+* The CWE-121 dataset is a set of buffer overflow test cases (2838 buggy test
+  cases, 2838 clean test cases). It is a good place to begin the exploration of
+  this repository. Download it by typing ``./scripts/download_cwe121.sh``.
 * The `Juliet Dataset for C/C++ <https://samate.nist.gov/SRD/testsuite.php>`__
   is a much larger dataset containing multiple types of bugs. It can be
-  downloaded with `./scripts/download_juliet.sh` and contains 64099 buggy test
-  cases and 64099 clean test cases.
+  downloaded with ``./scripts/download_juliet.sh`` and contains 64099 buggy
+  test cases and 64099 clean test cases.
 * A better dataset, focused on buffer overflows, is packaged with this
   repository. It contains 6507 buggy test cases and 5905 clean test cases and
-  can be installed using `./scripts/setup_ai_dataset.sh`.
+  can be installed using ``./scripts/setup_ai_dataset.sh``. More information
+  about this dataset is avaible at
+  https://gitlab.nist.gov/gitlab/samate/ai-dataset/.
 
-Note: More information about the packaged AI dataset focused on buffer
-overflows is avaible at https://gitlab.nist.gov/gitlab/samate/ai-dataset/.
-
-Build the docker images
-~~~~~~~~~~~~~~~~~~~~~~~
+2.2. Build the docker images
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The necessary docker images can be built using *docker-compose*. Run the
 following command to build them:
@@ -97,340 +89,60 @@ Four images should be built:
 - *neo4j-ai:latest*: Neo4J v3 image package with additional shell tools.
 - *right-fixer:latest*: Tool to modify rights of a given folder.
 
-Usage
------
+2.3. Run the tests (optional)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Several scripts are available in this repository to manipulate datasets
-and train a machine learning model to identify bugs in source code. The
-scripts are written in python and, for every script, an help page is available
-by typing ``python ./script.py --help``.
+Substantial tests have been developed to ensure the code is working properly.
+To run the tests, use ``pytest ./tests``. While no error should occur upon
+running the tests, some warnings may appear.
 
-Dataset utilities
-~~~~~~~~~~~~~~~~~
+*Note: The development dependencies need to be installed to run these tests.*
 
-Utilities scripts operates on the dataset folder and do not modify the
-data that it contains. The two utilities available are:
+3. Usage
+--------
 
-- ``copy_dataset.py`` to duplicate an existing dataset to another
-  location.
-- ``extract_dataset.py`` to extract a defined number of
-  samples from a dataset.
-
-Examples:
-
-.. code:: bash
-
-   python ./copy_dataset.py \
-       -i /path/to/existing_dataset \  # Input argument
-       -o /path/to/new_dataset \  # Output argument
-       -f  # Override directory if it already exists
-
-   python ./extract_dataset.py \
-       -i /path/to/existing_dataset \  # Input argument
-       -o /path/to/new_dataset \  # Output argument
-       -n 200  # Extract 200 samples from original dataset
-       -f  # Override directory if it already exists
-
-Prepare the dataset
-~~~~~~~~~~~~~~~~~~~
-
-There are several issues with the default datasets:
-
-- C++ cannot be parsed correctly by *Joern*, these samples need to be 
-  remove from the dataset.
-- *Joern* is not able to perfectly parse the C samples from *Juliet*. 
-  Instances of the code left unparsed need to be replaced by an 
-  equivalent code line that *Joern* can parse.
-- In *Juliet*, ``main(...)`` functions are used to compile the correct 
-  (good or bad) code depending on pre-processor variables. These 
-  functions are not useful and possibly misleading for the classifier,
-  they need to be removed. 
-- The current version of the tool does not work with interprocedural 
-  test cases which need to be removed from the dataset.
-
-To handle all of these issues, the ``clean_dataset.py`` script is
-available and works as such:
-
-.. code:: bash
-
-   export DATASET=/path/to/dataset
-
-   python ./clean_dataset.py ${DATASET} \
-       --no-cpp \  # Remove CPP test cases
-       --no-interprocedural \  # Remove interprocedural test cases
-       --no-litterals \  # Replace litterals from C code
-       --no-main  # Remove main functions
-
-N.B.: If interprocedural features are computed, make sure to leave interprocedural test 
-cases (do not use `--no-interprocedural`) and do not remove main functions (do not use
-`--no-main`).
-
-Identify sinks (interprocedural features)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-To extract interprocedural features, it is necessary to first identify all sinks in a
-given dataset. SARD test cases have a SARIF manifest bundled with the code that allows
-to perform sink identification. Run the following command to do so.
-
-.. code:: bash
-
-    export SARIF_DIR=/path/to/sarif_manifests
-
-    find ${SARIF_DIR} -maxdepth 1 -type d -printf '%f\n' | grep '^[0-9]\+$' \
-        | nice parallel --lb -I {} \
-            "jq -r '.runs[0] | (.properties.id|tostring) + \",\" \
-                + (.results[0].locations[0].physicalLocation | .artifactLocation.uri \
-                + \",\" + (.region.startLine|tostring))' ${SARIF_DIR}/{}/manifest.sarif" \
-        | grep -v ,,null > ${DATASET}/sinks.csv
-
-
-N.B.: Manifests are still being created and not available to the general public
-
-Run Joern
-~~~~~~~~~
-
-`Joern <https://joern.io/>`__ then needs to be executed with the script
-``run_joern.py``. Once the execution is done, the *.joernIndex* is moved to
-*data/graph.db*. A Neo4j DB then loads the data for further processing.
-
-Run the tool with
-``python ./run_joern.py ${DATASET} -v ${JOERN_VERSION}``. Use
-``--help`` to see which version are available.
-
-Sink tagging (interprocedural features)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-To link data and control flow to compute interprocedural features, it is necessary to
-tag the sinks, using the CSV obtain earlier. Sink tagging can be done using:
-
-.. code:: bash
-
-    # Tag sinks with a maximum runtime of 15min
-    python run_sinktagging.py --log_failed /tmp/sink.failed.15m.log \
-        --timeout 15m --sinks ${DATASET}/sinks.csv ${DATASET}
-
-    # Retry tagging sinks for a longer period, using previous log files
-    python run_sinktagging.py --run_failed /tmp/sink.failed.15m.log \
-        --log_failed /tmp/sink.failed.24h.log \
-        --timeout 24h --sinks ${DATASET}/sinks.csv ${DATASET}
-
-Link data and control flows (interprocedural features)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-To link data and control flow, the following commands need to be run:
-
-.. code:: bash
-
-    # Connect data and control flows at function calls
-    python run_interproc.py --log_failed /tmp/failed.15m.log \
-        --timeout 15m ${DATASET}
-
-    # Retry linking flows for a longer period, using previous log files
-    python run_interproc.py --run_failed /tmp/failed.15m.log \
-        --timeout 24h --log_failed /tmp/failed.24h.log ${DATASET}
-
-AST Markup
-~~~~~~~~~~
-
-The next step is to add labels to the nodes and build the AST notation
-for feature extraction. Run the following command to enhance the dataset
-with the additional markup:
-
-.. code:: bash
-
-   python ./run_ast_markup.py ${DATASET} \
-       -v ${AST_VERSION}  # AST markup version. See --help for details.
-
-Extract feature
-~~~~~~~~~~~~~~~
-
-Several feature extractors have been created for this classification
-task. The features need to be extracted with the following command:
-
-.. code:: bash
-
-   # Create the feature maps
-   python ./run_feature_extraction.py ${DATASET} \
-       -e ${FEATURE_EXTRACTOR} \  # Choose a feature extractor.
-       -m  # To create the feature maps.
-
-   # Run the extractor
-   python ./run_feature_extraction.py ${DATASET} \
-       -e ${FEATURE_EXTRACTOR} \  # Choose a feature extractor
-
-Reduce feature dimension
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-To fasten training of the model, feature reduction can be applied with the following
-command:
-
-.. code:: bash
-
-   # Create the feature maps
-   python ./run_feature_selection.py ${DATASET} \
-       -s ${FEATURE_SELECTOR} \  # Choose a feature selector.
-       ${FEATURES_SELECTOR_ARGS} \  # Parametrize the selector correctly
-       -m  # To create the feature maps.
-
-N.B.: Several feature reducer can be applied successively if necessary. Use `--dry-run`
-to preview the final training set dimension.
-
-Run model training
-~~~~~~~~~~~~~~~~~~
-
-The last step is to train the model. Execute the TensorFlow script by
-typing:
-
-.. code:: bash
-
-   python ./run_model_training.py ${DATASET} \
-       -m ${MODEL}  # Model to train. See help for details.
-
-
-Training the node2vec model
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-node2vec is an algorithm to generate embeddings based in a corpus generated from several graphs.
-To generate the corpus, follow the instructions until the ``run_joern.py`` script, since the
-the model is trained using the .CSV files generated by Joern.
-
-After run Joern and obtaining the AST and control and data flows, the corpus can be generated
-using the ``run_node2vec.py`` script:
-
-.. code:: bash
-
-   python ./run_node2vec.py /path/to/dataset \
-       --m node2vec \  # To use the node2vec algorithm
-       --n {MODEL_NAME} \  # path to where the model will be saved
-       --vl {VECTOR_LENGTH} \ Size of the vector representaion of each node in the corpus
-
-The model have several parameters which can be tuned for training. See --help for details.
-The most important parameter to choose is the vector length of the node representation: this
-parameter needs to be the same when generating the embeddings and train the BLSTM.
-
-The values used in the testing were 64 and 128.
-
-Generate the embeddings for the BLSTM model
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-After the model training is complete, it's necessary to generate
-embeddings which will be used as input for the BLSTM model. These
-embeddings are saved in a folder with the dataset, in .CSV format.
-Execute the following script:
-
-.. code:: bash
-
-   python ./run_embeddings.py /path/to/dataset \
-      -m {MODEL_DIR} \ # Previous trained word2vec/node2vec model
-      -n node2vec \ # To indicate the embeddings are generated from a node2vec trained model
-      -el {EMBEDDINGS_LENGTH} \ # Size of the embeddings to be generated
-      -vl {VECTOR_LENGTH} # Size of the vector which represents the node
-
-It's important that the vector length of the generated embeddings is the same as the one used
-in the model training.
-
-Train the BLSTM model with the node2vec embeddings
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-After generating the embeddings, the BLSTM model is ready to use.
-Execute the following script:
-
-.. code:: bash
-
-   python ./run_model_training.py /path/to/dataset \
-       -m bidirectional_lstm \  # BLSTM
-       -n {MODEL_NAME} \ # path where the model will be saved
-       -e {EPOCHS} \ # number of epochs
-       -b {BATCH_SIZE} # Size of the batch used for training
-      -el {EMBEDDINGS_LENGTH} \ # Size of the embeddings to be generated
-      -vl {VECTOR_LENGTH} # Size of the vector which represents the node
-
-The embeddings/vector length values needs to be the same as the one used
-in the embeddings creation process.
-
-Training the word2vec model
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-If you want to train a word2vec model in this dataset, there's no need to run Joern.
-After you finished preparing the dataset with the ``clean_dataset.py`` script, 
-it's necessary to run an additional script to deal with:
-
-- Removal of code comments
-- Replacement of variables names by similar tokens
-- Replacement of function names by similar tokens
-
-To handle this additional cleanup, you need to use the ``clean_dataset_for_word2vec.py`` 
-script:
-
-.. code:: bash
-
-   python ./clean_dataset_for_word2vec.py ${DATASET} \
-       --no-comments \  # Remove comments
-       --replace-funcs \  # Replace functions by a FUN token
-       --replace-vars  # Replace variables by a VAR token
-
-Tokenizing the dataset
-~~~~~~~~~~~~~~~~~~~~~~
-
-After finishing the cleanup, it's necessary to separate the code in tokens to be
-used as input for the word2vec model. That can be done by an additional parameter
-in the ``clean_dataset_for_word2vec.py``, so after finishing the previous command,
-run:
-
-.. code:: bash
-
-   python ./clean_dataset_for_word2vec.py ${DATASET} \
-       --tokenize 
-
-Training the word2vec model
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-After the tokenization process, you can train the word2vec model, using
-the ``run_model_training.py`` script with word2vec as the parameter.
-Run the command:
-
-.. code:: bash
-
-   python ./run_model_training.py ${DATASET} \
-       -m word2vec \  # word2vec model
-       -n {MODEL_NAME} \  # path where the model will be saved
-
-Generate the embeddings for the BLSTM model
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-After the model training is complete, it's necessary to generate
-embeddings which will be used as input for the BLSTM model. These
-embeddings are saved in a folder with the dataset, in .CSV format.
-Execute the following script:
-
-.. code:: bash
-
-   python ./run_embeddings.py ${DATASET} \
-       -m {MODEL_DIR}  # Previous trained word2vec model
-
-Train the BLSTM model with the word2vec embeddings
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-After generating the embeddings, the BLSTM model is ready to use.
-Execute the following script:
-
-.. code:: bash
-
-   python ./run_model_training.py ${DATASET} \
-       -m bidirectional_lstm \  # BLSTM
-       -n {MODEL_NAME} \ # path where the model will be saved
-       -e {EPOCHS} \ # number of epochs
-       -b {BATCH_SIZE} # Size of the batch used for training
-
-Troubleshooting
----------------
-
-The dataset is fairly important in size. Once loaded in Neo4j, executing
-the commands could be difficult. Here are few tweaks that could
-facilitate the training.
-
-More memory in Neo4J
+3.1. Pipeline design
 ~~~~~~~~~~~~~~~~~~~~
 
-If Neo4J container are crashing because they do not have enough memory,
-change the setting ``NEO4J_V3_MEMORY`` in *tools/settings.py*.
+The tool and dataset now ready, a processing pipeline needs to be designed.
+While pipelines will vary depending on the datasets and models to be used, it
+will always be organized as such:
+
+.. image:: docs/_static/img/pipeline.png
+   :align: center
+
+- Dataset processing mainly revolves around cleaning, parsing and annotating
+  the dataset.
+- Feature extraction consists in building a set of CSV files containing
+  properties (features) of each item of the dataset. Various techniques can then
+  be used to reduce the number of features and fasten the training step.
+- Model training uses the CSV files as input to train the weights of the model.
+- Model testing and validation evaluates the model performance on unseen
+  samples of the dataset.
+
+3.2. Processing steps
+~~~~~~~~~~~~~~~~~~~~~
+
+For each pipeline stage previously described, several processing steps have
+been implemented. This repository offers two ways of creating pipelines:
+
+- **Jupyter notebooks**, presenting code samples for the various operations to be
+  performed. Users can use the code snippets provided to design their own
+  pipelines in the form of a Python script. A code sample for a Python
+  pipeline is avaiable at `<docs/_static/scripts/sample.py>`_.
+
+.. include:: docs/_static/scripts/sample.py
+    :code: python
+
+- **Python scripts**, to directly manipulate the dataset, extract features and
+  train models to identify bugs in the source code. The commands to run the
+  pipelines can be bundled in shell scripts. The same example as
+  before, using the python scripts is available at
+  `<docs/_static/scripts/sample.sh>`_.
+
+.. include:: docs/_static/scripts/sample.sh
+    :code: bash
+
+This README only brushes the surface of the abilities of this AI bugfinder. For
+more details on pipeline design and the availabe processing steps, please refer
+to `<https://samate.ipages.nist.gov/ai-bugfinder/>`_.

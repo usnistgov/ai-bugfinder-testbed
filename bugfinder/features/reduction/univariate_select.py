@@ -1,4 +1,4 @@
-"""
+""" Module for univariate feature selection
 """
 import pandas as pd
 from sklearn import feature_selection
@@ -9,16 +9,22 @@ from bugfinder.utils.feature_selection import retrieve_original_columns_name
 
 
 class FeatureSelector(AbstractFeatureSelector):
+    """Univariate feature selector"""
+
     def select_feature(
         self, input_features, input_results, dry_run, function, mode, param
     ) -> pd.DataFrame:
+        """Feature selection algorithm"""
         # Need to cast parameter to 'int' for some of the modes
         if mode in ["k_best", "percentile"]:
             param = int(param)
 
         LOGGER.debug(
-            f"Running UnivariateSelect with scoring_fn {str(function)}, using mode "
-            f"{str(mode)} with param {param}..."
+            "Running UnivariateSelect with scoring_fn %s, using mode "
+            "%s with param %s...",
+            str(function),
+            str(mode),
+            str(param),
         )
 
         univariate_op = feature_selection.GenericUnivariateSelect(
@@ -34,8 +40,12 @@ class FeatureSelector(AbstractFeatureSelector):
             index=input_features.index,
         )
         LOGGER.info(
-            f"Applied UnivariateSelect with scoring_fn {str(function)}, using mode "
-            f"{str(mode)} with param {param}: retrieved "
-            f"{len(output_features.columns)}/{input_features.shape[1]} features."
+            "Applied UnivariateSelect with scoring_fn %s, using mode "
+            "%s with param %s: retrieved %d/%d features.",
+            str(function),
+            str(mode),
+            str(param),
+            len(output_features.columns),
+            input_features.shape[1],
         )
         return output_features
