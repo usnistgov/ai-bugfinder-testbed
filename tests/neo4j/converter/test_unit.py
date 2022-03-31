@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
-from bugfinder.dataset import CWEClassificationDataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset
 from bugfinder.neo4j.converter import Neo4J3Converter, Neo4J2Converter
 from tests import patch_paths
 
@@ -26,7 +26,7 @@ class TestNeo4J2ConverterConfigureContainer(TestCase):
             ["bugfinder.neo4j.converter.LOGGER", "bugfinder.dataset.processing.LOGGER"],
         )
 
-        self.dataset = Mock(spec=CWEClassificationDataset)
+        self.dataset = Mock(spec=CodeWeaknessClassificationDataset)
         self.dataset.joern_dir = "mock_joern_dir"
         self.dataset_processing = Neo4J2Converter(self.dataset)
 
@@ -72,7 +72,7 @@ class TestNeo4J2ConverterSendCommands(TestCase):
             ["bugfinder.neo4j.converter.LOGGER", "bugfinder.dataset.processing.LOGGER"],
         )
 
-        self.dataset = Mock(spec=CWEClassificationDataset)
+        self.dataset = Mock(spec=CodeWeaknessClassificationDataset)
         self.dataset.joern_dir = "mock_joern_dir"
         self.dataset.neo4j_dir = "mock_neo4j_dir"
         self.dataset_processing = Neo4J2Converter(self.dataset)
@@ -151,7 +151,7 @@ class TestNeo4J3ConverterConfigureContainer(TestCase):
             ["bugfinder.neo4j.converter.LOGGER", "bugfinder.dataset.processing.LOGGER"],
         )
 
-        dataset = Mock(spec=CWEClassificationDataset)
+        dataset = Mock(spec=CodeWeaknessClassificationDataset)
         dataset.ops_queue = list()
 
         self.dataset_processing = Neo4J3Converter(dataset)

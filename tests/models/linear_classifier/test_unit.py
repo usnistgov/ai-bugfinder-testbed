@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
-from bugfinder.dataset import CWEClassificationDataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset
 from bugfinder.models.linear_classifier import LinearClassifierTraining
 
 import tensorflow as tf
@@ -9,7 +9,7 @@ import tensorflow as tf
 
 class TestLinearClassifierTrainingInit(TestCase):
     def setUp(self) -> None:
-        dataset = Mock(spec=CWEClassificationDataset)
+        dataset = Mock(spec=CodeWeaknessClassificationDataset)
         self.dataset_processing = LinearClassifierTraining(dataset)
 
     def test_model_cls_assigned(self):
@@ -20,7 +20,7 @@ class TestLinearClassifierTrainingInit(TestCase):
 
 class TestLinearClassifierTrainingInitModel(TestCase):
     def setUp(self) -> None:
-        dataset = Mock(spec=CWEClassificationDataset)
+        dataset = Mock(spec=CodeWeaknessClassificationDataset)
         self.dataset_processing = LinearClassifierTraining(dataset)
         self.dataset_processing.columns = ["feat01", "feat02"]
 

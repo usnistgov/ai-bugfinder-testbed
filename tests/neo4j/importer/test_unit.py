@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import patch, Mock
 
-from bugfinder.dataset import CWEClassificationDataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset
 from bugfinder.neo4j.importer import Neo4J3Importer
 from tests import patch_paths
 
@@ -29,7 +29,7 @@ class TestNeo4J3ImporterConfigureContainer(TestCase):
             ["bugfinder.neo4j.importer.LOGGER", "bugfinder.dataset.processing.LOGGER"],
         )
 
-        self.dataset = Mock(spec=CWEClassificationDataset)
+        self.dataset = Mock(spec=CodeWeaknessClassificationDataset)
         self.dataset.neo4j_dir = "mock_neo4j_dir"
         self.dataset.joern_dir = "mock_joern_dir"
         self.dataset_processing = Neo4J3Importer(self.dataset)

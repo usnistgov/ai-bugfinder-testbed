@@ -10,7 +10,7 @@ import argparse
 import logging
 import os
 
-from bugfinder.dataset import CWEClassificationDataset as Dataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset as Dataset
 
 from bugfinder.models.node2vec import Node2VecTraining
 

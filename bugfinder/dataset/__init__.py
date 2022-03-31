@@ -24,7 +24,7 @@ class DatasetQueueRetCode(IntEnum):
     OPERATION_FAIL = 3
 
 
-class CWEClassificationDataset:
+class CodeWeaknessClassificationDataset:
     """Main dataset class."""
 
     ignored_dirs = list(settings.DATASET_DIRS.values())

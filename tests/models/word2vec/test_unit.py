@@ -8,7 +8,7 @@ from shutil import rmtree
 
 from gensim.models import Word2Vec
 
-from bugfinder.dataset import CWEClassificationDataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset
 from bugfinder.models.word2vec import Word2VecModel, Word2VecEmbeddingsBase
 
 from tests import patch_paths
@@ -32,7 +32,7 @@ class Word2VecTrainingExecute(TestCase):
     def setUp(self) -> None:
         patch_paths(self, ["bugfinder.models.LOGGER"])
 
-        self.dataset = Mock(spec=CWEClassificationDataset)
+        self.dataset = Mock(spec=CodeWeaknessClassificationDataset)
 
         self.dataset.path = "./tests/fixtures/dataset05/"
         self.dataset.test_cases = ["./class01/tc05", "./class02/tc05"]
@@ -104,7 +104,7 @@ class Word2VecEmbeddingExecute(TestCase):
     def setUp(self) -> None:
         patch_paths(self, ["bugfinder.models.LOGGER"])
 
-        self.dataset = Mock(spec=CWEClassificationDataset)
+        self.dataset = Mock(spec=CodeWeaknessClassificationDataset)
         self.dataset_processing = MockWord2VecEmbedding(self.dataset)
 
         self.dataset.path = "./tests/fixtures/dataset05/"

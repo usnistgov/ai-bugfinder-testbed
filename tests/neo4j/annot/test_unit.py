@@ -3,7 +3,7 @@ from unittest.mock import patch, Mock
 
 from docker.errors import APIError
 
-from bugfinder.dataset import CWEClassificationDataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset
 from bugfinder.neo4j.annot import Neo4JAnnotations
 from tests import patch_paths
 
@@ -15,7 +15,7 @@ class TestNeo4JAnnotationsConfigureContainer(TestCase):
             ["bugfinder.neo4j.annot.LOGGER", "bugfinder.dataset.processing.LOGGER"],
         )
 
-        dataset = Mock(spec=CWEClassificationDataset)
+        dataset = Mock(spec=CodeWeaknessClassificationDataset)
         dataset.ops_queue = list()
 
         self.dataset_processing = Neo4JAnnotations(dataset)

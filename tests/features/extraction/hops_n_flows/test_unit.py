@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
-from bugfinder.dataset import CWEClassificationDataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset
 from bugfinder.features.extraction.hops_n_flows import (
     FeatureExtractor as HopsNFlowsExtractor,
 )
@@ -19,7 +19,7 @@ class TestFeatureExtractorConfigureContainer(TestCase):
             ],
         )
 
-        dataset = Mock(spec=CWEClassificationDataset)
+        dataset = Mock(spec=CodeWeaknessClassificationDataset)
         dataset.ops_queue = list()
 
         self.dataset_processing = HopsNFlowsExtractor(dataset)
@@ -46,7 +46,7 @@ class TestFeatureExtractorExecute(TestCase):
             ],
         )
 
-        dataset = Mock(spec=CWEClassificationDataset)
+        dataset = Mock(spec=CodeWeaknessClassificationDataset)
         dataset.ops_queue = list()
 
         self.dataset_processing = HopsNFlowsExtractor(dataset)
@@ -139,7 +139,7 @@ class TestFeatureExtractorGetFlowgraphListForEntrypoint(TestCase):
             ],
         )
 
-        dataset = Mock(spec=CWEClassificationDataset)
+        dataset = Mock(spec=CodeWeaknessClassificationDataset)
         dataset.ops_queue = list()
 
         self.dataset_processing = HopsNFlowsExtractor(dataset)
@@ -229,7 +229,7 @@ class TestFeatureExtractorGetFlowgraphCount(TestCase):
             ],
         )
 
-        dataset = Mock(spec=CWEClassificationDataset)
+        dataset = Mock(spec=CodeWeaknessClassificationDataset)
         dataset.ops_queue = list()
 
         self.dataset_processing = HopsNFlowsExtractor(dataset)
@@ -253,7 +253,7 @@ class TestFeatureExtractorGetLabelFromFlowgraph(TestCase):
             ],
         )
 
-        dataset = Mock(spec=CWEClassificationDataset)
+        dataset = Mock(spec=CodeWeaknessClassificationDataset)
         dataset.ops_queue = list()
 
         self.dataset_processing = HopsNFlowsExtractor(dataset)
@@ -272,7 +272,7 @@ class TestFeatureExtractorFinalizeFeatures(TestCase):
             ],
         )
 
-        dataset = Mock(spec=CWEClassificationDataset)
+        dataset = Mock(spec=CodeWeaknessClassificationDataset)
         dataset.ops_queue = list()
 
         self.dataset_processing = HopsNFlowsExtractor(dataset)

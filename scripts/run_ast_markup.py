@@ -11,7 +11,7 @@ import argparse
 from bugfinder.ast.v01 import Neo4JASTMarkup as Neo4JASTMarkupV01
 from bugfinder.ast.v02 import Neo4JASTMarkup as Neo4JASTMarkupV02
 from bugfinder.ast.v03 import Neo4JASTMarkup as Neo4JASTMarkupV03
-from bugfinder.dataset import CWEClassificationDataset as Dataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset as Dataset
 from bugfinder.dataset.processing.dataset_ops import RightFixer
 from bugfinder.utils.processing import is_processing_stack_valid
 

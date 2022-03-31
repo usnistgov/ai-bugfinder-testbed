@@ -4,7 +4,7 @@ from unittest import TestCase
 from unittest.mock import patch, Mock
 
 from bugfinder import settings
-from bugfinder.dataset import CWEClassificationDataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset
 from bugfinder.features.extraction import (
     GraphFeatureExtractor,
     FlowGraphFeatureExtractor,
@@ -113,7 +113,7 @@ class GraphFeatureExtractorCreateFeatureMapFile(TestCase):
         )
 
         self.dataset_path = "./tests/fixtures/dataset01"
-        dataset = CWEClassificationDataset(self.dataset_path)
+        dataset = CodeWeaknessClassificationDataset(self.dataset_path)
         self.dataset_processing = MockGraphFeatureExtractor(dataset)
 
     def tearDown(self) -> None:
@@ -340,12 +340,12 @@ class GraphFeatureExtractorCheckExtractionInputs(TestCase):
                 "bugfinder.dataset.join",
                 "bugfinder.dataset.listdir",
                 "bugfinder.dataset.pd.read_csv",
-                "bugfinder.dataset.CWEClassificationDataset._validate_features",
+                "bugfinder.dataset.CodeWeaknessClassificationDataset._validate_features",
                 "bugfinder.dataset.LOGGER",
             ],
         )
 
-        self.dataset = Mock(spec=CWEClassificationDataset)
+        self.dataset = Mock(spec=CodeWeaknessClassificationDataset)
         self.dataset.feats_dir = "mock_feats_dir"
         self.dataset_processing = MockGraphFeatureExtractor(self.dataset)
 
@@ -380,14 +380,14 @@ class GraphFeatureExtractorWriteExtractionOutputs(TestCase):
                 "bugfinder.dataset.join",
                 "bugfinder.dataset.listdir",
                 "bugfinder.dataset.pd.read_csv",
-                "bugfinder.dataset.CWEClassificationDataset._validate_features",
+                "bugfinder.dataset.CodeWeaknessClassificationDataset._validate_features",
                 "bugfinder.features.extraction.join",
                 "bugfinder.features.extraction.open",
                 "bugfinder.dataset.LOGGER",
             ],
         )
 
-        self.dataset = Mock(spec=CWEClassificationDataset)
+        self.dataset = Mock(spec=CodeWeaknessClassificationDataset)
         self.dataset.feats_dir = "mock_feats_dir"
         self.dataset_processing = MockGraphFeatureExtractor(self.dataset)
 
@@ -421,7 +421,7 @@ class GraphFeatureExtractorSaveLabelsToFeatursMap(TestCase):
                 "bugfinder.dataset.join",
                 "bugfinder.dataset.listdir",
                 "bugfinder.dataset.pd.read_csv",
-                "bugfinder.dataset.CWEClassificationDataset._validate_features",
+                "bugfinder.dataset.CodeWeaknessClassificationDataset._validate_features",
                 "bugfinder.features.extraction.open",
                 "bugfinder.features.extraction.join",
                 "bugfinder.dataset.LOGGER",
@@ -429,7 +429,7 @@ class GraphFeatureExtractorSaveLabelsToFeatursMap(TestCase):
             ],
         )
 
-        self.dataset = Mock(spec=CWEClassificationDataset)
+        self.dataset = Mock(spec=CodeWeaknessClassificationDataset)
         self.dataset_processing = MockGraphFeatureExtractor(self.dataset)
 
     @patch(
@@ -479,14 +479,14 @@ class GraphFeatureExtractorGetLabelsFromFeatursMap(TestCase):
                 "bugfinder.dataset.join",
                 "bugfinder.dataset.listdir",
                 "bugfinder.dataset.pd.read_csv",
-                "bugfinder.dataset.CWEClassificationDataset._validate_features",
+                "bugfinder.dataset.CodeWeaknessClassificationDataset._validate_features",
                 "bugfinder.features.extraction.join",
                 "bugfinder.features.extraction.open",
                 "bugfinder.dataset.LOGGER",
             ],
         )
 
-        self.dataset = Mock(spec=CWEClassificationDataset)
+        self.dataset = Mock(spec=CodeWeaknessClassificationDataset)
         self.dataset_processing = MockGraphFeatureExtractor(self.dataset)
 
     @patch("bugfinder.features.extraction.exists")
@@ -511,7 +511,7 @@ class GraphFeatureExtractorGetLabelsFromFeatursMap(TestCase):
 
 class FlowGraphFeatureExtractorInitializeFeatures(TestCase):
     def setUp(self) -> None:
-        dataset = Mock(spec=CWEClassificationDataset)
+        dataset = Mock(spec=CodeWeaknessClassificationDataset)
         dataset.classes = ["bad"]
         dataset_processing = MockFlowGraphFeatureExtractor(dataset)
         self.returned_features = dataset_processing.initialize_features(

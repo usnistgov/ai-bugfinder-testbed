@@ -5,7 +5,7 @@ sys.path.append(join(dirname(__file__), ".."))
 
 import argparse
 
-from bugfinder.dataset import CWEClassificationDataset as Dataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset as Dataset
 from bugfinder.dataset.processing.dataset_ops import CopyDataset
 
 if __name__ == "__main__":

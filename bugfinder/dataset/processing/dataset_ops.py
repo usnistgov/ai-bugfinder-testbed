@@ -6,7 +6,7 @@ import os
 import random
 from shutil import rmtree, copytree, copyfile
 
-from bugfinder.dataset import CWEClassificationDataset as Dataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset as Dataset
 from bugfinder.dataset.processing import (
     DatasetProcessing,
     DatasetProcessingWithContainer,

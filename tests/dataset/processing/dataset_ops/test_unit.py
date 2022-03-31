@@ -6,7 +6,7 @@ from unittest import TestCase
 from unittest.mock import patch, Mock
 
 from bugfinder import settings
-from bugfinder.dataset import CWEClassificationDataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset
 from bugfinder.dataset.processing.dataset_ops import (
     CopyDataset,
     ExtractSampleDataset,
@@ -24,13 +24,13 @@ class TestCopyDatasetExecute(TestCase):
                 "bugfinder.dataset.processing.dataset_ops.LOGGER",
                 "bugfinder.dataset.LOGGER",
                 "bugfinder.utils.containers.LOGGER",
-                "bugfinder.dataset.CWEClassificationDataset.process",
+                "bugfinder.dataset.CodeWeaknessClassificationDataset.process",
             ],
         )
 
         self.input_dataset_path = "./tests/fixtures/dataset01"
         self.output_dataset_path = "./tests/fixtures/dataset01_copy"
-        dataset = CWEClassificationDataset(self.input_dataset_path)
+        dataset = CodeWeaknessClassificationDataset(self.input_dataset_path)
 
         self.dataset_processing = CopyDataset(dataset)
 
@@ -74,7 +74,7 @@ class TestExtractSampleDatasetExecute(TestCase):
         self.input_dataset_path = "./tests/fixtures/dataset03"
         self.output_dataset_path = "./tests/fixtures/dataset03_copy"
         self.sample_nb = 5
-        dataset = CWEClassificationDataset(self.input_dataset_path)
+        dataset = CodeWeaknessClassificationDataset(self.input_dataset_path)
 
         self.dataset_processing = ExtractSampleDataset(dataset)
 
@@ -101,7 +101,7 @@ class TestExtractSampleDatasetExecute(TestCase):
     def test_number_of_samples_is_correct(self):
         self.dataset_processing.execute(self.output_dataset_path, self.sample_nb)
 
-        output_dataset = CWEClassificationDataset(self.output_dataset_path)
+        output_dataset = CodeWeaknessClassificationDataset(self.output_dataset_path)
         self.assertEqual(len(output_dataset.test_cases), self.sample_nb)
 
     def test_shuffle_creates_different_sets(self):
@@ -110,13 +110,13 @@ class TestExtractSampleDatasetExecute(TestCase):
             self.output_dataset_path, self.sample_nb, shuffle=True
         )
 
-        test_case_01 = CWEClassificationDataset(self.output_dataset_path).test_cases
+        test_case_01 = CodeWeaknessClassificationDataset(self.output_dataset_path).test_cases
 
         while max_tries != 0:
             self.dataset_processing.execute(
                 self.output_dataset_path, self.sample_nb, shuffle=True, force=True
             )
-            test_case_02 = CWEClassificationDataset(self.output_dataset_path).test_cases
+            test_case_02 = CodeWeaknessClassificationDataset(self.output_dataset_path).test_cases
             try:
                 self.assertEqual(test_case_01, test_case_02)
                 max_tries -= 1
@@ -129,12 +129,12 @@ class TestExtractSampleDatasetExecute(TestCase):
         self.dataset_processing.execute(
             self.output_dataset_path, self.sample_nb, shuffle=False
         )
-        test_case_01 = CWEClassificationDataset(self.output_dataset_path).test_cases
+        test_case_01 = CodeWeaknessClassificationDataset(self.output_dataset_path).test_cases
 
         self.dataset_processing.execute(
             self.output_dataset_path, self.sample_nb, shuffle=False, force=True
         )
-        test_case_02 = CWEClassificationDataset(self.output_dataset_path).test_cases
+        test_case_02 = CodeWeaknessClassificationDataset(self.output_dataset_path).test_cases
 
         self.assertEqual(test_case_01, test_case_02)
 
@@ -154,7 +154,7 @@ class TestInverseDatasetExecute(TestCase):
         self.from_dataset_path = "./tests/fixtures/dataset01"
         self.output_dataset_path = "./tests/fixtures/dataset_copy"
 
-        self.dataset = CWEClassificationDataset(self.input_dataset_path)
+        self.dataset = CodeWeaknessClassificationDataset(self.input_dataset_path)
         self.dataset_processing = InverseDataset(self.dataset)
 
     def tearDown(self) -> None:
@@ -202,8 +202,8 @@ class TestInverseDatasetExecute(TestCase):
             self.output_dataset_path, self.from_dataset_path
         )
 
-        output_dataset = CWEClassificationDataset(self.output_dataset_path)
-        from_dataset = CWEClassificationDataset(self.from_dataset_path)
+        output_dataset = CodeWeaknessClassificationDataset(self.output_dataset_path)
+        from_dataset = CodeWeaknessClassificationDataset(self.from_dataset_path)
 
         self.assertEqual(
             len(output_dataset.test_cases),
@@ -215,8 +215,8 @@ class TestInverseDatasetExecute(TestCase):
             self.output_dataset_path, self.from_dataset_path
         )
 
-        output_dataset = CWEClassificationDataset(self.output_dataset_path)
-        from_dataset = CWEClassificationDataset(self.from_dataset_path)
+        output_dataset = CodeWeaknessClassificationDataset(self.output_dataset_path)
+        from_dataset = CodeWeaknessClassificationDataset(self.from_dataset_path)
 
         self.assertEqual(
             output_dataset.test_cases,
@@ -246,7 +246,7 @@ class TestRightFixer(TestCase):
         sample_uid = 20000
         sample_gid = 25000
 
-        self.dataset = CWEClassificationDataset(self.input_dataset_path)
+        self.dataset = CodeWeaknessClassificationDataset(self.input_dataset_path)
         self.dataset_processing = RightFixer(self.dataset)
 
         self.dataset_processing.execute(

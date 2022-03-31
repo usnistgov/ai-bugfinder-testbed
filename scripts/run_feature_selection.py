@@ -9,7 +9,7 @@ import argparse
 import re
 from copy import deepcopy
 
-from bugfinder.dataset import CWEClassificationDataset as Dataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset as Dataset
 from bugfinder.features.reduction.auto_encoder import FeatureSelector as AutoEncoder
 from bugfinder.features.reduction.pca import FeatureSelector as PCA
 from bugfinder.features.reduction.recursive_feature_elimination import (

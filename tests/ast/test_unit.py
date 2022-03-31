@@ -4,7 +4,7 @@ from unittest import TestCase
 from unittest.mock import patch, mock_open, Mock
 
 from bugfinder.ast import AbstractASTMarkup, ASTSetExporter
-from bugfinder.dataset import CWEClassificationDataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset
 from bugfinder.settings import ROOT_DIR
 from tests import patch_paths
 
@@ -25,7 +25,7 @@ class TestAbstractASTMarkupSendCommands(TestCase):
             self, ["bugfinder.ast.LOGGER", "bugfinder.dataset.processing.LOGGER"]
         )
 
-        dataset = Mock(spec=CWEClassificationDataset)
+        dataset = Mock(spec=CodeWeaknessClassificationDataset)
         dataset.ops_queue = list()
 
         self.dataset_processing = self.MockASTMarkup(dataset)

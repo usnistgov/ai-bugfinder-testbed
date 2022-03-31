@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import patch, Mock
 
-from bugfinder.dataset import CWEClassificationDataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset
 from tests import patch_paths
 from bugfinder.features.reduction.variance_threshold import (
     FeatureSelector as VarianceThreshold,
@@ -22,7 +22,7 @@ class TestFeatureSelectorSelectFeature(TestCase):
                 "bugfinder.features.reduction.variance_threshold.LOGGER",
             ],
         )
-        dataset = Mock(spec=CWEClassificationDataset)
+        dataset = Mock(spec=CodeWeaknessClassificationDataset)
         self.dataset_processing = VarianceThreshold(dataset)
         self.kwargs = {
             "input_features": pd.DataFrame(np.random.rand(50, 15)),

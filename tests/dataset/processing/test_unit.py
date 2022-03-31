@@ -5,7 +5,7 @@ from unittest import TestCase
 from unittest.mock import Mock, patch
 
 from bugfinder import settings
-from bugfinder.dataset import CWEClassificationDataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset
 from bugfinder.dataset.processing import (
     DatasetFileProcessing,
     DatasetProcessingWithContainer,
@@ -37,7 +37,7 @@ class MockDatasetProcessingWithContainer(DatasetProcessingWithContainer):
 
 class TestDatasetProcessingInit(TestCase):
     def test_dataset_path_is_correct(self):
-        dataset_obj = Mock(spec=CWEClassificationDataset)
+        dataset_obj = Mock(spec=CodeWeaknessClassificationDataset)
         data_processing = MockDatasetProcessing(dataset_obj)
 
         self.assertEqual(data_processing.dataset, dataset_obj)
@@ -62,7 +62,7 @@ class TestDatasetFileProcessingExecute(TestCase):
             pass  # Ignore FileNotFound errors
 
     def test_process_file_calls_equal_nb_of_files(self):
-        dataset_obj = CWEClassificationDataset(self.dataset_path)
+        dataset_obj = CodeWeaknessClassificationDataset(self.dataset_path)
         data_processing = self.MockDatasetFileProcessing(dataset_obj)
         data_processing.execute()
 
@@ -79,7 +79,7 @@ class TestDatasetFileProcessingExecute(TestCase):
         )
 
     def test_rebuild_index_is_called(self):
-        dataset_obj = Mock(spec=CWEClassificationDataset)
+        dataset_obj = Mock(spec=CodeWeaknessClassificationDataset)
         dataset_obj.test_cases = list()
         data_processing = self.MockDatasetFileProcessing(dataset_obj)
 
@@ -90,7 +90,7 @@ class TestDatasetFileProcessingExecute(TestCase):
 class TestDatasetProcessingWithContainerInit(TestCase):
     @classmethod
     def setUpClass(cls) -> None:
-        mock_dataset = Mock(spec=CWEClassificationDataset)
+        mock_dataset = Mock(spec=CodeWeaknessClassificationDataset)
         cls.mock_dataset_processing = MockDatasetProcessingWithContainer(mock_dataset)
 
     def test_default_image_name(self):
@@ -123,7 +123,7 @@ class TestDatasetProcessingWithContainerInit(TestCase):
 
 class TestDatasetProcessingWithContainerExecute(TestCase):
     def setUp(self) -> None:
-        mock_dataset = Mock(spec=CWEClassificationDataset)
+        mock_dataset = Mock(spec=CodeWeaknessClassificationDataset)
         self.mock_dataset_processing = MockDatasetProcessingWithContainer(mock_dataset)
         self.mock_dataset_processing.configure_container()
 

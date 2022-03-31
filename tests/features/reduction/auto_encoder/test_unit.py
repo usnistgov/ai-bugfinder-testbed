@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 from unittest.mock import Mock, patch
 
-from bugfinder.dataset import CWEClassificationDataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset
 from bugfinder.features.reduction.auto_encoder import FeatureSelector as AutoEncoder
 from tests import patch_paths
 
@@ -19,7 +19,7 @@ class TestFeatureExtractorTrainEncoder(TestCase):
             ],
         )
 
-        dataset = Mock(spec=CWEClassificationDataset)
+        dataset = Mock(spec=CodeWeaknessClassificationDataset)
         self.dataset_processing = AutoEncoder(dataset)
         self.input_features = pd.DataFrame(np.random.rand(50, 15))
 
@@ -50,7 +50,7 @@ class TestFeatureExtractorSelectFeature(TestCase):
             ],
         )
 
-        dataset = Mock(spec=CWEClassificationDataset)
+        dataset = Mock(spec=CodeWeaknessClassificationDataset)
         self.dataset_processing = AutoEncoder(dataset)
         self.kwargs = {
             "input_features": pd.DataFrame(np.random.rand(50, 15)),

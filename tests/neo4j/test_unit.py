@@ -3,7 +3,7 @@ from unittest.mock import Mock, patch
 
 from py2neo import Graph
 
-from bugfinder.dataset import CWEClassificationDataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset
 from bugfinder.neo4j import Neo4J3Processing
 from bugfinder import settings
 
@@ -28,7 +28,7 @@ class TestNeo4J3ProcessingDefault(TestCase):
 
 class TestNeo4J3ProcessingConfigureContainer(TestCase):
     def setUp(self) -> None:
-        self.dataset = Mock(spec=CWEClassificationDataset)
+        self.dataset = Mock(spec=CodeWeaknessClassificationDataset)
         self.dataset.neo4j_dir = "mock_neo4j_dir"
         self.dataset_processing = MockNeo4J3Processing(self.dataset)
 
@@ -72,7 +72,7 @@ class TestNeo4J3ProcessingConfigureContainer(TestCase):
 
 class TestNeo4J3ProcessingSendCommands(TestCase):
     def setUp(self) -> None:
-        self.dataset = Mock(spec=CWEClassificationDataset)
+        self.dataset = Mock(spec=CodeWeaknessClassificationDataset)
         self.dataset.neo4j_dir = "mock_neo4j_dir"
         self.dataset_processing = MockNeo4J3Processing(self.dataset)
         self.dataset_processing.configure_container()

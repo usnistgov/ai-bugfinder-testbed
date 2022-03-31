@@ -6,13 +6,13 @@ from unittest.mock import patch
 import pandas as pd
 
 from bugfinder import settings
-from bugfinder.dataset import CWEClassificationDataset, DatasetQueueRetCode
+from bugfinder.dataset import CodeWeaknessClassificationDataset, DatasetQueueRetCode
 from bugfinder.dataset.processing import DatasetProcessing
 from bugfinder.settings import DATASET_DIRS
 from tests import MockDatasetProcessing, patch_paths
 
 
-class TestCWEClassificationDatasetInit(TestCase):
+class TestCodeWeaknessClassificationDatasetInit(TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         patch_paths(
@@ -20,11 +20,11 @@ class TestCWEClassificationDatasetInit(TestCase):
         )
 
         with patch(
-            "bugfinder.dataset.CWEClassificationDataset.rebuild_index"
+            "bugfinder.dataset.CodeWeaknessClassificationDataset.rebuild_index"
         ) as mock_rebuild_index:
             mock_rebuild_index.return_value = None
             cls.dataset_path = "mock_dataset_path/"
-            cls.dataset = CWEClassificationDataset(cls.dataset_path)
+            cls.dataset = CodeWeaknessClassificationDataset(cls.dataset_path)
 
     def tearDown(self) -> None:
         try:
@@ -69,7 +69,7 @@ class TestCWEClassificationDatasetInit(TestCase):
         self.assertEqual(len(self.dataset.ops_queue), 0)
 
 
-class TestCWEClassificationDatasetRebuildIndex(TestCase):
+class TestCodeWeaknessClassificationDatasetRebuildIndex(TestCase):
     def setUp(self) -> None:
         patch_paths(
             self, ["bugfinder.dataset.LOGGER", "bugfinder.utils.processing.LOGGER"]
@@ -87,19 +87,19 @@ class TestCWEClassificationDatasetRebuildIndex(TestCase):
 
     def test_inexistant_dataset_raises_error(self):
         with self.assertRaises(FileNotFoundError):
-            CWEClassificationDataset("/dev/null/fake_dataset")
+            CodeWeaknessClassificationDataset("/dev/null/fake_dataset")
 
     def test_not_dir_dataset_raises_error(self):
         with self.assertRaises(FileNotFoundError):
-            CWEClassificationDataset("./tests/fixtures/dataset01/sample_file.txt")
+            CodeWeaknessClassificationDataset("./tests/fixtures/dataset01/sample_file.txt")
 
     def test_indexed_classes_are_correct(self):
-        dataset = CWEClassificationDataset("./tests/fixtures/dataset01")
+        dataset = CodeWeaknessClassificationDataset("./tests/fixtures/dataset01")
 
         self.assertEqual(set(dataset.classes), {"class01", "class02", "class03"})
 
     def test_indexed_test_cases_are_correct(self):
-        dataset = CWEClassificationDataset("./tests/fixtures/dataset01")
+        dataset = CodeWeaknessClassificationDataset("./tests/fixtures/dataset01")
 
         self.assertEqual(
             dataset.test_cases,
@@ -114,7 +114,7 @@ class TestCWEClassificationDatasetRebuildIndex(TestCase):
         )
 
     def test_features_are_correct(self):
-        dataset = CWEClassificationDataset("./tests/fixtures/dataset01")
+        dataset = CodeWeaknessClassificationDataset("./tests/fixtures/dataset01")
 
         self.assertTrue(
             pd.read_csv("./tests/fixtures/dataset01/features/features.csv").equals(
@@ -123,17 +123,17 @@ class TestCWEClassificationDatasetRebuildIndex(TestCase):
         )
 
     def test_stats_are_correct(self):
-        dataset = CWEClassificationDataset("./tests/fixtures/dataset01")
+        dataset = CodeWeaknessClassificationDataset("./tests/fixtures/dataset01")
 
         self.assertEqual(set(dataset.stats), {1 / 3, 0.5, 1 / 6})
 
     def test_empty_dataset(self):
-        dataset = CWEClassificationDataset("./tests/fixtures/dataset02")
+        dataset = CodeWeaknessClassificationDataset("./tests/fixtures/dataset02")
 
         self.assertEqual(len(dataset.test_cases), 0)
 
 
-class TestCWEClassificationDatasetGetFeaturesInfo(TestCase):
+class TestCodeWeaknessClassificationDatasetGetFeaturesInfo(TestCase):
     def setUp(self) -> None:
         patch_paths(
             self, ["bugfinder.dataset.LOGGER", "bugfinder.utils.processing.LOGGER"]
@@ -150,26 +150,26 @@ class TestCWEClassificationDatasetGetFeaturesInfo(TestCase):
             pass  # Ignore FileNotFound errors
 
     def test_column_types_are_correct(self):
-        dataset = CWEClassificationDataset("./tests/fixtures/dataset01")
+        dataset = CodeWeaknessClassificationDataset("./tests/fixtures/dataset01")
         expected_result = {"non_empty_cols": 3, "empty_cols": 1}
 
         self.assertEqual(dataset.get_features_info(), expected_result)
 
     def test_unexisting_features_raises_error(self):
-        dataset = CWEClassificationDataset("./tests/fixtures/dataset02")
+        dataset = CodeWeaknessClassificationDataset("./tests/fixtures/dataset02")
 
         with self.assertRaises(IndexError):
             dataset.get_features_info()
 
 
-class TestCWEClassificationDatasetQueueOperation(TestCase):
+class TestCodeWeaknessClassificationDatasetQueueOperation(TestCase):
     def setUp(self) -> None:
         patch_paths(
             self, ["bugfinder.dataset.LOGGER", "bugfinder.utils.processing.LOGGER"]
         )
 
         self.dataset_path = "./tests/fixtures/dataset01"
-        self.dataset = CWEClassificationDataset(self.dataset_path)
+        self.dataset = CodeWeaknessClassificationDataset(self.dataset_path)
 
     def tearDown(self) -> None:
         try:
@@ -188,14 +188,14 @@ class TestCWEClassificationDatasetQueueOperation(TestCase):
         self.assertIs(self.dataset.ops_queue[-1]["class"], DatasetProcessing)
 
 
-class TestCWEClassificationDatasetProcess(TestCase):
+class TestCodeWeaknessClassificationDatasetProcess(TestCase):
     def setUp(self) -> None:
         patch_paths(
             self, ["bugfinder.dataset.LOGGER", "bugfinder.utils.processing.LOGGER"]
         )
 
         self.dataset_path = "./tests/fixtures/dataset01"
-        self.dataset = CWEClassificationDataset(self.dataset_path)
+        self.dataset = CodeWeaknessClassificationDataset(self.dataset_path)
 
     def tearDown(self) -> None:
         try:

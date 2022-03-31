@@ -8,7 +8,7 @@ sys.path.append(join(dirname(__file__), ".."))
 
 import argparse
 
-from bugfinder.dataset import CWEClassificationDataset as Dataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset as Dataset
 from bugfinder.dataset.processing.dataset_ops import RightFixer
 from bugfinder.features.extraction.any_hop.all_flows import (
     FeatureExtractor as AnyHopAllFlowsExtractor,
@@ -19,7 +19,7 @@ from bugfinder.features.extraction.any_hop.single_flow import (
 from bugfinder.features.extraction.single_hop.raw import (
     FeatureExtractor as SingleHopRawExtractor,
 )
-from bugfinder.features.interproc.raw import FeatureExtractor as InterprocRawExtractor
+from bugfinder.features.extraction.interproc import FeatureExtractor as InterprocRawExtractor
 from bugfinder.utils.processing import is_operation_valid
 
 if __name__ == "__main__":

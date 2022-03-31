@@ -3,7 +3,7 @@ from os.path import join
 from unittest import TestCase
 from unittest.mock import patch, Mock
 
-from bugfinder.dataset import CWEClassificationDataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset
 from bugfinder.joern.v040 import JoernDatasetProcessing
 from bugfinder.settings import ROOT_DIR
 from tests import patch_paths
@@ -50,7 +50,7 @@ class TestJoernDatasetProcessingSendCommands(TestCase):
             ],
         )
 
-        self.dataset = Mock(spec=CWEClassificationDataset)
+        self.dataset = Mock(spec=CodeWeaknessClassificationDataset)
         self.dataset.joern_dir = join(
             ROOT_DIR, "tests", "fixtures", "dataset04", "joern.db"
         )

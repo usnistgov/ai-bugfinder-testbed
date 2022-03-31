@@ -5,7 +5,7 @@ sys.path.append(join(dirname(__file__), ".."))
 
 import argparse
 
-from bugfinder.dataset import CWEClassificationDataset as Dataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset as Dataset
 from bugfinder.dataset.processing.word2vec_ops import (
     RemoveComments,
     ReplaceFunctions,

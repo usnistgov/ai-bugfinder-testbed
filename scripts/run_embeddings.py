@@ -7,7 +7,7 @@ import argparse
 import logging
 import os
 
-from bugfinder.dataset import CWEClassificationDataset as Dataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset as Dataset
 
 from bugfinder.models.word2vec import Word2VecEmbeddings
 from bugfinder.models.node2vec import Node2VecEmbeddings

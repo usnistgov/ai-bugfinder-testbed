@@ -3,7 +3,7 @@ from unittest.mock import patch, Mock
 
 import pandas as pd
 
-from bugfinder.dataset import CWEClassificationDataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset
 from bugfinder.models import ClassifierModel
 from tests import patch_paths
 
@@ -50,7 +50,7 @@ class TestClassifierModelExecute(TestCase):
     def setUp(self) -> None:
         patch_paths(self, ["bugfinder.models.LOGGER"])
 
-        self.dataset = Mock(spec=CWEClassificationDataset)
+        self.dataset = Mock(spec=CodeWeaknessClassificationDataset)
         self.dataset.classes = ["class_0", "class_1"]
         self.dataset.summary = {"training": list()}
         self.dataset.model_dir = "mock_model_dir"

@@ -1,14 +1,14 @@
 from unittest import TestCase
 from unittest.mock import Mock
 
-from bugfinder.dataset import CWEClassificationDataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset
 from bugfinder.models.dnn_classifier import DNNClassifierTraining
 import tensorflow as tf
 
 
 class TestDNNClassifierTrainingInit(TestCase):
     def setUp(self) -> None:
-        dataset = Mock(spec=CWEClassificationDataset)
+        dataset = Mock(spec=CodeWeaknessClassificationDataset)
         self.dataset_processing = DNNClassifierTraining(dataset)
 
     def test_model_cls_initialized(self):
@@ -17,7 +17,7 @@ class TestDNNClassifierTrainingInit(TestCase):
 
 class TestDNNClassifierTrainingInitModel(TestCase):
     def setUp(self) -> None:
-        dataset = Mock(spec=CWEClassificationDataset)
+        dataset = Mock(spec=CodeWeaknessClassificationDataset)
         self.dataset_processing = DNNClassifierTraining(dataset)
         self.dataset_processing.columns = ["feature1", "feature2"]
 

@@ -11,7 +11,7 @@ import argparse
 from bugfinder.sink_tagging import SinkTaggingProcessing
 from bugfinder.dataset.processing.dataset_ops import RightFixer
 from bugfinder.utils.processing import is_processing_stack_valid
-from bugfinder.dataset import CWEClassificationDataset as Dataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset as Dataset
 
 if __name__ == "__main__":
 

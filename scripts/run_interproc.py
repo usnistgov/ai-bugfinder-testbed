@@ -9,7 +9,7 @@ import argparse
 
 from bugfinder.interproc import InterprocMerger
 from bugfinder.dataset.processing.dataset_ops import RightFixer
-from bugfinder.dataset import CWEClassificationDataset as Dataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset as Dataset
 
 if __name__ == "__main__":
 

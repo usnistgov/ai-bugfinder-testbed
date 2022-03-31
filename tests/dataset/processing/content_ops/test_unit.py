@@ -4,7 +4,7 @@ from unittest import TestCase
 from unittest.mock import patch, call, Mock
 
 from bugfinder import settings
-from bugfinder.dataset import CWEClassificationDataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset
 from bugfinder.dataset.processing.content_ops import (
     ReplaceLitterals,
     RemoveMainFunction,
@@ -32,7 +32,7 @@ class TestReplaceLitteralsExecute(TestCase):
         )
 
         self.dataset_path = join(ROOT_DIR, "./tests/fixtures/dataset01")
-        self.dataset = CWEClassificationDataset(self.dataset_path)
+        self.dataset = CodeWeaknessClassificationDataset(self.dataset_path)
 
         self.test_files = []
         for test_case in self.dataset.test_cases:
@@ -95,7 +95,7 @@ class TestReplaceLitteralsProcessFile(TestCase):
         self._default_patch()
         self.dataset_path = "./tests/fixtures/dataset01"
 
-        dataset = CWEClassificationDataset(self.dataset_path)
+        dataset = CodeWeaknessClassificationDataset(self.dataset_path)
         self.dataset_processing = ReplaceLitterals(dataset)
 
         self.file_with_litterals = join(self.dataset_path, "class01/tc02", "item.c")
@@ -143,7 +143,7 @@ class TestRemoveMainFunctionExecute(TestCase):
     def test_super_execute_called(self, mock_super_execute):
         dataset_path = "./tests/fixtures/dataset01"
 
-        dataset = Mock(spec=CWEClassificationDataset)
+        dataset = Mock(spec=CodeWeaknessClassificationDataset)
         dataset.path = dataset_path
         self.dataset_processing = RemoveMainFunction(dataset)
 
@@ -168,7 +168,7 @@ class TestRemoveMainFunctionProcessFile(TestCase):
         self._default_patch()
         dataset_path = "./tests/fixtures/dataset01"
 
-        dataset = Mock(spec=CWEClassificationDataset)
+        dataset = Mock(spec=CodeWeaknessClassificationDataset)
         dataset.path = dataset_path
         self.dataset_processing = RemoveMainFunction(dataset)
 
@@ -231,7 +231,7 @@ class TestRemoveCommentsProcessFile(TestCase):
         self._default_patch()
         dataset_path = "./tests/fixtures/dataset05"
 
-        dataset = Mock(spec=CWEClassificationDataset)
+        dataset = Mock(spec=CodeWeaknessClassificationDataset)
         dataset.path = dataset_path
 
         self.dataset_processing = RemoveComments(dataset)
@@ -278,7 +278,7 @@ class TestReplaceFunctionsProcessFile(TestCase):
         self._default_patch()
         dataset_path = "./tests/fixtures/dataset05"
 
-        dataset = Mock(spec=CWEClassificationDataset)
+        dataset = Mock(spec=CodeWeaknessClassificationDataset)
         dataset.path = dataset_path
 
         self.dataset_processing = ReplaceFunctions(dataset)
@@ -335,7 +335,7 @@ class TestReplaceVariablesProcessFile(TestCase):
         self._default_patch()
         dataset_path = "./tests/fixtures/dataset05"
 
-        dataset = Mock(spec=CWEClassificationDataset)
+        dataset = Mock(spec=CodeWeaknessClassificationDataset)
         dataset.path = dataset_path
 
         self.dataset_processing = ReplaceVariables(dataset)
@@ -392,7 +392,7 @@ class TestTokenizeProcessFile(TestCase):
         self._default_patch()
         dataset_path = "./tests/fixtures/dataset05"
 
-        dataset = Mock(spec=CWEClassificationDataset)
+        dataset = Mock(spec=CodeWeaknessClassificationDataset)
         dataset.path = dataset_path
 
         self.dataset_processing = TokenizeText(dataset)

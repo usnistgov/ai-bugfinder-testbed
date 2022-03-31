@@ -4,7 +4,7 @@ from os.path import splitext, exists, join
 from shutil import rmtree, copytree
 from unittest import TestCase
 
-from bugfinder.dataset import CWEClassificationDataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset
 from bugfinder.dataset.processing.file_ops import (
     DatasetFileRemover,
     RemoveCppFiles,
@@ -36,7 +36,7 @@ class TestDatasetFileRemoverRemoveFile(TestCase):
 
         copytree(dataset_path, self.tmp_dataset_path)
 
-        self.dataset = CWEClassificationDataset(self.tmp_dataset_path)
+        self.dataset = CodeWeaknessClassificationDataset(self.tmp_dataset_path)
         self.dataset_processing = self.SampleDatasetFileRemover(self.dataset)
 
     def tearDown(self) -> None:
@@ -97,7 +97,7 @@ class TestRemoveCppFilesProcessFile(TestCase):
 
         copytree(dataset_path, self.tmp_dataset_path)
 
-        self.dataset = CWEClassificationDataset(self.tmp_dataset_path)
+        self.dataset = CodeWeaknessClassificationDataset(self.tmp_dataset_path)
         self.dataset_processing = RemoveCppFiles(self.dataset)
 
     def tearDown(self) -> None:
@@ -126,7 +126,7 @@ class TestRemoveInterproceduralTestCasesProcessFile(TestCase):
 
         copytree(dataset_path, self.tmp_dataset_path)
 
-        self.dataset = CWEClassificationDataset(self.tmp_dataset_path)
+        self.dataset = CodeWeaknessClassificationDataset(self.tmp_dataset_path)
         self.dataset_processing = RemoveInterproceduralTestCases(self.dataset)
 
     def tearDown(self) -> None:

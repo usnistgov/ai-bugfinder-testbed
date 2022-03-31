@@ -6,7 +6,7 @@ from os.path import join, exists, basename
 
 from shutil import rmtree
 
-from bugfinder.dataset import CWEClassificationDataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset
 from bugfinder.models.node2vec import Node2VecModel, Node2VecEmbeddingsBase
 
 from tests import patch_paths
@@ -30,7 +30,7 @@ class Node2VecTrainingExecute(TestCase):
     def setUp(self) -> None:
         patch_paths(self, ["bugfinder.models.LOGGER"])
 
-        self.dataset = Mock(spec=CWEClassificationDataset)
+        self.dataset = Mock(spec=CodeWeaknessClassificationDataset)
         self.dataset_processing = MockNode2VecModel(self.dataset)
 
         self.model_name = "node2vec_mock"
@@ -104,7 +104,7 @@ class Node2VecEmbeddingExecute(TestCase):
     def setUp(self) -> None:
         patch_paths(self, ["bugfinder.models.LOGGER"])
 
-        self.dataset = Mock(spec=CWEClassificationDataset)
+        self.dataset = Mock(spec=CodeWeaknessClassificationDataset)
         self.dataset_processing = MockNode2VecEmbedding(self.dataset)
 
         self.dataset.path = "./tests/fixtures/dataset05/"

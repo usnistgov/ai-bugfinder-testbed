@@ -4,7 +4,7 @@ from unittest.mock import patch, Mock
 
 import pandas as pd
 
-from bugfinder.dataset import CWEClassificationDataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset
 from bugfinder.features.reduction.pca import FeatureSelector as PCA
 from tests import patch_paths
 
@@ -17,7 +17,7 @@ class FeatureExtractorExecute(TestCase):
                 "bugfinder.dataset.join",
                 "bugfinder.dataset.listdir",
                 "bugfinder.dataset.pd.read_csv",
-                "bugfinder.dataset.CWEClassificationDataset._validate_features",
+                "bugfinder.dataset.CodeWeaknessClassificationDataset._validate_features",
                 "bugfinder.features.reduction.pca.PCA",
                 "bugfinder.features.reduction.pca.pd.DataFrame",
                 "bugfinder.features.reduction.pca.LOGGER",
@@ -25,7 +25,7 @@ class FeatureExtractorExecute(TestCase):
             ],
         )
 
-        self.dataset = Mock(spec=CWEClassificationDataset)
+        self.dataset = Mock(spec=CodeWeaknessClassificationDataset)
         self.dataset.feats_dir = "mock_feats_dir"
         self.dataset.feats_version = 1
         self.dataset.features = pd.read_csv(
@@ -55,7 +55,7 @@ class FeatureExtractorExecute(TestCase):
 
     @patch("bugfinder.features.reduction.copy")
     @patch(
-        "tests.features.reduction.pca.test_unit.CWEClassificationDataset.rebuild_index"
+        "tests.features.reduction.pca.test_unit.CodeWeaknessClassificationDataset.rebuild_index"
     )
     def test_index_is_rebuilt(self, mock_copy, mock_rebuild_index):
         mock_copy.return_value = None
