@@ -7,7 +7,7 @@ from os.path import join, exists, basename
 from shutil import rmtree
 
 from bugfinder.dataset import CWEClassificationDataset
-from bugfinder.models import Node2VecModel, Node2VecEmbeddingsBase
+from bugfinder.models.node2vec import Node2VecModel, Node2VecEmbeddingsBase
 
 from tests import patch_paths
 
@@ -141,7 +141,7 @@ class Node2VecEmbeddingExecute(TestCase):
     def test_check_model_dir(self):
         self.assertTrue(exists(self.dataset.model_dir))
 
-    @patch("bugfinder.models.Node2VecEmbeddingsBase._save_dataframe")
+    @patch("bugfinder.models.node2vec.Node2VecEmbeddingsBase._save_dataframe")
     def test_embedding_vector_valid_size(self, mock_save_df):
         mock_save_df.return_value = None
 

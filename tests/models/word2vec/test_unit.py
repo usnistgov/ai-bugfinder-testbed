@@ -9,7 +9,7 @@ from shutil import rmtree
 from gensim.models import Word2Vec
 
 from bugfinder.dataset import CWEClassificationDataset
-from bugfinder.models import Word2VecModel, Word2VecEmbeddingsBase
+from bugfinder.models.word2vec import Word2VecModel, Word2VecEmbeddingsBase
 
 from tests import patch_paths
 
