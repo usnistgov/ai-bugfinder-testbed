@@ -1,11 +1,8 @@
-import os
-import random
 from collections import defaultdict
 
-import gensim
 import networkx as nx
 import numpy as np
-
+import random
 from gensim.models import Word2Vec
 
 from bugfinder.settings import LOGGER
