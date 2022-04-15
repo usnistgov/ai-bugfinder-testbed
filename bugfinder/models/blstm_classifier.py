@@ -15,15 +15,15 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adamax
 from tensorflow.keras.utils import to_categorical
 
-from bugfinder.dataset.processing import DatasetProcessing
+from bugfinder.dataset.processing import AbstractProcessing
 from bugfinder.settings import LOGGER
 
 
-class BLSTMClassifierModel(DatasetProcessing):
+class BLSTMClassifierModel(AbstractProcessing):
     """Class which implements the Bidirectional LSTM model.
 
     Args:
-        DatasetProcessing (_type_): _description_
+        AbstractProcessing (_type_): _description_
     """
 
     def __init__(self, dataset):

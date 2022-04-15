@@ -6,12 +6,18 @@ import pandas as pd
 from abc import abstractmethod
 from shutil import copy
 
-from bugfinder.dataset.processing import DatasetProcessing
+from bugfinder.base.dataset import ProcessingCategory
+from bugfinder.base.processing import AbstractProcessing
 from bugfinder.settings import LOGGER
 
 
-class AbstractFeatureSelector(DatasetProcessing):
+class AbstractFeatureSelector(AbstractProcessing):
     """Base class for feature selection."""
+
+    def __init__(self, dataset):
+        """Class instantiation method"""
+        super().__init__(dataset)
+        self.metadata["category"] = str(ProcessingCategory.REDUCTION)
 
     @abstractmethod
     def select_feature(self, *args, **kwargs) -> pd.DataFrame:

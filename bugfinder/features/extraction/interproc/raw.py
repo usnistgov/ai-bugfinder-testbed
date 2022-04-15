@@ -9,7 +9,7 @@ from os.path import join, exists
 import json
 
 from bugfinder import settings
-from bugfinder.neo4j import Neo4J3Processing
+from bugfinder.processing.neo4j import Neo4J3Processing
 from bugfinder.settings import LOGGER, POOL_SIZE
 
 

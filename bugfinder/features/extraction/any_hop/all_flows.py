@@ -1,6 +1,6 @@
 """ Any hop all flow feature extractor module
 """
-from bugfinder.dataset.processing import DatasetProcessingDeprecation
+from bugfinder.dataset.processing import ProcessingDeprecation
 from bugfinder.features.extraction import FlowGraphFeatureExtractor
 
 
@@ -15,9 +15,7 @@ class FeatureExtractor(FlowGraphFeatureExtractor):
             test cases and, hence, is being deprecated.
         """
 
-        super().__init__(
-            dataset, deprecation_warning=DatasetProcessingDeprecation(notice)
-        )
+        super().__init__(dataset, deprecation_warning=ProcessingDeprecation(notice))
 
     def configure_container(self):
         """Configure container variable"""

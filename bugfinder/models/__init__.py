@@ -8,19 +8,20 @@ from shutil import rmtree, copytree
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 
-from bugfinder.dataset.processing import DatasetProcessing, DatasetProcessingCategory
+from bugfinder.base.processing import AbstractProcessing
+from bugfinder.base.dataset import ProcessingCategory
 from bugfinder.settings import LOGGER
 from bugfinder.utils.statistics import has_better_metrics
 
 
-class ClassifierModel(DatasetProcessing):
+class ClassifierModel(AbstractProcessing):
     """Abstract class for classifier models"""
 
     def __init__(self, dataset):
         """Class instantiation method"""
         super().__init__(dataset)
 
-        self.metadata["category"] = str(DatasetProcessingCategory.TRAINING)
+        self.metadata["category"] = str(ProcessingCategory.TRAINING)
         self.model_cls = None
         self.train_fn = None
         self.test_fn = None

@@ -5,7 +5,7 @@ import tensorflow.keras as keras
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 
-from bugfinder.dataset.processing import DatasetProcessing, DatasetProcessingCategory
+from bugfinder.dataset.processing import AbstractProcessing, ProcessingCategory
 from bugfinder.settings import LOGGER
 
 
@@ -20,11 +20,11 @@ class SequenceGenerator(keras.utils.Sequence):
         pass
 
 
-class SequentialModel(DatasetProcessing):
+class SequentialModel(AbstractProcessing):
     def __init__(self, dataset):
         super().__init__(dataset)
 
-        self.metadata["category"] = str(DatasetProcessingCategory.TRAINING)
+        self.metadata["category"] = str(ProcessingCategory.TRAINING)
         self.model_cls = keras.models.Sequential
         self.train_fn = None
         self.test_fn = None
