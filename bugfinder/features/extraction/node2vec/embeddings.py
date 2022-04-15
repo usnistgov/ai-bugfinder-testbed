@@ -14,20 +14,8 @@ class Node2VecEmbeddings(AbstractProcessing):
     """Class responsible for generating the embeddings, using the Word2Vec model
     trained with the output of the node2vec algorithm.
     """
-
-
-    def __init__(self, dataset):
-        """Class initialization method."""
-        super().__init__(dataset)
-
-        self.embedding_length = 50
-        self.vector_length = 64
-
-    def init_model(self, name, **kwargs):
-        """Class initialization method"""
-        LOGGER.debug("Class for the Node2Vec embeddings generator")
-
-    #########################
+    embedding_length = 50
+    vector_length = 64
 
     def execute(self, **kwargs):
         """Run the processing. This function reads again the dataset looking for the
@@ -135,7 +123,6 @@ class Node2VecEmbeddings(AbstractProcessing):
 
         return nodes_list
 
-    #########################
 
     def _save_dataframe(self, embeddings):
         """Saving the generated embeddings in CSV format.

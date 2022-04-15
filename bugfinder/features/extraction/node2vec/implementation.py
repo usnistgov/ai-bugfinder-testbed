@@ -37,7 +37,8 @@ class Node2VecImplementation:
         sampling_strategy=None,
         seed=None,
     ):
-        """Initialize the algorithm and generates the random walks which will be used by the skip-gram algorithm to generate the embeddings.
+        """Initialize the algorithm and generates the random walks which will be used by
+        the skip-gram algorithm to generate the embeddings.
 
         Args:
             graph (nx.Graph): networkx graph type. Node names must be strings or ints.
@@ -237,7 +238,9 @@ class Node2VecImplementation:
         return walks
 
     def fit(self, **skip_gram_params) -> Word2Vec:
-        """Creates the embeddings using the skip-gram algorithm. Accepts any input the Word2Vec model accepts in a dict format, so it`s possible to tune the algorithm if necessary.
+        """Creates the embeddings using the skip-gram algorithm. Accepts any input the
+        Word2Vec model accepts in a dict format, so it`s possible to tune the algorithm
+        if necessary.
 
         Returns:
             Word2Vec: Trained model.

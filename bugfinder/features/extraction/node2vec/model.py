@@ -13,22 +13,17 @@ class Node2VecModel(AbstractProcessing):
     """Class for process the dataset and train a word2vec model using the node2vec
     algorithm to generate the corpus used as input
     """
-
-    def __init__(self, dataset):
-        """Class initialization method."""
-        super().__init__(dataset)
-
-        self.tokens = {}
-        self.vector_length = 128
-        self.walk_length = 50
-        self.num_walks = 10
-        self.p = 1
-        self.q = 1
-        self.window_dim = 10
-        self.min_count = 1
-        self.workers = 4
-        self.algorithm = 1  # 1 = skipgram
-        self.seed = 32
+    tokens = {}
+    vector_length = 128
+    walk_length = 50
+    num_walks = 10
+    p = 1
+    q = 1
+    window_dim = 10
+    min_count = 1
+    workers = 4
+    algorithm = 1  # 1 = skipgram
+    seed = 32
 
     def execute(self, name, **kwargs):
         """Run the processing. This function receives the processed dataset, retrieves
