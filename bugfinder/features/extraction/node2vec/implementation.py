@@ -84,8 +84,6 @@ class Node2VecImplementation:
             self.FIRST_TRAVEL_KEY,
         )
 
-    #########################
-
     def _precompute_probabilities(self):
         """Pre-compute the transition probabilities used for guiding the random walks."""
         LOGGER.debug("Precomputing probabilities for the random walks...")
@@ -163,8 +161,6 @@ class Node2VecImplementation:
 
         LOGGER.debug("Finished.")
 
-    #########################
-
     def _generate_walks(
         self,
         d_graph: dict,
@@ -239,8 +235,6 @@ class Node2VecImplementation:
         LOGGER.debug("Random walk finished. Returning list...")
 
         return walks
-
-    #########################
 
     def fit(self, **skip_gram_params) -> Word2Vec:
         """Creates the embeddings using the skip-gram algorithm. Accepts any input the Word2Vec model accepts in a dict format, so it`s possible to tune the algorithm if necessary.
