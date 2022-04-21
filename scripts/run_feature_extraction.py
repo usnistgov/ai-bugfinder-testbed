@@ -8,18 +8,20 @@ sys.path.append(join(dirname(__file__), ".."))
 
 import argparse
 
-from bugfinder.dataset import CodeWeaknessClassificationDataset as Dataset
-from bugfinder.dataset.processing.dataset_ops import RightFixer
-from bugfinder.features.extraction.any_hop.all_flows import (
+from bugfinder.base.dataset import CodeWeaknessClassificationDataset as Dataset
+from bugfinder.processing.dataset.fix_rights import RightFixer
+from bugfinder.features.extraction.bag_of_words.any_hop.all_flows import (
     FeatureExtractor as AnyHopAllFlowsExtractor,
 )
-from bugfinder.features.extraction.any_hop.single_flow import (
+from bugfinder.features.extraction.bag_of_words.any_hop.single_flow import (
     FeatureExtractor as AnyHopSingleFlowExtractor,
 )
-from bugfinder.features.extraction.single_hop.raw import (
+from bugfinder.features.extraction.bag_of_words.single_hop.raw import (
     FeatureExtractor as SingleHopRawExtractor,
 )
-from bugfinder.features.extraction.interproc import FeatureExtractor as InterprocRawExtractor
+from bugfinder.features.extraction.interproc import (
+    FeatureExtractor as InterprocRawExtractor,
+)
 from bugfinder.utils.processing import is_operation_valid
 
 if __name__ == "__main__":
@@ -38,13 +40,16 @@ if __name__ == "__main__":
         "-e",
         choices=feature_extractors.keys(),
         required=True,
-        help="path to the dataset to clean",
+        help="feature extractor to use",
     )
     parser.add_argument(
         "--timeout", help="timeout for Neo4J queries", type=str, default="2h"
     )
     parser.add_argument(
-        "--map-features", "-m", action="store_true", help="path to the dataset to clean"
+        "--map-features",
+        "-m",
+        action="store_true",
+        help="map features only (does not create csv file)",
     )
 
     args = parser.parse_args()

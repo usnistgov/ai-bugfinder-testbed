@@ -9,9 +9,9 @@ import argparse
 import re
 from copy import deepcopy
 
-from bugfinder.dataset import CodeWeaknessClassificationDataset as Dataset
+from bugfinder.base.dataset import CodeWeaknessClassificationDataset as Dataset
 from bugfinder.features.reduction.auto_encoder import FeatureSelector as AutoEncoder
-from bugfinder.features.reduction.pca import FeatureSelector as PCA
+from bugfinder.features.reduction.pca import FeatureSelector as PcaSelector
 from bugfinder.features.reduction.recursive_feature_elimination import (
     FeatureSelector as RecursiveFeatureElimination,
 )
@@ -51,7 +51,7 @@ if __name__ == "__main__":
 
     feature_selectors = {  # Available feature selection and options
         "pca": {
-            "class": PCA,
+            "class": PcaSelector,
             "options": [generic_options["dimension"]],
         },
         "variance": {

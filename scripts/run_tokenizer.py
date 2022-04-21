@@ -1,25 +1,23 @@
 from os.path import dirname, join
+
 import sys
 
 sys.path.append(join(dirname(__file__), ".."))
 
 import argparse
 
-from bugfinder.dataset import CodeWeaknessClassificationDataset as Dataset
-from bugfinder.dataset.processing.word2vec_ops import (
-    RemoveComments,
-    ReplaceFunctions,
-    ReplaceVariables,
-)
-from bugfinder.dataset.processing.token_ops import TokenizeText
+from bugfinder.base.dataset import CodeWeaknessClassificationDataset as Dataset
+
+from bugfinder.processing.tokenizers.replace_functions import ReplaceFunctions
+from bugfinder.processing.tokenizers.replace_variables import ReplaceVariables
+from bugfinder.processing.tokenizers.tokenize_code import TokenizeCode
 
 
 if __name__ == "__main__":
     options = {
-        "no_comments": RemoveComments,
         "replace_funcs": ReplaceFunctions,
         "replace_vars": ReplaceVariables,
-        "tokenize": TokenizeText,
+        "tokenize": TokenizeCode,
     }
 
     parser = argparse.ArgumentParser()

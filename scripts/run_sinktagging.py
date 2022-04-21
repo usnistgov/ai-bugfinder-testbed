@@ -8,13 +8,11 @@ sys.path.append(join(dirname(__file__), ".."))
 
 import argparse
 
-from bugfinder.sink_tagging import SinkTaggingProcessing
-from bugfinder.dataset.processing.dataset_ops import RightFixer
-from bugfinder.utils.processing import is_processing_stack_valid
-from bugfinder.dataset import CodeWeaknessClassificationDataset as Dataset
+from bugfinder.processing.sink_tagging import SinkTaggingProcessing
+from bugfinder.processing.dataset.fix_rights import RightFixer
+from bugfinder.base.dataset import CodeWeaknessClassificationDataset as Dataset
 
 if __name__ == "__main__":
-
     parser = argparse.ArgumentParser()
     parser.add_argument("dataset_path", help="path to the dataset", type=str)
     parser.add_argument(

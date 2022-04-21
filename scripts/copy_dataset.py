@@ -5,8 +5,8 @@ sys.path.append(join(dirname(__file__), ".."))
 
 import argparse
 
-from bugfinder.dataset import CodeWeaknessClassificationDataset as Dataset
-from bugfinder.dataset.processing.dataset_ops import CopyDataset
+from bugfinder.base.dataset import CodeWeaknessClassificationDataset as Dataset
+from bugfinder.processing.dataset.copy import CopyDataset
 
 if __name__ == "__main__":
     # Setup the argument parser
