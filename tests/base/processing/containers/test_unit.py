@@ -1,19 +1,13 @@
-import re
-from os import remove
-from os.path import join
 from unittest import TestCase
+
+import re
 from unittest.mock import Mock, patch
 
-from bugfinder import settings
-from bugfinder.dataset import CodeWeaknessClassificationDataset
-from bugfinder.dataset.processing import (
-    DatasetFileProcessing,
-    DatasetProcessingWithContainer,
-)
-from tests import MockDatasetProcessing, patch_paths
+from bugfinder.base.dataset import CodeWeaknessClassificationDataset
+from bugfinder.base.processing.containers import AbstractContainerProcessing
 
 
-class MockDatasetProcessingWithContainer(DatasetProcessingWithContainer):
+class MockAbstractContainerProcessing(AbstractContainerProcessing):
     def configure_container(self):
         self.image_name = "mock:latest"
         self.container_name = "mock-container"
@@ -35,63 +29,11 @@ class MockDatasetProcessingWithContainer(DatasetProcessingWithContainer):
         return "%s_sent" % self.command
 
 
-class TestDatasetProcessingInit(TestCase):
-    def test_dataset_path_is_correct(self):
-        dataset_obj = Mock(spec=CodeWeaknessClassificationDataset)
-        data_processing = MockDatasetProcessing(dataset_obj)
-
-        self.assertEqual(data_processing.dataset, dataset_obj)
-
-
-class TestDatasetFileProcessingExecute(TestCase):
-    class MockDatasetFileProcessing(DatasetFileProcessing):
-        processed_file = []
-
-        def process_file(self, filepath):
-            self.processed_file.append(filepath)
-
-    def setUp(self) -> None:
-        patch_paths(self, ["bugfinder.dataset.LOGGER"])
-
-        self.dataset_path = "./tests/fixtures/dataset01"
-
-    def tearDown(self) -> None:
-        try:
-            remove(join(self.dataset_path, settings.SUMMARY_FILE))
-        except FileNotFoundError:
-            pass  # Ignore FileNotFound errors
-
-    def test_process_file_calls_equal_nb_of_files(self):
-        dataset_obj = CodeWeaknessClassificationDataset(self.dataset_path)
-        data_processing = self.MockDatasetFileProcessing(dataset_obj)
-        data_processing.execute()
-
-        self.assertEqual(
-            data_processing.processed_file.sort(),
-            [
-                "./tests/fixtures/dataset01/class02/tc03/item.c",
-                "./tests/fixtures/dataset01/class03/tc01/item.c",
-                "./tests/fixtures/dataset01/class01/tc03/item.c",
-                "./tests/fixtures/dataset01/class01/tc02/item.c",
-                "./tests/fixtures/dataset01/class02/tc04/item.c",
-                "./tests/fixtures/dataset01/class02/tc01/item.c",
-            ].sort(),
-        )
-
-    def test_rebuild_index_is_called(self):
-        dataset_obj = Mock(spec=CodeWeaknessClassificationDataset)
-        dataset_obj.test_cases = list()
-        data_processing = self.MockDatasetFileProcessing(dataset_obj)
-
-        data_processing.execute()
-        dataset_obj.rebuild_index.assert_called()
-
-
 class TestDatasetProcessingWithContainerInit(TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         mock_dataset = Mock(spec=CodeWeaknessClassificationDataset)
-        cls.mock_dataset_processing = MockDatasetProcessingWithContainer(mock_dataset)
+        cls.mock_dataset_processing = MockAbstractContainerProcessing(mock_dataset)
 
     def test_default_image_name(self):
         self.assertEqual(self.mock_dataset_processing.image_name, "")
@@ -124,13 +66,15 @@ class TestDatasetProcessingWithContainerInit(TestCase):
 class TestDatasetProcessingWithContainerExecute(TestCase):
     def setUp(self) -> None:
         mock_dataset = Mock(spec=CodeWeaknessClassificationDataset)
-        self.mock_dataset_processing = MockDatasetProcessingWithContainer(mock_dataset)
+        self.mock_dataset_processing = MockAbstractContainerProcessing(mock_dataset)
         self.mock_dataset_processing.configure_container()
 
-        patch_logger = patch("bugfinder.dataset.processing.LOGGER")
-        patch_start_container = patch("bugfinder.dataset.processing.start_container")
+        patch_logger = patch("bugfinder.base.processing.containers.LOGGER")
+        patch_start_container = patch(
+            "bugfinder.base.processing.containers.start_container"
+        )
         patch_stop_container = patch(
-            "bugfinder.dataset.processing.stop_container_by_name"
+            "bugfinder.base.processing.containers.stop_container_by_name"
         )
 
         patch_logger.start()
@@ -169,8 +113,8 @@ class TestDatasetProcessingWithContainerExecute(TestCase):
         self.assertEqual(self.mock_dataset_processing.command, expected_command)
 
     @patch(
-        "tests.dataset.processing.test_unit"
-        ".MockDatasetProcessingWithContainer.configure_container"
+        "tests.base.processing.containers.test_unit"
+        ".MockAbstractContainerProcessing.configure_container"
     )
     def test_configure_container_exception_is_caught(self, mock_configure_container):
         mock_configure_container.side_effect = Exception()
@@ -180,8 +124,8 @@ class TestDatasetProcessingWithContainerExecute(TestCase):
             self.mock_dataset_processing.execute()
 
     @patch(
-        "tests.dataset.processing.test_unit"
-        ".MockDatasetProcessingWithContainer.configure_command"
+        "tests.base.processing.containers.test_unit"
+        ".MockAbstractContainerProcessing.configure_command"
     )
     def test_configure_command_exception_is_caught(self, mock_configure_command):
         mock_command = "exec_command"
@@ -191,7 +135,7 @@ class TestDatasetProcessingWithContainerExecute(TestCase):
         with self.assertRaises(Exception):
             self.mock_dataset_processing.execute(mock_command)
 
-    @patch("bugfinder.dataset.processing.start_container")
+    @patch("bugfinder.base.processing.containers.start_container")
     def test_start_container_exception_is_caught(self, mock_start_container):
         mock_start_container.side_effect = Exception()
 
@@ -199,8 +143,8 @@ class TestDatasetProcessingWithContainerExecute(TestCase):
             self.mock_dataset_processing.execute()
 
     @patch(
-        "tests.dataset.processing.test_unit"
-        ".MockDatasetProcessingWithContainer.send_commands"
+        "tests.base.processing.containers.test_unit"
+        ".MockAbstractContainerProcessing.send_commands"
     )
     def test_send_commands_exception_is_caught(self, mock_send_commands):
         mock_send_commands.side_effect = Exception()
@@ -210,8 +154,8 @@ class TestDatasetProcessingWithContainerExecute(TestCase):
             self.mock_dataset_processing.execute()
 
     @patch(
-        "tests.dataset.processing.test_unit"
-        ".MockDatasetProcessingWithContainer.configure_detach"
+        "tests.base.processing.containers.test_unit"
+        ".MockAbstractContainerProcessing.configure_detach"
     )
     def test_stop_container_called_if_container_exists(self, mock_configure_detach):
         mock_configure_detach.return_value = True
@@ -221,10 +165,10 @@ class TestDatasetProcessingWithContainerExecute(TestCase):
         self.mock_stop_container.assert_called()
 
     @patch(
-        "tests.dataset.processing.test_unit"
-        ".MockDatasetProcessingWithContainer.configure_detach"
+        "tests.base.processing.containers.test_unit"
+        ".MockAbstractContainerProcessing.configure_detach"
     )
-    @patch("bugfinder.dataset.processing.start_container")
+    @patch("bugfinder.base.processing.containers.start_container")
     def test_stop_container_not_called_if_container_is_none(
         self, mock_start_container, mock_configure_detach
     ):

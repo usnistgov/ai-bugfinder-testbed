@@ -1,29 +1,33 @@
 from os import remove
 from os.path import join
 from unittest import TestCase
-from unittest.mock import patch
 
 import pandas as pd
+from unittest.mock import patch
 
 from bugfinder import settings
-from bugfinder.dataset import CodeWeaknessClassificationDataset, DatasetQueueRetCode
-from bugfinder.dataset.processing import DatasetProcessing
+from bugfinder.base.dataset import (
+    CodeWeaknessClassificationDataset,
+    DatasetQueueRetCode,
+)
 from bugfinder.settings import DATASET_DIRS
-from tests import MockDatasetProcessing, patch_paths
+from tests import MockAbstractProcessing, patch_paths
 
 
 class TestCodeWeaknessClassificationDatasetInit(TestCase):
+    dataset_path = "mock_dataset_path/"
+
     @classmethod
     def setUpClass(cls) -> None:
         patch_paths(
-            cls(), ["bugfinder.dataset.LOGGER", "bugfinder.utils.processing.LOGGER"]
+            cls(),
+            ["bugfinder.base.dataset.LOGGER", "bugfinder.utils.processing.LOGGER"],
         )
 
         with patch(
-            "bugfinder.dataset.CodeWeaknessClassificationDataset.rebuild_index"
+            "bugfinder.base.dataset.CodeWeaknessClassificationDataset.rebuild_index"
         ) as mock_rebuild_index:
             mock_rebuild_index.return_value = None
-            cls.dataset_path = "mock_dataset_path/"
             cls.dataset = CodeWeaknessClassificationDataset(cls.dataset_path)
 
     def tearDown(self) -> None:
@@ -72,7 +76,7 @@ class TestCodeWeaknessClassificationDatasetInit(TestCase):
 class TestCodeWeaknessClassificationDatasetRebuildIndex(TestCase):
     def setUp(self) -> None:
         patch_paths(
-            self, ["bugfinder.dataset.LOGGER", "bugfinder.utils.processing.LOGGER"]
+            self, ["bugfinder.base.dataset.LOGGER", "bugfinder.utils.processing.LOGGER"]
         )
 
     def tearDown(self) -> None:
@@ -91,7 +95,9 @@ class TestCodeWeaknessClassificationDatasetRebuildIndex(TestCase):
 
     def test_not_dir_dataset_raises_error(self):
         with self.assertRaises(FileNotFoundError):
-            CodeWeaknessClassificationDataset("./tests/fixtures/dataset01/sample_file.txt")
+            CodeWeaknessClassificationDataset(
+                "./tests/fixtures/dataset01/sample_file.txt"
+            )
 
     def test_indexed_classes_are_correct(self):
         dataset = CodeWeaknessClassificationDataset("./tests/fixtures/dataset01")
@@ -136,7 +142,7 @@ class TestCodeWeaknessClassificationDatasetRebuildIndex(TestCase):
 class TestCodeWeaknessClassificationDatasetGetFeaturesInfo(TestCase):
     def setUp(self) -> None:
         patch_paths(
-            self, ["bugfinder.dataset.LOGGER", "bugfinder.utils.processing.LOGGER"]
+            self, ["bugfinder.base.dataset.LOGGER", "bugfinder.utils.processing.LOGGER"]
         )
 
     def tearDown(self) -> None:
@@ -165,7 +171,7 @@ class TestCodeWeaknessClassificationDatasetGetFeaturesInfo(TestCase):
 class TestCodeWeaknessClassificationDatasetQueueOperation(TestCase):
     def setUp(self) -> None:
         patch_paths(
-            self, ["bugfinder.dataset.LOGGER", "bugfinder.utils.processing.LOGGER"]
+            self, ["bugfinder.base.dataset.LOGGER", "bugfinder.utils.processing.LOGGER"]
         )
 
         self.dataset_path = "./tests/fixtures/dataset01"
@@ -184,14 +190,14 @@ class TestCodeWeaknessClassificationDatasetQueueOperation(TestCase):
         self.assertEqual(len(self.dataset.ops_queue), initial_queue_size + 1)
 
     def test_added_operation_is_last_operation(self):
-        self.dataset.queue_operation(DatasetProcessing)
-        self.assertIs(self.dataset.ops_queue[-1]["class"], DatasetProcessing)
+        self.dataset.queue_operation(MockAbstractProcessing)
+        self.assertIs(self.dataset.ops_queue[-1]["class"], MockAbstractProcessing)
 
 
 class TestCodeWeaknessClassificationDatasetProcess(TestCase):
     def setUp(self) -> None:
         patch_paths(
-            self, ["bugfinder.dataset.LOGGER", "bugfinder.utils.processing.LOGGER"]
+            self, ["bugfinder.base.dataset.LOGGER", "bugfinder.utils.processing.LOGGER"]
         )
 
         self.dataset_path = "./tests/fixtures/dataset01"
@@ -207,14 +213,14 @@ class TestCodeWeaknessClassificationDatasetProcess(TestCase):
         self.assertEqual(self.dataset.process(), DatasetQueueRetCode.EMPTY_QUEUE)
 
     def test_operation_with_no_args_returns_correct_code(self):
-        mock_operation = MockDatasetProcessing
+        mock_operation = MockAbstractProcessing
 
         self.dataset.queue_operation(mock_operation)
 
         self.assertEqual(self.dataset.process(), DatasetQueueRetCode.OK)
 
     def test_operation_with_args_returns_correct_code(self):
-        mock_operation = MockDatasetProcessing
+        mock_operation = MockAbstractProcessing
 
         self.dataset.queue_operation(
             mock_operation, {"arg0": "value0", "arg1": "value1"}
@@ -222,18 +228,18 @@ class TestCodeWeaknessClassificationDatasetProcess(TestCase):
 
         self.assertEqual(self.dataset.process(), DatasetQueueRetCode.OK)
 
-    @patch("tests.MockDatasetProcessing.execute")
+    @patch("tests.MockAbstractProcessing.execute")
     def test_failed_operation_returns_correct_code(self, mock_execute):
-        mock_operation = MockDatasetProcessing
+        mock_operation = MockAbstractProcessing
         mock_execute.side_effect = Exception()
 
         self.dataset.queue_operation(mock_operation)
 
         self.assertEqual(self.dataset.process(), DatasetQueueRetCode.OPERATION_FAIL)
 
-    @patch("bugfinder.dataset.is_processing_stack_valid")
+    @patch("bugfinder.base.dataset.is_processing_stack_valid")
     def test_invalid_queue_returns_correct_code(self, mock_is_processing_stack_valid):
-        mock_operation = MockDatasetProcessing
+        mock_operation = MockAbstractProcessing
         mock_is_processing_stack_valid.return_value = False
 
         self.dataset.queue_operation(mock_operation)
