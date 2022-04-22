@@ -1,24 +1,24 @@
 from unittest import TestCase
 from unittest.mock import patch
 
-from bugfinder.ast.v01 import Neo4JASTMarkup
+from bugfinder.processing.ast.v01 import Neo4JASTMarkup
 from tests import patch_paths
 
 
 class TestNeo4JASTMarkupConfigureContainer(TestCase):
     def setUp(self) -> None:
         patch_paths(
-            self, ["bugfinder.ast.LOGGER", "bugfinder.dataset.processing.LOGGER"]
+            self, ["bugfinder.processing.ast.LOGGER", "bugfinder.base.processing.LOGGER"]
         )
 
         self.dataset_processing = Neo4JASTMarkup(None)
 
-    @patch("bugfinder.ast.AbstractASTMarkup.configure_container")
+    @patch("bugfinder.processing.ast.AbstractASTMarkup.configure_container")
     def test_configure_container_called(self, mock_configure_container):
         self.dataset_processing.configure_container()
         self.assertTrue(mock_configure_container.called)
 
-    @patch("bugfinder.ast.AbstractASTMarkup.configure_container")
+    @patch("bugfinder.processing.ast.AbstractASTMarkup.configure_container")
     def test_container_name_is_correct(self, mock_configure_container):
         mock_configure_container.return_value = None
         self.dataset_processing.configure_container()
@@ -28,12 +28,12 @@ class TestNeo4JASTMarkupConfigureContainer(TestCase):
 class TestNeo4JASTMarkupGetAstInformation(TestCase):
     def setUp(self) -> None:
         patch_paths(
-            self, ["bugfinder.ast.LOGGER", "bugfinder.dataset.processing.LOGGER"]
+            self, ["bugfinder.processing.ast.LOGGER", "bugfinder.base.processing.LOGGER"]
         )
 
         self.dataset_processing = Neo4JASTMarkup(None)
 
-    @patch("bugfinder.neo4j.Neo4J3Processing.neo4j_db")
+    @patch("bugfinder.processing.neo4j.Neo4J3Processing.neo4j_db")
     def test_neo4j_db_run_is_called(self, mock_neo4j_db):
         self.dataset_processing.get_ast_information()
         self.assertTrue(mock_neo4j_db.run.called)
@@ -42,7 +42,7 @@ class TestNeo4JASTMarkupGetAstInformation(TestCase):
 class TestNeo4JASTMarkupBuildAstMarkup(TestCase):
     def setUp(self) -> None:
         patch_paths(
-            self, ["bugfinder.ast.LOGGER", "bugfinder.dataset.processing.LOGGER"]
+            self, ["bugfinder.processing.ast.LOGGER", "bugfinder.base.processing.LOGGER"]
         )
 
         self.dataset_processing = Neo4JASTMarkup(None)
