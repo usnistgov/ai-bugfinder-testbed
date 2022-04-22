@@ -1,6 +1,6 @@
 """ Any hop all flow feature extractor module
 """
-from bugfinder.dataset.processing import ProcessingDeprecation
+from bugfinder.base.processing import ProcessingDeprecation
 from bugfinder.features.extraction import FlowGraphFeatureExtractor
 
 

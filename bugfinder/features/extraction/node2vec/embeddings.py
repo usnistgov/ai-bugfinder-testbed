@@ -14,6 +14,7 @@ class Node2VecEmbeddings(AbstractProcessing):
     """Class responsible for generating the embeddings, using the Word2Vec model
     trained with the output of the node2vec algorithm.
     """
+
     embedding_length = 50
     vector_length = 64
 
@@ -122,7 +123,6 @@ class Node2VecEmbeddings(AbstractProcessing):
                     nodes_list.append(processed_nodes)
 
         return nodes_list
-
 
     def _save_dataframe(self, embeddings):
         """Saving the generated embeddings in CSV format.

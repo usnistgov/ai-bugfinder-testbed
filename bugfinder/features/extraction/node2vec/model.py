@@ -13,6 +13,7 @@ class Node2VecModel(AbstractProcessing):
     """Class for process the dataset and train a word2vec model using the node2vec
     algorithm to generate the corpus used as input
     """
+
     tokens = {}
     vector_length = 128
     walk_length = 50

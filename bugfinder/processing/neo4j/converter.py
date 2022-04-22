@@ -3,7 +3,7 @@
 from os import makedirs, walk, remove
 from os.path import join, splitext
 
-from bugfinder.base.processing.files import AbstractContainerProcessing
+from bugfinder.base.processing.containers import AbstractContainerProcessing
 from bugfinder.processing.neo4j import Neo4J3Processing
 from bugfinder.settings import LOGGER
 from bugfinder.utils.containers import wait_log_display
