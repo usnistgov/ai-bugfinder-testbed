@@ -4,7 +4,7 @@ from unittest import TestCase
 from unittest.mock import patch, Mock
 
 from bugfinder import settings
-from bugfinder.dataset import CodeWeaknessClassificationDataset
+from bugfinder.base.dataset import CodeWeaknessClassificationDataset
 from bugfinder.features.extraction import (
     GraphFeatureExtractor,
     FlowGraphFeatureExtractor,
@@ -44,7 +44,7 @@ class GraphFeatureExtractorGetEntrypointList(TestCase):
     def setUp(self) -> None:
         self.dataset_processing = MockGraphFeatureExtractor(None)
 
-    @patch("bugfinder.neo4j.Neo4J3Processing.neo4j_db")
+    @patch("bugfinder.processing.neo4j.Neo4J3Processing.neo4j_db")
     def test_entrypoint_list_contains_all_info(self, mock_neo4j_db):
         class MockNeo4JRunData(object):
             def __init__(self, *args, **kwargs):
@@ -86,7 +86,7 @@ class GraphFeatureExtractorGetEntrypointList(TestCase):
             self.dataset_processing._get_entrypoint_list(), expected_result
         )
 
-    @patch("bugfinder.neo4j.Neo4J3Processing.neo4j_db")
+    @patch("bugfinder.processing.neo4j.Neo4J3Processing.neo4j_db")
     def test_empty_entrypoint_list_returns_empty_list(self, mock_neo4j_db):
         class MockNeo4JRunData(object):
             def __init__(self, *args, **kwargs):
@@ -107,7 +107,7 @@ class GraphFeatureExtractorCreateFeatureMapFile(TestCase):
         patch_paths(
             self,
             [
-                "bugfinder.dataset.LOGGER",
+                "bugfinder.base.dataset.LOGGER",
                 "bugfinder.features.extraction.LOGGER",
             ],
         )
@@ -149,9 +149,10 @@ class GraphFeatureExtractorExecute(TestCase):
     def setUp(self) -> None:
         self.dataset_processing = MockGraphFeatureExtractor(None)
 
-    @patch("bugfinder.neo4j.Neo4J3Processing.execute")
+    @patch("bugfinder.processing.neo4j.Neo4J3Processing.execute")
     @patch(
-        "tests.features.extraction.test_unit.MockGraphFeatureExtractor._create_feature_map_file"
+        "tests.features.extraction.bag_of_words.test_unit.MockGraphFeatureExtractor"
+        "._create_feature_map_file"
     )
     def test_create_feature_map_file_called(
         self, mock_create_feature_map_file, mock_execute
@@ -162,9 +163,10 @@ class GraphFeatureExtractorExecute(TestCase):
 
         self.assertTrue(mock_create_feature_map_file.called)
 
-    @patch("bugfinder.neo4j.Neo4J3Processing.execute")
+    @patch("bugfinder.processing.neo4j.Neo4J3Processing.execute")
     @patch(
-        "tests.features.extraction.test_unit.MockGraphFeatureExtractor._create_feature_map_file"
+        "tests.features.extraction.bag_of_words.test_unit.MockGraphFeatureExtractor"
+        "._create_feature_map_file"
     )
     def test_need_map_features_init(self, mock_create_feature_map_file, mock_execute):
         mock_create_feature_map_file.return_value = None
@@ -175,9 +177,10 @@ class GraphFeatureExtractorExecute(TestCase):
 
         self.assertEqual(self.dataset_processing.need_map_features, expected_result)
 
-    @patch("bugfinder.neo4j.Neo4J3Processing.execute")
+    @patch("bugfinder.processing.neo4j.Neo4J3Processing.execute")
     @patch(
-        "tests.features.extraction.test_unit.MockGraphFeatureExtractor._create_feature_map_file"
+        "tests.features.extraction.bag_of_words.test_unit.MockGraphFeatureExtractor"
+        "._create_feature_map_file"
     )
     def test_parent_execute_called(self, mock_create_feature_map_file, mock_execute):
         mock_create_feature_map_file.return_value = None
@@ -194,15 +197,15 @@ class GraphFeatureExtractorSendCommands(TestCase):
 
         self.dataset_processing = MockGraphFeatureExtractor(None)
 
-    @patch("bugfinder.neo4j.Neo4J3Processing.send_commands")
+    @patch("bugfinder.processing.neo4j.Neo4J3Processing.send_commands")
     @patch(
-        "tests.features.extraction.test_unit.GraphFeatureExtractor.check_extraction_inputs"
+        "tests.features.extraction.bag_of_words.test_unit.GraphFeatureExtractor.check_extraction_inputs"
     )
     @patch(
-        "tests.features.extraction.test_unit.MockGraphFeatureExtractor.extract_features"
+        "tests.features.extraction.bag_of_words.test_unit.MockGraphFeatureExtractor.extract_features"
     )
     @patch(
-        "tests.features.extraction.test_unit.GraphFeatureExtractor.write_extraction_outputs"
+        "tests.features.extraction.bag_of_words.test_unit.GraphFeatureExtractor.write_extraction_outputs"
     )
     def test_parent_send_command_called(
         self,
@@ -219,10 +222,10 @@ class GraphFeatureExtractorSendCommands(TestCase):
 
         self.assertTrue(mock_send_commands.called)
 
-    @patch("bugfinder.neo4j.Neo4J3Processing.send_commands")
-    @patch("tests.features.extraction.test_unit.MockGraphFeatureExtractor.map_features")
+    @patch("bugfinder.processing.neo4j.Neo4J3Processing.send_commands")
+    @patch("tests.features.extraction.bag_of_words.test_unit.MockGraphFeatureExtractor.map_features")
     @patch(
-        "tests.features.extraction.test_unit.GraphFeatureExtractor"
+        "tests.features.extraction.bag_of_words.test_unit.GraphFeatureExtractor"
         ".save_labels_to_feature_map"
     )
     def test_map_features_called_if_need_map_feature(
@@ -237,10 +240,10 @@ class GraphFeatureExtractorSendCommands(TestCase):
 
         self.assertTrue(mock_map_features.called)
 
-    @patch("bugfinder.neo4j.Neo4J3Processing.send_commands")
-    @patch("tests.features.extraction.test_unit.MockGraphFeatureExtractor.map_features")
+    @patch("bugfinder.processing.neo4j.Neo4J3Processing.send_commands")
+    @patch("tests.features.extraction.bag_of_words.test_unit.MockGraphFeatureExtractor.map_features")
     @patch(
-        "tests.features.extraction.test_unit.GraphFeatureExtractor.save_labels_to_feature_map"
+        "tests.features.extraction.bag_of_words.test_unit.GraphFeatureExtractor.save_labels_to_feature_map"
     )
     def test_save_labels_called_if_need_map_feature(
         self, mock_save_labels_to_feature_map, mock_map_features, mock_send_commands
@@ -254,15 +257,15 @@ class GraphFeatureExtractorSendCommands(TestCase):
 
         self.assertTrue(mock_save_labels_to_feature_map.called)
 
-    @patch("bugfinder.neo4j.Neo4J3Processing.send_commands")
+    @patch("bugfinder.processing.neo4j.Neo4J3Processing.send_commands")
     @patch(
-        "tests.features.extraction.test_unit.GraphFeatureExtractor.check_extraction_inputs"
+        "tests.features.extraction.bag_of_words.test_unit.GraphFeatureExtractor.check_extraction_inputs"
     )
     @patch(
-        "tests.features.extraction.test_unit.MockGraphFeatureExtractor.extract_features"
+        "tests.features.extraction.bag_of_words.test_unit.MockGraphFeatureExtractor.extract_features"
     )
     @patch(
-        "tests.features.extraction.test_unit.GraphFeatureExtractor.write_extraction_outputs"
+        "tests.features.extraction.bag_of_words.test_unit.GraphFeatureExtractor.write_extraction_outputs"
     )
     def test_check_extraction_inputs_called_if_not_need_map_feature(
         self,
@@ -279,16 +282,16 @@ class GraphFeatureExtractorSendCommands(TestCase):
 
         self.assertTrue(mock_check_extraction_inputs.called)
 
-    @patch("bugfinder.neo4j.Neo4J3Processing.send_commands")
+    @patch("bugfinder.processing.neo4j.Neo4J3Processing.send_commands")
     @patch(
-        "tests.features.extraction.test_unit.GraphFeatureExtractor"
+        "tests.features.extraction.bag_of_words.test_unit.GraphFeatureExtractor"
         ".check_extraction_inputs"
     )
     @patch(
-        "tests.features.extraction.test_unit.MockGraphFeatureExtractor.extract_features"
+        "tests.features.extraction.bag_of_words.test_unit.MockGraphFeatureExtractor.extract_features"
     )
     @patch(
-        "tests.features.extraction.test_unit.GraphFeatureExtractor"
+        "tests.features.extraction.bag_of_words.test_unit.GraphFeatureExtractor"
         ".write_extraction_outputs"
     )
     def test_extract_features_called_if_not_need_map_feature(
@@ -306,15 +309,15 @@ class GraphFeatureExtractorSendCommands(TestCase):
 
         self.assertTrue(mock_extract_features.called)
 
-    @patch("bugfinder.neo4j.Neo4J3Processing.send_commands")
+    @patch("bugfinder.processing.neo4j.Neo4J3Processing.send_commands")
     @patch(
-        "tests.features.extraction.test_unit.GraphFeatureExtractor.check_extraction_inputs"
+        "tests.features.extraction.bag_of_words.test_unit.GraphFeatureExtractor.check_extraction_inputs"
     )
     @patch(
-        "tests.features.extraction.test_unit.MockGraphFeatureExtractor.extract_features"
+        "tests.features.extraction.bag_of_words.test_unit.MockGraphFeatureExtractor.extract_features"
     )
     @patch(
-        "tests.features.extraction.test_unit.GraphFeatureExtractor.write_extraction_outputs"
+        "tests.features.extraction.bag_of_words.test_unit.GraphFeatureExtractor.write_extraction_outputs"
     )
     def test_write_output_called_if_not_need_map_feature(
         self,
@@ -337,11 +340,11 @@ class GraphFeatureExtractorCheckExtractionInputs(TestCase):
         patch_paths(
             self,
             [
-                "bugfinder.dataset.join",
-                "bugfinder.dataset.listdir",
-                "bugfinder.dataset.pd.read_csv",
-                "bugfinder.dataset.CodeWeaknessClassificationDataset._validate_features",
-                "bugfinder.dataset.LOGGER",
+                "bugfinder.base.dataset.join",
+                "bugfinder.base.dataset.listdir",
+                "bugfinder.base.dataset.pd.read_csv",
+                "bugfinder.base.dataset.CodeWeaknessClassificationDataset._validate_features",
+                "bugfinder.base.dataset.LOGGER",
             ],
         )
 
@@ -377,13 +380,13 @@ class GraphFeatureExtractorWriteExtractionOutputs(TestCase):
         patch_paths(
             self,
             [
-                "bugfinder.dataset.join",
-                "bugfinder.dataset.listdir",
-                "bugfinder.dataset.pd.read_csv",
-                "bugfinder.dataset.CodeWeaknessClassificationDataset._validate_features",
+                "bugfinder.base.dataset.join",
+                "bugfinder.base.dataset.listdir",
+                "bugfinder.base.dataset.pd.read_csv",
+                "bugfinder.base.dataset.CodeWeaknessClassificationDataset._validate_features",
                 "bugfinder.features.extraction.join",
                 "bugfinder.features.extraction.open",
-                "bugfinder.dataset.LOGGER",
+                "bugfinder.base.dataset.LOGGER",
             ],
         )
 
@@ -392,7 +395,7 @@ class GraphFeatureExtractorWriteExtractionOutputs(TestCase):
         self.dataset_processing = MockGraphFeatureExtractor(self.dataset)
 
     @patch(
-        "tests.features.extraction.test_unit.GraphFeatureExtractor.get_labels_from_feature_map"
+        "tests.features.extraction.bag_of_words.test_unit.GraphFeatureExtractor.get_labels_from_feature_map"
     )
     def test_get_labels_from_feature_map_called(self, mock_get_labels_from_feature_map):
         mock_get_labels_from_feature_map.return_value = []
@@ -403,7 +406,7 @@ class GraphFeatureExtractorWriteExtractionOutputs(TestCase):
         self.assertTrue(mock_get_labels_from_feature_map.called)
 
     @patch(
-        "tests.features.extraction.test_unit.GraphFeatureExtractor.get_labels_from_feature_map"
+        "tests.features.extraction.bag_of_words.test_unit.GraphFeatureExtractor.get_labels_from_feature_map"
     )
     def test_missing_label_raises_index_error(self, mock_get_labels_from_feature_map):
         mock_get_labels_from_feature_map.return_value = [0]
@@ -418,13 +421,13 @@ class GraphFeatureExtractorSaveLabelsToFeatursMap(TestCase):
         patch_paths(
             self,
             [
-                "bugfinder.dataset.join",
-                "bugfinder.dataset.listdir",
-                "bugfinder.dataset.pd.read_csv",
-                "bugfinder.dataset.CodeWeaknessClassificationDataset._validate_features",
+                "bugfinder.base.dataset.join",
+                "bugfinder.base.dataset.listdir",
+                "bugfinder.base.dataset.pd.read_csv",
+                "bugfinder.base.dataset.CodeWeaknessClassificationDataset._validate_features",
                 "bugfinder.features.extraction.open",
                 "bugfinder.features.extraction.join",
-                "bugfinder.dataset.LOGGER",
+                "bugfinder.base.dataset.LOGGER",
                 "bugfinder.features.extraction.LOGGER",
             ],
         )
@@ -433,7 +436,7 @@ class GraphFeatureExtractorSaveLabelsToFeatursMap(TestCase):
         self.dataset_processing = MockGraphFeatureExtractor(self.dataset)
 
     @patch(
-        "tests.features.extraction.test_unit.GraphFeatureExtractor"
+        "tests.features.extraction.bag_of_words.test_unit.GraphFeatureExtractor"
         ".get_labels_from_feature_map"
     )
     def test_get_labels_called(self, mock_get_labels_from_feature_map):
@@ -444,7 +447,7 @@ class GraphFeatureExtractorSaveLabelsToFeatursMap(TestCase):
         self.assertTrue(mock_get_labels_from_feature_map.called)
 
     @patch(
-        "tests.features.extraction.test_unit.GraphFeatureExtractor"
+        "tests.features.extraction.bag_of_words.test_unit.GraphFeatureExtractor"
         ".get_labels_from_feature_map"
     )
     @patch("bugfinder.features.extraction.pickle")
@@ -458,7 +461,7 @@ class GraphFeatureExtractorSaveLabelsToFeatursMap(TestCase):
         self.assertFalse(mock_pickle.dump.called)
 
     @patch(
-        "tests.features.extraction.test_unit.GraphFeatureExtractor.get_labels_from_feature_map"
+        "tests.features.extraction.bag_of_words.test_unit.GraphFeatureExtractor.get_labels_from_feature_map"
     )
     @patch("bugfinder.features.extraction.pickle")
     def test_extra_labels_are_overwritten(
@@ -476,13 +479,13 @@ class GraphFeatureExtractorGetLabelsFromFeatursMap(TestCase):
         patch_paths(
             self,
             [
-                "bugfinder.dataset.join",
-                "bugfinder.dataset.listdir",
-                "bugfinder.dataset.pd.read_csv",
-                "bugfinder.dataset.CodeWeaknessClassificationDataset._validate_features",
+                "bugfinder.base.dataset.join",
+                "bugfinder.base.dataset.listdir",
+                "bugfinder.base.dataset.pd.read_csv",
+                "bugfinder.base.dataset.CodeWeaknessClassificationDataset._validate_features",
                 "bugfinder.features.extraction.join",
                 "bugfinder.features.extraction.open",
-                "bugfinder.dataset.LOGGER",
+                "bugfinder.base.dataset.LOGGER",
             ],
         )
 
@@ -577,7 +580,7 @@ class FlowGraphFeatureExtractorExtractFeatures(TestCase):
         "bugfinder.features.extraction.FlowGraphFeatureExtractor.initialize_features"
     )
     @patch(
-        "tests.features.extraction.test_unit.MockFlowGraphFeatureExtractor"
+        "tests.features.extraction.bag_of_words.test_unit.MockFlowGraphFeatureExtractor"
         ".get_flowgraph_list_for_entrypoint"
     )
     @patch("bugfinder.features.extraction.FlowGraphFeatureExtractor.finalize_features")
@@ -606,7 +609,7 @@ class FlowGraphFeatureExtractorExtractFeatures(TestCase):
         "bugfinder.features.extraction.FlowGraphFeatureExtractor.initialize_features"
     )
     @patch(
-        "tests.features.extraction.test_unit.MockFlowGraphFeatureExtractor"
+        "tests.features.extraction.bag_of_words.test_unit.MockFlowGraphFeatureExtractor"
         ".get_flowgraph_list_for_entrypoint"
     )
     @patch("bugfinder.features.extraction.FlowGraphFeatureExtractor.finalize_features")
@@ -635,11 +638,11 @@ class FlowGraphFeatureExtractorExtractFeatures(TestCase):
         "bugfinder.features.extraction.FlowGraphFeatureExtractor.initialize_features"
     )
     @patch(
-        "tests.features.extraction.test_unit.MockFlowGraphFeatureExtractor"
+        "tests.features.extraction.bag_of_words.test_unit.MockFlowGraphFeatureExtractor"
         ".get_flowgraph_list_for_entrypoint"
     )
     @patch(
-        "tests.features.extraction.test_unit.MockFlowGraphFeatureExtractor"
+        "tests.features.extraction.bag_of_words.test_unit.MockFlowGraphFeatureExtractor"
         ".get_label_from_flowgraph"
     )
     @patch("bugfinder.features.extraction.FlowGraphFeatureExtractor.finalize_features")
@@ -670,15 +673,15 @@ class FlowGraphFeatureExtractorExtractFeatures(TestCase):
         "bugfinder.features.extraction.FlowGraphFeatureExtractor.initialize_features"
     )
     @patch(
-        "tests.features.extraction.test_unit.MockFlowGraphFeatureExtractor"
+        "tests.features.extraction.bag_of_words.test_unit.MockFlowGraphFeatureExtractor"
         ".get_flowgraph_list_for_entrypoint"
     )
     @patch(
-        "tests.features.extraction.test_unit.MockFlowGraphFeatureExtractor"
+        "tests.features.extraction.bag_of_words.test_unit.MockFlowGraphFeatureExtractor"
         ".get_label_from_flowgraph"
     )
     @patch(
-        "tests.features.extraction.test_unit.MockFlowGraphFeatureExtractor"
+        "tests.features.extraction.bag_of_words.test_unit.MockFlowGraphFeatureExtractor"
         ".get_flowgraph_count"
     )
     @patch("bugfinder.features.extraction.FlowGraphFeatureExtractor.finalize_features")
@@ -711,7 +714,7 @@ class FlowGraphFeatureExtractorExtractFeatures(TestCase):
         "bugfinder.features.extraction.FlowGraphFeatureExtractor.initialize_features"
     )
     @patch(
-        "tests.features.extraction.test_unit.MockFlowGraphFeatureExtractor"
+        "tests.features.extraction.bag_of_words.test_unit.MockFlowGraphFeatureExtractor"
         ".get_flowgraph_list_for_entrypoint"
     )
     @patch("bugfinder.features.extraction.FlowGraphFeatureExtractor.finalize_features")
@@ -740,15 +743,15 @@ class FlowGraphFeatureExtractorExtractFeatures(TestCase):
         "bugfinder.features.extraction.FlowGraphFeatureExtractor.initialize_features"
     )
     @patch(
-        "tests.features.extraction.test_unit.MockFlowGraphFeatureExtractor"
+        "tests.features.extraction.bag_of_words.test_unit.MockFlowGraphFeatureExtractor"
         ".get_flowgraph_list_for_entrypoint"
     )
     @patch(
-        "tests.features.extraction.test_unit.MockFlowGraphFeatureExtractor"
+        "tests.features.extraction.bag_of_words.test_unit.MockFlowGraphFeatureExtractor"
         ".get_label_from_flowgraph"
     )
     @patch(
-        "tests.features.extraction.test_unit.MockFlowGraphFeatureExtractor"
+        "tests.features.extraction.bag_of_words.test_unit.MockFlowGraphFeatureExtractor"
         ".get_flowgraph_count"
     )
     def test_unknown_labels_are_ignored(
@@ -793,7 +796,7 @@ class FlowGraphFeatureExtractorMapFeatures(TestCase):
 
     @patch("bugfinder.features.extraction.GraphFeatureExtractor._get_entrypoint_list")
     @patch(
-        "tests.features.extraction.test_unit.MockFlowGraphFeatureExtractor"
+        "tests.features.extraction.bag_of_words.test_unit.MockFlowGraphFeatureExtractor"
         ".get_flowgraph_list_for_entrypoint"
     )
     def test_get_flowgraph_list_for_entrypoint_is_called(
@@ -808,11 +811,11 @@ class FlowGraphFeatureExtractorMapFeatures(TestCase):
 
     @patch("bugfinder.features.extraction.GraphFeatureExtractor._get_entrypoint_list")
     @patch(
-        "tests.features.extraction.test_unit.MockFlowGraphFeatureExtractor"
+        "tests.features.extraction.bag_of_words.test_unit.MockFlowGraphFeatureExtractor"
         ".get_flowgraph_list_for_entrypoint"
     )
     @patch(
-        "tests.features.extraction.test_unit.MockFlowGraphFeatureExtractor"
+        "tests.features.extraction.bag_of_words.test_unit.MockFlowGraphFeatureExtractor"
         ".get_label_from_flowgraph"
     )
     def test_get_label_from_flowgraph_is_called(
@@ -831,11 +834,11 @@ class FlowGraphFeatureExtractorMapFeatures(TestCase):
 
     @patch("bugfinder.features.extraction.GraphFeatureExtractor._get_entrypoint_list")
     @patch(
-        "tests.features.extraction.test_unit.MockFlowGraphFeatureExtractor"
+        "tests.features.extraction.bag_of_words.test_unit.MockFlowGraphFeatureExtractor"
         ".get_flowgraph_list_for_entrypoint"
     )
     @patch(
-        "tests.features.extraction.test_unit.MockFlowGraphFeatureExtractor"
+        "tests.features.extraction.bag_of_words.test_unit.MockFlowGraphFeatureExtractor"
         ".get_label_from_flowgraph"
     )
     def test_duplicate_label_appear_only_once(

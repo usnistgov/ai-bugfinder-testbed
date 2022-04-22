@@ -1,8 +1,8 @@
 from unittest import TestCase
 from unittest.mock import patch, Mock
 
-from bugfinder.dataset import CodeWeaknessClassificationDataset
-from bugfinder.features.extraction.single_hop.raw import (
+from bugfinder.base.dataset import CodeWeaknessClassificationDataset
+from bugfinder.features.extraction.bag_of_words.single_hop.raw import (
     FeatureExtractor as SingleHopRawFeatureExtractor,
 )
 from tests import patch_paths
@@ -17,7 +17,7 @@ class FeatureExtractorConfigureContainer(TestCase):
 
         self.dataset_processing = SingleHopRawFeatureExtractor(dataset)
 
-    @patch("bugfinder.neo4j.Neo4J3Processing.configure_container")
+    @patch("bugfinder.processing.neo4j.Neo4J3Processing.configure_container")
     def test_container_name_is_correct(self, mock_configure_container):
         mock_configure_container.return_value = None
         expected_container_name = "fext-single-hop-raw"
@@ -35,7 +35,7 @@ class FeatureExtractorGetFlowgraphListForEntrypoint(TestCase):
 
         self.dataset_processing = SingleHopRawFeatureExtractor(None)
 
-    @patch("bugfinder.neo4j.Neo4J3Processing.neo4j_db")
+    @patch("bugfinder.processing.neo4j.Neo4J3Processing.neo4j_db")
     def test_neo4j_db_run_is_called(self, mock_neo4j_db):
         self.dataset_processing.get_flowgraph_list_for_entrypoint({"function_id": None})
 
