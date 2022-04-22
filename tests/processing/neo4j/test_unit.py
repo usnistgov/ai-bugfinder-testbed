@@ -1,10 +1,8 @@
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
-from py2neo import Graph
-
-from bugfinder.dataset import CodeWeaknessClassificationDataset
-from bugfinder.neo4j import Neo4J3Processing
+from bugfinder.base.dataset import CodeWeaknessClassificationDataset
+from bugfinder.processing.neo4j import Neo4J3Processing
 from bugfinder import settings
 
 
@@ -78,15 +76,15 @@ class TestNeo4J3ProcessingSendCommands(TestCase):
         self.dataset_processing.configure_container()
         self.dataset_processing.assign_ports()
 
-    @patch("bugfinder.neo4j.Graph")
-    @patch("bugfinder.neo4j.wait_log_display")
+    @patch("bugfinder.processing.neo4j.Graph")
+    @patch("bugfinder.processing.neo4j.wait_log_display")
     def test_wait_for_log_display_called(self, mock_wait_log_display, mock_graph):
         mock_graph.return_value = None
         self.dataset_processing.send_commands()
         self.assertTrue(mock_wait_log_display.called)
 
-    @patch("bugfinder.neo4j.Graph")
-    @patch("bugfinder.neo4j.wait_log_display")
+    @patch("bugfinder.processing.neo4j.Graph")
+    @patch("bugfinder.processing.neo4j.wait_log_display")
     def test_neo4j_db_initialized(self, mock_wait_log_display, mock_graph):
         mock_wait_log_display.return_value = None
         mock_graph.return_value = "mock_graph"

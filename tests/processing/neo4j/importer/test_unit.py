@@ -1,8 +1,8 @@
 from unittest import TestCase
 from unittest.mock import patch, Mock
 
-from bugfinder.dataset import CodeWeaknessClassificationDataset
-from bugfinder.neo4j.importer import Neo4J3Importer
+from bugfinder.base.dataset import CodeWeaknessClassificationDataset
+from bugfinder.processing.neo4j.importer import Neo4J3Importer
 from tests import patch_paths
 
 
@@ -10,7 +10,7 @@ class TestNeo4J3ImporterDefault(TestCase):
     def setUp(self) -> None:
         patch_paths(
             self,
-            ["bugfinder.neo4j.importer.LOGGER", "bugfinder.dataset.processing.LOGGER"],
+            ["bugfinder.processing.neo4j.importer.LOGGER", "bugfinder.base.processing.LOGGER"],
         )
 
         self.dataset_processing = Neo4J3Importer(None)
@@ -26,7 +26,7 @@ class TestNeo4J3ImporterConfigureContainer(TestCase):
     def setUp(self) -> None:
         patch_paths(
             self,
-            ["bugfinder.neo4j.importer.LOGGER", "bugfinder.dataset.processing.LOGGER"],
+            ["bugfinder.processing.neo4j.importer.LOGGER", "bugfinder.base.processing.LOGGER"],
         )
 
         self.dataset = Mock(spec=CodeWeaknessClassificationDataset)
@@ -34,13 +34,13 @@ class TestNeo4J3ImporterConfigureContainer(TestCase):
         self.dataset.joern_dir = "mock_joern_dir"
         self.dataset_processing = Neo4J3Importer(self.dataset)
 
-    @patch("bugfinder.neo4j.importer.super")
+    @patch("bugfinder.processing.neo4j.importer.super")
     def test_super_configure_container_called(self, mock_super):
         self.dataset_processing.configure_container()
 
         self.assertTrue(mock_super().configure_container.called)
 
-    @patch("bugfinder.neo4j.importer.super")
+    @patch("bugfinder.processing.neo4j.importer.super")
     def test_container_name_correct(self, mock_super):
         mock_super().configure_container.return_value = None
 
@@ -48,7 +48,7 @@ class TestNeo4J3ImporterConfigureContainer(TestCase):
 
         self.assertEqual(self.dataset_processing.container_name, "neo3-importer")
 
-    @patch("bugfinder.neo4j.importer.super")
+    @patch("bugfinder.processing.neo4j.importer.super")
     def test_volumes_correct(self, mock_super):
         mock_super().configure_container.return_value = None
 
@@ -69,13 +69,13 @@ class TestNeo4J3ImporterSendCommands(TestCase):
     def setUp(self) -> None:
         patch_paths(
             self,
-            ["bugfinder.neo4j.importer.LOGGER", "bugfinder.dataset.processing.LOGGER"],
+            ["bugfinder.processing.neo4j.importer.LOGGER", "bugfinder.base.processing.LOGGER"],
         )
 
         self.dataset_processing = Neo4J3Importer(None)
 
-    @patch("bugfinder.neo4j.importer.super")
-    @patch("bugfinder.neo4j.importer.Neo4J3Importer.container")
+    @patch("bugfinder.processing.neo4j.importer.super")
+    @patch("bugfinder.processing.neo4j.importer.Neo4J3Importer.container")
     def test_super_send_commands_called(self, mock_container, mock_super):
         mock_container.exec_run.return_value = None
 
@@ -83,8 +83,8 @@ class TestNeo4J3ImporterSendCommands(TestCase):
 
         self.assertTrue(mock_super().send_commands.called)
 
-    @patch("bugfinder.neo4j.importer.super")
-    @patch("bugfinder.neo4j.importer.Neo4J3Importer.container")
+    @patch("bugfinder.processing.neo4j.importer.super")
+    @patch("bugfinder.processing.neo4j.importer.Neo4J3Importer.container")
     def test_container_exec_run_called(self, mock_container, mock_super):
         mock_super().send_commands.return_value = None
         mock_container.exec_run.return_value = None

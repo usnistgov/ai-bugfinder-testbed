@@ -1,8 +1,8 @@
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
-from bugfinder.dataset import CodeWeaknessClassificationDataset
-from bugfinder.neo4j.converter import Neo4J3Converter, Neo4J2Converter
+from bugfinder.base.dataset import CodeWeaknessClassificationDataset
+from bugfinder.processing.neo4j.converter import Neo4J3Converter, Neo4J2Converter
 from tests import patch_paths
 
 
@@ -10,7 +10,7 @@ class TestNeo4J2ConverterDefault(TestCase):
     def setUp(self) -> None:
         patch_paths(
             self,
-            ["bugfinder.neo4j.converter.LOGGER", "bugfinder.dataset.processing.LOGGER"],
+            ["bugfinder.processing.neo4j.converter.LOGGER", "bugfinder.base.processing.LOGGER"],
         )
 
         self.dataset_processing = Neo4J2Converter(None)
@@ -23,7 +23,7 @@ class TestNeo4J2ConverterConfigureContainer(TestCase):
     def setUp(self) -> None:
         patch_paths(
             self,
-            ["bugfinder.neo4j.converter.LOGGER", "bugfinder.dataset.processing.LOGGER"],
+            ["bugfinder.processing.neo4j.converter.LOGGER", "bugfinder.base.processing.LOGGER"],
         )
 
         self.dataset = Mock(spec=CodeWeaknessClassificationDataset)
@@ -69,7 +69,7 @@ class TestNeo4J2ConverterSendCommands(TestCase):
     def setUp(self) -> None:
         patch_paths(
             self,
-            ["bugfinder.neo4j.converter.LOGGER", "bugfinder.dataset.processing.LOGGER"],
+            ["bugfinder.processing.neo4j.converter.LOGGER", "bugfinder.base.processing.LOGGER"],
         )
 
         self.dataset = Mock(spec=CodeWeaknessClassificationDataset)
@@ -77,10 +77,10 @@ class TestNeo4J2ConverterSendCommands(TestCase):
         self.dataset.neo4j_dir = "mock_neo4j_dir"
         self.dataset_processing = Neo4J2Converter(self.dataset)
 
-    @patch("bugfinder.neo4j.converter.wait_log_display")
-    @patch("bugfinder.neo4j.converter.makedirs")
-    @patch("bugfinder.neo4j.converter.copy_dir")
-    @patch("bugfinder.neo4j.converter.walk")
+    @patch("bugfinder.processing.neo4j.converter.wait_log_display")
+    @patch("bugfinder.processing.neo4j.converter.makedirs")
+    @patch("bugfinder.processing.neo4j.converter.copy_dir")
+    @patch("bugfinder.processing.neo4j.converter.walk")
     def test_wait_for_display_called(
         self, mock_walk, mock_copy_dir, mock_makedirs, mock_wait_log_display
     ):
@@ -92,10 +92,10 @@ class TestNeo4J2ConverterSendCommands(TestCase):
 
         self.assertTrue(mock_wait_log_display.called)
 
-    @patch("bugfinder.neo4j.converter.wait_log_display")
-    @patch("bugfinder.neo4j.converter.makedirs")
-    @patch("bugfinder.neo4j.converter.copy_dir")
-    @patch("bugfinder.neo4j.converter.walk")
+    @patch("bugfinder.processing.neo4j.converter.wait_log_display")
+    @patch("bugfinder.processing.neo4j.converter.makedirs")
+    @patch("bugfinder.processing.neo4j.converter.copy_dir")
+    @patch("bugfinder.processing.neo4j.converter.walk")
     def test_makedirs_called(
         self, mock_walk, mock_copy_dir, mock_makedirs, mock_wait_log_display
     ):
@@ -108,9 +108,9 @@ class TestNeo4J2ConverterSendCommands(TestCase):
 
         self.assertTrue(mock_makedirs.called)
 
-    @patch("bugfinder.neo4j.converter.wait_log_display")
-    @patch("bugfinder.neo4j.converter.makedirs")
-    @patch("bugfinder.neo4j.converter.copy_dir")
+    @patch("bugfinder.processing.neo4j.converter.wait_log_display")
+    @patch("bugfinder.processing.neo4j.converter.makedirs")
+    @patch("bugfinder.processing.neo4j.converter.copy_dir")
     def test_failed_dir_copy_raises_exception(
         self, mock_copy_dir, mock_makedirs, mock_wait_log_display
     ):
@@ -121,11 +121,11 @@ class TestNeo4J2ConverterSendCommands(TestCase):
         with self.assertRaises(Exception):
             self.dataset_processing.send_commands()
 
-    @patch("bugfinder.neo4j.converter.wait_log_display")
-    @patch("bugfinder.neo4j.converter.makedirs")
-    @patch("bugfinder.neo4j.converter.copy_dir")
-    @patch("bugfinder.neo4j.converter.walk")
-    @patch("bugfinder.neo4j.converter.remove")
+    @patch("bugfinder.processing.neo4j.converter.wait_log_display")
+    @patch("bugfinder.processing.neo4j.converter.makedirs")
+    @patch("bugfinder.processing.neo4j.converter.copy_dir")
+    @patch("bugfinder.processing.neo4j.converter.walk")
+    @patch("bugfinder.processing.neo4j.converter.remove")
     def test_id_files_removed_from_dir(
         self,
         mock_remove,
@@ -148,7 +148,7 @@ class TestNeo4J3ConverterConfigureContainer(TestCase):
     def setUp(self) -> None:
         patch_paths(
             self,
-            ["bugfinder.neo4j.converter.LOGGER", "bugfinder.dataset.processing.LOGGER"],
+            ["bugfinder.processing.neo4j.converter.LOGGER", "bugfinder.base.processing.LOGGER"],
         )
 
         dataset = Mock(spec=CodeWeaknessClassificationDataset)
@@ -156,13 +156,13 @@ class TestNeo4J3ConverterConfigureContainer(TestCase):
 
         self.dataset_processing = Neo4J3Converter(dataset)
 
-    @patch("bugfinder.neo4j.converter.super")
+    @patch("bugfinder.processing.neo4j.converter.super")
     def test_super_configure_container_called(self, mock_super):
         self.dataset_processing.configure_container()
 
         self.assertTrue(mock_super().configure_container.called)
 
-    @patch("bugfinder.neo4j.converter.super")
+    @patch("bugfinder.processing.neo4j.converter.super")
     def test_container_name_correct(self, mock_super):
         mock_super().configure_container.return_value = None
 
@@ -175,12 +175,12 @@ class TestNeo4J3ConverterSendCommands(TestCase):
     def setUp(self) -> None:
         patch_paths(
             self,
-            ["bugfinder.neo4j.converter.LOGGER", "bugfinder.dataset.processing.LOGGER"],
+            ["bugfinder.processing.neo4j.converter.LOGGER", "bugfinder.base.processing.LOGGER"],
         )
 
         self.dataset_processing = Neo4J3Converter(None)
 
-    @patch("bugfinder.neo4j.converter.super")
+    @patch("bugfinder.processing.neo4j.converter.super")
     def test_super_send_commands_called(self, mock_super):
         self.dataset_processing.send_commands()
 

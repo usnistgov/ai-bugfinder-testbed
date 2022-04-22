@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from bugfinder.joern.v031 import JoernDatasetProcessing
+from bugfinder.processing.joern.v031 import JoernDatasetProcessing
 from tests import patch_paths
 
 
@@ -9,9 +9,9 @@ class TestJoernDatasetProcessingConfigureContainer(TestCase):
         patch_paths(
             self,
             [
-                "bugfinder.joern.JoernDefaultDatasetProcessing.configure_container",
-                "bugfinder.joern.v031.LOGGER",
-                "bugfinder.dataset.processing.LOGGER",
+                "bugfinder.processing.joern.JoernDefaultDatasetProcessing.configure_container",
+                "bugfinder.processing.joern.v031.LOGGER",
+                "bugfinder.base.processing.LOGGER",
             ],
         )
 

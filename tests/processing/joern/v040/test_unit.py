@@ -1,10 +1,10 @@
-from os import removedirs, listdir, remove
+from os import listdir, remove
 from os.path import join
 from unittest import TestCase
 from unittest.mock import patch, Mock
 
-from bugfinder.dataset import CodeWeaknessClassificationDataset
-from bugfinder.joern.v040 import JoernDatasetProcessing
+from bugfinder.base.dataset import CodeWeaknessClassificationDataset
+from bugfinder.processing.joern.v040 import JoernDatasetProcessing
 from bugfinder.settings import ROOT_DIR
 from tests import patch_paths
 
@@ -14,9 +14,9 @@ class TestJoernDatasetProcessingConfigureContainer(TestCase):
         patch_paths(
             self,
             [
-                "bugfinder.joern.JoernDefaultDatasetProcessing.configure_container",
-                "bugfinder.joern.v040.LOGGER",
-                "bugfinder.dataset.processing.LOGGER",
+                "bugfinder.processing.joern.JoernDefaultDatasetProcessing.configure_container",
+                "bugfinder.processing.joern.v040.LOGGER",
+                "bugfinder.base.processing.LOGGER",
             ],
         )
 
@@ -44,9 +44,8 @@ class TestJoernDatasetProcessingSendCommands(TestCase):
         patch_paths(
             self,
             [
-                # "bugfinder.joern.v040.open",
-                "bugfinder.joern.v040.LOGGER",
-                "bugfinder.dataset.processing.LOGGER",
+                "bugfinder.processing.joern.v040.LOGGER",
+                "bugfinder.base.processing.LOGGER",
             ],
         )
 
@@ -64,9 +63,9 @@ class TestJoernDatasetProcessingSendCommands(TestCase):
 
             remove(join(import_dir, filename))
 
-    @patch("bugfinder.joern.v040.exists")
-    @patch("bugfinder.joern.v040.open")
-    @patch("bugfinder.joern.v040.makedirs")
+    @patch("bugfinder.processing.joern.v040.exists")
+    @patch("bugfinder.processing.joern.v040.open")
+    @patch("bugfinder.processing.joern.v040.makedirs")
     def test_create_output_path_if_it_does_not_exist(
         self, mock_makedirs, mock_open, mock_exists
     ):
@@ -76,7 +75,7 @@ class TestJoernDatasetProcessingSendCommands(TestCase):
 
         self.assertTrue(mock_makedirs.called)
 
-    @patch("bugfinder.joern.v040.exists")
+    @patch("bugfinder.processing.joern.v040.exists")
     def test_output_file_names_correct(self, mock_exists):
         mock_exists.return_value = True
         self.dataset_processing.send_commands()
@@ -90,7 +89,7 @@ class TestJoernDatasetProcessingSendCommands(TestCase):
             listdir(join(self.dataset.joern_dir, "import.expected")),
         )
 
-    @patch("bugfinder.joern.v040.exists")
+    @patch("bugfinder.processing.joern.v040.exists")
     def test_output_file_contents_correct(self, mock_exists):
         mock_exists.return_value = True
         self.dataset_processing.send_commands()

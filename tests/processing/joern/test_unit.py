@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from bugfinder.joern import JoernDefaultDatasetProcessing
+from bugfinder.processing.joern import JoernDefaultDatasetProcessing
 from tests import patch_paths
 
 
@@ -18,7 +18,7 @@ class TestJoernDefaultDatasetProcessingConfigureContainer(TestCase):
     def setUp(self) -> None:
         patch_paths(
             self,
-            ["bugfinder.dataset.processing.LOGGER"],
+            ["bugfinder.base.processing.LOGGER"],
         )
         mock_dataset = MockDataset()
         self.dataset_processing = MockJoernDatasetProcessing(mock_dataset)
