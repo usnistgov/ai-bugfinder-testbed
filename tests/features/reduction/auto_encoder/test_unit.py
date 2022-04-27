@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 from unittest.mock import Mock, patch
 
-from bugfinder.dataset import CodeWeaknessClassificationDataset
+from bugfinder.base.dataset import CodeWeaknessClassificationDataset
 from bugfinder.features.reduction.auto_encoder import FeatureSelector as AutoEncoder
 from tests import patch_paths
 

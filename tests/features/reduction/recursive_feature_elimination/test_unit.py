@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
-from bugfinder.dataset import CodeWeaknessClassificationDataset
+from bugfinder.base.dataset import CodeWeaknessClassificationDataset
 from tests import patch_paths
 import numpy as np
 import pandas as pd

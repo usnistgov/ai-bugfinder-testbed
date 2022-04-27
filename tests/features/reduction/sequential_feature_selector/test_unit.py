@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import patch, Mock
 
-from bugfinder.dataset import CodeWeaknessClassificationDataset
+from bugfinder.base.dataset import CodeWeaknessClassificationDataset
 from tests import patch_paths
 from bugfinder.features.reduction.sequential_feature_selector import (
     FeatureSelector as SequentialFeatureSelector,

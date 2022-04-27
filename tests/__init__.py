@@ -6,11 +6,11 @@ from hashlib import sha256
 from os.path import join
 from unittest.mock import patch
 
-from bugfinder.dataset.processing import DatasetProcessing
+from bugfinder.base.processing import AbstractProcessing
 from bugfinder.settings import SUMMARY_FILE
 
 
-class MockDatasetProcessing(DatasetProcessing):
+class MockAbstractProcessing(AbstractProcessing):
     def execute(self, *args, **kwargs):
         return
 

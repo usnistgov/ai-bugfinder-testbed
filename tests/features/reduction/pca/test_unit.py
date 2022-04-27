@@ -4,7 +4,7 @@ from unittest.mock import patch, Mock
 
 import pandas as pd
 
-from bugfinder.dataset import CodeWeaknessClassificationDataset
+from bugfinder.base.dataset import CodeWeaknessClassificationDataset
 from bugfinder.features.reduction.pca import FeatureSelector as PCA
 from tests import patch_paths
 
@@ -14,10 +14,10 @@ class FeatureExtractorExecute(TestCase):
         patch_paths(
             self,
             [
-                "bugfinder.dataset.join",
-                "bugfinder.dataset.listdir",
-                "bugfinder.dataset.pd.read_csv",
-                "bugfinder.dataset.CodeWeaknessClassificationDataset._validate_features",
+                "bugfinder.base.dataset.join",
+                "bugfinder.base.dataset.listdir",
+                "bugfinder.base.dataset.pd.read_csv",
+                "bugfinder.base.dataset.CodeWeaknessClassificationDataset._validate_features",
                 "bugfinder.features.reduction.pca.PCA",
                 "bugfinder.features.reduction.pca.pd.DataFrame",
                 "bugfinder.features.reduction.pca.LOGGER",
