@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import Mock
 
-from bugfinder.dataset import CodeWeaknessClassificationDataset
+from bugfinder.base.dataset import CodeWeaknessClassificationDataset
 from bugfinder.models.dnn_classifier import DNNClassifierTraining
 import tensorflow as tf
 
