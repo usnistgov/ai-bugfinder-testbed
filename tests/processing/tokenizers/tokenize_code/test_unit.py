@@ -9,7 +9,6 @@ from bugfinder.processing.tokenizers.tokenize_code import (
 )
 
 
-
 class TestTokenizeProcessFile(TestCase):
     def _default_patch(self):
         patches_path = [

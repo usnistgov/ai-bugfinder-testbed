@@ -145,21 +145,27 @@ class TestFeatureExtractorGetFlowgraphListForEntrypoint(TestCase):
         self.dataset_processing = HopsNFlowsExtractor(dataset)
         self.dataset_processing.flows = ["MockRel"]
 
-    @patch("bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.neo4j_db")
+    @patch(
+        "bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.neo4j_db"
+    )
     def test_neo4j_db_run_called(self, mock_neo4j_db):
         mock_neo4j_db.run.side_effect = [self.MockNeo4JRunData()]
         mock_entrypoint = {"entry_id": "mock_entry_id"}
         self.dataset_processing.get_flowgraph_list_for_entrypoint(mock_entrypoint)
         self.assertTrue(mock_neo4j_db.run.called)
 
-    @patch("bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.neo4j_db")
+    @patch(
+        "bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.neo4j_db"
+    )
     def test_zero_subgraph_returned_fails(self, mock_neo4j_db):
         mock_neo4j_db.run.side_effect = [self.MockNeo4JRunData(data_return_value=[])]
         mock_entrypoint = {"entry_id": "mock_entry_id"}
         with self.assertRaises(AssertionError):
             self.dataset_processing.get_flowgraph_list_for_entrypoint(mock_entrypoint)
 
-    @patch("bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.neo4j_db")
+    @patch(
+        "bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.neo4j_db"
+    )
     def test_several_subgraph_returned_fails(self, mock_neo4j_db):
         mock_neo4j_db.run.side_effect = [
             self.MockNeo4JRunData(data_return_value=["mock_graph_a", "mock_graph_b"])
@@ -168,7 +174,9 @@ class TestFeatureExtractorGetFlowgraphListForEntrypoint(TestCase):
         with self.assertRaises(AssertionError):
             self.dataset_processing.get_flowgraph_list_for_entrypoint(mock_entrypoint)
 
-    @patch("bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.neo4j_db")
+    @patch(
+        "bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.neo4j_db"
+    )
     def test_default_hops_returns_flowgraph_list(self, mock_neo4j_db):
         mock_neo4j_db.run.side_effect = [self.MockNeo4JRunData()]
         mock_entrypoint = {"entry_id": "mock_entry_id"}
@@ -186,7 +194,9 @@ class TestFeatureExtractorGetFlowgraphListForEntrypoint(TestCase):
 
         self.assertListEqual(result, expected_result)
 
-    @patch("bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.neo4j_db")
+    @patch(
+        "bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.neo4j_db"
+    )
     def test_max_hops_set_returns_flowgraph_list(self, mock_neo4j_db):
         mock_neo4j_db.run.side_effect = [self.MockNeo4JRunData()]
         mock_entrypoint = {"entry_id": "mock_entry_id"}
@@ -204,7 +214,9 @@ class TestFeatureExtractorGetFlowgraphListForEntrypoint(TestCase):
 
         self.assertListEqual(result, expected_result)
 
-    @patch("bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.neo4j_db")
+    @patch(
+        "bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.neo4j_db"
+    )
     def test_min_hops_set_returns_flowgraph_list(self, mock_neo4j_db):
         mock_neo4j_db.run.side_effect = [self.MockNeo4JRunData()]
         mock_entrypoint = {"entry_id": "mock_entry_id"}

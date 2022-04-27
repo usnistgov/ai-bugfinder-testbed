@@ -64,4 +64,3 @@ class TestReplaceVariablesProcessFile(TestCase):
             processed_file.readlines()
 
         self.assertNotEqual(unprocessed_file, processed_file)
-

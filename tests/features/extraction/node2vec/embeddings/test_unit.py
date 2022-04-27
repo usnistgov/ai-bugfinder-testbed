@@ -65,7 +65,9 @@ class TestNode2VecEmbeddingExecute(TestCase):
     def test_check_model_dir(self):
         self.assertTrue(exists(self.dataset.model_dir))
 
-    @patch("bugfinder.features.extraction.node2vec.embeddings.Node2VecEmbeddings._save_dataframe")
+    @patch(
+        "bugfinder.features.extraction.node2vec.embeddings.Node2VecEmbeddings._save_dataframe"
+    )
     def test_embedding_vector_valid_size(self, mock_save_df):
         mock_save_df.return_value = None
 

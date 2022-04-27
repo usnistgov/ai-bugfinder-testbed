@@ -55,7 +55,7 @@ class TestClassifierModelExecute(TestCase):
         self.dataset.summary = {"training": list()}
         self.dataset.model_dir = "mock_model_dir"
         self.dataset.features = pd.read_csv(
-            "tests/fixtures/dataset01/features/features.1.csv"
+            "tests/fixtures/dataset01/features/features.csv"
         )
         self.dataset_processing = MockClassifierModel(self.dataset)
         self.dataset_processing.model_cls = self.dataset_processing.init_model(

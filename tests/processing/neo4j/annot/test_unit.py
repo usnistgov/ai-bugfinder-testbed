@@ -12,7 +12,10 @@ class TestNeo4JAnnotationsConfigureContainer(TestCase):
     def setUp(self) -> None:
         patch_paths(
             self,
-            ["bugfinder.processing.neo4j.annot.LOGGER", "bugfinder.base.processing.LOGGER"],
+            [
+                "bugfinder.processing.neo4j.annot.LOGGER",
+                "bugfinder.base.processing.LOGGER",
+            ],
         )
 
         dataset = Mock(spec=CodeWeaknessClassificationDataset)
@@ -38,7 +41,10 @@ class TestNeo4JAnnotationsSendCommand(TestCase):
     def setUp(self) -> None:
         patch_paths(
             self,
-            ["bugfinder.processing.neo4j.annot.LOGGER", "bugfinder.base.processing.LOGGER"],
+            [
+                "bugfinder.processing.neo4j.annot.LOGGER",
+                "bugfinder.base.processing.LOGGER",
+            ],
         )
 
         self.dataset_processing = Neo4JAnnotations(None)

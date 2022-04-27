@@ -20,7 +20,8 @@ class TestAbstractASTMarkupSendCommands(TestCase):
 
     def setUp(self) -> None:
         patch_paths(
-            self, ["bugfinder.processing.ast.LOGGER", "bugfinder.base.processing.LOGGER"]
+            self,
+            ["bugfinder.processing.ast.LOGGER", "bugfinder.base.processing.LOGGER"],
         )
 
         dataset = Mock(spec=CodeWeaknessClassificationDataset)

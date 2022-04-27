@@ -10,7 +10,10 @@ class TestNeo4J2ConverterDefault(TestCase):
     def setUp(self) -> None:
         patch_paths(
             self,
-            ["bugfinder.processing.neo4j.converter.LOGGER", "bugfinder.base.processing.LOGGER"],
+            [
+                "bugfinder.processing.neo4j.converter.LOGGER",
+                "bugfinder.base.processing.LOGGER",
+            ],
         )
 
         self.dataset_processing = Neo4J2Converter(None)
@@ -23,7 +26,10 @@ class TestNeo4J2ConverterConfigureContainer(TestCase):
     def setUp(self) -> None:
         patch_paths(
             self,
-            ["bugfinder.processing.neo4j.converter.LOGGER", "bugfinder.base.processing.LOGGER"],
+            [
+                "bugfinder.processing.neo4j.converter.LOGGER",
+                "bugfinder.base.processing.LOGGER",
+            ],
         )
 
         self.dataset = Mock(spec=CodeWeaknessClassificationDataset)
@@ -69,7 +75,10 @@ class TestNeo4J2ConverterSendCommands(TestCase):
     def setUp(self) -> None:
         patch_paths(
             self,
-            ["bugfinder.processing.neo4j.converter.LOGGER", "bugfinder.base.processing.LOGGER"],
+            [
+                "bugfinder.processing.neo4j.converter.LOGGER",
+                "bugfinder.base.processing.LOGGER",
+            ],
         )
 
         self.dataset = Mock(spec=CodeWeaknessClassificationDataset)
@@ -148,7 +157,10 @@ class TestNeo4J3ConverterConfigureContainer(TestCase):
     def setUp(self) -> None:
         patch_paths(
             self,
-            ["bugfinder.processing.neo4j.converter.LOGGER", "bugfinder.base.processing.LOGGER"],
+            [
+                "bugfinder.processing.neo4j.converter.LOGGER",
+                "bugfinder.base.processing.LOGGER",
+            ],
         )
 
         dataset = Mock(spec=CodeWeaknessClassificationDataset)
@@ -175,7 +187,10 @@ class TestNeo4J3ConverterSendCommands(TestCase):
     def setUp(self) -> None:
         patch_paths(
             self,
-            ["bugfinder.processing.neo4j.converter.LOGGER", "bugfinder.base.processing.LOGGER"],
+            [
+                "bugfinder.processing.neo4j.converter.LOGGER",
+                "bugfinder.base.processing.LOGGER",
+            ],
         )
 
         self.dataset_processing = Neo4J3Converter(None)

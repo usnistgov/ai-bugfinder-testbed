@@ -223,7 +223,9 @@ class GraphFeatureExtractorSendCommands(TestCase):
         self.assertTrue(mock_send_commands.called)
 
     @patch("bugfinder.processing.neo4j.Neo4J3Processing.send_commands")
-    @patch("tests.features.extraction.bag_of_words.test_unit.MockGraphFeatureExtractor.map_features")
+    @patch(
+        "tests.features.extraction.bag_of_words.test_unit.MockGraphFeatureExtractor.map_features"
+    )
     @patch(
         "tests.features.extraction.bag_of_words.test_unit.GraphFeatureExtractor"
         ".save_labels_to_feature_map"
@@ -241,7 +243,9 @@ class GraphFeatureExtractorSendCommands(TestCase):
         self.assertTrue(mock_map_features.called)
 
     @patch("bugfinder.processing.neo4j.Neo4J3Processing.send_commands")
-    @patch("tests.features.extraction.bag_of_words.test_unit.MockGraphFeatureExtractor.map_features")
+    @patch(
+        "tests.features.extraction.bag_of_words.test_unit.MockGraphFeatureExtractor.map_features"
+    )
     @patch(
         "tests.features.extraction.bag_of_words.test_unit.GraphFeatureExtractor.save_labels_to_feature_map"
     )
