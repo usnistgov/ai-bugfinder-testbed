@@ -22,9 +22,9 @@ class GraphFeatureExtractor(Neo4J3Processing):
     need_map_features = False
     feature_map_filepath = None
 
-    def __init__(self, dataset):
+    def __init__(self, dataset, deprecation_warning=None):
         """Class instantiation method"""
-        super().__init__(dataset)
+        super().__init__(dataset, deprecation_warning=None)
         self.metadata["category"] = str(ProcessingCategory.EXTRACTION)
 
     def _get_entrypoint_list_worker(self, testcase):

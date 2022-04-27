@@ -5,7 +5,7 @@ import networkx as nx
 import pandas as pd
 
 from bugfinder.base.processing import AbstractProcessing
-from bugfinder.features.extraction.node2vec import Node2VecImplementation
+from bugfinder.features.extraction.node2vec.implementation import Node2VecImplementation
 from bugfinder.settings import LOGGER
 
 
