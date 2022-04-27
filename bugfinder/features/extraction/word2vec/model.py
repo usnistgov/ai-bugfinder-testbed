@@ -19,7 +19,7 @@ class Word2VecModel(AbstractProcessing):
     min_count = 1
     workers = 4
     algorithm = 1  # 1 = skipgram
-    seed = 32
+    seed = None
 
     def execute(self, name, **kwargs):
         """Run the processing. This function reads each tokenized file in the dataset,
@@ -34,13 +34,18 @@ class Word2VecModel(AbstractProcessing):
 
         LOGGER.debug("Training the word2vec model.")
 
+        word2vec_kwargs = {}
+
+        if self.seed is not None:
+            word2vec_kwargs["seed"] = self.seed
+
         model = Word2Vec(
             token_list,
             min_count=self.min_count,
             vector_size=self.word_dim,
             workers=self.workers,
             sg=self.algorithm,
-            seed=self.seed,
+            **word2vec_kwargs,
         )
 
         LOGGER.debug("Training complete. Saving the model...")

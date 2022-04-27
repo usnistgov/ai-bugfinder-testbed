@@ -24,7 +24,7 @@ class Node2VecModel(AbstractProcessing):
     min_count = 1
     workers = 4
     algorithm = 1  # 1 = skipgram
-    seed = 32
+    seed = None
 
     def execute(self, name, **kwargs):
         """Run the processing. This function receives the processed dataset, retrieves
@@ -49,6 +49,11 @@ class Node2VecModel(AbstractProcessing):
 
         LOGGER.info("Initializing node2vec model...")
 
+        node2vec_kwargs = {}
+
+        if self.seed is not None:
+            node2vec_kwargs["seed"] = self.seed
+
         # Creates the node2vec object which will execute the algorithm
         node2vec = Node2VecImplementation(
             graph,
@@ -57,7 +62,7 @@ class Node2VecModel(AbstractProcessing):
             num_walks=self.num_walks,
             p=self.p,
             q=self.q,
-            seed=self.seed,
+            **node2vec_kwargs,
         )
 
         # Train the model
@@ -67,7 +72,7 @@ class Node2VecModel(AbstractProcessing):
             vector_size=self.vector_length,
             workers=self.workers,
             sg=self.algorithm,
-            seed=self.seed,
+            **node2vec_kwargs,
         )
 
         LOGGER.info("Training complete.")
