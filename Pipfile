@@ -26,6 +26,7 @@ scikit-learn = "*"
 tensorflow = "*"
 networkx = "*"
 tqdm = "*"
+black = {extras = ["jupyter"], version = "*"}
 
 [requires]
 python_version = "3.9"
