@@ -7,11 +7,9 @@ stages:
   - pages
 
 before_script:
-  - curl -L "https://github.com/docker/compose/releases/download/1.26.2/docker-compose-$(uname -s)-$(uname -m)" -o /tmp/docker-compose
-  - chmod +x /tmp/docker-compose
-  - pip install -r ./requirements.txt
+  - pip install -r requirements.txt
   - pip install -r requirements.dev.txt
-  - cd images; /tmp/docker-compose build; cd - &>/dev/null
+  - cd images; docker-compose build; cd - &>/dev/null
 
 quality:
   stage: quality

@@ -2,7 +2,7 @@
 """
 from inspect import isclass
 
-from bugfinder.dataset.processing import DatasetProcessing
+from bugfinder.base.processing import AbstractProcessing
 from bugfinder.settings import LOGGER
 from bugfinder.utils.statistics import get_time, display_time
 
@@ -14,11 +14,11 @@ def is_operation_valid(processing_operation):
             "class" in processing_operation.keys()
             and "args" in processing_operation.keys()
         )
-        assert issubclass(processing_operation["class"], DatasetProcessing)
+        assert issubclass(processing_operation["class"], AbstractProcessing)
         assert isinstance(processing_operation["args"], dict)
     else:  # operation should be a sublass of dataset operation
         assert isclass(processing_operation)
-        assert issubclass(processing_operation, DatasetProcessing)
+        assert issubclass(processing_operation, AbstractProcessing)
 
 
 def is_processing_stack_valid(operation_list, silent=False):

@@ -9,7 +9,8 @@ import itertools
 import pickle
 from abc import abstractmethod
 
-from bugfinder.neo4j import Neo4J3Processing
+from bugfinder.base.dataset import ProcessingCategory
+from bugfinder.processing.neo4j import Neo4J3Processing
 from bugfinder.settings import LOGGER, ROOT_DIR, POOL_SIZE
 
 IMPLEMENTATION_ERROR = "%s needs to be implemented."
@@ -20,6 +21,11 @@ class GraphFeatureExtractor(Neo4J3Processing):
 
     need_map_features = False
     feature_map_filepath = None
+
+    def __init__(self, dataset, deprecation_warning=None):
+        """Class instantiation method"""
+        super().__init__(dataset, deprecation_warning=None)
+        self.metadata["category"] = str(ProcessingCategory.EXTRACTION)
 
     def _get_entrypoint_list_worker(self, testcase):
         """Worker retrieving the list of entrypoint for a given test case"""

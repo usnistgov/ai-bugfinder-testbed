@@ -10,11 +10,11 @@ import argparse
 import logging
 import os
 
-from bugfinder.dataset import CWEClassificationDataset as Dataset
+from bugfinder.base.dataset import CodeWeaknessClassificationDataset as Dataset
 
 from bugfinder.models.dnn_classifier import DNNClassifierTraining
 from bugfinder.models.linear_classifier import LinearClassifierTraining
-from bugfinder.models.word2vec import Word2VecTraining
+from bugfinder.features.extraction.word2vec.model import Word2VecModel
 from bugfinder.models.blstm_classifier import BLSTMClassifierTraining
 from bugfinder.models.interproc_lstm import InterprocLSTMTraining
 
@@ -32,7 +32,7 @@ if __name__ == "__main__":
         "deep_neural_network": DNNClassifierTraining,
         "bidirectional_lstm": BLSTMClassifierTraining,
         "interproc_lstm": InterprocLSTMTraining,
-        "word2vec": Word2VecTraining,
+        "word2vec": Word2VecModel,
     }
 
     # Setup the argument parser

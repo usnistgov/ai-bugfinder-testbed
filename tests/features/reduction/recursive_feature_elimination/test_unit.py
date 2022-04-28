@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import Mock, patch
 
-from bugfinder.dataset import CWEClassificationDataset
+from bugfinder.base.dataset import CodeWeaknessClassificationDataset
 from tests import patch_paths
 import numpy as np
 import pandas as pd
@@ -23,7 +23,7 @@ class TestFeatureSelectorSelectFeature(TestCase):
                 "bugfinder.features.reduction.recursive_feature_elimination.LOGGER",
             ],
         )
-        dataset = Mock(spec=CWEClassificationDataset)
+        dataset = Mock(spec=CodeWeaknessClassificationDataset)
         self.dataset_processing = RecursiveFeatureElimination(dataset)
         self.kwargs = {
             "input_features": pd.DataFrame(np.random.rand(50, 15)),

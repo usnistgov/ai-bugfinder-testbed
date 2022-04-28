@@ -7,9 +7,9 @@ sys.path.append(join(dirname(__file__), ".."))
 
 import argparse
 
-from bugfinder.interproc import InterprocMerger
-from bugfinder.dataset.processing.dataset_ops import RightFixer
-from bugfinder.dataset import CWEClassificationDataset as Dataset
+from bugfinder.processing.interproc import InterprocMerger
+from bugfinder.processing.dataset.fix_rights import RightFixer
+from bugfinder.base.dataset import CodeWeaknessClassificationDataset as Dataset
 
 if __name__ == "__main__":
 

@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import patch, Mock
 
-from bugfinder.dataset import CWEClassificationDataset
+from bugfinder.base.dataset import CodeWeaknessClassificationDataset
 from tests import patch_paths
 from bugfinder.features.reduction.univariate_select import (
     FeatureSelector as UnivariateSelect,
@@ -22,7 +22,7 @@ class TestFeatureSelectorSelectFeature(TestCase):
                 "bugfinder.features.reduction.univariate_select.LOGGER",
             ],
         )
-        dataset = Mock(spec=CWEClassificationDataset)
+        dataset = Mock(spec=CodeWeaknessClassificationDataset)
         self.dataset_processing = UnivariateSelect(dataset)
         self.kwargs = {
             "input_features": pd.DataFrame(np.random.rand(50, 15)),

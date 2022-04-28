@@ -7,19 +7,16 @@ import sys
 sys.path.append(join(dirname(__file__), ".."))
 
 import argparse
-import logging
-import os
 
-from bugfinder.dataset import CWEClassificationDataset as Dataset
+from bugfinder.base.dataset import CodeWeaknessClassificationDataset as Dataset
 
-from bugfinder.models.node2vec import Node2VecTraining
+from bugfinder.features.extraction.node2vec.model import Node2VecModel
 
-from bugfinder.settings import LOGGER
 from bugfinder.utils.processing import is_operation_valid
 
 if __name__ == "__main__":
     options = {  # Dictionary linking input arguments to processing classes
-        "node2vec": Node2VecTraining,
+        "node2vec": Node2VecModel,
     }
 
     # Setup the argument parser

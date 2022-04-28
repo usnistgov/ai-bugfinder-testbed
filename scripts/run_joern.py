@@ -5,13 +5,17 @@ sys.path.append(join(dirname(__file__), ".."))
 
 import argparse
 
-from bugfinder.dataset import CWEClassificationDataset as Dataset
-from bugfinder.dataset.processing.dataset_ops import RightFixer
-from bugfinder.joern.v031 import JoernDatasetProcessing as Joern031DatasetProcessing
-from bugfinder.joern.v040 import JoernDatasetProcessing as Joern040DatasetProcessing
-from bugfinder.neo4j.annot import Neo4JAnnotations
-from bugfinder.neo4j.converter import Neo4J2Converter, Neo4J3Converter
-from bugfinder.neo4j.importer import Neo4J3Importer
+from bugfinder.base.dataset import CodeWeaknessClassificationDataset as Dataset
+from bugfinder.processing.dataset.fix_rights import RightFixer
+from bugfinder.processing.joern.v031 import (
+    JoernDatasetProcessing as Joern031DatasetProcessing,
+)
+from bugfinder.processing.joern.v040 import (
+    JoernDatasetProcessing as Joern040DatasetProcessing,
+)
+from bugfinder.processing.neo4j.annot import Neo4JAnnotations
+from bugfinder.processing.neo4j.converter import Neo4J2Converter, Neo4J3Converter
+from bugfinder.processing.neo4j.importer import Neo4J3Importer
 from bugfinder.utils.processing import is_processing_stack_valid
 
 if __name__ == "__main__":

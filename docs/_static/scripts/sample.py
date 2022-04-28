@@ -1,6 +1,6 @@
 """ Example script for dataset processing.
 """
-from bugfinder.dataset import CWEClassificationDataset as Dataset
+from bugfinder.dataset import CodeWeaknessClassificationDataset as Dataset
 from bugfinder.dataset.processing.content_ops import (
     ReplaceLitterals,
 )

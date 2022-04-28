@@ -1,29 +1,29 @@
 """ Script to clean a dataset from problematic code samples.
 """
 from os.path import dirname, join
+
 import sys
 
 sys.path.append(join(dirname(__file__), ".."))
 
 import argparse
 
-from bugfinder.dataset import CWEClassificationDataset as Dataset
-from bugfinder.dataset.processing.content_ops import (
-    RemoveMainFunction,
-    ReplaceLitterals,
-)
-from bugfinder.dataset.processing.file_ops import (
-    RemoveCppFiles,
-    RemoveInterproceduralTestCases,
-)
+from bugfinder.base.dataset import CodeWeaknessClassificationDataset as Dataset
+
+from bugfinder.processing.cleaning.remove_cpp_files import RemoveCppFiles
+from bugfinder.processing.cleaning.remove_interproc_files import RemoveInterprocFiles
+from bugfinder.processing.cleaning.remove_main_function import RemoveMainFunction
+from bugfinder.processing.cleaning.replace_litterals import ReplaceLitterals
+from bugfinder.processing.cleaning.remove_comments import RemoveComments
 
 
 if __name__ == "__main__":
     options = {  # Dictionary linking input arguments to processing classes
         "no_cpp": RemoveCppFiles,
-        "no_interprocedural": RemoveInterproceduralTestCases,
+        "no_interprocedural": RemoveInterprocFiles,
         "no_litterals": ReplaceLitterals,
         "no_main": RemoveMainFunction,
+        "no_comments": RemoveComments,
     }
 
     # Setup the argument parser
