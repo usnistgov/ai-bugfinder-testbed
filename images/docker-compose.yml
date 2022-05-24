@@ -7,17 +7,27 @@ services:
     image: joern-lite:0.4.0
     build: ./joern-lite-v0.4.0
     environment:
-      - NEO4J_dbms_memory_pagecache_size=24G
-      - NEO4J_dbms_memory_heap_max_size=24G
-      - NEO4J_wrapper_java_maxmemory=48G
+      - NEO4J_dbms_memory_pagecache_size=4G
+      - NEO4J_dbms_memory_heap_max__size=4G
+      - NEO4J_wrapper_java_maxmemory=8G
       - NEO4J_dbms_routing_driver_connection_pool_max__size=20,
       - NEO4J_dbms_allow__upgrade=true
       - NEO4J_dbms_shell_enabled=true
       - NEO4J_dbms_transaction_timeout=2h
       - NEO4J_AUTH=none
-      - EXTRA_JVM_ARGUMENTS=-Xmx48G
+      - EXTRA_JVM_ARGUMENTS=-Xmx8G
   neo4j-ai:
     image: neo4j-ai:latest
+    environment:
+      - NEO4J_dbms_memory_pagecache_size=4G
+      - NEO4J_dbms_memory_heap_max_size=4G
+      - NEO4J_wrapper_java_maxmemory=8G
+      - NEO4J_dbms_routing_driver_connection_pool_max__size=unlimited,
+      - NEO4J_dbms_allow__upgrade=true
+      - NEO4J_dbms_shell_enabled=true
+      - NEO4J_dbms_transaction_timeout=24h
+      - NEO4J_AUTH=none
+      - EXTRA_JVM_ARGUMENTS=-Xmx8G
     ports:
       - "7474:7474"
       - "7687:7687"

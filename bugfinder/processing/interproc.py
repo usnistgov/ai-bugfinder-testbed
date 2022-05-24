@@ -232,7 +232,8 @@ class InterprocMerger(InterprocProcessing):
             MATCH (entry)-[:CONTROLS*]->(caller:DownstreamNode)
             WHERE caller.type IN ["ExpressionStatement","Condition"]
             WITH func,callee,caller
-            MATCH (caller)-[:IS_AST_PARENT*]->(cexpr:GenericNode {type:"CallExpression"})
+            MATCH (caller)-[:IS_AST_PARENT*]->(cexpr:GenericNode {
+                type:"CallExpression"})
             WHERE NOT (cexpr)<-[:IS_AST_PARENT*]-(
                 :GenericNode {type:"CallExpression"}
             ) // Dodge nested function calls
@@ -249,7 +250,7 @@ class InterprocMerger(InterprocProcessing):
             WITH callee,caller,intercall,last
             MATCH (last)-[
                 :FLOWS_TO|DOM
-            ]->(exit:DownstreamNode {type:"CFGExitNode"}) // Find the callee's exit point
+            ]->(exit:DownstreamNode {type:"CFGExitNode"}) // Find the callee's exit node
             WITH caller,intercall,exit
             MATCH (caller)-[
                 nextrel:FLOWS_TO
@@ -323,68 +324,55 @@ class InterprocMerger(InterprocProcessing):
         """,
         # Handle use of &var
         """
-            MATCH (tc:GenericNode {type:"Testcase"})<-[
-                :IS_FILE_OF
-            ]-(:GenericNode {type:"File"})-[
-                :IS_FILE_OF
-            ]->(:GenericNode {type:"Function"})-[
-                :IS_FUNCTION_OF_CFG
-            ]->(entry:UpstreamNode {type:"CFGEntryNode"})
+            MATCH (tc:GenericNode {type:"Testcase"})<-[:IS_FILE_OF]-(:GenericNode {
+                type:"File"})-[:IS_FILE_OF]->(:GenericNode {
+                type:"Function"})-[:IS_FUNCTION_OF_CFG]->(entry:UpstreamNode {
+                type:"CFGEntryNode"})
             WHERE ID(tc)=%d
             WITH DISTINCT entry
             MATCH (entry)-[:CONTROLS*]->(n:DownstreamNode)
             WITH DISTINCT n
-            MATCH (n)-[
-                :IS_AST_PARENT*
-            ]->(uop:GenericNode {type:"UnaryOperator",code:"&"})
+            MATCH (n)-[:IS_AST_PARENT*]->(uop:GenericNode {
+                type:"UnaryOperator",code:"&"})
             WITH DISTINCT uop
-            MATCH (uop)<-[:IS_AST_PARENT]-(
-                uexpr:GenericNode {type:"UnaryOperationExpression"}
-            )-[:IS_AST_PARENT]->(idf:GenericNode {type:"Identifier"})
+            MATCH (uop)<-[:IS_AST_PARENT]-(uexpr:GenericNode {
+                type:"UnaryOperationExpression"})-[:IS_AST_PARENT]->(idf:GenericNode {
+                type:"Identifier"})
             WITH uexpr,idf
             MATCH (uexpr)<-[:IS_AST_PARENT*]-(expr:DownstreamNode)
             WHERE expr.type IN [
-                "ExpressionStatement","IdentifierDeclStatement","ForInit",
-                "Condition"
-            ]
+                "ExpressionStatement","IdentifierDeclStatement","ForInit","Condition"]
             WITH expr,idf
-            MATCH (expr)-[:USE]->(
-                adr_sym:GenericNode {type:"Symbol",code:"& "+idf.code}
-            )
+            MATCH (expr)-[:USE]->(adr_sym:GenericNode {
+                type:"Symbol",code:"& "+idf.code})
             WITH expr,adr_sym,idf
-            MATCH (expr)<-[:FLOWS_TO*]-(def:DownstreamNode)
+            MATCH (expr)<-[:FLOWS_TO*]-(def:DownstreamNode)-[:DEF]->(
+                def_sym:GenericNode {type:"Symbol",code:idf.code})
             WHERE expr<>def AND def.type IN ["IdentifierDeclStatement","Parameter"]
-            MATCH (def)-[:DEF]->(def_sym:GenericNode {type:"Symbol",code:idf.code})
             MERGE (def)-[rdef:DEF {var:idf.code}]->(adr_sym)
             MERGE (def)-[dflr:REACHES {var:adr_sym.code}]->(expr)
             WITH DISTINCT expr
-            MATCH (ptr_sym:GenericNode {type:"Symbol"})<-[:DEF]-(expr)
-            MATCH (expr)-[:FLOWS_TO*]-(usr:DownstreamNode {type:"ExpressionStatement"})
+            MATCH (ptr_sym:GenericNode {type:"Symbol"})<-[:DEF]-(expr)-[:FLOWS_TO*]-(
+                usr:DownstreamNode {type:"ExpressionStatement"})-[:USE]->(
+                star_sym:GenericNode {type:"Symbol",code:"* "+ptr_sym.code})
             WHERE expr<>usr
-            MATCH (usr)-[:USE]->(
-                star_sym:GenericNode {type:"Symbol",code:"* "+ptr_sym.code}
-            )
             MERGE (expr)-[sdef:DEF {var:ptr_sym.code}]->(star_sym)
         """,
         # Add missing dataflow
         """
-            MATCH (tc:GenericNode {type:"Testcase"})<-[
-                :IS_FILE_OF
-            ]-(:GenericNode {type:"File"})-[
-                :IS_FILE_OF
-            ]->(:GenericNode {type:"Function"})-[
-                :IS_FUNCTION_OF_CFG
-            ]->(entry:UpstreamNode {type:"CFGEntryNode"})
+            MATCH (tc:GenericNode {type:"Testcase"})<-[:IS_FILE_OF]-(:GenericNode {
+                type:"File"})-[:IS_FILE_OF]->(:GenericNode {
+                type:"Function"})-[:IS_FUNCTION_OF_CFG]->(entry:UpstreamNode {
+                type:"CFGEntryNode"})
             WHERE ID(tc)=%d
             WITH DISTINCT entry
             MATCH (entry)-[:CONTROLS*]->(n:DownstreamNode)
             WITH DISTINCT n
             MATCH (n)-[:DEF|USE]->(sym:GenericNode {type:"Symbol"})
             WITH DISTINCT sym
-            MATCH (sym)<-[use:USE]-(clr:GenericNode)
-            MATCH (sym)<-[def:DEF]-(src:DownstreamNode)
-            MATCH (clr)<-[cf:FLOWS_TO*]-(src)
-            WHERE clr<>src
+            MATCH (clr:GenericNode)-[use:USE]->(sym)<-[def:DEF]-(src:DownstreamNode)-[
+                cf:FLOWS_TO*]->(clr)
+            WHERE clr<>src AND NOT (src)-[:REACHES {var:sym.code}]->(clr)
             MERGE (src)-[ndf:REACHES {var:sym.code}]->(clr)
         """,
         # Connect arguments to dataflow on the caller side
@@ -401,10 +389,12 @@ class InterprocMerger(InterprocProcessing):
             MATCH (entry)-[:CONTROLS*]->(caller:DownstreamNode)
             WHERE caller.type IN ["ExpressionStatement","Condition"]
             WITH DISTINCT caller
-            MATCH (caller)-[:IS_AST_PARENT*]->(cexpr:GenericNode {type:"CallExpression"})
+            MATCH (caller)-[:IS_AST_PARENT*]->(cexpr:GenericNode {
+                type:"CallExpression"})
             WHERE NOT (cexpr)<-[:IS_AST_PARENT*]-(:GenericNode {type:"CallExpression"})
             WITH caller,cexpr
-            MATCH (caller)-[calrel:FLOWS_TO]->(callee:UpstreamNode {type:"CFGEntryNode"})
+            MATCH (caller)-[calrel:FLOWS_TO]->(callee:UpstreamNode {
+                type:"CFGEntryNode"})
             WITH caller,cexpr,calrel,callee
             MATCH (cexpr)-[:IS_AST_PARENT]->(
                 arglst:GenericNode {type:"ArgumentList"}
@@ -475,7 +465,8 @@ class InterprocMerger(InterprocProcessing):
             ]->(main:UpstreamNode {type:"CFGEntryNode"})
             WHERE ID(tc)=%d
             WITH DISTINCT main
-            MATCH (main)-[:FLOWS_TO*]->(:GenericNode)-[r1:REACHES]->(n:GenericNode)-[r2:REACHES]->()
+            MATCH (main)-[:FLOWS_TO*]->(:GenericNode)-[r1:REACHES]->(n:GenericNode)-[
+                r2:REACHES]->()
             WHERE EXISTS(r1.size) AND NOT EXISTS(r2.size)
               AND r1.var IN [r2.var, r2.src]
             SET r2.size=r1.size
@@ -483,7 +474,8 @@ class InterprocMerger(InterprocProcessing):
             MATCH p=(n)-[r2]->(:GenericNode)-[:REACHES*]->(:GenericNode)
             WHERE ALL(idx IN RANGE(1, SIZE(RELATIONSHIPS(p))-1)
               WHERE NOT EXISTS(RELATIONSHIPS(p)[idx].size)
-                AND RELATIONSHIPS(p)[idx-1].var IN [RELATIONSHIPS(p)[idx].var, RELATIONSHIPS(p)[idx].src])
+                AND RELATIONSHIPS(p)[idx-1].var IN [RELATIONSHIPS(p)[idx].var,
+                    RELATIONSHIPS(p)[idx].src])
             UNWIND RELATIONSHIPS(p) AS r3
             SET r3.size=r1.size
         """,

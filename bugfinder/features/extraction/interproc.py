@@ -30,7 +30,8 @@ class FeatureExtractor(Neo4J3Processing):
     def _get_entrypoint_list(self):
         # List all entrypoing nodes, i.e. nodes describing function "main"
         list_entrypoints_cmd = """
-            MATCH (fl:GenericNode {type:"File"})-[:IS_FILE_OF]->(fn {type:"Function",code:"main"})-[:IS_FUNCTION_OF_CFG]->(en:GenericNode {type:"CFGEntryNode"})
+            MATCH (fl:GenericNode {type:"File"})-[:IS_FILE_OF]->(fn {type:"Function",
+            code:"main"})-[:IS_FUNCTION_OF_CFG]->(en:GenericNode {type:"CFGEntryNode"})
             RETURN en.functionId AS id, fl.code AS filepath, fn.code AS name
         """
         return self.neo4j_db.run(list_entrypoints_cmd).data()
@@ -51,21 +52,31 @@ class FeatureExtractor(Neo4J3Processing):
         #      + size: size of the variable, if known
         #  - outflow.: list of known output data flow sizes of the current node
         flowgraph_command = """
-            MATCH p1=(entry:UpstreamNode {type:"CFGEntryNode"})-[:FLOWS_TO*]->(exit:GenericNode)
+            MATCH p1=(entry:UpstreamNode {type:"CFGEntryNode"})-[:FLOWS_TO*]->(
+                exit:GenericNode)
             WHERE entry.functionId="%s" AND NOT (exit)-[:FLOWS_TO]->()
+              // Ensure that if we return from a function call, we go back to the caller
+              AND ALL(idx IN RANGE(1, SIZE(RELATIONSHIPS(p1))-1)
+                WHERE EXISTS(RELATIONSHIPS(p1)[idx].callerid)
+                  AND RELATIONSHIPS(p1)[idx].callerid IN [r1 IN REVERSE(
+                    RELATIONSHIPS(p1)[0..idx-1]) | ID(r1)])
             WITH p1, randomUUID() AS path_id
             UNWIND NODES(p1) AS n
             WITH path_id, n, "BugSinkNode" IN LABELS(n) AS sink
             MATCH p2=(n)-[:IS_AST_PARENT*]->(identifier:GenericNode {type:"Identifier"})
-            WITH path_id, sink, n, identifier.code AS ivar ORDER BY REDUCE(gentree="", g IN NODES(p2) | gentree+TOSTRING(g.childNum))
+            WITH path_id, sink, n, identifier.code AS ivar ORDER BY REDUCE(gentree="",
+                 g IN NODES(p2) | gentree+TOSTRING(g.childNum))
             WITH path_id, sink, n, COLLECT(ivar) AS iorder
             OPTIONAL MATCH (n)<-[inflow_r:REACHES]-(inflow_n)
             OPTIONAL MATCH (n)-[outflow_r:REACHES]->()
-            WITH DISTINCT path_id, sink, n, iorder, inflow_n, PROPERTIES(inflow_r) AS inflow_r, PROPERTIES(outflow_r) AS outflow_r
+            WITH DISTINCT path_id, sink, n, iorder, inflow_n, PROPERTIES(inflow_r) AS
+                inflow_r, PROPERTIES(outflow_r) AS outflow_r
             WHERE inflow_r IS NOT NULL OR outflow_r IS NOT NULL
-            RETURN path_id, sink, id(n) AS id, n.ast AS ast, iorder, COLLECT(DISTINCT [inflow_n.ast, inflow_r.var, inflow_r.size]) AS inflow, COLLECT(DISTINCT outflow_r.size) AS outflow
+            RETURN path_id, sink, id(n) AS id, n.ast AS ast, iorder, COLLECT(DISTINCT [
+                inflow_n.ast, inflow_r.var, inflow_r.size]) AS inflow, COLLECT(DISTINCT
+                outflow_r.size) AS outflow
         """
-        return self.neo4j_db.run(flowgraph_command % entrypoint["function_id"]).data()
+        return self.neo4j_db.run(flowgraph_command % entrypoint["id"]).data()
 
     def extract_features_worker(self, args):
         # Extract all annotated control flows for a particular test case
