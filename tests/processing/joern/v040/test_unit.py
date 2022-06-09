@@ -4,7 +4,7 @@ from unittest import TestCase
 from unittest.mock import patch, Mock
 
 from bugfinder.base.dataset import CodeWeaknessClassificationDataset
-from bugfinder.processing.joern.v040 import JoernDatasetProcessing
+from bugfinder.processing.joern.v040 import JoernProcessing
 from bugfinder.settings import ROOT_DIR
 from tests import patch_paths
 
@@ -14,13 +14,13 @@ class TestJoernDatasetProcessingConfigureContainer(TestCase):
         patch_paths(
             self,
             [
-                "bugfinder.processing.joern.JoernDefaultDatasetProcessing.configure_container",
+                "bugfinder.processing.joern.AbstractJoernProcessing.configure_container",
                 "bugfinder.processing.joern.v040.LOGGER",
                 "bugfinder.base.processing.LOGGER",
             ],
         )
 
-        self.dataset_processing = JoernDatasetProcessing(None)
+        self.dataset_processing = JoernProcessing(None)
 
     def test_image_name_is_correct(self):
         expected_image_name = "joern-lite:0.4.0"
@@ -53,7 +53,7 @@ class TestJoernDatasetProcessingSendCommands(TestCase):
         self.dataset.joern_dir = join(
             ROOT_DIR, "tests", "fixtures", "dataset04", "joern.db"
         )
-        self.dataset_processing = JoernDatasetProcessing(self.dataset)
+        self.dataset_processing = JoernProcessing(self.dataset)
 
     def tearDown(self) -> None:
         import_dir = join(self.dataset.joern_dir, "import")

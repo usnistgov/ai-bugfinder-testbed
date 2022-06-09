@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from bugfinder.processing.joern.v031 import JoernDatasetProcessing
+from bugfinder.processing.joern.v031 import JoernProcessing
 from tests import patch_paths
 
 
@@ -9,13 +9,13 @@ class TestJoernDatasetProcessingConfigureContainer(TestCase):
         patch_paths(
             self,
             [
-                "bugfinder.processing.joern.JoernDefaultDatasetProcessing.configure_container",
+                "bugfinder.processing.joern.AbstractJoernProcessing.configure_container",
                 "bugfinder.processing.joern.v031.LOGGER",
                 "bugfinder.base.processing.LOGGER",
             ],
         )
 
-        self.dataset_processing = JoernDatasetProcessing(None)
+        self.dataset_processing = JoernProcessing(None)
 
     def test_image_name_is_correct(self):
         expected_image_name = "joern-lite:0.3.1"
