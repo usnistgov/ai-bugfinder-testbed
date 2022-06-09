@@ -1,15 +1,13 @@
+import re
 from os import listdir
 from os.path import join, splitext
-
-import re
 from shutil import move
 
-from bugfinder.base.processing import AbstractProcessing
-from bugfinder.processing.tokenizers import main_vars, keywords
+from bugfinder.processing.tokenizers import main_vars, keywords, AbstractTokenizer
 from bugfinder.settings import LOGGER
 
 
-class ReplaceVariables(AbstractProcessing):
+class ReplaceVariables(AbstractTokenizer):
     """Processing to replace user-created functions from a dataset."""
 
     def execute(self):
