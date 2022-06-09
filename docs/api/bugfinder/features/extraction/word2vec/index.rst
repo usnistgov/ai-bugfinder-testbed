@@ -1,7 +1,7 @@
-bugfinder.features.extraction.node2vec
+bugfinder.features.extraction.word2vec
 ======================================
 
-.. automodule:: bugfinder.features.extraction.node2vec
+.. automodule:: bugfinder.features.extraction.word2vec
     :members:
     :undoc-members:
     :show-inheritance:
@@ -11,4 +11,3 @@ bugfinder.features.extraction.node2vec
 
     embeddings
     model
-    implementation

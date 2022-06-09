@@ -7,13 +7,13 @@ bugfinder.utils
     :show-inheritance:
 
 .. toctree::
-    :hidden:
+
     :maxdepth: 2
 
-    processing
-    progressbar
-    statistics
-    containers
-    rand
-    feature_selection
     dirs
+    feature_selection
+    processing
+    rand
+    containers
+    statistics
+    progressbar

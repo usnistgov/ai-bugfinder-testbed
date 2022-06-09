@@ -1,7 +1,0 @@
-bugfinder.joern.v031
-====================
-
-.. automodule:: bugfinder.joern.v031
-    :members:
-    :undoc-members:
-    :show-inheritance:

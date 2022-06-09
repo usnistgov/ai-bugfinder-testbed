@@ -7,13 +7,12 @@ bugfinder.features.reduction
     :show-inheritance:
 
 .. toctree::
-    :hidden:
-    :maxdepth: 2
+        :maxdepth: 2
 
-    recursive_feature_elimination
-    univariate_select
-    select_from_model
     pca
-    variance_threshold
+    recursive_feature_elimination
     auto_encoder
+    select_from_model
+    univariate_select
+    variance_threshold
     sequential_feature_selector
