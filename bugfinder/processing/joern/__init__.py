@@ -5,7 +5,7 @@ from abc import abstractmethod
 from bugfinder.base.processing.containers import AbstractContainerProcessing
 
 
-class JoernDefaultDatasetProcessing(AbstractContainerProcessing):
+class AbstractJoernProcessing(AbstractContainerProcessing):
     """Abstract Joern processing class"""
 
     def configure_container(self):
