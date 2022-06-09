@@ -19,23 +19,23 @@ Every processing class should come with its own set of tests. Browse the
 of tests that can be written:
 
 * Unit tests ensure the code logic is working as expected.
-* Regression tests ensure that the various processing steps work correctly when
-  used together.
+* Regression tests ensure that the processing steps work correctly when used together.
 
 2. Base classes
 ---------------
 
-Here are the base abstract classes available for designing new processing
-classes.
+Here are some of the abstract classes available for designing new processing
+classes. More information is available in the :doc:`./api/index`.
 
-* Raw bases classes:
-    * DatasetProcessing
+* Bases classes:
+    * AbstractProcessing
     * DatasetFileProcessing
     * DatasetProcessingWithContainer
 * Dataset utilities
-    * DatasetFileRemover
+    * AbstractFileRemover
 * Dataset processing
-    * JoernDefaultDatasetProcessing
+    * AbstractTokenizer
+    * AbstractJoernProcessing
     * Neo4J3Processing
     * AbstractASTMarkup
 * Feature extraction
