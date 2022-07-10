@@ -5,7 +5,7 @@ import json
 import numpy as np
 import tensorflow as tf
 
-from bugfinder.dataset.processing import ProcessingCategory
+from bugfinder.base.processing import ProcessingCategory
 from bugfinder.models.sequential import SequentialModel
 from bugfinder.settings import LOGGER
 

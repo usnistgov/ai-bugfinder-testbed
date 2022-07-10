@@ -1,18 +1,18 @@
 from unittest import TestCase
 from unittest.mock import patch, Mock
-from bugfinder.dataset import CWEClassificationDataset
-from bugfinder.features.interproc.raw import FeatureExtractor
+from bugfinder.base.dataset import CodeWeaknessClassificationDataset
+from bugfinder.features.extraction.interproc import FeatureExtractor
 from tests import patch_paths
 
 
 class InterprocTestCase(TestCase):
     def setUp(self) -> None:
-        patch_paths(self, ["bugfinder.features.interproc.LOGGER"])
+        patch_paths(self, ["bugfinder.features.extraction.interproc.LOGGER"])
         self.dataset_processing = FeatureExtractor(None)
 
 
 class TestFeatureExtractorConfigureContainer(InterprocTestCase):
-    @patch("bugfinder.neo4j.Neo4J3Processing.configure_container")
+    @patch("bugfinder.processing.neo4j.Neo4J3Processing.configure_container")
     def test_container_name_is_correct(self, mock_configure_container):
         mock_configure_container.return_value = None
         expected_container_name = "fext-interprocedural-raw"
@@ -25,12 +25,12 @@ class TestFeatureExtractorConfigureContainer(InterprocTestCase):
 
 
 class FeatureExtractorGetFlowgraphListForEntrypoint(InterprocTestCase):
-    @patch("bugfinder.neo4j.Neo4J3Processing.neo4j_db")
+    @patch("bugfinder.processing.neo4j.Neo4J3Processing.neo4j_db")
     def test_neo4j_db_run_is_called(self, mock_neo4j_db):
         self.dataset_processing.get_flowgraph_list_for_entrypoint({"id": None})
         self.assertTrue(mock_neo4j_db.run.called)
 
-    @patch("bugfinder.neo4j.Neo4J3Processing.neo4j_db")
+    @patch("bugfinder.processing.neo4j.Neo4J3Processing.neo4j_db")
     def test_flowgraph_list_is_correctly_formatted(self, mock_neo4j_db):
         expected_flowgraphs = [
             {
@@ -57,12 +57,12 @@ class FeatureExtractorGetFlowgraphListForEntrypoint(InterprocTestCase):
 
 
 class FeatureExtractorExtractFeaturesWorker(InterprocTestCase):
-    @patch("bugfinder.neo4j.Neo4J3Processing.neo4j_db")
+    @patch("bugfinder.processing.neo4j.Neo4J3Processing.neo4j_db")
     def test_neo4j_db_run_is_called(self, mock_neo4j_db):
         self.dataset_processing.get_flowgraph_list_for_entrypoint({"id": None})
         self.assertTrue(mock_neo4j_db.run.called)
 
-    @patch("bugfinder.neo4j.Neo4J3Processing.neo4j_db")
+    @patch("bugfinder.processing.neo4j.Neo4J3Processing.neo4j_db")
     def test_features_are_correctly_formatted(self, mock_neo4j_db):
         expected_flowgraphs = [
             {
@@ -191,12 +191,12 @@ class FeatureExtractorExtractFeaturesWorker(InterprocTestCase):
 
 
 class FeatureExtractorGetEntrypointList(InterprocTestCase):
-    @patch("bugfinder.neo4j.Neo4J3Processing.neo4j_db")
+    @patch("bugfinder.processing.neo4j.Neo4J3Processing.neo4j_db")
     def test_neo4j_db_run_is_called(self, mock_neo4j_db):
         self.dataset_processing._get_entrypoint_list()
         self.assertTrue(mock_neo4j_db.run.called)
 
-    @patch("bugfinder.neo4j.Neo4J3Processing.neo4j_db")
+    @patch("bugfinder.processing.neo4j.Neo4J3Processing.neo4j_db")
     def test_entrypoint_list_is_correctly_formatted(self, mock_neo4j_db):
         expected_entrypoints = [{"id": 0, "filepath": "/path", "name": "TestCase_01"}]
 
@@ -211,12 +211,12 @@ class FeatureExtractorGetEntrypointList(InterprocTestCase):
 
 
 class FeatureExtractorExtractFeatures(InterprocTestCase):
-    @patch("bugfinder.neo4j.Neo4J3Processing.neo4j_db")
+    @patch("bugfinder.processing.neo4j.Neo4J3Processing.neo4j_db")
     def test_neo4j_db_run_is_called(self, mock_neo4j_db):
         self.dataset_processing.get_flowgraph_list_for_entrypoint({"id": None})
         self.assertTrue(mock_neo4j_db.run.called)
 
-    @patch("bugfinder.neo4j.Neo4J3Processing.neo4j_db")
+    @patch("bugfinder.processing.neo4j.Neo4J3Processing.neo4j_db")
     def test_features_are_correctly_formatted(self, mock_neo4j_db):
         class MockNeo4JRunDataEntrypoints(object):
             @staticmethod
@@ -475,7 +475,7 @@ class FeatureExtractorCheckExtractionInputs(InterprocTestCase):
     def test_extraction_inputs(self):
         import os
 
-        self.dataset_processing.dataset = Mock(spec=CWEClassificationDataset)
+        self.dataset_processing.dataset = Mock(spec=CodeWeaknessClassificationDataset)
         self.dataset_processing.dataset.feats_dir = "/tmp/TEST"
         returned_path = self.dataset_processing.check_extraction_inputs()
         self.assertEqual(
@@ -611,7 +611,7 @@ class FeatureExtractorWriteExtractionOutputs(InterprocTestCase):
             "ast_06": [0],
         }
 
-        self.dataset_processing.dataset = Mock(spec=CWEClassificationDataset)
+        self.dataset_processing.dataset = Mock(spec=CodeWeaknessClassificationDataset)
         self.dataset_processing.dataset.feats_dir = "/tmp/TEST"
         self.dataset_processing.check_extraction_inputs()
         self.dataset_processing.write_extraction_outputs(expected_features)
