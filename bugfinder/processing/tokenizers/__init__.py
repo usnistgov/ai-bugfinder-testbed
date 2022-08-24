@@ -1,3 +1,7 @@
+from abc import abstractmethod
+
+from bugfinder.base.processing import AbstractProcessing
+
 single_char_ops = {
     "(",
     ")",
@@ -192,3 +196,15 @@ keywords = frozenset(
 main_func = frozenset({"main"})
 
 main_vars = frozenset({"argc", "argv"})
+
+
+class AbstractTokenizer(AbstractProcessing):
+    @abstractmethod
+    def execute(self, *args, **kwargs):  # pragma: no cover
+        """Execute the processing. Needs to be implemented by the subclass.
+
+        Args:
+            args:
+            kwargs:
+        """
+        raise NotImplementedError("Method 'execute' not implemented.")

@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from bugfinder.processing.joern import JoernDefaultDatasetProcessing
+from bugfinder.processing.joern import AbstractJoernProcessing
 from tests import patch_paths
 
 
@@ -9,7 +9,7 @@ class MockDataset(object):
         self.path = "mock_path"
 
 
-class MockJoernDatasetProcessing(JoernDefaultDatasetProcessing):
+class MockJoernDatasetProcessing(AbstractJoernProcessing):
     def send_commands(self):
         pass
 

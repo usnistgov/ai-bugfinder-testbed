@@ -7,14 +7,11 @@ bugfinder.models
     :show-inheritance:
 
 .. toctree::
-    :hidden:
-    :maxdepth: 2
+        :maxdepth: 2
 
-    node2vec
-    word2vec
     linear_classifier
+    lstm_classifier
     interproc_lstm
+    blstm_classifier
     sequential
     dnn_classifier
-    blstm_classifier
-    lstm_classifier

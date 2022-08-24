@@ -7,7 +7,8 @@ bugfinder.features.extraction.node2vec
     :show-inheritance:
 
 .. toctree::
-    :hidden:
-    :maxdepth: 2
+        :maxdepth: 2
 
-    impl
+    embeddings
+    model
+    implementation

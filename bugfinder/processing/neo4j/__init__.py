@@ -12,6 +12,7 @@ from bugfinder.utils.containers import wait_log_display
 class Neo4J3Processing(AbstractContainerProcessing):
     """Data processing calss for Neo4J v3.x"""
 
+    environment = {}
     start_string = "Remote interface available"
     neo4j_db = None
 

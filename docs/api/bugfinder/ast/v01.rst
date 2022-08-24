@@ -1,7 +1,0 @@
-bugfinder.ast.v01
-=================
-
-.. automodule:: bugfinder.ast.v01
-    :members:
-    :undoc-members:
-    :show-inheritance:

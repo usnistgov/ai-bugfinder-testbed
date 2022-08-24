@@ -137,9 +137,9 @@ been implemented. This repository offers two ways of creating pipelines:
 - **Python scripts**, to directly manipulate the dataset, extract features and
   train models to identify bugs in the source code. The commands to run the
   pipelines can be bundled in shell scripts. The same example as
-  before, using the python scripts is available at 
+  before, using the python scripts is available at
   `<_static/scripts/sample.sh>`_.
 
 .. include:: _static/scripts/sample.sh
-    :code: shell
+    :code: bash
 

@@ -7,10 +7,9 @@ bugfinder.features.extraction
     :show-inheritance:
 
 .. toctree::
-    :hidden:
-    :maxdepth: 2
+        :maxdepth: 2
 
-    hops_n_flows
+    interproc
+    bag_of_words/index
+    word2vec/index
     node2vec/index
-    any_hop/index
-    single_hop/index

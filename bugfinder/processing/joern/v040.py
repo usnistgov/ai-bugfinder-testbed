@@ -3,11 +3,11 @@
 from os import makedirs, walk
 from os.path import join, exists, splitext
 
-from bugfinder.processing.joern import JoernDefaultDatasetProcessing
+from bugfinder.processing.joern import AbstractJoernProcessing
 from bugfinder.settings import LOGGER
 
 
-class JoernDatasetProcessing(JoernDefaultDatasetProcessing):
+class JoernProcessing(AbstractJoernProcessing):
     """Processing class for Joern v0.4.0"""
 
     def configure_container(self):

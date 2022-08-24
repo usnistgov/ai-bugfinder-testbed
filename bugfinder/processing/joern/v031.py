@@ -1,10 +1,10 @@
 """ Processing class for Joern version 0.3.1.
 """
-from bugfinder.processing.joern import JoernDefaultDatasetProcessing
+from bugfinder.processing.joern import AbstractJoernProcessing
 from bugfinder.settings import LOGGER
 
 
-class JoernDatasetProcessing(JoernDefaultDatasetProcessing):
+class JoernProcessing(AbstractJoernProcessing):
     """Processing class for Joern version 0.3.1."""
 
     def configure_container(self):

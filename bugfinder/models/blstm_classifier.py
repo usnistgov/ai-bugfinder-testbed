@@ -15,7 +15,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adamax
 from tensorflow.keras.utils import to_categorical
 
-from bugfinder.dataset.processing import AbstractProcessing
+from bugfinder.base.processing import AbstractProcessing
 from bugfinder.settings import LOGGER
 
 

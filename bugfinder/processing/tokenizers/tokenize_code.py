@@ -1,19 +1,18 @@
+import re
 from os import listdir
 from os.path import join, splitext
-
-import re
 from shutil import move
 
-from bugfinder.base.processing import AbstractProcessing
 from bugfinder.processing.tokenizers import (
     triple_char_ops,
     double_char_ops,
     single_char_ops,
+    AbstractTokenizer,
 )
 from bugfinder.settings import LOGGER
 
 
-class TokenizeCode(AbstractProcessing):
+class TokenizeCode(AbstractTokenizer):
     """Processing to transform the source code in tokens keeping certain operations
     unified."""
 

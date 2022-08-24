@@ -5,7 +5,7 @@ import tensorflow.keras as keras
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 
-from bugfinder.dataset.processing import AbstractProcessing, ProcessingCategory
+from bugfinder.base.processing import AbstractProcessing, ProcessingCategory
 from bugfinder.settings import LOGGER
 
 
