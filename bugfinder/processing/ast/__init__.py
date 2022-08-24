@@ -79,7 +79,7 @@ class AbstractASTMarkup(Neo4J3Processing):
                 traceback.print_exc()
             else:
                 LOGGER.info(
-                    "AST command %d/%d successfully run.", cmd_index, len(cmd_list)
+                    "AST command %d/%d successfully run.", cmd_index + 1, len(cmd_list)
                 )
 
         LOGGER.info("AST updated.")
