@@ -19,6 +19,9 @@ from bugfinder.features.extraction.bag_of_words.any_hop.single_flow import (
 from bugfinder.features.extraction.bag_of_words.single_hop.raw import (
     FeatureExtractor as SingleHopRawExtractor,
 )
+from bugfinder.features.extraction.bag_of_words.hops_n_flows import (
+    FeatureExtractor as HopsNFlowsExtractor,
+)
 from bugfinder.features.extraction.interproc import (
     FeatureExtractor as InterprocRawExtractor,
 )
@@ -29,12 +32,32 @@ if __name__ == "__main__":
         "ahaf": AnyHopAllFlowsExtractor,
         "shr": SingleHopRawExtractor,
         "ahsf": AnyHopSingleFlowExtractor,
+        "hnf": HopsNFlowsExtractor,
         "iprc": InterprocRawExtractor,
     }
 
     # Setup the argument parser
     parser = argparse.ArgumentParser()
     parser.add_argument("dataset_path", help="path to the dataset to clean")
+    parser.add_argument(
+        "--extractor",
+        "-e",
+        choices=feature_extractors.keys(),
+        required=True,
+        help="feature extractor to use",
+    )
+    parser.add_argument(
+        "--min",
+        type=int,
+        required=False,
+        help="minimum number of hops",
+    )
+    parser.add_argument(
+        "--max",
+        type=int,
+        required=False,
+        help="maximum number of hops",
+    )
     parser.add_argument(
         "--extractor",
         "-e",
@@ -64,6 +87,12 @@ if __name__ == "__main__":
     dataset.queue_operation(RightFixer, {"command_args": "neo4j_v3.db 101 101"})
 
     operation_params = dict()
+
+    if args.min:
+        operation_params["min_hops"] = args.min
+
+    if args.max:
+        operation_params["max_hops"] = args.max
 
     if args.map_features:
         operation_params["need_map_features"] = True
