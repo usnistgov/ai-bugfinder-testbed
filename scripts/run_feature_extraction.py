@@ -59,13 +59,6 @@ if __name__ == "__main__":
         help="maximum number of hops",
     )
     parser.add_argument(
-        "--extractor",
-        "-e",
-        choices=feature_extractors.keys(),
-        required=True,
-        help="feature extractor to use",
-    )
-    parser.add_argument(
         "--timeout", help="timeout for Neo4J queries", type=str, default="2h"
     )
     parser.add_argument(
