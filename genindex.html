@@ -1,0 +1,1818 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Index &mdash; AI Bugfinder  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" />
+<link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"
+        type="text/javascript">
+</script>
+<script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js"
+        type="text/javascript">
+
+</script>
+<script type="text/javascript"
+        src="https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js">
+</script>
+<script>
+$(document).ready(function(){
+    // Mark external (non-nist.gov) A tags with class "external"
+    //If the adress start with https and ends with nist.gov
+    var re_nist = new RegExp('^https?:\/\/((^\/)*\.)*nist\\.gov(\/|$)');
+    //Regex to find address that start with https
+    var re_absolute_address = new RegExp('^((https?:)?\/\/)');
+    $("a").each(function(){
+        var url=$(this).attr('href');
+        if(re_nist.test(url) || !re_absolute_address.test(url)){
+            $(this).addClass('local');
+        }else{
+            //This a href appears to be external, so tag it
+            $(this).addClass('external');
+        }
+    });
+    // Add leaveNotice to external A elements
+    $('a.external').leaveNotice();
+});
+</script>
+<script>
+$(document).ready(function() {
+    // Move the paragraph from #myDiv1 to #myDiv2
+    $(".wy-nav-content-wrap").append($('#nistfootergoeshere'));
+});
+</script>
+<link rel="stylesheet" type="text/css"
+      href="https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css" />
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> AI Bugfinder
+          </a><div>A static analyzer powered by AI</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipelines.html">Designing pipelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="processing.html">Designing processing classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/index.html">Example pipelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">AI Bugfinder</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Index</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#J"><strong>J</strong></a>
+ | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#Q"><strong>Q</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
+ | <a href="#V"><strong>V</strong></a>
+ | <a href="#W"><strong>W</strong></a>
+ 
+</div>
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/processing/ast/index.html#bugfinder.processing.ast.AbstractASTMarkup">AbstractASTMarkup (class in bugfinder.processing.ast)</a>
+</li>
+      <li><a href="api/bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing">AbstractContainerProcessing (class in bugfinder.base.processing.containers)</a>
+</li>
+      <li><a href="api/bugfinder/processing/index.html#bugfinder.processing.AbstractCppFileProcessing">AbstractCppFileProcessing (class in bugfinder.processing)</a>
+</li>
+      <li><a href="api/bugfinder/features/reduction/index.html#bugfinder.features.reduction.AbstractFeatureSelector">AbstractFeatureSelector (class in bugfinder.features.reduction)</a>
+</li>
+      <li><a href="api/bugfinder/base/processing/files.html#bugfinder.base.processing.files.AbstractFileProcessing">AbstractFileProcessing (class in bugfinder.base.processing.files)</a>
+</li>
+      <li><a href="api/bugfinder/processing/cleaning/index.html#bugfinder.processing.cleaning.AbstractFileRemover">AbstractFileRemover (class in bugfinder.processing.cleaning)</a>
+</li>
+      <li><a href="api/bugfinder/processing/joern/index.html#bugfinder.processing.joern.AbstractJoernProcessing">AbstractJoernProcessing (class in bugfinder.processing.joern)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/base/processing/index.html#bugfinder.base.processing.AbstractProcessing">AbstractProcessing (class in bugfinder.base.processing)</a>
+</li>
+      <li><a href="api/bugfinder/processing/tokenizers/index.html#bugfinder.processing.tokenizers.AbstractTokenizer">AbstractTokenizer (class in bugfinder.processing.tokenizers)</a>
+</li>
+      <li><a href="api/bugfinder/features/extraction/node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.algorithm">algorithm (bugfinder.features.extraction.node2vec.model.Node2VecModel attribute)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/word2vec/model.html#bugfinder.features.extraction.word2vec.model.Word2VecModel.algorithm">(bugfinder.features.extraction.word2vec.model.Word2VecModel attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/bugfinder/base/dataset.html#bugfinder.base.dataset.CodeWeaknessClassificationDataset.append_summary">append_summary() (bugfinder.base.dataset.CodeWeaknessClassificationDataset method)</a>
+</li>
+      <li><a href="api/bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.assign_ports">assign_ports() (bugfinder.base.processing.containers.AbstractContainerProcessing method)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/processing/interproc.html#bugfinder.processing.interproc.InterprocProcessing.assign_ports">(bugfinder.processing.interproc.InterprocProcessing method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/sink_tagging.html#bugfinder.processing.sink_tagging.SinkTaggingProcessing.assign_ports">(bugfinder.processing.sink_tagging.SinkTaggingProcessing method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.BestBar.b_age">b_age (bugfinder.utils.progressbar.BestBar attribute)</a>
+</li>
+      <li><a href="api/bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.BestBar.b_stats">b_stats (bugfinder.utils.progressbar.BestBar attribute)</a>
+</li>
+      <li><a href="api/bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.BestBar.b_val">b_val (bugfinder.utils.progressbar.BestBar attribute)</a>
+</li>
+      <li><a href="api/bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.BestBar.best_age">best_age (bugfinder.utils.progressbar.BestBar property)</a>
+</li>
+      <li><a href="api/bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.BestBar.best_stats">best_stats (bugfinder.utils.progressbar.BestBar property)</a>
+</li>
+      <li><a href="api/bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.BestBar.best_val">best_val (bugfinder.utils.progressbar.BestBar property)</a>
+</li>
+      <li><a href="api/bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.BestBar">BestBar (class in bugfinder.utils.progressbar)</a>
+</li>
+      <li><a href="api/bugfinder/models/blstm_classifier.html#bugfinder.models.blstm_classifier.BLSTMClassifierModel">BLSTMClassifierModel (class in bugfinder.models.blstm_classifier)</a>
+</li>
+      <li><a href="api/bugfinder/models/blstm_classifier.html#bugfinder.models.blstm_classifier.BLSTMClassifierTraining">BLSTMClassifierTraining (class in bugfinder.models.blstm_classifier)</a>
+</li>
+      <li>
+    bugfinder
+
+      <ul>
+        <li><a href="api/bugfinder/index.html#module-bugfinder">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.base
+
+      <ul>
+        <li><a href="api/bugfinder/base/index.html#module-bugfinder.base">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.base.dataset
+
+      <ul>
+        <li><a href="api/bugfinder/base/dataset.html#module-bugfinder.base.dataset">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.base.processing
+
+      <ul>
+        <li><a href="api/bugfinder/base/processing/index.html#module-bugfinder.base.processing">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.base.processing.containers
+
+      <ul>
+        <li><a href="api/bugfinder/base/processing/containers.html#module-bugfinder.base.processing.containers">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.base.processing.files
+
+      <ul>
+        <li><a href="api/bugfinder/base/processing/files.html#module-bugfinder.base.processing.files">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.features
+
+      <ul>
+        <li><a href="api/bugfinder/features/index.html#module-bugfinder.features">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.features.extraction
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/index.html#module-bugfinder.features.extraction">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.features.extraction.bag_of_words
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/index.html#module-bugfinder.features.extraction.bag_of_words">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.features.extraction.bag_of_words.any_hop
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/any_hop/index.html#module-bugfinder.features.extraction.bag_of_words.any_hop">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.features.extraction.bag_of_words.any_hop.all_flows
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/any_hop/all_flows.html#module-bugfinder.features.extraction.bag_of_words.any_hop.all_flows">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.features.extraction.bag_of_words.any_hop.single_flow
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/any_hop/single_flow.html#module-bugfinder.features.extraction.bag_of_words.any_hop.single_flow">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.features.extraction.bag_of_words.hops_n_flows
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/hops_n_flows.html#module-bugfinder.features.extraction.bag_of_words.hops_n_flows">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.features.extraction.bag_of_words.single_hop
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/single_hop/index.html#module-bugfinder.features.extraction.bag_of_words.single_hop">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.features.extraction.bag_of_words.single_hop.raw
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/single_hop/raw.html#module-bugfinder.features.extraction.bag_of_words.single_hop.raw">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.features.extraction.interproc
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/interproc.html#module-bugfinder.features.extraction.interproc">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.features.extraction.node2vec
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/node2vec/index.html#module-bugfinder.features.extraction.node2vec">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.features.extraction.node2vec.embeddings
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/node2vec/embeddings.html#module-bugfinder.features.extraction.node2vec.embeddings">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.features.extraction.node2vec.implementation
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/node2vec/implementation.html#module-bugfinder.features.extraction.node2vec.implementation">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.features.extraction.node2vec.model
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/node2vec/model.html#module-bugfinder.features.extraction.node2vec.model">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.features.extraction.word2vec
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/word2vec/index.html#module-bugfinder.features.extraction.word2vec">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.features.extraction.word2vec.embeddings
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/word2vec/embeddings.html#module-bugfinder.features.extraction.word2vec.embeddings">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.features.extraction.word2vec.model
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/word2vec/model.html#module-bugfinder.features.extraction.word2vec.model">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.features.reduction
+
+      <ul>
+        <li><a href="api/bugfinder/features/reduction/index.html#module-bugfinder.features.reduction">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.features.reduction.auto_encoder
+
+      <ul>
+        <li><a href="api/bugfinder/features/reduction/auto_encoder.html#module-bugfinder.features.reduction.auto_encoder">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.features.reduction.pca
+
+      <ul>
+        <li><a href="api/bugfinder/features/reduction/pca.html#module-bugfinder.features.reduction.pca">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.features.reduction.recursive_feature_elimination
+
+      <ul>
+        <li><a href="api/bugfinder/features/reduction/recursive_feature_elimination.html#module-bugfinder.features.reduction.recursive_feature_elimination">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.features.reduction.select_from_model
+
+      <ul>
+        <li><a href="api/bugfinder/features/reduction/select_from_model.html#module-bugfinder.features.reduction.select_from_model">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.features.reduction.sequential_feature_selector
+
+      <ul>
+        <li><a href="api/bugfinder/features/reduction/sequential_feature_selector.html#module-bugfinder.features.reduction.sequential_feature_selector">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.features.reduction.univariate_select
+
+      <ul>
+        <li><a href="api/bugfinder/features/reduction/univariate_select.html#module-bugfinder.features.reduction.univariate_select">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.features.reduction.variance_threshold
+
+      <ul>
+        <li><a href="api/bugfinder/features/reduction/variance_threshold.html#module-bugfinder.features.reduction.variance_threshold">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.models
+
+      <ul>
+        <li><a href="api/bugfinder/models/index.html#module-bugfinder.models">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.models.blstm_classifier
+
+      <ul>
+        <li><a href="api/bugfinder/models/blstm_classifier.html#module-bugfinder.models.blstm_classifier">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.models.dnn_classifier
+
+      <ul>
+        <li><a href="api/bugfinder/models/dnn_classifier.html#module-bugfinder.models.dnn_classifier">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.models.interproc_lstm
+
+      <ul>
+        <li><a href="api/bugfinder/models/interproc_lstm.html#module-bugfinder.models.interproc_lstm">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.models.linear_classifier
+
+      <ul>
+        <li><a href="api/bugfinder/models/linear_classifier.html#module-bugfinder.models.linear_classifier">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.models.lstm_classifier
+
+      <ul>
+        <li><a href="api/bugfinder/models/lstm_classifier.html#module-bugfinder.models.lstm_classifier">module</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li>
+    bugfinder.models.sequential
+
+      <ul>
+        <li><a href="api/bugfinder/models/sequential.html#module-bugfinder.models.sequential">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.processing
+
+      <ul>
+        <li><a href="api/bugfinder/processing/index.html#module-bugfinder.processing">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.processing.ast
+
+      <ul>
+        <li><a href="api/bugfinder/processing/ast/index.html#module-bugfinder.processing.ast">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.processing.ast.v01
+
+      <ul>
+        <li><a href="api/bugfinder/processing/ast/v01.html#module-bugfinder.processing.ast.v01">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.processing.ast.v02
+
+      <ul>
+        <li><a href="api/bugfinder/processing/ast/v02.html#module-bugfinder.processing.ast.v02">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.processing.ast.v03
+
+      <ul>
+        <li><a href="api/bugfinder/processing/ast/v03.html#module-bugfinder.processing.ast.v03">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.processing.cleaning
+
+      <ul>
+        <li><a href="api/bugfinder/processing/cleaning/index.html#module-bugfinder.processing.cleaning">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.processing.cleaning.remove_comments
+
+      <ul>
+        <li><a href="api/bugfinder/processing/cleaning/remove_comments.html#module-bugfinder.processing.cleaning.remove_comments">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.processing.cleaning.remove_cpp_files
+
+      <ul>
+        <li><a href="api/bugfinder/processing/cleaning/remove_cpp_files.html#module-bugfinder.processing.cleaning.remove_cpp_files">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.processing.cleaning.remove_interproc_files
+
+      <ul>
+        <li><a href="api/bugfinder/processing/cleaning/remove_interproc_files.html#module-bugfinder.processing.cleaning.remove_interproc_files">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.processing.cleaning.remove_main_function
+
+      <ul>
+        <li><a href="api/bugfinder/processing/cleaning/remove_main_function.html#module-bugfinder.processing.cleaning.remove_main_function">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.processing.cleaning.replace_litterals
+
+      <ul>
+        <li><a href="api/bugfinder/processing/cleaning/replace_litterals.html#module-bugfinder.processing.cleaning.replace_litterals">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.processing.dataset
+
+      <ul>
+        <li><a href="api/bugfinder/processing/dataset/index.html#module-bugfinder.processing.dataset">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.processing.dataset.copy
+
+      <ul>
+        <li><a href="api/bugfinder/processing/dataset/copy.html#module-bugfinder.processing.dataset.copy">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.processing.dataset.extract
+
+      <ul>
+        <li><a href="api/bugfinder/processing/dataset/extract.html#module-bugfinder.processing.dataset.extract">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.processing.dataset.fix_rights
+
+      <ul>
+        <li><a href="api/bugfinder/processing/dataset/fix_rights.html#module-bugfinder.processing.dataset.fix_rights">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.processing.dataset.inverse
+
+      <ul>
+        <li><a href="api/bugfinder/processing/dataset/inverse.html#module-bugfinder.processing.dataset.inverse">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.processing.interproc
+
+      <ul>
+        <li><a href="api/bugfinder/processing/interproc.html#module-bugfinder.processing.interproc">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.processing.joern
+
+      <ul>
+        <li><a href="api/bugfinder/processing/joern/index.html#module-bugfinder.processing.joern">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.processing.joern.v031
+
+      <ul>
+        <li><a href="api/bugfinder/processing/joern/v031.html#module-bugfinder.processing.joern.v031">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.processing.joern.v040
+
+      <ul>
+        <li><a href="api/bugfinder/processing/joern/v040.html#module-bugfinder.processing.joern.v040">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.processing.neo4j
+
+      <ul>
+        <li><a href="api/bugfinder/processing/neo4j/index.html#module-bugfinder.processing.neo4j">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.processing.neo4j.annot
+
+      <ul>
+        <li><a href="api/bugfinder/processing/neo4j/annot.html#module-bugfinder.processing.neo4j.annot">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.processing.neo4j.converter
+
+      <ul>
+        <li><a href="api/bugfinder/processing/neo4j/converter.html#module-bugfinder.processing.neo4j.converter">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.processing.neo4j.importer
+
+      <ul>
+        <li><a href="api/bugfinder/processing/neo4j/importer.html#module-bugfinder.processing.neo4j.importer">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.processing.sink_tagging
+
+      <ul>
+        <li><a href="api/bugfinder/processing/sink_tagging.html#module-bugfinder.processing.sink_tagging">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.processing.tokenizers
+
+      <ul>
+        <li><a href="api/bugfinder/processing/tokenizers/index.html#module-bugfinder.processing.tokenizers">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.processing.tokenizers.replace_functions
+
+      <ul>
+        <li><a href="api/bugfinder/processing/tokenizers/replace_functions.html#module-bugfinder.processing.tokenizers.replace_functions">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.processing.tokenizers.replace_variables
+
+      <ul>
+        <li><a href="api/bugfinder/processing/tokenizers/replace_variables.html#module-bugfinder.processing.tokenizers.replace_variables">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.processing.tokenizers.tokenize_code
+
+      <ul>
+        <li><a href="api/bugfinder/processing/tokenizers/tokenize_code.html#module-bugfinder.processing.tokenizers.tokenize_code">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.settings
+
+      <ul>
+        <li><a href="api/bugfinder/settings.html#module-bugfinder.settings">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.utils
+
+      <ul>
+        <li><a href="api/bugfinder/utils/index.html#module-bugfinder.utils">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.utils.containers
+
+      <ul>
+        <li><a href="api/bugfinder/utils/containers.html#module-bugfinder.utils.containers">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.utils.dirs
+
+      <ul>
+        <li><a href="api/bugfinder/utils/dirs.html#module-bugfinder.utils.dirs">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.utils.feature_selection
+
+      <ul>
+        <li><a href="api/bugfinder/utils/feature_selection.html#module-bugfinder.utils.feature_selection">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.utils.processing
+
+      <ul>
+        <li><a href="api/bugfinder/utils/processing.html#module-bugfinder.utils.processing">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.utils.progressbar
+
+      <ul>
+        <li><a href="api/bugfinder/utils/progressbar.html#module-bugfinder.utils.progressbar">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.utils.rand
+
+      <ul>
+        <li><a href="api/bugfinder/utils/rand.html#module-bugfinder.utils.rand">module</a>
+</li>
+      </ul></li>
+      <li>
+    bugfinder.utils.statistics
+
+      <ul>
+        <li><a href="api/bugfinder/utils/statistics.html#module-bugfinder.utils.statistics">module</a>
+</li>
+      </ul></li>
+      <li><a href="api/bugfinder/processing/ast/index.html#bugfinder.processing.ast.AbstractASTMarkup.build_ast_markup">build_ast_markup() (bugfinder.processing.ast.AbstractASTMarkup method)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/processing/ast/v01.html#bugfinder.processing.ast.v01.Neo4JASTMarkup.build_ast_markup">(bugfinder.processing.ast.v01.Neo4JASTMarkup method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/ast/v02.html#bugfinder.processing.ast.v02.Neo4JASTMarkup.build_ast_markup">(bugfinder.processing.ast.v02.Neo4JASTMarkup method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/ast/v03.html#bugfinder.processing.ast.v03.Neo4JASTMarkup.build_ast_markup">(bugfinder.processing.ast.v03.Neo4JASTMarkup method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/bugfinder/models/lstm_classifier.html#bugfinder.models.lstm_classifier.LSTMClassifierTraining.build_model">build_model() (bugfinder.models.lstm_classifier.LSTMClassifierTraining method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/features/extraction/interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.catlock">catlock (bugfinder.features.extraction.interproc.FeatureExtractor attribute)</a>
+</li>
+      <li><a href="api/bugfinder/features/extraction/interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.cats">cats (bugfinder.features.extraction.interproc.FeatureExtractor attribute)</a>
+</li>
+      <li><a href="api/bugfinder/features/extraction/index.html#bugfinder.features.extraction.GraphFeatureExtractor.check_extraction_inputs">check_extraction_inputs() (bugfinder.features.extraction.GraphFeatureExtractor method)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.check_extraction_inputs">(bugfinder.features.extraction.interproc.FeatureExtractor method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/bugfinder/models/index.html#bugfinder.models.ClassifierModel">ClassifierModel (class in bugfinder.models)</a>
+</li>
+      <li><a href="api/bugfinder/base/dataset.html#bugfinder.base.dataset.CodeWeaknessClassificationDataset.clear_queue">clear_queue() (bugfinder.base.dataset.CodeWeaknessClassificationDataset method)</a>
+</li>
+      <li><a href="api/bugfinder/base/dataset.html#bugfinder.base.dataset.CodeWeaknessClassificationDataset">CodeWeaknessClassificationDataset (class in bugfinder.base.dataset)</a>
+</li>
+      <li><a href="api/bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.command">command (bugfinder.base.processing.containers.AbstractContainerProcessing attribute)</a>
+</li>
+      <li><a href="api/bugfinder/processing/neo4j/annot.html#bugfinder.processing.neo4j.annot.Neo4JAnnotations.COMMANDS">COMMANDS (bugfinder.processing.neo4j.annot.Neo4JAnnotations attribute)</a>
+</li>
+      <li><a href="api/bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.configure_command">configure_command() (bugfinder.base.processing.containers.AbstractContainerProcessing method)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/processing/dataset/fix_rights.html#bugfinder.processing.dataset.fix_rights.RightFixer.configure_command">(bugfinder.processing.dataset.fix_rights.RightFixer method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/interproc.html#bugfinder.processing.interproc.InterprocProcessing.configure_command">(bugfinder.processing.interproc.InterprocProcessing method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/sink_tagging.html#bugfinder.processing.sink_tagging.SinkTaggingProcessing.configure_command">(bugfinder.processing.sink_tagging.SinkTaggingProcessing method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.configure_container">configure_container() (bugfinder.base.processing.containers.AbstractContainerProcessing method)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/any_hop/all_flows.html#bugfinder.features.extraction.bag_of_words.any_hop.all_flows.FeatureExtractor.configure_container">(bugfinder.features.extraction.bag_of_words.any_hop.all_flows.FeatureExtractor method)</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/any_hop/single_flow.html#bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor.configure_container">(bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor method)</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.configure_container">(bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor method)</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/single_hop/raw.html#bugfinder.features.extraction.bag_of_words.single_hop.raw.FeatureExtractor.configure_container">(bugfinder.features.extraction.bag_of_words.single_hop.raw.FeatureExtractor method)</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/index.html#bugfinder.features.extraction.GraphFeatureExtractor.configure_container">(bugfinder.features.extraction.GraphFeatureExtractor method)</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.configure_container">(bugfinder.features.extraction.interproc.FeatureExtractor method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/ast/v01.html#bugfinder.processing.ast.v01.Neo4JASTMarkup.configure_container">(bugfinder.processing.ast.v01.Neo4JASTMarkup method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/ast/v02.html#bugfinder.processing.ast.v02.Neo4JASTMarkup.configure_container">(bugfinder.processing.ast.v02.Neo4JASTMarkup method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/ast/v03.html#bugfinder.processing.ast.v03.Neo4JASTMarkup.configure_container">(bugfinder.processing.ast.v03.Neo4JASTMarkup method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/dataset/fix_rights.html#bugfinder.processing.dataset.fix_rights.RightFixer.configure_container">(bugfinder.processing.dataset.fix_rights.RightFixer method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/interproc.html#bugfinder.processing.interproc.InterprocProcessing.configure_container">(bugfinder.processing.interproc.InterprocProcessing method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/joern/index.html#bugfinder.processing.joern.AbstractJoernProcessing.configure_container">(bugfinder.processing.joern.AbstractJoernProcessing method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/joern/v031.html#bugfinder.processing.joern.v031.JoernProcessing.configure_container">(bugfinder.processing.joern.v031.JoernProcessing method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/joern/v040.html#bugfinder.processing.joern.v040.JoernProcessing.configure_container">(bugfinder.processing.joern.v040.JoernProcessing method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/neo4j/annot.html#bugfinder.processing.neo4j.annot.Neo4JAnnotations.configure_container">(bugfinder.processing.neo4j.annot.Neo4JAnnotations method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/neo4j/converter.html#bugfinder.processing.neo4j.converter.Neo4J2Converter.configure_container">(bugfinder.processing.neo4j.converter.Neo4J2Converter method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/neo4j/converter.html#bugfinder.processing.neo4j.converter.Neo4J3Converter.configure_container">(bugfinder.processing.neo4j.converter.Neo4J3Converter method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/neo4j/importer.html#bugfinder.processing.neo4j.importer.Neo4J3Importer.configure_container">(bugfinder.processing.neo4j.importer.Neo4J3Importer method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/neo4j/index.html#bugfinder.processing.neo4j.Neo4J3Processing.configure_container">(bugfinder.processing.neo4j.Neo4J3Processing method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/sink_tagging.html#bugfinder.processing.sink_tagging.SinkTaggingProcessing.configure_container">(bugfinder.processing.sink_tagging.SinkTaggingProcessing method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.configure_container_with_dict">configure_container_with_dict() (bugfinder.base.processing.containers.AbstractContainerProcessing method)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.configure_container_with_dict">(bugfinder.features.extraction.interproc.FeatureExtractor method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/interproc.html#bugfinder.processing.interproc.InterprocProcessing.configure_container_with_dict">(bugfinder.processing.interproc.InterprocProcessing method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/sink_tagging.html#bugfinder.processing.sink_tagging.SinkTaggingProcessing.configure_container_with_dict">(bugfinder.processing.sink_tagging.SinkTaggingProcessing method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.container">container (bugfinder.base.processing.containers.AbstractContainerProcessing attribute)</a>
+</li>
+      <li><a href="api/bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.container_name">container_name (bugfinder.base.processing.containers.AbstractContainerProcessing attribute)</a>
+</li>
+      <li><a href="api/bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.container_ports">container_ports (bugfinder.base.processing.containers.AbstractContainerProcessing attribute)</a>
+</li>
+      <li><a href="api/bugfinder/utils/dirs.html#bugfinder.utils.dirs.copy_dir">copy_dir() (in module bugfinder.utils.dirs)</a>
+</li>
+      <li><a href="api/bugfinder/processing/dataset/copy.html#bugfinder.processing.dataset.copy.CopyDataset">CopyDataset (class in bugfinder.processing.dataset.copy)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/settings.html#bugfinder.settings.DATASET_DIRS">DATASET_DIRS (in module bugfinder.settings)</a>
+</li>
+      <li><a href="api/bugfinder/base/dataset.html#bugfinder.base.dataset.DatasetQueueRetCode">DatasetQueueRetCode (class in bugfinder.base.dataset)</a>
+</li>
+      <li><a href="api/bugfinder/processing/neo4j/importer.html#bugfinder.processing.neo4j.importer.Neo4J3Importer.db_name">db_name (bugfinder.processing.neo4j.importer.Neo4J3Importer attribute)</a>
+</li>
+      <li><a href="api/bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.detach">detach (bugfinder.base.processing.containers.AbstractContainerProcessing attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/utils/statistics.html#bugfinder.utils.statistics.display_time">display_time() (in module bugfinder.utils.statistics)</a>
+</li>
+      <li><a href="api/bugfinder/utils/statistics.html#bugfinder.utils.statistics.divide">divide() (in module bugfinder.utils.statistics)</a>
+</li>
+      <li><a href="api/bugfinder/models/dnn_classifier.html#bugfinder.models.dnn_classifier.DNNClassifierTraining">DNNClassifierTraining (class in bugfinder.models.dnn_classifier)</a>
+</li>
+      <li><a href="api/bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.MultiBar.done">done (bugfinder.utils.progressbar.MultiBar attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/features/extraction/node2vec/embeddings.html#bugfinder.features.extraction.node2vec.embeddings.Node2VecEmbeddings.embedding_length">embedding_length (bugfinder.features.extraction.node2vec.embeddings.Node2VecEmbeddings attribute)</a>
+</li>
+      <li><a href="api/bugfinder/base/dataset.html#bugfinder.base.dataset.DatasetQueueRetCode.EMPTY_QUEUE">EMPTY_QUEUE (bugfinder.base.dataset.DatasetQueueRetCode attribute)</a>
+</li>
+      <li><a href="api/bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.environment">environment (bugfinder.base.processing.containers.AbstractContainerProcessing attribute)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/processing/neo4j/index.html#bugfinder.processing.neo4j.Neo4J3Processing.environment">(bugfinder.processing.neo4j.Neo4J3Processing attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/bugfinder/models/blstm_classifier.html#bugfinder.models.blstm_classifier.BLSTMClassifierModel.evaluate">evaluate() (bugfinder.models.blstm_classifier.BLSTMClassifierModel static method)</a>
+</li>
+      <li><a href="api/bugfinder/base/processing/index.html#bugfinder.base.processing.AbstractProcessing.execute">execute() (bugfinder.base.processing.AbstractProcessing method)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.execute">(bugfinder.base.processing.containers.AbstractContainerProcessing method)</a>
+</li>
+        <li><a href="api/bugfinder/base/processing/files.html#bugfinder.base.processing.files.AbstractFileProcessing.execute">(bugfinder.base.processing.files.AbstractFileProcessing method)</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.execute">(bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor method)</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/index.html#bugfinder.features.extraction.GraphFeatureExtractor.execute">(bugfinder.features.extraction.GraphFeatureExtractor method)</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/node2vec/embeddings.html#bugfinder.features.extraction.node2vec.embeddings.Node2VecEmbeddings.execute">(bugfinder.features.extraction.node2vec.embeddings.Node2VecEmbeddings method)</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.execute">(bugfinder.features.extraction.node2vec.model.Node2VecModel method)</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/word2vec/embeddings.html#bugfinder.features.extraction.word2vec.embeddings.Word2VecEmbeddings.execute">(bugfinder.features.extraction.word2vec.embeddings.Word2VecEmbeddings method)</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/word2vec/model.html#bugfinder.features.extraction.word2vec.model.Word2VecModel.execute">(bugfinder.features.extraction.word2vec.model.Word2VecModel method)</a>
+</li>
+        <li><a href="api/bugfinder/features/reduction/index.html#bugfinder.features.reduction.AbstractFeatureSelector.execute">(bugfinder.features.reduction.AbstractFeatureSelector method)</a>
+</li>
+        <li><a href="api/bugfinder/models/blstm_classifier.html#bugfinder.models.blstm_classifier.BLSTMClassifierModel.execute">(bugfinder.models.blstm_classifier.BLSTMClassifierModel method)</a>
+</li>
+        <li><a href="api/bugfinder/models/index.html#bugfinder.models.ClassifierModel.execute">(bugfinder.models.ClassifierModel method)</a>
+</li>
+        <li><a href="api/bugfinder/models/interproc_lstm.html#bugfinder.models.interproc_lstm.InterprocLSTMTraining.execute">(bugfinder.models.interproc_lstm.InterprocLSTMTraining method)</a>
+</li>
+        <li><a href="api/bugfinder/models/sequential.html#bugfinder.models.sequential.SequentialModel.execute">(bugfinder.models.sequential.SequentialModel method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/cleaning/remove_comments.html#bugfinder.processing.cleaning.remove_comments.RemoveComments.execute">(bugfinder.processing.cleaning.remove_comments.RemoveComments method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/cleaning/remove_cpp_files.html#bugfinder.processing.cleaning.remove_cpp_files.RemoveCppFiles.execute">(bugfinder.processing.cleaning.remove_cpp_files.RemoveCppFiles method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/cleaning/remove_interproc_files.html#bugfinder.processing.cleaning.remove_interproc_files.RemoveInterprocFiles.execute">(bugfinder.processing.cleaning.remove_interproc_files.RemoveInterprocFiles method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/cleaning/remove_main_function.html#bugfinder.processing.cleaning.remove_main_function.RemoveMainFunction.execute">(bugfinder.processing.cleaning.remove_main_function.RemoveMainFunction method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/cleaning/replace_litterals.html#bugfinder.processing.cleaning.replace_litterals.ReplaceLitterals.execute">(bugfinder.processing.cleaning.replace_litterals.ReplaceLitterals method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/dataset/copy.html#bugfinder.processing.dataset.copy.CopyDataset.execute">(bugfinder.processing.dataset.copy.CopyDataset method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/dataset/extract.html#bugfinder.processing.dataset.extract.ExtractSampleDataset.execute">(bugfinder.processing.dataset.extract.ExtractSampleDataset method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/dataset/inverse.html#bugfinder.processing.dataset.inverse.InverseDataset.execute">(bugfinder.processing.dataset.inverse.InverseDataset method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/tokenizers/index.html#bugfinder.processing.tokenizers.AbstractTokenizer.execute">(bugfinder.processing.tokenizers.AbstractTokenizer method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/tokenizers/replace_functions.html#bugfinder.processing.tokenizers.replace_functions.ReplaceFunctions.execute">(bugfinder.processing.tokenizers.replace_functions.ReplaceFunctions method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/tokenizers/replace_variables.html#bugfinder.processing.tokenizers.replace_variables.ReplaceVariables.execute">(bugfinder.processing.tokenizers.replace_variables.ReplaceVariables method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/tokenizers/tokenize_code.html#bugfinder.processing.tokenizers.tokenize_code.TokenizeCode.execute">(bugfinder.processing.tokenizers.tokenize_code.TokenizeCode method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.SlowBar.extend">extend() (bugfinder.utils.progressbar.SlowBar method)</a>
+</li>
+      <li><a href="api/bugfinder/features/extraction/index.html#bugfinder.features.extraction.FlowGraphFeatureExtractor.extract_features">extract_features() (bugfinder.features.extraction.FlowGraphFeatureExtractor method)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/index.html#bugfinder.features.extraction.GraphFeatureExtractor.extract_features">(bugfinder.features.extraction.GraphFeatureExtractor method)</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.extract_features">(bugfinder.features.extraction.interproc.FeatureExtractor method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/bugfinder/features/extraction/index.html#bugfinder.features.extraction.FlowGraphFeatureExtractor.extract_features_worker">extract_features_worker() (bugfinder.features.extraction.FlowGraphFeatureExtractor method)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.extract_features_worker">(bugfinder.features.extraction.interproc.FeatureExtractor method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/bugfinder/base/processing/index.html#bugfinder.base.processing.ProcessingCategory.EXTRACTION">EXTRACTION (bugfinder.base.processing.ProcessingCategory attribute)</a>
+</li>
+      <li><a href="api/bugfinder/processing/dataset/extract.html#bugfinder.processing.dataset.extract.ExtractSampleDataset">ExtractSampleDataset (class in bugfinder.processing.dataset.extract)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/features/extraction/index.html#bugfinder.features.extraction.GraphFeatureExtractor.feature_map_filepath">feature_map_filepath (bugfinder.features.extraction.GraphFeatureExtractor attribute)</a>
+</li>
+      <li><a href="api/bugfinder/features/extraction/bag_of_words/any_hop/all_flows.html#bugfinder.features.extraction.bag_of_words.any_hop.all_flows.FeatureExtractor">FeatureExtractor (class in bugfinder.features.extraction.bag_of_words.any_hop.all_flows)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/any_hop/single_flow.html#bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor">(class in bugfinder.features.extraction.bag_of_words.any_hop.single_flow)</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor">(class in bugfinder.features.extraction.bag_of_words.hops_n_flows)</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/single_hop/raw.html#bugfinder.features.extraction.bag_of_words.single_hop.raw.FeatureExtractor">(class in bugfinder.features.extraction.bag_of_words.single_hop.raw)</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor">(class in bugfinder.features.extraction.interproc)</a>
+</li>
+      </ul></li>
+      <li><a href="api/bugfinder/settings.html#bugfinder.settings.FEATURES_FILE">FEATURES_FILE (in module bugfinder.settings)</a>
+</li>
+      <li><a href="api/bugfinder/features/reduction/auto_encoder.html#bugfinder.features.reduction.auto_encoder.FeatureSelector">FeatureSelector (class in bugfinder.features.reduction.auto_encoder)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/features/reduction/pca.html#bugfinder.features.reduction.pca.FeatureSelector">(class in bugfinder.features.reduction.pca)</a>
+</li>
+        <li><a href="api/bugfinder/features/reduction/recursive_feature_elimination.html#bugfinder.features.reduction.recursive_feature_elimination.FeatureSelector">(class in bugfinder.features.reduction.recursive_feature_elimination)</a>
+</li>
+        <li><a href="api/bugfinder/features/reduction/select_from_model.html#bugfinder.features.reduction.select_from_model.FeatureSelector">(class in bugfinder.features.reduction.select_from_model)</a>
+</li>
+        <li><a href="api/bugfinder/features/reduction/sequential_feature_selector.html#bugfinder.features.reduction.sequential_feature_selector.FeatureSelector">(class in bugfinder.features.reduction.sequential_feature_selector)</a>
+</li>
+        <li><a href="api/bugfinder/features/reduction/univariate_select.html#bugfinder.features.reduction.univariate_select.FeatureSelector">(class in bugfinder.features.reduction.univariate_select)</a>
+</li>
+        <li><a href="api/bugfinder/features/reduction/variance_threshold.html#bugfinder.features.reduction.variance_threshold.FeatureSelector">(class in bugfinder.features.reduction.variance_threshold)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/features/extraction/bag_of_words/any_hop/single_flow.html#bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor.finalize_features">finalize_features() (bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor static method)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.finalize_features">(bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor method)</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/index.html#bugfinder.features.extraction.FlowGraphFeatureExtractor.finalize_features">(bugfinder.features.extraction.FlowGraphFeatureExtractor static method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/bugfinder/features/extraction/node2vec/implementation.html#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation.FIRST_TRAVEL_KEY">FIRST_TRAVEL_KEY (bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation attribute)</a>
+</li>
+      <li><a href="api/bugfinder/features/extraction/node2vec/implementation.html#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation.fit">fit() (bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation method)</a>
+</li>
+      <li><a href="api/bugfinder/processing/neo4j/index.html#bugfinder.processing.neo4j.Neo4J3Processing.fix_data_folder_rights">fix_data_folder_rights() (bugfinder.processing.neo4j.Neo4J3Processing method)</a>
+</li>
+      <li><a href="api/bugfinder/features/extraction/index.html#bugfinder.features.extraction.FlowGraphFeatureExtractor">FlowGraphFeatureExtractor (class in bugfinder.features.extraction)</a>
+</li>
+      <li><a href="api/bugfinder/features/extraction/bag_of_words/any_hop/single_flow.html#bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor.FLOWS">FLOWS (bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor attribute)</a>
+</li>
+      <li><a href="api/bugfinder/features/extraction/bag_of_words/hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.flows">flows (bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/processing/ast/index.html#bugfinder.processing.ast.AbstractASTMarkup.get_ast_information">get_ast_information() (bugfinder.processing.ast.AbstractASTMarkup method)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/processing/ast/v01.html#bugfinder.processing.ast.v01.Neo4JASTMarkup.get_ast_information">(bugfinder.processing.ast.v01.Neo4JASTMarkup method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/ast/v02.html#bugfinder.processing.ast.v02.Neo4JASTMarkup.get_ast_information">(bugfinder.processing.ast.v02.Neo4JASTMarkup method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/ast/v03.html#bugfinder.processing.ast.v03.Neo4JASTMarkup.get_ast_information">(bugfinder.processing.ast.v03.Neo4JASTMarkup method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/bugfinder/base/dataset.html#bugfinder.base.dataset.CodeWeaknessClassificationDataset.get_classes">get_classes() (bugfinder.base.dataset.CodeWeaknessClassificationDataset method)</a>
+</li>
+      <li><a href="api/bugfinder/base/dataset.html#bugfinder.base.dataset.CodeWeaknessClassificationDataset.get_features_info">get_features_info() (bugfinder.base.dataset.CodeWeaknessClassificationDataset method)</a>
+</li>
+      <li><a href="api/bugfinder/features/extraction/bag_of_words/any_hop/all_flows.html#bugfinder.features.extraction.bag_of_words.any_hop.all_flows.FeatureExtractor.get_flowgraph_count">get_flowgraph_count() (bugfinder.features.extraction.bag_of_words.any_hop.all_flows.FeatureExtractor method)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/any_hop/single_flow.html#bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor.get_flowgraph_count">(bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor method)</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.get_flowgraph_count">(bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor method)</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/single_hop/raw.html#bugfinder.features.extraction.bag_of_words.single_hop.raw.FeatureExtractor.get_flowgraph_count">(bugfinder.features.extraction.bag_of_words.single_hop.raw.FeatureExtractor method)</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/index.html#bugfinder.features.extraction.FlowGraphFeatureExtractor.get_flowgraph_count">(bugfinder.features.extraction.FlowGraphFeatureExtractor method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/bugfinder/features/extraction/bag_of_words/any_hop/all_flows.html#bugfinder.features.extraction.bag_of_words.any_hop.all_flows.FeatureExtractor.get_flowgraph_list_for_entrypoint">get_flowgraph_list_for_entrypoint() (bugfinder.features.extraction.bag_of_words.any_hop.all_flows.FeatureExtractor method)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/any_hop/single_flow.html#bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor.get_flowgraph_list_for_entrypoint">(bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor method)</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.get_flowgraph_list_for_entrypoint">(bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor method)</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/single_hop/raw.html#bugfinder.features.extraction.bag_of_words.single_hop.raw.FeatureExtractor.get_flowgraph_list_for_entrypoint">(bugfinder.features.extraction.bag_of_words.single_hop.raw.FeatureExtractor method)</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/index.html#bugfinder.features.extraction.FlowGraphFeatureExtractor.get_flowgraph_list_for_entrypoint">(bugfinder.features.extraction.FlowGraphFeatureExtractor method)</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.get_flowgraph_list_for_entrypoint">(bugfinder.features.extraction.interproc.FeatureExtractor method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/features/extraction/bag_of_words/any_hop/all_flows.html#bugfinder.features.extraction.bag_of_words.any_hop.all_flows.FeatureExtractor.get_label_from_flowgraph">get_label_from_flowgraph() (bugfinder.features.extraction.bag_of_words.any_hop.all_flows.FeatureExtractor method)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/any_hop/single_flow.html#bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor.get_label_from_flowgraph">(bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor method)</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.get_label_from_flowgraph">(bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor method)</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/single_hop/raw.html#bugfinder.features.extraction.bag_of_words.single_hop.raw.FeatureExtractor.get_label_from_flowgraph">(bugfinder.features.extraction.bag_of_words.single_hop.raw.FeatureExtractor method)</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/index.html#bugfinder.features.extraction.FlowGraphFeatureExtractor.get_label_from_flowgraph">(bugfinder.features.extraction.FlowGraphFeatureExtractor method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/bugfinder/features/extraction/index.html#bugfinder.features.extraction.GraphFeatureExtractor.get_labels_from_feature_map">get_labels_from_feature_map() (bugfinder.features.extraction.GraphFeatureExtractor method)</a>
+</li>
+      <li><a href="api/bugfinder/utils/rand.html#bugfinder.utils.rand.get_rand_string">get_rand_string() (in module bugfinder.utils.rand)</a>
+</li>
+      <li><a href="api/bugfinder/utils/statistics.html#bugfinder.utils.statistics.get_time">get_time() (in module bugfinder.utils.statistics)</a>
+</li>
+      <li><a href="api/bugfinder/features/extraction/word2vec/embeddings.html#bugfinder.features.extraction.word2vec.embeddings.Word2VecEmbeddings.get_token_list">get_token_list() (bugfinder.features.extraction.word2vec.embeddings.Word2VecEmbeddings method)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/word2vec/model.html#bugfinder.features.extraction.word2vec.model.Word2VecModel.get_token_list">(bugfinder.features.extraction.word2vec.model.Word2VecModel method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/bugfinder/features/extraction/index.html#bugfinder.features.extraction.GraphFeatureExtractor">GraphFeatureExtractor (class in bugfinder.features.extraction)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/utils/statistics.html#bugfinder.utils.statistics.has_better_metrics">has_better_metrics() (in module bugfinder.utils.statistics)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/base/dataset.html#bugfinder.base.dataset.CodeWeaknessClassificationDataset.ignored_dirs">ignored_dirs (bugfinder.base.dataset.CodeWeaknessClassificationDataset attribute)</a>
+</li>
+      <li><a href="api/bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.image_name">image_name (bugfinder.base.processing.containers.AbstractContainerProcessing attribute)</a>
+</li>
+      <li><a href="api/bugfinder/processing/neo4j/importer.html#bugfinder.processing.neo4j.importer.Neo4J3Importer.import_dir">import_dir (bugfinder.processing.neo4j.importer.Neo4J3Importer attribute)</a>
+</li>
+      <li><a href="api/bugfinder/models/blstm_classifier.html#bugfinder.models.blstm_classifier.BLSTMClassifierModel.init_model">init_model() (bugfinder.models.blstm_classifier.BLSTMClassifierModel method)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/models/blstm_classifier.html#bugfinder.models.blstm_classifier.BLSTMClassifierTraining.init_model">(bugfinder.models.blstm_classifier.BLSTMClassifierTraining method)</a>
+</li>
+        <li><a href="api/bugfinder/models/index.html#bugfinder.models.ClassifierModel.init_model">(bugfinder.models.ClassifierModel method)</a>
+</li>
+        <li><a href="api/bugfinder/models/dnn_classifier.html#bugfinder.models.dnn_classifier.DNNClassifierTraining.init_model">(bugfinder.models.dnn_classifier.DNNClassifierTraining method)</a>
+</li>
+        <li><a href="api/bugfinder/models/interproc_lstm.html#bugfinder.models.interproc_lstm.InterprocLSTMTraining.init_model">(bugfinder.models.interproc_lstm.InterprocLSTMTraining method)</a>
+</li>
+        <li><a href="api/bugfinder/models/linear_classifier.html#bugfinder.models.linear_classifier.LinearClassifierTraining.init_model">(bugfinder.models.linear_classifier.LinearClassifierTraining method)</a>
+</li>
+        <li><a href="api/bugfinder/models/lstm_classifier.html#bugfinder.models.lstm_classifier.LSTMClassifierTraining.init_model">(bugfinder.models.lstm_classifier.LSTMClassifierTraining method)</a>
+</li>
+        <li><a href="api/bugfinder/models/sequential.html#bugfinder.models.sequential.SequentialModel.init_model">(bugfinder.models.sequential.SequentialModel method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/bugfinder/features/extraction/index.html#bugfinder.features.extraction.FlowGraphFeatureExtractor.initialize_features">initialize_features() (bugfinder.features.extraction.FlowGraphFeatureExtractor method)</a>
+</li>
+      <li><a href="api/bugfinder/processing/interproc.html#bugfinder.processing.interproc.InterprocMerger.interproc_cmds_post">interproc_cmds_post (bugfinder.processing.interproc.InterprocMerger attribute)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/processing/interproc.html#bugfinder.processing.interproc.InterprocProcessing.interproc_cmds_post">(bugfinder.processing.interproc.InterprocProcessing attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/processing/interproc.html#bugfinder.processing.interproc.InterprocMerger.interproc_cmds_pre">interproc_cmds_pre (bugfinder.processing.interproc.InterprocMerger attribute)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/processing/interproc.html#bugfinder.processing.interproc.InterprocProcessing.interproc_cmds_pre">(bugfinder.processing.interproc.InterprocProcessing attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/bugfinder/processing/interproc.html#bugfinder.processing.interproc.InterprocMerger.interproc_cmds_tc">interproc_cmds_tc (bugfinder.processing.interproc.InterprocMerger attribute)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/processing/interproc.html#bugfinder.processing.interproc.InterprocProcessing.interproc_cmds_tc">(bugfinder.processing.interproc.InterprocProcessing attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/bugfinder/processing/interproc.html#bugfinder.processing.interproc.interproc_worker">interproc_worker() (in module bugfinder.processing.interproc)</a>
+</li>
+      <li><a href="api/bugfinder/models/interproc_lstm.html#bugfinder.models.interproc_lstm.InterprocLSTMTraining">InterprocLSTMTraining (class in bugfinder.models.interproc_lstm)</a>
+</li>
+      <li><a href="api/bugfinder/processing/interproc.html#bugfinder.processing.interproc.InterprocMerger">InterprocMerger (class in bugfinder.processing.interproc)</a>
+</li>
+      <li><a href="api/bugfinder/processing/interproc.html#bugfinder.processing.interproc.InterprocProcessing">InterprocProcessing (class in bugfinder.processing.interproc)</a>
+</li>
+      <li><a href="api/bugfinder/base/dataset.html#bugfinder.base.dataset.DatasetQueueRetCode.INVALID_QUEUE">INVALID_QUEUE (bugfinder.base.dataset.DatasetQueueRetCode attribute)</a>
+</li>
+      <li><a href="api/bugfinder/processing/dataset/inverse.html#bugfinder.processing.dataset.inverse.InverseDataset">InverseDataset (class in bugfinder.processing.dataset.inverse)</a>
+</li>
+      <li><a href="api/bugfinder/utils/processing.html#bugfinder.utils.processing.is_operation_valid">is_operation_valid() (in module bugfinder.utils.processing)</a>
+</li>
+      <li><a href="api/bugfinder/utils/processing.html#bugfinder.utils.processing.is_processing_stack_valid">is_processing_stack_valid() (in module bugfinder.utils.processing)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="J">J</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.MultiBar.jobs">jobs (bugfinder.utils.progressbar.MultiBar attribute)</a>
+</li>
+      <li><a href="api/bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.MultiBar.jobz">jobz (bugfinder.utils.progressbar.MultiBar property)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/processing/joern/v031.html#bugfinder.processing.joern.v031.JoernProcessing">JoernProcessing (class in bugfinder.processing.joern.v031)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/processing/joern/v040.html#bugfinder.processing.joern.v040.JoernProcessing">(class in bugfinder.processing.joern.v040)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/models/linear_classifier.html#bugfinder.models.linear_classifier.LinearClassifierTraining">LinearClassifierTraining (class in bugfinder.models.linear_classifier)</a>
+</li>
+      <li><a href="api/bugfinder/base/dataset.html#bugfinder.base.dataset.CodeWeaknessClassificationDataset.load_summary">load_summary() (bugfinder.base.dataset.CodeWeaknessClassificationDataset method)</a>
+</li>
+      <li><a href="api/bugfinder/processing/interproc.html#bugfinder.processing.interproc.InterprocProcessing.log_input">log_input (bugfinder.processing.interproc.InterprocProcessing attribute)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/processing/sink_tagging.html#bugfinder.processing.sink_tagging.SinkTaggingProcessing.log_input">(bugfinder.processing.sink_tagging.SinkTaggingProcessing attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/processing/interproc.html#bugfinder.processing.interproc.InterprocProcessing.log_output">log_output (bugfinder.processing.interproc.InterprocProcessing attribute)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/processing/sink_tagging.html#bugfinder.processing.sink_tagging.SinkTaggingProcessing.log_output">(bugfinder.processing.sink_tagging.SinkTaggingProcessing attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/bugfinder/settings.html#bugfinder.settings.LOGGER">LOGGER (in module bugfinder.settings)</a>
+</li>
+      <li><a href="api/bugfinder/settings.html#bugfinder.settings.LOGGER_CONFIG">LOGGER_CONFIG (in module bugfinder.settings)</a>
+</li>
+      <li><a href="api/bugfinder/models/lstm_classifier.html#bugfinder.models.lstm_classifier.LSTMClassifierTraining">LSTMClassifierTraining (class in bugfinder.models.lstm_classifier)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.machine_ports">machine_ports (bugfinder.base.processing.containers.AbstractContainerProcessing attribute)</a>
+</li>
+      <li><a href="api/bugfinder/processing/cleaning/remove_main_function.html#bugfinder.processing.cleaning.remove_main_function.RemoveMainFunction.main_fn_entry">main_fn_entry (bugfinder.processing.cleaning.remove_main_function.RemoveMainFunction attribute)</a>
+</li>
+      <li><a href="api/bugfinder/processing/cleaning/remove_main_function.html#bugfinder.processing.cleaning.remove_main_function.RemoveMainFunction.main_fn_exit">main_fn_exit (bugfinder.processing.cleaning.remove_main_function.RemoveMainFunction attribute)</a>
+</li>
+      <li><a href="api/bugfinder/features/extraction/index.html#bugfinder.features.extraction.FlowGraphFeatureExtractor.map_features">map_features() (bugfinder.features.extraction.FlowGraphFeatureExtractor method)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/index.html#bugfinder.features.extraction.GraphFeatureExtractor.map_features">(bugfinder.features.extraction.GraphFeatureExtractor method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/bugfinder/features/extraction/index.html#bugfinder.features.extraction.FlowGraphFeatureExtractor.map_features_worker">map_features_worker() (bugfinder.features.extraction.FlowGraphFeatureExtractor method)</a>
+</li>
+      <li><a href="api/bugfinder/base/processing/files.html#bugfinder.base.processing.files.AbstractFileProcessing.match_file">match_file() (bugfinder.base.processing.files.AbstractFileProcessing method)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/processing/index.html#bugfinder.processing.AbstractCppFileProcessing.match_file">(bugfinder.processing.AbstractCppFileProcessing method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/cleaning/index.html#bugfinder.processing.cleaning.AbstractFileRemover.match_file">(bugfinder.processing.cleaning.AbstractFileRemover method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/cleaning/remove_cpp_files.html#bugfinder.processing.cleaning.remove_cpp_files.RemoveCppFiles.match_file">(bugfinder.processing.cleaning.remove_cpp_files.RemoveCppFiles method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/cleaning/remove_interproc_files.html#bugfinder.processing.cleaning.remove_interproc_files.RemoveInterprocFiles.match_file">(bugfinder.processing.cleaning.remove_interproc_files.RemoveInterprocFiles method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/bugfinder/features/extraction/bag_of_words/hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.max_hops">max_hops (bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor attribute)</a>
+</li>
+      <li><a href="api/bugfinder/features/extraction/node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.min_count">min_count (bugfinder.features.extraction.node2vec.model.Node2VecModel attribute)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/word2vec/model.html#bugfinder.features.extraction.word2vec.model.Word2VecModel.min_count">(bugfinder.features.extraction.word2vec.model.Word2VecModel attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/bugfinder/features/extraction/bag_of_words/hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.min_hops">min_hops (bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor attribute)</a>
+</li>
+      <li>
+    module
+
+      <ul>
+        <li><a href="api/bugfinder/index.html#module-bugfinder">bugfinder</a>
+</li>
+        <li><a href="api/bugfinder/base/index.html#module-bugfinder.base">bugfinder.base</a>
+</li>
+        <li><a href="api/bugfinder/base/dataset.html#module-bugfinder.base.dataset">bugfinder.base.dataset</a>
+</li>
+        <li><a href="api/bugfinder/base/processing/index.html#module-bugfinder.base.processing">bugfinder.base.processing</a>
+</li>
+        <li><a href="api/bugfinder/base/processing/containers.html#module-bugfinder.base.processing.containers">bugfinder.base.processing.containers</a>
+</li>
+        <li><a href="api/bugfinder/base/processing/files.html#module-bugfinder.base.processing.files">bugfinder.base.processing.files</a>
+</li>
+        <li><a href="api/bugfinder/features/index.html#module-bugfinder.features">bugfinder.features</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/index.html#module-bugfinder.features.extraction">bugfinder.features.extraction</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/index.html#module-bugfinder.features.extraction.bag_of_words">bugfinder.features.extraction.bag_of_words</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/any_hop/index.html#module-bugfinder.features.extraction.bag_of_words.any_hop">bugfinder.features.extraction.bag_of_words.any_hop</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/any_hop/all_flows.html#module-bugfinder.features.extraction.bag_of_words.any_hop.all_flows">bugfinder.features.extraction.bag_of_words.any_hop.all_flows</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/any_hop/single_flow.html#module-bugfinder.features.extraction.bag_of_words.any_hop.single_flow">bugfinder.features.extraction.bag_of_words.any_hop.single_flow</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/hops_n_flows.html#module-bugfinder.features.extraction.bag_of_words.hops_n_flows">bugfinder.features.extraction.bag_of_words.hops_n_flows</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/single_hop/index.html#module-bugfinder.features.extraction.bag_of_words.single_hop">bugfinder.features.extraction.bag_of_words.single_hop</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/bag_of_words/single_hop/raw.html#module-bugfinder.features.extraction.bag_of_words.single_hop.raw">bugfinder.features.extraction.bag_of_words.single_hop.raw</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/interproc.html#module-bugfinder.features.extraction.interproc">bugfinder.features.extraction.interproc</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/node2vec/index.html#module-bugfinder.features.extraction.node2vec">bugfinder.features.extraction.node2vec</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/node2vec/embeddings.html#module-bugfinder.features.extraction.node2vec.embeddings">bugfinder.features.extraction.node2vec.embeddings</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/node2vec/implementation.html#module-bugfinder.features.extraction.node2vec.implementation">bugfinder.features.extraction.node2vec.implementation</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/node2vec/model.html#module-bugfinder.features.extraction.node2vec.model">bugfinder.features.extraction.node2vec.model</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/word2vec/index.html#module-bugfinder.features.extraction.word2vec">bugfinder.features.extraction.word2vec</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/word2vec/embeddings.html#module-bugfinder.features.extraction.word2vec.embeddings">bugfinder.features.extraction.word2vec.embeddings</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/word2vec/model.html#module-bugfinder.features.extraction.word2vec.model">bugfinder.features.extraction.word2vec.model</a>
+</li>
+        <li><a href="api/bugfinder/features/reduction/index.html#module-bugfinder.features.reduction">bugfinder.features.reduction</a>
+</li>
+        <li><a href="api/bugfinder/features/reduction/auto_encoder.html#module-bugfinder.features.reduction.auto_encoder">bugfinder.features.reduction.auto_encoder</a>
+</li>
+        <li><a href="api/bugfinder/features/reduction/pca.html#module-bugfinder.features.reduction.pca">bugfinder.features.reduction.pca</a>
+</li>
+        <li><a href="api/bugfinder/features/reduction/recursive_feature_elimination.html#module-bugfinder.features.reduction.recursive_feature_elimination">bugfinder.features.reduction.recursive_feature_elimination</a>
+</li>
+        <li><a href="api/bugfinder/features/reduction/select_from_model.html#module-bugfinder.features.reduction.select_from_model">bugfinder.features.reduction.select_from_model</a>
+</li>
+        <li><a href="api/bugfinder/features/reduction/sequential_feature_selector.html#module-bugfinder.features.reduction.sequential_feature_selector">bugfinder.features.reduction.sequential_feature_selector</a>
+</li>
+        <li><a href="api/bugfinder/features/reduction/univariate_select.html#module-bugfinder.features.reduction.univariate_select">bugfinder.features.reduction.univariate_select</a>
+</li>
+        <li><a href="api/bugfinder/features/reduction/variance_threshold.html#module-bugfinder.features.reduction.variance_threshold">bugfinder.features.reduction.variance_threshold</a>
+</li>
+        <li><a href="api/bugfinder/models/index.html#module-bugfinder.models">bugfinder.models</a>
+</li>
+        <li><a href="api/bugfinder/models/blstm_classifier.html#module-bugfinder.models.blstm_classifier">bugfinder.models.blstm_classifier</a>
+</li>
+        <li><a href="api/bugfinder/models/dnn_classifier.html#module-bugfinder.models.dnn_classifier">bugfinder.models.dnn_classifier</a>
+</li>
+        <li><a href="api/bugfinder/models/interproc_lstm.html#module-bugfinder.models.interproc_lstm">bugfinder.models.interproc_lstm</a>
+</li>
+        <li><a href="api/bugfinder/models/linear_classifier.html#module-bugfinder.models.linear_classifier">bugfinder.models.linear_classifier</a>
+</li>
+        <li><a href="api/bugfinder/models/lstm_classifier.html#module-bugfinder.models.lstm_classifier">bugfinder.models.lstm_classifier</a>
+</li>
+        <li><a href="api/bugfinder/models/sequential.html#module-bugfinder.models.sequential">bugfinder.models.sequential</a>
+</li>
+        <li><a href="api/bugfinder/processing/index.html#module-bugfinder.processing">bugfinder.processing</a>
+</li>
+        <li><a href="api/bugfinder/processing/ast/index.html#module-bugfinder.processing.ast">bugfinder.processing.ast</a>
+</li>
+        <li><a href="api/bugfinder/processing/ast/v01.html#module-bugfinder.processing.ast.v01">bugfinder.processing.ast.v01</a>
+</li>
+        <li><a href="api/bugfinder/processing/ast/v02.html#module-bugfinder.processing.ast.v02">bugfinder.processing.ast.v02</a>
+</li>
+        <li><a href="api/bugfinder/processing/ast/v03.html#module-bugfinder.processing.ast.v03">bugfinder.processing.ast.v03</a>
+</li>
+        <li><a href="api/bugfinder/processing/cleaning/index.html#module-bugfinder.processing.cleaning">bugfinder.processing.cleaning</a>
+</li>
+        <li><a href="api/bugfinder/processing/cleaning/remove_comments.html#module-bugfinder.processing.cleaning.remove_comments">bugfinder.processing.cleaning.remove_comments</a>
+</li>
+        <li><a href="api/bugfinder/processing/cleaning/remove_cpp_files.html#module-bugfinder.processing.cleaning.remove_cpp_files">bugfinder.processing.cleaning.remove_cpp_files</a>
+</li>
+        <li><a href="api/bugfinder/processing/cleaning/remove_interproc_files.html#module-bugfinder.processing.cleaning.remove_interproc_files">bugfinder.processing.cleaning.remove_interproc_files</a>
+</li>
+        <li><a href="api/bugfinder/processing/cleaning/remove_main_function.html#module-bugfinder.processing.cleaning.remove_main_function">bugfinder.processing.cleaning.remove_main_function</a>
+</li>
+        <li><a href="api/bugfinder/processing/cleaning/replace_litterals.html#module-bugfinder.processing.cleaning.replace_litterals">bugfinder.processing.cleaning.replace_litterals</a>
+</li>
+        <li><a href="api/bugfinder/processing/dataset/index.html#module-bugfinder.processing.dataset">bugfinder.processing.dataset</a>
+</li>
+        <li><a href="api/bugfinder/processing/dataset/copy.html#module-bugfinder.processing.dataset.copy">bugfinder.processing.dataset.copy</a>
+</li>
+        <li><a href="api/bugfinder/processing/dataset/extract.html#module-bugfinder.processing.dataset.extract">bugfinder.processing.dataset.extract</a>
+</li>
+        <li><a href="api/bugfinder/processing/dataset/fix_rights.html#module-bugfinder.processing.dataset.fix_rights">bugfinder.processing.dataset.fix_rights</a>
+</li>
+        <li><a href="api/bugfinder/processing/dataset/inverse.html#module-bugfinder.processing.dataset.inverse">bugfinder.processing.dataset.inverse</a>
+</li>
+        <li><a href="api/bugfinder/processing/interproc.html#module-bugfinder.processing.interproc">bugfinder.processing.interproc</a>
+</li>
+        <li><a href="api/bugfinder/processing/joern/index.html#module-bugfinder.processing.joern">bugfinder.processing.joern</a>
+</li>
+        <li><a href="api/bugfinder/processing/joern/v031.html#module-bugfinder.processing.joern.v031">bugfinder.processing.joern.v031</a>
+</li>
+        <li><a href="api/bugfinder/processing/joern/v040.html#module-bugfinder.processing.joern.v040">bugfinder.processing.joern.v040</a>
+</li>
+        <li><a href="api/bugfinder/processing/neo4j/index.html#module-bugfinder.processing.neo4j">bugfinder.processing.neo4j</a>
+</li>
+        <li><a href="api/bugfinder/processing/neo4j/annot.html#module-bugfinder.processing.neo4j.annot">bugfinder.processing.neo4j.annot</a>
+</li>
+        <li><a href="api/bugfinder/processing/neo4j/converter.html#module-bugfinder.processing.neo4j.converter">bugfinder.processing.neo4j.converter</a>
+</li>
+        <li><a href="api/bugfinder/processing/neo4j/importer.html#module-bugfinder.processing.neo4j.importer">bugfinder.processing.neo4j.importer</a>
+</li>
+        <li><a href="api/bugfinder/processing/sink_tagging.html#module-bugfinder.processing.sink_tagging">bugfinder.processing.sink_tagging</a>
+</li>
+        <li><a href="api/bugfinder/processing/tokenizers/index.html#module-bugfinder.processing.tokenizers">bugfinder.processing.tokenizers</a>
+</li>
+        <li><a href="api/bugfinder/processing/tokenizers/replace_functions.html#module-bugfinder.processing.tokenizers.replace_functions">bugfinder.processing.tokenizers.replace_functions</a>
+</li>
+        <li><a href="api/bugfinder/processing/tokenizers/replace_variables.html#module-bugfinder.processing.tokenizers.replace_variables">bugfinder.processing.tokenizers.replace_variables</a>
+</li>
+        <li><a href="api/bugfinder/processing/tokenizers/tokenize_code.html#module-bugfinder.processing.tokenizers.tokenize_code">bugfinder.processing.tokenizers.tokenize_code</a>
+</li>
+        <li><a href="api/bugfinder/settings.html#module-bugfinder.settings">bugfinder.settings</a>
+</li>
+        <li><a href="api/bugfinder/utils/index.html#module-bugfinder.utils">bugfinder.utils</a>
+</li>
+        <li><a href="api/bugfinder/utils/containers.html#module-bugfinder.utils.containers">bugfinder.utils.containers</a>
+</li>
+        <li><a href="api/bugfinder/utils/dirs.html#module-bugfinder.utils.dirs">bugfinder.utils.dirs</a>
+</li>
+        <li><a href="api/bugfinder/utils/feature_selection.html#module-bugfinder.utils.feature_selection">bugfinder.utils.feature_selection</a>
+</li>
+        <li><a href="api/bugfinder/utils/processing.html#module-bugfinder.utils.processing">bugfinder.utils.processing</a>
+</li>
+        <li><a href="api/bugfinder/utils/progressbar.html#module-bugfinder.utils.progressbar">bugfinder.utils.progressbar</a>
+</li>
+        <li><a href="api/bugfinder/utils/rand.html#module-bugfinder.utils.rand">bugfinder.utils.rand</a>
+</li>
+        <li><a href="api/bugfinder/utils/statistics.html#module-bugfinder.utils.statistics">bugfinder.utils.statistics</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.MultiBar">MultiBar (class in bugfinder.utils.progressbar)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/features/extraction/index.html#bugfinder.features.extraction.GraphFeatureExtractor.need_map_features">need_map_features (bugfinder.features.extraction.GraphFeatureExtractor attribute)</a>
+</li>
+      <li><a href="api/bugfinder/features/extraction/node2vec/implementation.html#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation.NEIGHBORS_KEY">NEIGHBORS_KEY (bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation attribute)</a>
+</li>
+      <li><a href="api/bugfinder/processing/neo4j/converter.html#bugfinder.processing.neo4j.converter.Neo4J2Converter">Neo4J2Converter (class in bugfinder.processing.neo4j.converter)</a>
+</li>
+      <li><a href="api/bugfinder/processing/neo4j/converter.html#bugfinder.processing.neo4j.converter.Neo4J3Converter">Neo4J3Converter (class in bugfinder.processing.neo4j.converter)</a>
+</li>
+      <li><a href="api/bugfinder/processing/neo4j/importer.html#bugfinder.processing.neo4j.importer.Neo4J3Importer">Neo4J3Importer (class in bugfinder.processing.neo4j.importer)</a>
+</li>
+      <li><a href="api/bugfinder/processing/neo4j/index.html#bugfinder.processing.neo4j.Neo4J3Processing">Neo4J3Processing (class in bugfinder.processing.neo4j)</a>
+</li>
+      <li><a href="api/bugfinder/processing/neo4j/index.html#bugfinder.processing.neo4j.Neo4J3Processing.neo4j_db">neo4j_db (bugfinder.processing.neo4j.Neo4J3Processing attribute)</a>
+</li>
+      <li><a href="api/bugfinder/settings.html#bugfinder.settings.NEO4J_DEFAULT_TIMEOUT">NEO4J_DEFAULT_TIMEOUT (in module bugfinder.settings)</a>
+</li>
+      <li><a href="api/bugfinder/settings.html#bugfinder.settings.NEO4J_V3_CORES">NEO4J_V3_CORES (in module bugfinder.settings)</a>
+</li>
+      <li><a href="api/bugfinder/settings.html#bugfinder.settings.NEO4J_V3_MEMORY">NEO4J_V3_MEMORY (in module bugfinder.settings)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/processing/neo4j/annot.html#bugfinder.processing.neo4j.annot.Neo4JAnnotations">Neo4JAnnotations (class in bugfinder.processing.neo4j.annot)</a>
+</li>
+      <li><a href="api/bugfinder/processing/ast/v01.html#bugfinder.processing.ast.v01.Neo4JASTMarkup">Neo4JASTMarkup (class in bugfinder.processing.ast.v01)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/processing/ast/v02.html#bugfinder.processing.ast.v02.Neo4JASTMarkup">(class in bugfinder.processing.ast.v02)</a>
+</li>
+        <li><a href="api/bugfinder/processing/ast/v03.html#bugfinder.processing.ast.v03.Neo4JASTMarkup">(class in bugfinder.processing.ast.v03)</a>
+</li>
+      </ul></li>
+      <li><a href="api/bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.BestBar.next">next() (bugfinder.utils.progressbar.BestBar method)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.MultiBar.next">(bugfinder.utils.progressbar.MultiBar method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/bugfinder/features/extraction/node2vec/embeddings.html#bugfinder.features.extraction.node2vec.embeddings.Node2VecEmbeddings">Node2VecEmbeddings (class in bugfinder.features.extraction.node2vec.embeddings)</a>
+</li>
+      <li><a href="api/bugfinder/features/extraction/node2vec/implementation.html#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation">Node2VecImplementation (class in bugfinder.features.extraction.node2vec.implementation)</a>
+</li>
+      <li><a href="api/bugfinder/features/extraction/node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel">Node2VecModel (class in bugfinder.features.extraction.node2vec.model)</a>
+</li>
+      <li><a href="api/bugfinder/features/extraction/node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.num_walks">num_walks (bugfinder.features.extraction.node2vec.model.Node2VecModel attribute)</a>
+</li>
+      <li><a href="api/bugfinder/features/extraction/node2vec/implementation.html#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation.NUM_WALKS_KEY">NUM_WALKS_KEY (bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/base/dataset.html#bugfinder.base.dataset.DatasetQueueRetCode.OK">OK (bugfinder.base.dataset.DatasetQueueRetCode attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/base/dataset.html#bugfinder.base.dataset.DatasetQueueRetCode.OPERATION_FAIL">OPERATION_FAIL (bugfinder.base.dataset.DatasetQueueRetCode attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/features/extraction/node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.p">p (bugfinder.features.extraction.node2vec.model.Node2VecModel attribute)</a>
+</li>
+      <li><a href="api/bugfinder/features/extraction/node2vec/implementation.html#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation.P_KEY">P_KEY (bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation attribute)</a>
+</li>
+      <li><a href="api/bugfinder/settings.html#bugfinder.settings.POOL_SIZE">POOL_SIZE (in module bugfinder.settings)</a>
+</li>
+      <li><a href="api/bugfinder/features/extraction/node2vec/implementation.html#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation.PROBABILITIES_KEY">PROBABILITIES_KEY (bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation attribute)</a>
+</li>
+      <li><a href="api/bugfinder/base/dataset.html#bugfinder.base.dataset.CodeWeaknessClassificationDataset.process">process() (bugfinder.base.dataset.CodeWeaknessClassificationDataset method)</a>
+</li>
+      <li><a href="api/bugfinder/models/interproc_lstm.html#bugfinder.models.interproc_lstm.InterprocLSTMTraining.process_features">process_features() (bugfinder.models.interproc_lstm.InterprocLSTMTraining static method)</a>
+</li>
+      <li><a href="api/bugfinder/base/processing/files.html#bugfinder.base.processing.files.AbstractFileProcessing.process_file">process_file() (bugfinder.base.processing.files.AbstractFileProcessing method)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/processing/index.html#bugfinder.processing.AbstractCppFileProcessing.process_file">(bugfinder.processing.AbstractCppFileProcessing method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/cleaning/index.html#bugfinder.processing.cleaning.AbstractFileRemover.process_file">(bugfinder.processing.cleaning.AbstractFileRemover method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/cleaning/remove_comments.html#bugfinder.processing.cleaning.remove_comments.RemoveComments.process_file">(bugfinder.processing.cleaning.remove_comments.RemoveComments method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/cleaning/remove_main_function.html#bugfinder.processing.cleaning.remove_main_function.RemoveMainFunction.process_file">(bugfinder.processing.cleaning.remove_main_function.RemoveMainFunction method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/cleaning/replace_litterals.html#bugfinder.processing.cleaning.replace_litterals.ReplaceLitterals.process_file">(bugfinder.processing.cleaning.replace_litterals.ReplaceLitterals method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/tokenizers/replace_functions.html#bugfinder.processing.tokenizers.replace_functions.ReplaceFunctions.process_file">(bugfinder.processing.tokenizers.replace_functions.ReplaceFunctions static method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/tokenizers/replace_variables.html#bugfinder.processing.tokenizers.replace_variables.ReplaceVariables.process_file">(bugfinder.processing.tokenizers.replace_variables.ReplaceVariables static method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/tokenizers/tokenize_code.html#bugfinder.processing.tokenizers.tokenize_code.TokenizeCode.process_file">(bugfinder.processing.tokenizers.tokenize_code.TokenizeCode method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/base/processing/index.html#bugfinder.base.processing.ProcessingCategory.PROCESSING">PROCESSING (bugfinder.base.processing.ProcessingCategory attribute)</a>
+</li>
+      <li><a href="api/bugfinder/base/processing/index.html#bugfinder.base.processing.ProcessingCategory">ProcessingCategory (class in bugfinder.base.processing)</a>
+</li>
+      <li><a href="api/bugfinder/base/processing/index.html#bugfinder.base.processing.ProcessingDeprecation">ProcessingDeprecation (class in bugfinder.base.processing)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Q">Q</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/features/extraction/node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.q">q (bugfinder.features.extraction.node2vec.model.Node2VecModel attribute)</a>
+</li>
+      <li><a href="api/bugfinder/features/extraction/node2vec/implementation.html#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation.Q_KEY">Q_KEY (bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.MultiBar.queue">queue (bugfinder.utils.progressbar.MultiBar attribute)</a>
+</li>
+      <li><a href="api/bugfinder/base/dataset.html#bugfinder.base.dataset.CodeWeaknessClassificationDataset.queue_operation">queue_operation() (bugfinder.base.dataset.CodeWeaknessClassificationDataset method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/base/dataset.html#bugfinder.base.dataset.CodeWeaknessClassificationDataset.rebuild_index">rebuild_index() (bugfinder.base.dataset.CodeWeaknessClassificationDataset method)</a>
+</li>
+      <li><a href="api/bugfinder/base/processing/index.html#bugfinder.base.processing.ProcessingCategory.REDUCTION">REDUCTION (bugfinder.base.processing.ProcessingCategory attribute)</a>
+</li>
+      <li><a href="api/bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.MultiBar.refresh">refresh() (bugfinder.utils.progressbar.MultiBar method)</a>
+</li>
+      <li><a href="api/bugfinder/processing/cleaning/remove_comments.html#bugfinder.processing.cleaning.remove_comments.RemoveComments">RemoveComments (class in bugfinder.processing.cleaning.remove_comments)</a>
+</li>
+      <li><a href="api/bugfinder/processing/cleaning/remove_cpp_files.html#bugfinder.processing.cleaning.remove_cpp_files.RemoveCppFiles">RemoveCppFiles (class in bugfinder.processing.cleaning.remove_cpp_files)</a>
+</li>
+      <li><a href="api/bugfinder/processing/cleaning/remove_interproc_files.html#bugfinder.processing.cleaning.remove_interproc_files.RemoveInterprocFiles">RemoveInterprocFiles (class in bugfinder.processing.cleaning.remove_interproc_files)</a>
+</li>
+      <li><a href="api/bugfinder/processing/cleaning/remove_main_function.html#bugfinder.processing.cleaning.remove_main_function.RemoveMainFunction">RemoveMainFunction (class in bugfinder.processing.cleaning.remove_main_function)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/processing/tokenizers/replace_functions.html#bugfinder.processing.tokenizers.replace_functions.ReplaceFunctions">ReplaceFunctions (class in bugfinder.processing.tokenizers.replace_functions)</a>
+</li>
+      <li><a href="api/bugfinder/processing/cleaning/replace_litterals.html#bugfinder.processing.cleaning.replace_litterals.ReplaceLitterals">ReplaceLitterals (class in bugfinder.processing.cleaning.replace_litterals)</a>
+</li>
+      <li><a href="api/bugfinder/processing/cleaning/replace_litterals.html#bugfinder.processing.cleaning.replace_litterals.ReplaceLitterals.replacements">replacements (bugfinder.processing.cleaning.replace_litterals.ReplaceLitterals attribute)</a>
+</li>
+      <li><a href="api/bugfinder/processing/tokenizers/replace_variables.html#bugfinder.processing.tokenizers.replace_variables.ReplaceVariables">ReplaceVariables (class in bugfinder.processing.tokenizers.replace_variables)</a>
+</li>
+      <li><a href="api/bugfinder/base/dataset.html#bugfinder.base.dataset.CodeWeaknessClassificationDataset.reset_summary">reset_summary() (bugfinder.base.dataset.CodeWeaknessClassificationDataset method)</a>
+</li>
+      <li><a href="api/bugfinder/utils/feature_selection.html#bugfinder.utils.feature_selection.retrieve_original_columns_name">retrieve_original_columns_name() (in module bugfinder.utils.feature_selection)</a>
+</li>
+      <li><a href="api/bugfinder/processing/dataset/fix_rights.html#bugfinder.processing.dataset.fix_rights.RightFixer">RightFixer (class in bugfinder.processing.dataset.fix_rights)</a>
+</li>
+      <li><a href="api/bugfinder/settings.html#bugfinder.settings.ROOT_DIR">ROOT_DIR (in module bugfinder.settings)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/features/extraction/word2vec/embeddings.html#bugfinder.features.extraction.word2vec.embeddings.Word2VecEmbeddings.save_dataframe">save_dataframe() (bugfinder.features.extraction.word2vec.embeddings.Word2VecEmbeddings method)</a>
+</li>
+      <li><a href="api/bugfinder/features/extraction/index.html#bugfinder.features.extraction.GraphFeatureExtractor.save_labels_to_feature_map">save_labels_to_feature_map() (bugfinder.features.extraction.GraphFeatureExtractor method)</a>
+</li>
+      <li><a href="api/bugfinder/base/dataset.html#bugfinder.base.dataset.CodeWeaknessClassificationDataset.save_summary">save_summary() (bugfinder.base.dataset.CodeWeaknessClassificationDataset method)</a>
+</li>
+      <li><a href="api/bugfinder/features/extraction/node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.seed">seed (bugfinder.features.extraction.node2vec.model.Node2VecModel attribute)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/word2vec/model.html#bugfinder.features.extraction.word2vec.model.Word2VecModel.seed">(bugfinder.features.extraction.word2vec.model.Word2VecModel attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/bugfinder/features/reduction/index.html#bugfinder.features.reduction.AbstractFeatureSelector.select_feature">select_feature() (bugfinder.features.reduction.AbstractFeatureSelector method)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/features/reduction/auto_encoder.html#bugfinder.features.reduction.auto_encoder.FeatureSelector.select_feature">(bugfinder.features.reduction.auto_encoder.FeatureSelector method)</a>
+</li>
+        <li><a href="api/bugfinder/features/reduction/pca.html#bugfinder.features.reduction.pca.FeatureSelector.select_feature">(bugfinder.features.reduction.pca.FeatureSelector method)</a>
+</li>
+        <li><a href="api/bugfinder/features/reduction/recursive_feature_elimination.html#bugfinder.features.reduction.recursive_feature_elimination.FeatureSelector.select_feature">(bugfinder.features.reduction.recursive_feature_elimination.FeatureSelector method)</a>
+</li>
+        <li><a href="api/bugfinder/features/reduction/select_from_model.html#bugfinder.features.reduction.select_from_model.FeatureSelector.select_feature">(bugfinder.features.reduction.select_from_model.FeatureSelector method)</a>
+</li>
+        <li><a href="api/bugfinder/features/reduction/sequential_feature_selector.html#bugfinder.features.reduction.sequential_feature_selector.FeatureSelector.select_feature">(bugfinder.features.reduction.sequential_feature_selector.FeatureSelector method)</a>
+</li>
+        <li><a href="api/bugfinder/features/reduction/univariate_select.html#bugfinder.features.reduction.univariate_select.FeatureSelector.select_feature">(bugfinder.features.reduction.univariate_select.FeatureSelector method)</a>
+</li>
+        <li><a href="api/bugfinder/features/reduction/variance_threshold.html#bugfinder.features.reduction.variance_threshold.FeatureSelector.select_feature">(bugfinder.features.reduction.variance_threshold.FeatureSelector method)</a>
+</li>
+      </ul></li>
+      <li><a href="api/bugfinder/utils/feature_selection.html#bugfinder.utils.feature_selection.selection_estimators">selection_estimators() (in module bugfinder.utils.feature_selection)</a>
+</li>
+      <li><a href="api/bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.send_commands">send_commands() (bugfinder.base.processing.containers.AbstractContainerProcessing method)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/index.html#bugfinder.features.extraction.GraphFeatureExtractor.send_commands">(bugfinder.features.extraction.GraphFeatureExtractor method)</a>
+</li>
+        <li><a href="api/bugfinder/features/extraction/interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.send_commands">(bugfinder.features.extraction.interproc.FeatureExtractor method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/ast/index.html#bugfinder.processing.ast.AbstractASTMarkup.send_commands">(bugfinder.processing.ast.AbstractASTMarkup method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/dataset/fix_rights.html#bugfinder.processing.dataset.fix_rights.RightFixer.send_commands">(bugfinder.processing.dataset.fix_rights.RightFixer method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/interproc.html#bugfinder.processing.interproc.InterprocProcessing.send_commands">(bugfinder.processing.interproc.InterprocProcessing method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/joern/index.html#bugfinder.processing.joern.AbstractJoernProcessing.send_commands">(bugfinder.processing.joern.AbstractJoernProcessing method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/joern/v031.html#bugfinder.processing.joern.v031.JoernProcessing.send_commands">(bugfinder.processing.joern.v031.JoernProcessing method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/joern/v040.html#bugfinder.processing.joern.v040.JoernProcessing.send_commands">(bugfinder.processing.joern.v040.JoernProcessing method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/neo4j/annot.html#bugfinder.processing.neo4j.annot.Neo4JAnnotations.send_commands">(bugfinder.processing.neo4j.annot.Neo4JAnnotations method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/neo4j/converter.html#bugfinder.processing.neo4j.converter.Neo4J2Converter.send_commands">(bugfinder.processing.neo4j.converter.Neo4J2Converter method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/neo4j/converter.html#bugfinder.processing.neo4j.converter.Neo4J3Converter.send_commands">(bugfinder.processing.neo4j.converter.Neo4J3Converter method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/neo4j/importer.html#bugfinder.processing.neo4j.importer.Neo4J3Importer.send_commands">(bugfinder.processing.neo4j.importer.Neo4J3Importer method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/neo4j/index.html#bugfinder.processing.neo4j.Neo4J3Processing.send_commands">(bugfinder.processing.neo4j.Neo4J3Processing method)</a>
+</li>
+        <li><a href="api/bugfinder/processing/sink_tagging.html#bugfinder.processing.sink_tagging.SinkTaggingProcessing.send_commands">(bugfinder.processing.sink_tagging.SinkTaggingProcessing method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/models/sequential.html#bugfinder.models.sequential.SequenceGenerator">SequenceGenerator (class in bugfinder.models.sequential)</a>
+</li>
+      <li><a href="api/bugfinder/models/sequential.html#bugfinder.models.sequential.SequentialModel">SequentialModel (class in bugfinder.models.sequential)</a>
+</li>
+      <li><a href="api/bugfinder/processing/ast/index.html#bugfinder.processing.ast.AbstractASTMarkup.SET_AST_MARKUP_CMD">SET_AST_MARKUP_CMD (bugfinder.processing.ast.AbstractASTMarkup attribute)</a>
+</li>
+      <li><a href="api/bugfinder/processing/sink_tagging.html#bugfinder.processing.sink_tagging.SinkTaggingProcessing.sinksfile">sinksfile (bugfinder.processing.sink_tagging.SinkTaggingProcessing attribute)</a>
+</li>
+      <li><a href="api/bugfinder/processing/sink_tagging.html#bugfinder.processing.sink_tagging.sinktagging_worker">sinktagging_worker() (in module bugfinder.processing.sink_tagging)</a>
+</li>
+      <li><a href="api/bugfinder/processing/sink_tagging.html#bugfinder.processing.sink_tagging.SinkTaggingProcessing">SinkTaggingProcessing (class in bugfinder.processing.sink_tagging)</a>
+</li>
+      <li><a href="api/bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.SlowBar.slow_eta">slow_eta (bugfinder.utils.progressbar.SlowBar property)</a>
+</li>
+      <li><a href="api/bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.SlowBar">SlowBar (class in bugfinder.utils.progressbar)</a>
+</li>
+      <li><a href="api/bugfinder/utils/containers.html#bugfinder.utils.containers.start_container">start_container() (in module bugfinder.utils.containers)</a>
+</li>
+      <li><a href="api/bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.start_retries">start_retries (bugfinder.base.processing.containers.AbstractContainerProcessing attribute)</a>
+</li>
+      <li><a href="api/bugfinder/processing/neo4j/converter.html#bugfinder.processing.neo4j.converter.Neo4J2Converter.START_STRING">START_STRING (bugfinder.processing.neo4j.converter.Neo4J2Converter attribute)</a>
+</li>
+      <li><a href="api/bugfinder/processing/neo4j/index.html#bugfinder.processing.neo4j.Neo4J3Processing.start_string">start_string (bugfinder.processing.neo4j.Neo4J3Processing attribute)</a>
+</li>
+      <li><a href="api/bugfinder/utils/containers.html#bugfinder.utils.containers.stop_container_by_name">stop_container_by_name() (in module bugfinder.utils.containers)</a>
+</li>
+      <li><a href="api/bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.MultiBar.subscribe">subscribe() (bugfinder.utils.progressbar.MultiBar method)</a>
+</li>
+      <li><a href="api/bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.BestBar.suffix">suffix (bugfinder.utils.progressbar.BestBar attribute)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.MultiBar.suffix">(bugfinder.utils.progressbar.MultiBar attribute)</a>
+</li>
+        <li><a href="api/bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.SlowBar.suffix">(bugfinder.utils.progressbar.SlowBar attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/bugfinder/settings.html#bugfinder.settings.SUMMARY_FILE">SUMMARY_FILE (in module bugfinder.settings)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/features/extraction/interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.timeout">timeout (bugfinder.features.extraction.interproc.FeatureExtractor attribute)</a>
+</li>
+      <li><a href="api/bugfinder/processing/tokenizers/tokenize_code.html#bugfinder.processing.tokenizers.tokenize_code.TokenizeCode.to_regex">to_regex() (bugfinder.processing.tokenizers.tokenize_code.TokenizeCode method)</a>
+</li>
+      <li><a href="api/bugfinder/processing/tokenizers/tokenize_code.html#bugfinder.processing.tokenizers.tokenize_code.TokenizeCode">TokenizeCode (class in bugfinder.processing.tokenizers.tokenize_code)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/features/extraction/node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.tokens">tokens (bugfinder.features.extraction.node2vec.model.Node2VecModel attribute)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/word2vec/model.html#bugfinder.features.extraction.word2vec.model.Word2VecModel.tokens">(bugfinder.features.extraction.word2vec.model.Word2VecModel attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/bugfinder/features/reduction/auto_encoder.html#bugfinder.features.reduction.auto_encoder.FeatureSelector.train_encoder">train_encoder() (bugfinder.features.reduction.auto_encoder.FeatureSelector method)</a>
+</li>
+      <li><a href="api/bugfinder/base/processing/index.html#bugfinder.base.processing.ProcessingCategory.TRAINING">TRAINING (bugfinder.base.processing.ProcessingCategory attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.MultiBar.unsubscribe">unsubscribe() (bugfinder.utils.progressbar.MultiBar method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/features/extraction/node2vec/embeddings.html#bugfinder.features.extraction.node2vec.embeddings.Node2VecEmbeddings.vector_length">vector_length (bugfinder.features.extraction.node2vec.embeddings.Node2VecEmbeddings attribute)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.vector_length">(bugfinder.features.extraction.node2vec.model.Node2VecModel attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/features/extraction/word2vec/embeddings.html#bugfinder.features.extraction.word2vec.embeddings.Word2VecEmbeddings.vectorize">vectorize() (bugfinder.features.extraction.word2vec.embeddings.Word2VecEmbeddings method)</a>
+</li>
+      <li><a href="api/bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.volumes">volumes (bugfinder.base.processing.containers.AbstractContainerProcessing attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/utils/containers.html#bugfinder.utils.containers.wait_log_display">wait_log_display() (in module bugfinder.utils.containers)</a>
+</li>
+      <li><a href="api/bugfinder/features/extraction/node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.walk_length">walk_length (bugfinder.features.extraction.node2vec.model.Node2VecModel attribute)</a>
+</li>
+      <li><a href="api/bugfinder/features/extraction/node2vec/implementation.html#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation.WALK_LENGTH_KEY">WALK_LENGTH_KEY (bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation attribute)</a>
+</li>
+      <li><a href="api/bugfinder/features/extraction/node2vec/implementation.html#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation.WEIGHT_KEY">WEIGHT_KEY (bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation attribute)</a>
+</li>
+      <li><a href="api/bugfinder/features/extraction/node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.window_dim">window_dim (bugfinder.features.extraction.node2vec.model.Node2VecModel attribute)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/word2vec/model.html#bugfinder.features.extraction.word2vec.model.Word2VecModel.window_dim">(bugfinder.features.extraction.word2vec.model.Word2VecModel attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/bugfinder/features/extraction/word2vec/embeddings.html#bugfinder.features.extraction.word2vec.embeddings.Word2VecEmbeddings">Word2VecEmbeddings (class in bugfinder.features.extraction.word2vec.embeddings)</a>
+</li>
+      <li><a href="api/bugfinder/features/extraction/word2vec/model.html#bugfinder.features.extraction.word2vec.model.Word2VecModel">Word2VecModel (class in bugfinder.features.extraction.word2vec.model)</a>
+</li>
+      <li><a href="api/bugfinder/features/extraction/word2vec/model.html#bugfinder.features.extraction.word2vec.model.Word2VecModel.word_dim">word_dim (bugfinder.features.extraction.word2vec.model.Word2VecModel attribute)</a>
+</li>
+      <li><a href="api/bugfinder/features/extraction/node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.workers">workers (bugfinder.features.extraction.node2vec.model.Node2VecModel attribute)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/word2vec/model.html#bugfinder.features.extraction.word2vec.model.Word2VecModel.workers">(bugfinder.features.extraction.word2vec.model.Word2VecModel attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="api/bugfinder/features/extraction/index.html#bugfinder.features.extraction.GraphFeatureExtractor.write_extraction_outputs">write_extraction_outputs() (bugfinder.features.extraction.GraphFeatureExtractor method)</a>
+
+      <ul>
+        <li><a href="api/bugfinder/features/extraction/interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.write_extraction_outputs">(bugfinder.features.extraction.interproc.FeatureExtractor method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Designing pipelines &mdash; AI Bugfinder  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Designing processing classes" href="processing.html" />
+    <link rel="prev" title="Introduction" href="readme.html" />
+<link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"
+        type="text/javascript">
+</script>
+<script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js"
+        type="text/javascript">
+
+</script>
+<script type="text/javascript"
+        src="https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js">
+</script>
+<script>
+$(document).ready(function(){
+    // Mark external (non-nist.gov) A tags with class "external"
+    //If the adress start with https and ends with nist.gov
+    var re_nist = new RegExp('^https?:\/\/((^\/)*\.)*nist\\.gov(\/|$)');
+    //Regex to find address that start with https
+    var re_absolute_address = new RegExp('^((https?:)?\/\/)');
+    $("a").each(function(){
+        var url=$(this).attr('href');
+        if(re_nist.test(url) || !re_absolute_address.test(url)){
+            $(this).addClass('local');
+        }else{
+            //This a href appears to be external, so tag it
+            $(this).addClass('external');
+        }
+    });
+    // Add leaveNotice to external A elements
+    $('a.external').leaveNotice();
+});
+</script>
+<script>
+$(document).ready(function() {
+    // Move the paragraph from #myDiv1 to #myDiv2
+    $(".wy-nav-content-wrap").append($('#nistfootergoeshere'));
+});
+</script>
+<link rel="stylesheet" type="text/css"
+      href="https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css" />
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> AI Bugfinder
+          </a><div>A static analyzer powered by AI</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Designing pipelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#design-overview">1. Design overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#from-prototype-to-release">2. From prototype to release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#available-processing">3. Available processing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dataset-utilities">3.1. Dataset utilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dataset-processing">3.2. Dataset processing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#feature-extraction">3.3. Feature extraction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#feature-reduction">3.4. Feature reduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#models">3.5. Models</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="processing.html">Designing processing classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/index.html">Example pipelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">AI Bugfinder</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Designing pipelines</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="designing-pipelines">
+<h1>Designing pipelines<a class="headerlink" href="#designing-pipelines" title="Permalink to this headline"></a></h1>
+<section id="design-overview">
+<h2>1. Design overview<a class="headerlink" href="#design-overview" title="Permalink to this headline"></a></h2>
+<p>All pipelines are designed with the same philosophy, illustrated by the following
+figure.</p>
+<img alt="_images/pipeline.png" class="align-center" src="_images/pipeline.png" />
+<p>Assuming that the dataset is correctly organized in classes (the download scripts
+provided should take care of it), the steps to produce a viable classifier are the
+following:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Process the dataset</dt><dd><ul>
+<li><p>Clean the dataset from any items that cannot or should not be parsed.</p></li>
+<li><p>Create intermediate representations by parsing the code with external tools
+(Joern) or models (Word2Vec).</p></li>
+<li><p>Enhance the intermediate representations by linking or annotating them.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Extract the features</dt><dd><ul>
+<li><p>Select an extraction algorithm that will output the features in a CSV
+file. Assuming that <code class="docutils literal notranslate"><span class="pre">n</span></code> features are extracted and the dataset contains
+<code class="docutils literal notranslate"><span class="pre">m</span></code> samples, reloading the CSV file using pandas should create a DataFrame
+of shape <code class="docutils literal notranslate"><span class="pre">(m,n+2)</span></code>.</p></li>
+<li><p>Reduce the number of features by running one or several feature selectors
+on the dataset. This step will fasten the training of the model but might
+hinder further explainability steps.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Train the model</dt><dd><ul>
+<li><p>Choose a model type (fully connected, reccurrent, etc.) fit for the extracted
+features and train it with the processed dataset.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Evaluate the model</dt><dd><ul>
+<li><p>Run the model against unseen samples to see if the model can generalized what
+has been learned.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="from-prototype-to-release">
+<h2>2. From prototype to release<a class="headerlink" href="#from-prototype-to-release" title="Permalink to this headline"></a></h2>
+<p>To start designing a pipeline, it is advised to use Jupyter notebooks. Jupyter notebooks
+allow for fast prototyping by letting the user to inspect the variables created at each
+step and run these steps several time in a row. Some examples are available in the
+<a class="reference external" href="https://gitlab.nist.gov/gitlab/samate/ai-bugfinder/-/tree/master/notebooks">notebooks</a>
+folder.</p>
+<p>Once the notebook runs seemlessly, the code can be bundle into a Python script (see
+the <a class="reference external" href="https://gitlab.nist.gov/gitlab/samate/ai-bugfinder/-/tree/master/scripts">scripts</a>
+folder for more examples). With the help of <code class="docutils literal notranslate"><span class="pre">argparse</span></code>, the script can be made
+versatile. In addition, wrapping the Python script in a bash script allows to
+take care of dependency management that might not be straightforward for all users.</p>
+<p>Few pipelines examples are documented <a class="reference external" href="https://samate.ipages.nist.gov/ai-bugfinder/examples.html">here</a>
+to help you get started.</p>
+</section>
+<section id="available-processing">
+<h2>3. Available processing<a class="headerlink" href="#available-processing" title="Permalink to this headline"></a></h2>
+<p>Here are the processing already integrated to the codebase and available when
+designing new pipelines. If a processing needs to be fixed or added, please
+<a class="reference external" href="https://gitlab.nist.gov/gitlab/samate/ai-bugfinder/-/issues">create an issue</a>.
+To create new processing classes, see <a class="reference external" href="processing.html">Designing processing classes</a>.</p>
+<section id="dataset-utilities">
+<h3>3.1. Dataset utilities<a class="headerlink" href="#dataset-utilities" title="Permalink to this headline"></a></h3>
+<p>The dataset utility classes manipulate entire datasets for duplication or
+slicing:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="api/bugfinder/processing/dataset/copy.html#bugfinder.processing.dataset.copy.CopyDataset" title="bugfinder.processing.dataset.copy.CopyDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.processing.dataset.copy.CopyDataset</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/bugfinder/processing/dataset/extract.html#bugfinder.processing.dataset.extract.ExtractSampleDataset" title="bugfinder.processing.dataset.extract.ExtractSampleDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.processing.dataset.extract.ExtractSampleDataset</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/bugfinder/processing/dataset/inverse.html#bugfinder.processing.dataset.inverse.InverseDataset" title="bugfinder.processing.dataset.inverse.InverseDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.processing.dataset.inverse.InverseDataset</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/bugfinder/processing/dataset/fix_rights.html#bugfinder.processing.dataset.fix_rights.RightFixer" title="bugfinder.processing.dataset.fix_rights.RightFixer"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.processing.dataset.fix_rights.RightFixer</span></code></a></p></li>
+</ul>
+<img alt="_images/dataset_utils.png" class="align-center" src="_images/dataset_utils.png" />
+</section>
+<section id="dataset-processing">
+<h3>3.2. Dataset processing<a class="headerlink" href="#dataset-processing" title="Permalink to this headline"></a></h3>
+<p>One of the first step to process the dataset is to perform cleaning task on the data.
+Generic utilities have been implemented for cleaning files:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="api/bugfinder/processing/cleaning/remove_cpp_files.html#bugfinder.processing.cleaning.remove_cpp_files.RemoveCppFiles" title="bugfinder.processing.cleaning.remove_cpp_files.RemoveCppFiles"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.processing.cleaning.remove_cpp_files.RemoveCppFiles</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/bugfinder/processing/cleaning/remove_interproc_files.html#bugfinder.processing.cleaning.remove_interproc_files.RemoveInterprocFiles" title="bugfinder.processing.cleaning.remove_interproc_files.RemoveInterprocFiles"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.processing.cleaning.remove_interproc_files.RemoveInterprocFiles</span></code></a></p></li>
+</ul>
+<img alt="_images/dataset_proc_files_generic.png" class="align-center" src="_images/dataset_proc_files_generic.png" />
+<p>And other utilities are specifically designed to handle C/C++ code:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="api/bugfinder/processing/cleaning/remove_main_function.html#bugfinder.processing.cleaning.remove_main_function.RemoveMainFunction" title="bugfinder.processing.cleaning.remove_main_function.RemoveMainFunction"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.processing.cleaning.remove_main_function.RemoveMainFunction</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/bugfinder/processing/cleaning/replace_litterals.html#bugfinder.processing.cleaning.replace_litterals.ReplaceLitterals" title="bugfinder.processing.cleaning.replace_litterals.ReplaceLitterals"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.processing.cleaning.replace_litterals.ReplaceLitterals</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/bugfinder/processing/cleaning/remove_comments.html#bugfinder.processing.cleaning.remove_comments.RemoveComments" title="bugfinder.processing.cleaning.remove_comments.RemoveComments"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.processing.cleaning.remove_comments.RemoveComments</span></code></a></p></li>
+</ul>
+<img alt="_images/dataset_proc_files_cpp.png" class="align-center" src="_images/dataset_proc_files_cpp.png" />
+<p>The rest of the utilities are specific to the type of pipeline to apply and the model to
+train. See <a class="reference internal" href="examples/index.html"><span class="doc">Example pipelines</span></a> for more insights on the types of processing to use.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="api/bugfinder/processing/neo4j/index.html#module-bugfinder.processing.neo4j" title="bugfinder.processing.neo4j"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.processing.neo4j</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/bugfinder/processing/joern/index.html#module-bugfinder.processing.joern" title="bugfinder.processing.joern"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.processing.joern</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/bugfinder/processing/ast/index.html#module-bugfinder.processing.ast" title="bugfinder.processing.ast"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.processing.ast</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/bugfinder/processing/tokenizers/index.html#module-bugfinder.processing.tokenizers" title="bugfinder.processing.tokenizers"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.processing.tokenizers</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/bugfinder/processing/interproc.html#module-bugfinder.processing.interproc" title="bugfinder.processing.interproc"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.processing.interproc</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/bugfinder/processing/sink_tagging.html#module-bugfinder.processing.sink_tagging" title="bugfinder.processing.sink_tagging"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.processing.sink_tagging</span></code></a></p></li>
+</ul>
+</section>
+<section id="feature-extraction">
+<h3>3.3. Feature extraction<a class="headerlink" href="#feature-extraction" title="Permalink to this headline"></a></h3>
+<p>Once the dataset is prepared, feature extraction can happen. Since different models need
+different features, the bugfinder has several feature extraction method available:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="api/bugfinder/features/extraction/bag_of_words/hops_n_flows.html#module-bugfinder.features.extraction.bag_of_words.hops_n_flows" title="bugfinder.features.extraction.bag_of_words.hops_n_flows"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.features.extraction.bag_of_words.hops_n_flows</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/bugfinder/features/extraction/word2vec/model.html#module-bugfinder.features.extraction.word2vec.model" title="bugfinder.features.extraction.word2vec.model"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.features.extraction.word2vec.model</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/bugfinder/features/extraction/node2vec/model.html#module-bugfinder.features.extraction.node2vec.model" title="bugfinder.features.extraction.node2vec.model"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.features.extraction.node2vec.model</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/bugfinder/features/extraction/interproc.html#module-bugfinder.features.extraction.interproc" title="bugfinder.features.extraction.interproc"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.features.extraction.interproc</span></code></a></p></li>
+</ul>
+<img alt="_images/feature_extraction.png" class="align-center" src="_images/feature_extraction.png" />
+</section>
+<section id="feature-reduction">
+<h3>3.4. Feature reduction<a class="headerlink" href="#feature-reduction" title="Permalink to this headline"></a></h3>
+<p>Depending on the feature extractor chosen, it is possible to end up with many features,
+impacting training time and convergence of the model. To remediate, several feature
+reduction algorithms are packaged, all inheriting from
+<a class="reference internal" href="api/bugfinder/features/reduction/index.html#bugfinder.features.reduction.AbstractFeatureSelector" title="bugfinder.features.reduction.AbstractFeatureSelector"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.features.reduction.AbstractFeatureSelector</span></code></a>.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="api/bugfinder/features/reduction/auto_encoder.html#module-bugfinder.features.reduction.auto_encoder" title="bugfinder.features.reduction.auto_encoder"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.features.reduction.auto_encoder</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/bugfinder/features/reduction/pca.html#module-bugfinder.features.reduction.pca" title="bugfinder.features.reduction.pca"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.features.reduction.pca</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/bugfinder/features/reduction/recursive_feature_elimination.html#module-bugfinder.features.reduction.recursive_feature_elimination" title="bugfinder.features.reduction.recursive_feature_elimination"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.features.reduction.recursive_feature_elimination</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/bugfinder/features/reduction/select_from_model.html#module-bugfinder.features.reduction.select_from_model" title="bugfinder.features.reduction.select_from_model"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.features.reduction.select_from_model</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/bugfinder/features/reduction/sequential_feature_selector.html#module-bugfinder.features.reduction.sequential_feature_selector" title="bugfinder.features.reduction.sequential_feature_selector"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.features.reduction.sequential_feature_selector</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/bugfinder/features/reduction/univariate_select.html#module-bugfinder.features.reduction.univariate_select" title="bugfinder.features.reduction.univariate_select"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.features.reduction.univariate_select</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/bugfinder/features/reduction/variance_threshold.html#module-bugfinder.features.reduction.variance_threshold" title="bugfinder.features.reduction.variance_threshold"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.features.reduction.variance_threshold</span></code></a></p></li>
+</ul>
+</section>
+<section id="models">
+<h3>3.5. Models<a class="headerlink" href="#models" title="Permalink to this headline"></a></h3>
+<p>Once the feature extraction and reduction is done, the model can be trained. Several
+classifiers are available:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="api/bugfinder/models/linear_classifier.html#module-bugfinder.models.linear_classifier" title="bugfinder.models.linear_classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.models.linear_classifier</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/bugfinder/models/dnn_classifier.html#module-bugfinder.models.dnn_classifier" title="bugfinder.models.dnn_classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.models.dnn_classifier</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/bugfinder/models/lstm_classifier.html#module-bugfinder.models.lstm_classifier" title="bugfinder.models.lstm_classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.models.lstm_classifier</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/bugfinder/models/blstm_classifier.html#module-bugfinder.models.blstm_classifier" title="bugfinder.models.blstm_classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.models.blstm_classifier</span></code></a></p></li>
+<li><p><a class="reference internal" href="api/bugfinder/models/interproc_lstm.html#module-bugfinder.models.interproc_lstm" title="bugfinder.models.interproc_lstm"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.models.interproc_lstm</span></code></a></p></li>
+</ul>
+<img alt="_images/models.png" class="align-center" src="_images/models.png" />
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="readme.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="processing.html" class="btn btn-neutral float-right" title="Designing processing classes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

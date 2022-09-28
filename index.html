@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Introduction &mdash; AI Bugfinder  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Introduction" href="readme.html" />
+<link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"
+        type="text/javascript">
+</script>
+<script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js"
+        type="text/javascript">
+
+</script>
+<script type="text/javascript"
+        src="https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js">
+</script>
+<script>
+$(document).ready(function(){
+    // Mark external (non-nist.gov) A tags with class "external"
+    //If the adress start with https and ends with nist.gov
+    var re_nist = new RegExp('^https?:\/\/((^\/)*\.)*nist\\.gov(\/|$)');
+    //Regex to find address that start with https
+    var re_absolute_address = new RegExp('^((https?:)?\/\/)');
+    $("a").each(function(){
+        var url=$(this).attr('href');
+        if(re_nist.test(url) || !re_absolute_address.test(url)){
+            $(this).addClass('local');
+        }else{
+            //This a href appears to be external, so tag it
+            $(this).addClass('external');
+        }
+    });
+    // Add leaveNotice to external A elements
+    $('a.external').leaveNotice();
+});
+</script>
+<script>
+$(document).ready(function() {
+    // Move the paragraph from #myDiv1 to #myDiv2
+    $(".wy-nav-content-wrap").append($('#nistfootergoeshere'));
+});
+</script>
+<link rel="stylesheet" type="text/css"
+      href="https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css" />
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="#" class="icon icon-home"> AI Bugfinder
+          </a><div>A static analyzer powered by AI</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipelines.html">Designing pipelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="processing.html">Designing processing classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/index.html">Example pipelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">AI Bugfinder</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li>Introduction</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline"></a></h1>
+<section id="disclaimer">
+<h2>Disclaimer<a class="headerlink" href="#disclaimer" title="Permalink to this headline"></a></h2>
+<p>This installation has been tested on Ubuntu 20.04LTS systems. The commands
+listed in this file should be adapted depending on the system used.</p>
+</section>
+<section id="pre-requisites">
+<h2>1. Pre-requisites<a class="headerlink" href="#pre-requisites" title="Permalink to this headline"></a></h2>
+<section id="system-dependencies">
+<h3>1.1. System dependencies<a class="headerlink" href="#system-dependencies" title="Permalink to this headline"></a></h3>
+<ul class="simple">
+<li><p>APT packages (using <code class="docutils literal notranslate"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">${pkg_name}</span></code>):</p>
+<ul>
+<li><p>unzip</p></li>
+<li><p>parallel</p></li>
+</ul>
+</li>
+<li><p>Docker: <a class="reference external" href="https://docs.docker.com/install/#supported-platforms">https://docs.docker.com/install/#supported-platforms</a></p></li>
+<li><p>Docker-compose: <a class="reference external" href="https://docs.docker.com/compose/install/">https://docs.docker.com/compose/install/</a></p></li>
+<li><p>Python &gt;= 3.9: <a class="reference external" href="https://www.python.org/downloads/">https://www.python.org/downloads/</a></p></li>
+</ul>
+</section>
+<section id="pipenv">
+<h3>1.2. Pipenv<a class="headerlink" href="#pipenv" title="Permalink to this headline"></a></h3>
+<p>Using <code class="docutils literal notranslate"><span class="pre">pipenv</span></code> is the recommended way to manage the necessary Python
+dependencies. To set up the environment with <code class="docutils literal notranslate"><span class="pre">pipenv</span></code>, use the following
+commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install -U pipenv
+pipenv install --dev  <span class="c1"># --dev is optional and installs dev dependencies.</span>
+pipenv shell
+</pre></div>
+</div>
+</section>
+<section id="virtual-environments">
+<h3>1.3. Virtual environments<a class="headerlink" href="#virtual-environments" title="Permalink to this headline"></a></h3>
+<p>Other virtual environment solutions can also be used:</p>
+<ul class="simple">
+<li><p>With <code class="docutils literal notranslate"><span class="pre">venv</span></code>: <a class="reference external" href="https://virtualenv.pypa.io/en/stable/installation/">https://virtualenv.pypa.io/en/stable/installation/</a></p></li>
+<li><p>With <code class="docutils literal notranslate"><span class="pre">conda</span></code>: <a class="reference external" href="https://conda.io/docs/user-guide/install/index.html">https://conda.io/docs/user-guide/install/index.html</a></p></li>
+</ul>
+<p>Once the Python environment is setup and the repository downloaded, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install -r requirements.txt
+pip install -r requirements.dev.txt  <span class="c1"># Optional, installs dev dependencies.</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="installation">
+<h2>2. Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h2>
+<section id="download-the-datasets">
+<h3>2.1. Download the datasets<a class="headerlink" href="#download-the-datasets" title="Permalink to this headline"></a></h3>
+<p>There are several datasets  to choose from:</p>
+<ul class="simple">
+<li><p>The CWE-121 dataset is a set of buffer overflow test cases (2838 buggy test
+cases, 2838 clean test cases). It is a good place to begin the exploration of
+this repository. Download it by typing <code class="docutils literal notranslate"><span class="pre">./scripts/download_cwe121.sh</span></code>.</p></li>
+<li><p>The <a class="reference external" href="https://samate.nist.gov/SRD/testsuite.php">Juliet Dataset for C/C++</a>
+is a much larger dataset containing multiple types of bugs. It can be
+downloaded with <code class="docutils literal notranslate"><span class="pre">./scripts/download_juliet.sh</span></code> and contains 64099 buggy
+test cases and 64099 clean test cases.</p></li>
+<li><p>A better dataset, focused on buffer overflows, is packaged with this
+repository. It contains 6507 buggy test cases and 5905 clean test cases and
+can be installed using <code class="docutils literal notranslate"><span class="pre">./scripts/setup_ai_dataset.sh</span></code>. More information
+about this dataset is avaible at
+<a class="reference external" href="https://gitlab.nist.gov/gitlab/samate/ai-dataset/">https://gitlab.nist.gov/gitlab/samate/ai-dataset/</a>.</p></li>
+</ul>
+</section>
+<section id="build-the-docker-images">
+<h3>2.2. Build the docker images<a class="headerlink" href="#build-the-docker-images" title="Permalink to this headline"></a></h3>
+<p>The necessary docker images can be built using <em>docker-compose</em>. Run the
+following command to build them:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> images
+docker-compose build
+</pre></div>
+</div>
+<p>Four images should be built:</p>
+<ul class="simple">
+<li><p><em>joern-lite:0.3.1</em>: Latest release of Joern (11/21/2011).</p></li>
+<li><p><em>joern-lite:0.4.0</em>: Latest code update from Joern (04/12/2017).</p></li>
+<li><p><em>neo4j-ai:latest</em>: Neo4J v3 image package with additional shell tools.</p></li>
+<li><p><em>right-fixer:latest</em>: Tool to modify rights of a given folder.</p></li>
+</ul>
+</section>
+<section id="run-the-tests-optional">
+<h3>2.3. Run the tests (optional)<a class="headerlink" href="#run-the-tests-optional" title="Permalink to this headline"></a></h3>
+<p>Substantial tests have been developed to ensure the code is working properly.
+To run the tests, use <code class="docutils literal notranslate"><span class="pre">pytest</span> <span class="pre">./tests</span></code>. While no error should occur upon
+running the tests, some warnings may appear.</p>
+<p><em>Note: The development dependencies need to be installed to run these tests.</em></p>
+</section>
+</section>
+<section id="usage">
+<h2>3. Usage<a class="headerlink" href="#usage" title="Permalink to this headline"></a></h2>
+<section id="pipeline-design">
+<h3>3.1. Pipeline design<a class="headerlink" href="#pipeline-design" title="Permalink to this headline"></a></h3>
+<p>The tool and dataset now ready, a processing pipeline needs to be designed.
+While pipelines will vary depending on the datasets and models to be used, it
+will always be organized as such:</p>
+<img alt="_images/pipeline.png" class="align-center" src="_images/pipeline.png" />
+<ul class="simple">
+<li><p>Dataset processing mainly revolves around cleaning, parsing and annotating
+the dataset.</p></li>
+<li><p>Feature extraction consists in building a set of CSV files containing
+properties (features) of each item of the dataset. Various techniques can then
+be used to reduce the number of features and fasten the training step.</p></li>
+<li><p>Model training uses the CSV files as input to train the weights of the model.</p></li>
+<li><p>Model testing and validation evaluates the model performance on unseen
+samples of the dataset.</p></li>
+</ul>
+</section>
+<section id="processing-steps">
+<h3>3.2. Processing steps<a class="headerlink" href="#processing-steps" title="Permalink to this headline"></a></h3>
+<p>For each pipeline stage previously described, several processing steps have
+been implemented. This repository offers two ways of creating pipelines:</p>
+<ul class="simple">
+<li><p><strong>Jupyter notebooks</strong>, presenting code samples for the various operations to be
+performed. Users can use the code snippets provided to design their own
+pipelines in the form of a Python script. A code sample for a Python
+pipeline is avaiable at <a class="reference external" href="_static/scripts/sample.py">_static/scripts/sample.py</a>.</p></li>
+</ul>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot; Example script for dataset processing.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">bugfinder.base.dataset</span> <span class="kn">import</span> <span class="n">CodeWeaknessClassificationDataset</span> <span class="k">as</span> <span class="n">Dataset</span>
+<span class="kn">from</span> <span class="nn">bugfinder.processing.cleaning.replace_litterals</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ReplaceLitterals</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">bugfinder.features.reduction.pca</span> <span class="kn">import</span> <span class="n">FeatureSelector</span> <span class="k">as</span> <span class="n">PCA</span>
+<span class="kn">from</span> <span class="nn">bugfinder.processing.dataset.fix_rights</span> <span class="kn">import</span> <span class="n">RightFixer</span>
+<span class="kn">from</span> <span class="nn">bugfinder.processing.dataset.extract</span> <span class="kn">import</span> <span class="n">ExtractSampleDataset</span>
+<span class="kn">from</span> <span class="nn">bugfinder.processing.cleaning.remove_cpp_files</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">RemoveCppFiles</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">bugfinder.models.linear_classifier</span> <span class="kn">import</span> <span class="n">LinearClassifierTraining</span>
+<span class="kn">from</span> <span class="nn">bugfinder.features.extraction.bag_of_words.hops_n_flows</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">FeatureExtractor</span> <span class="k">as</span> <span class="n">HopsNFlowsExtractor</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">bugfinder.processing.ast.v02</span> <span class="kn">import</span> <span class="n">Neo4JASTMarkup</span> <span class="k">as</span> <span class="n">Neo4JASTMarkupV02</span>
+<span class="kn">from</span> <span class="nn">bugfinder.processing.neo4j.importer</span> <span class="kn">import</span> <span class="n">Neo4J3Importer</span>
+<span class="kn">from</span> <span class="nn">bugfinder.processing.neo4j.annot</span> <span class="kn">import</span> <span class="n">Neo4JAnnotations</span>
+<span class="kn">from</span> <span class="nn">bugfinder.processing.joern.v040</span> <span class="kn">import</span> <span class="n">JoernProcessing</span> <span class="k">as</span> <span class="n">Joern040DatasetProcessing</span>
+
+<span class="n">input_dataset_path</span> <span class="o">=</span> <span class="s2">&quot;/path/to/dataset.in&quot;</span>
+<span class="n">output_dataset_path</span> <span class="o">=</span> <span class="s2">&quot;/path/to/dataset.out&quot;</span>
+
+<span class="c1"># Extract 50 samples from the dataset.</span>
+<span class="n">input_dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">input_dataset_path</span><span class="p">)</span>
+<span class="n">input_dataset</span><span class="o">.</span><span class="n">queue_operation</span><span class="p">(</span>
+    <span class="n">ExtractSampleDataset</span><span class="p">,</span>
+    <span class="p">{</span><span class="s2">&quot;to_path&quot;</span><span class="p">:</span> <span class="n">output_dataset_path</span><span class="p">,</span> <span class="s2">&quot;sample_nb&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s2">&quot;force&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="n">input_dataset</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+
+<span class="n">right_fixer_op</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;op_class&quot;</span><span class="p">:</span> <span class="n">RightFixer</span><span class="p">,</span>
+    <span class="s2">&quot;op_args&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;command_args&quot;</span><span class="p">:</span> <span class="s2">&quot;neo4j_v3.db 101 101&quot;</span><span class="p">},</span>
+<span class="p">}</span>
+
+<span class="c1"># Cleanup the dataset by removing C++ files and replacing litterals.</span>
+<span class="n">output_dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">output_dataset_path</span><span class="p">)</span>
+<span class="n">output_dataset</span><span class="o">.</span><span class="n">queue_operation</span><span class="p">(</span><span class="n">RemoveCppFiles</span><span class="p">)</span>
+<span class="n">output_dataset</span><span class="o">.</span><span class="n">queue_operation</span><span class="p">(</span><span class="n">ReplaceLitterals</span><span class="p">)</span>
+<span class="c1"># Run version 0.4.0 of the Joern processor.</span>
+<span class="n">output_dataset</span><span class="o">.</span><span class="n">queue_operation</span><span class="p">(</span><span class="n">Joern040DatasetProcessing</span><span class="p">)</span>
+<span class="n">output_dataset</span><span class="o">.</span><span class="n">queue_operation</span><span class="p">(</span><span class="n">Neo4J3Importer</span><span class="p">)</span>
+<span class="n">output_dataset</span><span class="o">.</span><span class="n">queue_operation</span><span class="p">(</span><span class="o">**</span><span class="n">right_fixer_op</span><span class="p">)</span>
+<span class="n">output_dataset</span><span class="o">.</span><span class="n">queue_operation</span><span class="p">(</span><span class="n">Neo4JAnnotations</span><span class="p">)</span>
+<span class="c1"># Use AST markup v2 to annotate the graph.</span>
+<span class="n">output_dataset</span><span class="o">.</span><span class="n">queue_operation</span><span class="p">(</span><span class="o">**</span><span class="n">right_fixer_op</span><span class="p">)</span>
+<span class="n">output_dataset</span><span class="o">.</span><span class="n">queue_operation</span><span class="p">(</span><span class="n">Neo4JASTMarkupV02</span><span class="p">)</span>
+<span class="c1"># Run feature extraction.</span>
+<span class="n">output_dataset</span><span class="o">.</span><span class="n">queue_operation</span><span class="p">(</span><span class="n">HopsNFlowsExtractor</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;need_map_features&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+<span class="n">output_dataset</span><span class="o">.</span><span class="n">queue_operation</span><span class="p">(</span><span class="n">HopsNFlowsExtractor</span><span class="p">)</span>
+<span class="c1"># Run feature selection to fasten training.</span>
+<span class="n">output_dataset</span><span class="o">.</span><span class="n">queue_operation</span><span class="p">(</span><span class="n">PCA</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;dimension&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s2">&quot;dry_run&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">})</span>
+<span class="c1"># Run model training and display metrics.</span>
+<span class="n">output_dataset</span><span class="o">.</span><span class="n">queue_operation</span><span class="p">(</span>
+    <span class="n">LinearClassifierTraining</span><span class="p">,</span>
+    <span class="p">{</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;lin-cls&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;batch_size&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="s2">&quot;max_items&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;epochs&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;keep_best_model&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;reset&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+
+<span class="n">output_dataset</span><span class="o">.</span><span class="n">process</span><span class="p">()</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>Python scripts</strong>, to directly manipulate the dataset, extract features and
+train models to identify bugs in the source code. The commands to run the
+pipelines can be bundled in shell scripts. The same example as
+before, using the python scripts is available at
+<a class="reference external" href="_static/scripts/sample.sh">_static/scripts/sample.sh</a>.</p></li>
+</ul>
+<div class="code bash highlight-default notranslate"><div class="highlight"><pre><span></span>#!/usr/bin/env bash
+# Example script for dataset processing.
+#
+dataset_main=&quot;./data/ai-dataset_orig&quot;
+dataset=&quot;./data/dataset.out&quot;
+
+# Extract 50 samples from the dataset.
+python ./scripts/extract_dataset.py \
+  -i ${dataset_main} \
+  -o ${dataset} \
+  -n 50 -f
+# Cleanup the dataset by removing C++ files and replacing litterals.
+python ./scripts/clean_dataset.py ${dataset} \
+  --no-cpp --no-main --no-litterals
+# Run version 0.4.0 of the Joern processor.
+python ./scripts/run_joern.py ${dataset} -v0.4.0
+# Use AST markup v2 to annotate the graph.
+python ./scripts/run_ast_markup.py ${dataset} -v2
+# Run feature extraction.
+python ./scripts/run_feature_extraction.py ${dataset} -e shr -m
+python ./scripts/run_feature_extraction.py ${dataset} -e shr
+## Run model training and display metrics.
+python ./scripts/run_model_training.py \
+  -m linear_classifier -n lin_cls \
+  ${dataset}
+</pre></div>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="readme.html" class="btn btn-neutral float-right" title="Introduction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

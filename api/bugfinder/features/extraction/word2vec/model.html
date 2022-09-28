@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>bugfinder.features.extraction.word2vec.model &mdash; AI Bugfinder  documentation</title>
+      <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
+        <script src="../../../../../_static/jquery.js"></script>
+        <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/doctools.js"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" />
+    <link rel="next" title="bugfinder.features.extraction.node2vec" href="../node2vec/index.html" />
+    <link rel="prev" title="bugfinder.features.extraction.word2vec.embeddings" href="embeddings.html" />
+<link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"
+        type="text/javascript">
+</script>
+<script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js"
+        type="text/javascript">
+
+</script>
+<script type="text/javascript"
+        src="https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js">
+</script>
+<script>
+$(document).ready(function(){
+    // Mark external (non-nist.gov) A tags with class "external"
+    //If the adress start with https and ends with nist.gov
+    var re_nist = new RegExp('^https?:\/\/((^\/)*\.)*nist\\.gov(\/|$)');
+    //Regex to find address that start with https
+    var re_absolute_address = new RegExp('^((https?:)?\/\/)');
+    $("a").each(function(){
+        var url=$(this).attr('href');
+        if(re_nist.test(url) || !re_absolute_address.test(url)){
+            $(this).addClass('local');
+        }else{
+            //This a href appears to be external, so tag it
+            $(this).addClass('external');
+        }
+    });
+    // Add leaveNotice to external A elements
+    $('a.external').leaveNotice();
+});
+</script>
+<script>
+$(document).ready(function() {
+    // Move the paragraph from #myDiv1 to #myDiv2
+    $(".wy-nav-content-wrap").append($('#nistfootergoeshere'));
+});
+</script>
+<link rel="stylesheet" type="text/css"
+      href="https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css" />
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../../index.html" class="icon icon-home"> AI Bugfinder
+          </a><div>A static analyzer powered by AI</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../../readme.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../pipelines.html">Designing pipelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../processing.html">Designing processing classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../examples/index.html">Example pipelines</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../../index.html">API documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../../index.html">bugfinder</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../../settings.html">bugfinder.settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../models/index.html">bugfinder.models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../utils/index.html">bugfinder.utils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../base/index.html">bugfinder.base</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../../index.html">bugfinder.features</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../../reduction/index.html">bugfinder.features.reduction</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../index.html">bugfinder.features.extraction</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../processing/index.html">bugfinder.processing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">AI Bugfinder</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../../index.html">API documentation</a> &raquo;</li>
+          <li><a href="../../../index.html">bugfinder</a> &raquo;</li>
+          <li><a href="../../index.html">bugfinder.features</a> &raquo;</li>
+          <li><a href="../index.html">bugfinder.features.extraction</a> &raquo;</li>
+          <li><a href="index.html">bugfinder.features.extraction.word2vec</a> &raquo;</li>
+      <li>bugfinder.features.extraction.word2vec.model</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-bugfinder.features.extraction.word2vec.model">
+<span id="bugfinder-features-extraction-word2vec-model"></span><h1>bugfinder.features.extraction.word2vec.model<a class="headerlink" href="#module-bugfinder.features.extraction.word2vec.model" title="Permalink to this headline"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="bugfinder.features.extraction.word2vec.model.Word2VecModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bugfinder.features.extraction.word2vec.model.</span></span><span class="sig-name descname"><span class="pre">Word2VecModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deprecation_warning</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bugfinder.features.extraction.word2vec.model.Word2VecModel" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../../base/processing/index.html#bugfinder.base.processing.AbstractProcessing" title="bugfinder.base.processing.AbstractProcessing"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.base.processing.AbstractProcessing</span></code></a></p>
+<p>Class responsible for the training of the Word2Vec model using the corpus
+generated by the tokenization of the dataset.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="bugfinder.features.extraction.word2vec.model.Word2VecModel.algorithm">
+<span class="sig-name descname"><span class="pre">algorithm</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#bugfinder.features.extraction.word2vec.model.Word2VecModel.algorithm" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bugfinder.features.extraction.word2vec.model.Word2VecModel.execute">
+<span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bugfinder.features.extraction.word2vec.model.Word2VecModel.execute" title="Permalink to this definition"></a></dt>
+<dd><p>Run the processing. This function reads each tokenized file in the dataset,
+generates a corpus, trains the model and saves it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)"><em>str</em></a>) – This parameter will be the name of the model saved in disk.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bugfinder.features.extraction.word2vec.model.Word2VecModel.get_token_list">
+<span class="sig-name descname"><span class="pre">get_token_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bugfinder.features.extraction.word2vec.model.Word2VecModel.get_token_list" title="Permalink to this definition"></a></dt>
+<dd><p>Reads each file, retrieves the tokens from it and concatenates them in a
+single list which will be the corpus.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list containing all the tokens in the dataset, concatenated
+to form the corpus</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>token_list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="bugfinder.features.extraction.word2vec.model.Word2VecModel.min_count">
+<span class="sig-name descname"><span class="pre">min_count</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#bugfinder.features.extraction.word2vec.model.Word2VecModel.min_count" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="bugfinder.features.extraction.word2vec.model.Word2VecModel.seed">
+<span class="sig-name descname"><span class="pre">seed</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#bugfinder.features.extraction.word2vec.model.Word2VecModel.seed" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="bugfinder.features.extraction.word2vec.model.Word2VecModel.tokens">
+<span class="sig-name descname"><span class="pre">tokens</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#bugfinder.features.extraction.word2vec.model.Word2VecModel.tokens" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="bugfinder.features.extraction.word2vec.model.Word2VecModel.window_dim">
+<span class="sig-name descname"><span class="pre">window_dim</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#bugfinder.features.extraction.word2vec.model.Word2VecModel.window_dim" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="bugfinder.features.extraction.word2vec.model.Word2VecModel.word_dim">
+<span class="sig-name descname"><span class="pre">word_dim</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">50</span></em><a class="headerlink" href="#bugfinder.features.extraction.word2vec.model.Word2VecModel.word_dim" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="bugfinder.features.extraction.word2vec.model.Word2VecModel.workers">
+<span class="sig-name descname"><span class="pre">workers</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#bugfinder.features.extraction.word2vec.model.Word2VecModel.workers" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="embeddings.html" class="btn btn-neutral float-left" title="bugfinder.features.extraction.word2vec.embeddings" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../node2vec/index.html" class="btn btn-neutral float-right" title="bugfinder.features.extraction.node2vec" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

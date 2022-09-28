@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>bugfinder.processing.neo4j.annot &mdash; AI Bugfinder  documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="bugfinder.processing.neo4j.importer" href="importer.html" />
+    <link rel="prev" title="bugfinder.processing.neo4j" href="index.html" />
+<link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"
+        type="text/javascript">
+</script>
+<script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js"
+        type="text/javascript">
+
+</script>
+<script type="text/javascript"
+        src="https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js">
+</script>
+<script>
+$(document).ready(function(){
+    // Mark external (non-nist.gov) A tags with class "external"
+    //If the adress start with https and ends with nist.gov
+    var re_nist = new RegExp('^https?:\/\/((^\/)*\.)*nist\\.gov(\/|$)');
+    //Regex to find address that start with https
+    var re_absolute_address = new RegExp('^((https?:)?\/\/)');
+    $("a").each(function(){
+        var url=$(this).attr('href');
+        if(re_nist.test(url) || !re_absolute_address.test(url)){
+            $(this).addClass('local');
+        }else{
+            //This a href appears to be external, so tag it
+            $(this).addClass('external');
+        }
+    });
+    // Add leaveNotice to external A elements
+    $('a.external').leaveNotice();
+});
+</script>
+<script>
+$(document).ready(function() {
+    // Move the paragraph from #myDiv1 to #myDiv2
+    $(".wy-nav-content-wrap").append($('#nistfootergoeshere'));
+});
+</script>
+<link rel="stylesheet" type="text/css"
+      href="https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css" />
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../../index.html" class="icon icon-home"> AI Bugfinder
+          </a><div>A static analyzer powered by AI</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../../readme.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pipelines.html">Designing pipelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../processing.html">Designing processing classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/index.html">Example pipelines</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../../index.html">API documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../../index.html">bugfinder</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../../settings.html">bugfinder.settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../models/index.html">bugfinder.models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../utils/index.html">bugfinder.utils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../base/index.html">bugfinder.base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../features/index.html">bugfinder.features</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../index.html">bugfinder.processing</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../interproc.html">bugfinder.processing.interproc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../sink_tagging.html">bugfinder.processing.sink_tagging</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../tokenizers/index.html">bugfinder.processing.tokenizers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cleaning/index.html">bugfinder.processing.cleaning</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="index.html">bugfinder.processing.neo4j</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../dataset/index.html">bugfinder.processing.dataset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../joern/index.html">bugfinder.processing.joern</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../ast/index.html">bugfinder.processing.ast</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">AI Bugfinder</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../../index.html">API documentation</a> &raquo;</li>
+          <li><a href="../../index.html">bugfinder</a> &raquo;</li>
+          <li><a href="../index.html">bugfinder.processing</a> &raquo;</li>
+          <li><a href="index.html">bugfinder.processing.neo4j</a> &raquo;</li>
+      <li>bugfinder.processing.neo4j.annot</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-bugfinder.processing.neo4j.annot">
+<span id="bugfinder-processing-neo4j-annot"></span><h1>bugfinder.processing.neo4j.annot<a class="headerlink" href="#module-bugfinder.processing.neo4j.annot" title="Permalink to this headline"></a></h1>
+<p>Module for annotating neo4J graphs</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="bugfinder.processing.neo4j.annot.Neo4JAnnotations">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bugfinder.processing.neo4j.annot.</span></span><span class="sig-name descname"><span class="pre">Neo4JAnnotations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deprecation_warning</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bugfinder.processing.neo4j.annot.Neo4JAnnotations" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="index.html#bugfinder.processing.neo4j.Neo4J3Processing" title="bugfinder.processing.neo4j.Neo4J3Processing"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.processing.neo4j.Neo4J3Processing</span></code></a></p>
+<p>Neo4J annotation class</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="bugfinder.processing.neo4j.annot.Neo4JAnnotations.COMMANDS">
+<span class="sig-name descname"><span class="pre">COMMANDS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['MATCH</span> <span class="pre">(n)</span> <span class="pre">SET</span> <span class="pre">n:GenericNode;',</span> <span class="pre">'CREATE</span> <span class="pre">INDEX</span> <span class="pre">ON</span> <span class="pre">:GenericNode(type);',</span> <span class="pre">'CREATE</span> <span class="pre">INDEX</span> <span class="pre">ON</span> <span class="pre">:GenericNode(code);',</span> <span class="pre">'CREATE</span> <span class="pre">INDEX</span> <span class="pre">ON</span> <span class="pre">:GenericNode(filepath);',</span> <span class="pre">&quot;\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">MATCH</span> <span class="pre">(root1:GenericNode)-[:FLOWS_TO|REACHES|CONTROLS]-&gt;()\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">WHERE</span> <span class="pre">root1.type</span> <span class="pre">IN</span> <span class="pre">[\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">'Condition',</span> <span class="pre">'ForInit',</span> <span class="pre">'IncDecOp',</span> <span class="pre">'PostIncDecOperationExpression',\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">'ExpressionStatement',</span> <span class="pre">'IdentifierDeclStatement',</span> <span class="pre">'CFGEntryNode',\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">'BreakStatement',</span> <span class="pre">'Parameter',</span> <span class="pre">'ReturnStatement',</span> <span class="pre">'Label',\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">'GotoStatement',</span> <span class="pre">'Statement',</span> <span class="pre">'UnaryExpression'\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">]\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">SET</span> <span class="pre">root1:UpstreamNode;\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">&quot;,</span> <span class="pre">&quot;\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">MATCH</span> <span class="pre">()-[:FLOWS_TO|REACHES|CONTROLS]-&gt;(root2:GenericNode)\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">WHERE</span> <span class="pre">root2.type</span> <span class="pre">IN</span> <span class="pre">[\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">'CFGExitNode',</span> <span class="pre">'IncDecOp',</span> <span class="pre">'Condition',</span> <span class="pre">'PostIncDecOperationExpression',\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">'ExpressionStatement',</span> <span class="pre">'ForInit',</span> <span class="pre">'IdentifierDeclStatement',\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">'BreakStatement',</span> <span class="pre">'Parameter',</span> <span class="pre">'ReturnStatement',</span> <span class="pre">'Label',\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">'GotoStatement',</span> <span class="pre">'Statement',</span> <span class="pre">'UnaryExpression'\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">]\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">SET</span> <span class="pre">root2:DownstreamNode;\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">&quot;,</span> <span class="pre">'\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">MATCH</span> <span class="pre">(n</span> <span class="pre">{type:&quot;Function&quot;})\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">WHERE</span> <span class="pre">EXISTS(n.name)\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">SET</span> <span class="pre">n.code=n.name;\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">',</span> <span class="pre">'\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">MATCH</span> <span class="pre">(n</span> <span class="pre">{type:&quot;File&quot;})\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">WHERE</span> <span class="pre">EXISTS(n.filepath)\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">SET</span> <span class="pre">n.code=n.filepath;\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">',</span> <span class="pre">'\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">MATCH</span> <span class="pre">(node)\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">WHERE</span> <span class="pre">EXISTS(node.functionId)\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">SET</span> <span class="pre">node.functionId=toString(node.functionId);\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">',</span> <span class="pre">&quot;\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">MATCH</span> <span class="pre">(file:GenericNode</span> <span class="pre">{type:'File'})\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">WITH</span> <span class="pre">split(file.code,'/')[2..4]</span> <span class="pre">as</span> <span class="pre">tc,</span> <span class="pre">COLLECT(distinct</span> <span class="pre">file)</span> <span class="pre">AS</span> <span class="pre">files\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">MERGE</span> <span class="pre">(testcase:GenericNode</span> <span class="pre">{</span> <span class="pre">type:'Testcase',</span> <span class="pre">label:tc[0],</span> <span class="pre">name:tc[1]})\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">WITH</span> <span class="pre">testcase,</span> <span class="pre">files\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">UNWIND</span> <span class="pre">files</span> <span class="pre">as</span> <span class="pre">file\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">WITH</span> <span class="pre">testcase,</span> <span class="pre">file\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">MERGE</span> <span class="pre">(testcase)&lt;-[r:IS_FILE_OF]-(file)\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">&quot;,</span> <span class="pre">'\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">MATCH</span> <span class="pre">(n1:DownstreamNode)-[r:REACHES</span> <span class="pre">{var:&quot;NULL&quot;}]-&gt;(n2:DownstreamNode)\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">DELETE</span> <span class="pre">r\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">',</span> <span class="pre">'\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">MATCH</span> <span class="pre">(:GenericNode</span> <span class="pre">{type:&quot;Symbol&quot;,</span> <span class="pre">code:&quot;NULL&quot;})&lt;-[d:DEF]-()\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">DELETE</span> <span class="pre">d\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">',</span> <span class="pre">'\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">MATCH</span> <span class="pre">(f:GenericNode</span> <span class="pre">{type:&quot;File&quot;})\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">SET</span> <span class="pre">f.basename=split(f.code,\'/\')[-1]\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">',</span> <span class="pre">'\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">MATCH</span> <span class="pre">(n1:GenericNode)\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">WHERE</span> <span class="pre">exists(n1.location)\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">SET</span> <span class="pre">n1.lineno=toInteger(split(n1.location,&quot;:&quot;)[0])\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">',</span> <span class="pre">'\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">MATCH</span> <span class="pre">(:GenericNode</span> <span class="pre">{type:&quot;CFGExitNode&quot;})&lt;-[r:REACHES]-()\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">DELETE</span> <span class="pre">r\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">',</span> <span class="pre">'\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">MATCH</span> <span class="pre">(n:GenericNode</span> <span class="pre">{type:&quot;IdentifierDeclStatement&quot;})\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">WHERE</span> <span class="pre">n.code</span> <span class="pre">=~</span> <span class="pre">\'.*</span> <span class="pre">\\\\[</span> <span class="pre">[0-9]*</span> <span class="pre">\\\\].*\'\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">WITH\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">n,\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">split(split(n.code,\'</span> <span class="pre">[\')[0],\'</span> <span class="pre">\')[-1]</span> <span class="pre">as</span> <span class="pre">var,\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">toInteger(split(split(n.code,\'[</span> <span class="pre">\')[1],\'</span> <span class="pre">]\')[0])</span> <span class="pre">as</span> <span class="pre">sz\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">MATCH</span> <span class="pre">p=(n)-[:REACHES*</span> <span class="pre">{var:var}]-&gt;()\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">UNWIND</span> <span class="pre">relationships(p)</span> <span class="pre">as</span> <span class="pre">r\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">SET</span> <span class="pre">r.size=sz\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">',</span> <span class="pre">'\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">MATCH</span> <span class="pre">(xpr:DownstreamNode)-[:IS_AST_PARENT*]-&gt;(cal:GenericNode</span> <span class="pre">{type:&quot;CallExpression&quot;})-[:IS_AST_PARENT]-&gt;(alc:GenericNode</span> <span class="pre">{type:&quot;Callee&quot;})\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">WHERE</span> <span class="pre">xpr.type</span> <span class="pre">in</span> <span class="pre">[&quot;IdentifierDeclStatement&quot;,&quot;ExpressionStatement&quot;]\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">AND</span> <span class="pre">alc.code</span> <span class="pre">in</span> <span class="pre">[&quot;malloc&quot;,&quot;ALLOCA&quot;,&quot;realloc&quot;,&quot;calloc&quot;]\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">WITH</span> <span class="pre">xpr,</span> <span class="pre">cal,</span> <span class="pre">case</span> <span class="pre">alc.code</span> <span class="pre">when</span> <span class="pre">&quot;realloc&quot;</span> <span class="pre">then</span> <span class="pre">&quot;1&quot;</span> <span class="pre">else</span> <span class="pre">&quot;0&quot;</span> <span class="pre">end</span> <span class="pre">as</span> <span class="pre">argnum\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">MATCH</span> <span class="pre">(cal)-[:IS_AST_PARENT]-&gt;(:GenericNode</span> <span class="pre">{type:&quot;ArgumentList&quot;})-[:IS_AST_PARENT]-&gt;(arg:GenericNode</span> <span class="pre">{type:&quot;Argument&quot;,childNum:argnum})\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">WITH</span> <span class="pre">xpr,</span> <span class="pre">arg\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">MATCH</span> <span class="pre">(arg)-[:IS_AST_PARENT*]-&gt;(operand:GenericNode)\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">WHERE</span> <span class="pre">substring(operand.type,0,6)&lt;&gt;&quot;Sizeof&quot;</span> <span class="pre">and</span> <span class="pre">not</span> <span class="pre">(operand)-[:IS_AST_PARENT]-&gt;()\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">WITH</span> <span class="pre">xpr,</span> <span class="pre">collect(operand)</span> <span class="pre">as</span> <span class="pre">oplist\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">WHERE</span> <span class="pre">size(oplist)=1</span> <span class="pre">and</span> <span class="pre">oplist[0].type=&quot;PrimaryExpression&quot;\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">MATCH</span> <span class="pre">(xpr)-[:DEF]-&gt;(sym:GenericNode</span> <span class="pre">{type:&quot;Symbol&quot;})\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">MATCH</span> <span class="pre">dfp=(xpr)-[:REACHES*</span> <span class="pre">{var:sym.code}]-&gt;()\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">UNWIND</span> <span class="pre">relationships(dfp)</span> <span class="pre">as</span> <span class="pre">dfr\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">SET</span> <span class="pre">dfr.size=tointeger(oplist[0].code)\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">',</span> <span class="pre">'\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">MATCH</span> <span class="pre">(axpr:GenericNode</span> <span class="pre">{type:&quot;AssignmentExpression&quot;})&lt;-[:IS_AST_PARENT*]-(expr:DownstreamNode)\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">WHERE</span> <span class="pre">expr.type</span> <span class="pre">in</span> <span class="pre">[&quot;ExpressionStatement&quot;,&quot;IdentifierDeclStatement&quot;,&quot;ForInit&quot;]\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">MATCH</span> <span class="pre">(axpr)-[:USE]-&gt;(ssym:GenericNode</span> <span class="pre">{type:&quot;Symbol&quot;})\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">MATCH</span> <span class="pre">(expr)&lt;-[src:REACHES</span> <span class="pre">{var:ssym.code}]-()</span> <span class="pre">where</span> <span class="pre">exists(src.size)\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">MATCH</span> <span class="pre">(axpr)-[:DEF]-&gt;(dsym:GenericNode</span> <span class="pre">{type:&quot;Symbol&quot;})\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">MATCH</span> <span class="pre">p=(expr)-[:REACHES*</span> <span class="pre">{var:dsym.code}]-&gt;()\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">UNWIND</span> <span class="pre">relationships(p)</span> <span class="pre">as</span> <span class="pre">dst\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">SET</span> <span class="pre">dst.size=src.size\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">SET</span> <span class="pre">dst.src=src.var\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">',</span> <span class="pre">'\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">MATCH</span> <span class="pre">(expr:DownstreamNode)-[:IS_AST_PARENT*]-&gt;(asgn:GenericNode</span> <span class="pre">{type:&quot;AssignmentExpression&quot;})-[:IS_AST_PARENT]-&gt;(aidx:GenericNode</span> <span class="pre">{type:&quot;ArrayIndexing&quot;,childNum:&quot;0&quot;})-[:IS_AST_PARENT]-&gt;(idfr:GenericNode</span> <span class="pre">{type:&quot;Identifier&quot;,childNum:&quot;1&quot;})\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">MATCH</span> <span class="pre">(expr)-[rd1:DEF]-&gt;(sym:GenericNode</span> <span class="pre">{type:&quot;Symbol&quot;,code:&quot;*</span> <span class="pre">&quot;+idfr.code})&lt;-[rd2:DEF]-(asgn)\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">DELETE</span> <span class="pre">rd1,</span> <span class="pre">rd2\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">',</span> <span class="pre">'\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">MATCH</span> <span class="pre">(decl:GenericNode</span> <span class="pre">{type:&quot;IdentifierDeclStatement&quot;})-[rdef:DEF]-&gt;(sym:GenericNode</span> <span class="pre">{type:&quot;Symbol&quot;})\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">WHERE</span> <span class="pre">left(sym.code,2)&lt;&gt;&quot;&amp;</span> <span class="pre">&quot;\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">AND</span> <span class="pre">not</span> <span class="pre">(decl)-[:IS_AST_PARENT]-&gt;(:GenericNode</span> <span class="pre">{type:&quot;IdentifierDecl&quot;})-[:DEF]-&gt;(sym)\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">DELETE</span> <span class="pre">rdef\n</span>&#160;&#160;&#160;&#160;&#160;&#160;&#160; <span class="pre">']</span></em><a class="headerlink" href="#bugfinder.processing.neo4j.annot.Neo4JAnnotations.COMMANDS" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bugfinder.processing.neo4j.annot.Neo4JAnnotations.configure_container">
+<span class="sig-name descname"><span class="pre">configure_container</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bugfinder.processing.neo4j.annot.Neo4JAnnotations.configure_container" title="Permalink to this definition"></a></dt>
+<dd><p>Setup container variables.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="bugfinder.processing.neo4j.annot.Neo4JAnnotations.send_commands">
+<span class="sig-name descname"><span class="pre">send_commands</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#bugfinder.processing.neo4j.annot.Neo4JAnnotations.send_commands" title="Permalink to this definition"></a></dt>
+<dd><p>Send commands to the container</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="bugfinder.processing.neo4j" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="importer.html" class="btn btn-neutral float-right" title="bugfinder.processing.neo4j.importer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

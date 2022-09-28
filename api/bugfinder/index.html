@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>bugfinder &mdash; AI Bugfinder  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="bugfinder.settings" href="settings.html" />
+    <link rel="prev" title="API documentation" href="../index.html" />
+<link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"
+        type="text/javascript">
+</script>
+<script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js"
+        type="text/javascript">
+
+</script>
+<script type="text/javascript"
+        src="https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js">
+</script>
+<script>
+$(document).ready(function(){
+    // Mark external (non-nist.gov) A tags with class "external"
+    //If the adress start with https and ends with nist.gov
+    var re_nist = new RegExp('^https?:\/\/((^\/)*\.)*nist\\.gov(\/|$)');
+    //Regex to find address that start with https
+    var re_absolute_address = new RegExp('^((https?:)?\/\/)');
+    $("a").each(function(){
+        var url=$(this).attr('href');
+        if(re_nist.test(url) || !re_absolute_address.test(url)){
+            $(this).addClass('local');
+        }else{
+            //This a href appears to be external, so tag it
+            $(this).addClass('external');
+        }
+    });
+    // Add leaveNotice to external A elements
+    $('a.external').leaveNotice();
+});
+</script>
+<script>
+$(document).ready(function() {
+    // Move the paragraph from #myDiv1 to #myDiv2
+    $(".wy-nav-content-wrap").append($('#nistfootergoeshere'));
+});
+</script>
+<link rel="stylesheet" type="text/css"
+      href="https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css" />
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> AI Bugfinder
+          </a><div>A static analyzer powered by AI</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pipelines.html">Designing pipelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../processing.html">Designing processing classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Example pipelines</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">bugfinder</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="settings.html">bugfinder.settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/index.html">bugfinder.models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils/index.html">bugfinder.utils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="base/index.html">bugfinder.base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="features/index.html">bugfinder.features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="processing/index.html">bugfinder.processing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">AI Bugfinder</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">API documentation</a> &raquo;</li>
+      <li>bugfinder</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-bugfinder">
+<span id="bugfinder"></span><h1>bugfinder<a class="headerlink" href="#module-bugfinder" title="Permalink to this headline"></a></h1>
+<p>Bugfinder package containing all dataset classes, data processing and utilities.</p>
+<p>To import the package in Python scripts, the path must be updated. Do it by either
+prepending the python command with <code class="docutils literal notranslate"><span class="pre">PYTHONPATH=/path/to/ai-bugfinder</span></code>, or adding
+this snippet of code before any other <code class="docutils literal notranslate"><span class="pre">import</span></code> statement:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sample code for allowing direct imports of the `bugfinder` package.</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">dirname</span><span class="p">,</span> <span class="n">join</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;/path/to/ai-bugfinder&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="settings.html">bugfinder.settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models/index.html">bugfinder.models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="models/linear_classifier.html">bugfinder.models.linear_classifier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/lstm_classifier.html">bugfinder.models.lstm_classifier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/interproc_lstm.html">bugfinder.models.interproc_lstm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/blstm_classifier.html">bugfinder.models.blstm_classifier</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/sequential.html">bugfinder.models.sequential</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/dnn_classifier.html">bugfinder.models.dnn_classifier</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utils/index.html">bugfinder.utils</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utils/dirs.html">bugfinder.utils.dirs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils/feature_selection.html">bugfinder.utils.feature_selection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils/processing.html">bugfinder.utils.processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils/rand.html">bugfinder.utils.rand</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils/containers.html">bugfinder.utils.containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils/statistics.html">bugfinder.utils.statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils/progressbar.html">bugfinder.utils.progressbar</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="base/index.html">bugfinder.base</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="base/dataset.html">bugfinder.base.dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="base/processing/index.html">bugfinder.base.processing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="features/index.html">bugfinder.features</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="features/reduction/index.html">bugfinder.features.reduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features/extraction/index.html">bugfinder.features.extraction</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="processing/index.html">bugfinder.processing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="processing/interproc.html">bugfinder.processing.interproc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="processing/sink_tagging.html">bugfinder.processing.sink_tagging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="processing/tokenizers/index.html">bugfinder.processing.tokenizers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="processing/cleaning/index.html">bugfinder.processing.cleaning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="processing/neo4j/index.html">bugfinder.processing.neo4j</a></li>
+<li class="toctree-l2"><a class="reference internal" href="processing/dataset/index.html">bugfinder.processing.dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="processing/joern/index.html">bugfinder.processing.joern</a></li>
+<li class="toctree-l2"><a class="reference internal" href="processing/ast/index.html">bugfinder.processing.ast</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="API documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="settings.html" class="btn btn-neutral float-right" title="bugfinder.settings" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

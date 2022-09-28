@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>bugfinder.settings &mdash; AI Bugfinder  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/custom.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="bugfinder.models" href="models/index.html" />
+    <link rel="prev" title="bugfinder" href="index.html" />
+<link rel="stylesheet" href="https://pages.nist.gov/nist-header-footer/css/nist-combined.css">
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"
+        type="text/javascript">
+</script>
+<script src="https://pages.nist.gov/nist-header-footer/js/nist-header-footer.js"
+        type="text/javascript">
+
+</script>
+<script type="text/javascript"
+        src="https://pages.nist.gov/leaveNotice/js/jquery.leaveNotice-nist.min.js">
+</script>
+<script>
+$(document).ready(function(){
+    // Mark external (non-nist.gov) A tags with class "external"
+    //If the adress start with https and ends with nist.gov
+    var re_nist = new RegExp('^https?:\/\/((^\/)*\.)*nist\\.gov(\/|$)');
+    //Regex to find address that start with https
+    var re_absolute_address = new RegExp('^((https?:)?\/\/)');
+    $("a").each(function(){
+        var url=$(this).attr('href');
+        if(re_nist.test(url) || !re_absolute_address.test(url)){
+            $(this).addClass('local');
+        }else{
+            //This a href appears to be external, so tag it
+            $(this).addClass('external');
+        }
+    });
+    // Add leaveNotice to external A elements
+    $('a.external').leaveNotice();
+});
+</script>
+<script>
+$(document).ready(function() {
+    // Move the paragraph from #myDiv1 to #myDiv2
+    $(".wy-nav-content-wrap").append($('#nistfootergoeshere'));
+});
+</script>
+<link rel="stylesheet" type="text/css"
+      href="https://pages.nist.gov/leaveNotice/css/jquery.leaveNotice.css" />
+
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> AI Bugfinder
+          </a><div>A static analyzer powered by AI</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../readme.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pipelines.html">Designing pipelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../processing.html">Designing processing classes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Example pipelines</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">API documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">bugfinder</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">bugfinder.settings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="models/index.html">bugfinder.models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils/index.html">bugfinder.utils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="base/index.html">bugfinder.base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="features/index.html">bugfinder.features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="processing/index.html">bugfinder.processing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">AI Bugfinder</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">API documentation</a> &raquo;</li>
+          <li><a href="index.html">bugfinder</a> &raquo;</li>
+      <li>bugfinder.settings</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-bugfinder.settings">
+<span id="bugfinder-settings"></span><h1>bugfinder.settings<a class="headerlink" href="#module-bugfinder.settings" title="Permalink to this headline"></a></h1>
+<p>Common configuration keys for the bugfinder package.</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="bugfinder.settings.DATASET_DIRS">
+<span class="sig-prename descclassname"><span class="pre">bugfinder.settings.</span></span><span class="sig-name descname"><span class="pre">DATASET_DIRS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'embeddings':</span> <span class="pre">'embeddings',</span> <span class="pre">'feats':</span> <span class="pre">'features',</span> <span class="pre">'joern':</span> <span class="pre">'joern.db',</span> <span class="pre">'models':</span> <span class="pre">'models',</span> <span class="pre">'neo4j':</span> <span class="pre">'neo4j_v3.db'}</span></em><a class="headerlink" href="#bugfinder.settings.DATASET_DIRS" title="Permalink to this definition"></a></dt>
+<dd><p>Dataset directory names used by the various scripts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bugfinder.settings.FEATURES_FILE">
+<span class="sig-prename descclassname"><span class="pre">bugfinder.settings.</span></span><span class="sig-name descname"><span class="pre">FEATURES_FILE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'features.csv'</span></em><a class="headerlink" href="#bugfinder.settings.FEATURES_FILE" title="Permalink to this definition"></a></dt>
+<dd><p>Name of the CSV file containing the features that can be used for training
+purposes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bugfinder.settings.LOGGER">
+<span class="sig-prename descclassname"><span class="pre">bugfinder.settings.</span></span><span class="sig-name descname"><span class="pre">LOGGER</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;Logger</span> <span class="pre">app</span> <span class="pre">(DEBUG)&gt;</span></em><a class="headerlink" href="#bugfinder.settings.LOGGER" title="Permalink to this definition"></a></dt>
+<dd><p>Main <cite>Logger</cite> instance used throughout the application.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/logging.html#logging.Logger" title="(in Python v3.10)">logging.Logger</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bugfinder.settings.LOGGER_CONFIG">
+<span class="sig-prename descclassname"><span class="pre">bugfinder.settings.</span></span><span class="sig-name descname"><span class="pre">LOGGER_CONFIG</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'formatters':</span> <span class="pre">{'default':</span> <span class="pre">{'datefmt':</span> <span class="pre">'%Y-%m-%d</span> <span class="pre">%H:%M:%S',</span> <span class="pre">'format':</span> <span class="pre">'[%(asctime)s][%(levelname)s]</span> <span class="pre">%(message)s'}},</span> <span class="pre">'handlers':</span> <span class="pre">{'console':</span> <span class="pre">{'class':</span> <span class="pre">'logging.StreamHandler',</span> <span class="pre">'formatter':</span> <span class="pre">'default',</span> <span class="pre">'stream':</span> <span class="pre">'ext://sys.stdout'},</span> <span class="pre">'file':</span> <span class="pre">{'class':</span> <span class="pre">'logging.handlers.RotatingFileHandler',</span> <span class="pre">'filename':</span> <span class="pre">'/data/projects/ai-bugfinder/bugfinder/../debug.log',</span> <span class="pre">'formatter':</span> <span class="pre">'default'}},</span> <span class="pre">'loggers':</span> <span class="pre">{'app':</span> <span class="pre">{'handlers':</span> <span class="pre">['console',</span> <span class="pre">'file'],</span> <span class="pre">'level':</span> <span class="pre">'DEBUG',</span> <span class="pre">'propagate':</span> <span class="pre">'no'}},</span> <span class="pre">'version':</span> <span class="pre">1}</span></em><a class="headerlink" href="#bugfinder.settings.LOGGER_CONFIG" title="Permalink to this definition"></a></dt>
+<dd><p>Logging configuration for the project.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.10)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bugfinder.settings.NEO4J_DEFAULT_TIMEOUT">
+<span class="sig-prename descclassname"><span class="pre">bugfinder.settings.</span></span><span class="sig-name descname"><span class="pre">NEO4J_DEFAULT_TIMEOUT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'2h'</span></em><a class="headerlink" href="#bugfinder.settings.NEO4J_DEFAULT_TIMEOUT" title="Permalink to this definition"></a></dt>
+<dd><p>Default timeout for Neo4J queries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bugfinder.settings.NEO4J_V3_CORES">
+<span class="sig-prename descclassname"><span class="pre">bugfinder.settings.</span></span><span class="sig-name descname"><span class="pre">NEO4J_V3_CORES</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">24</span></em><a class="headerlink" href="#bugfinder.settings.NEO4J_V3_CORES" title="Permalink to this definition"></a></dt>
+<dd><p>Number of CPU cores allowed to be used by Neo4J. Defaults to <cite>POOL_SIZE</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bugfinder.settings.NEO4J_V3_MEMORY">
+<span class="sig-prename descclassname"><span class="pre">bugfinder.settings.</span></span><span class="sig-name descname"><span class="pre">NEO4J_V3_MEMORY</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'4G'</span></em><a class="headerlink" href="#bugfinder.settings.NEO4J_V3_MEMORY" title="Permalink to this definition"></a></dt>
+<dd><p>Memory allocated to Neo4J databases.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bugfinder.settings.POOL_SIZE">
+<span class="sig-prename descclassname"><span class="pre">bugfinder.settings.</span></span><span class="sig-name descname"><span class="pre">POOL_SIZE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">24</span></em><a class="headerlink" href="#bugfinder.settings.POOL_SIZE" title="Permalink to this definition"></a></dt>
+<dd><p>Number of CPU cores that can be used for multiprocessing tasks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.10)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bugfinder.settings.ROOT_DIR">
+<span class="sig-prename descclassname"><span class="pre">bugfinder.settings.</span></span><span class="sig-name descname"><span class="pre">ROOT_DIR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'/data/projects/ai-bugfinder/bugfinder/..'</span></em><a class="headerlink" href="#bugfinder.settings.ROOT_DIR" title="Permalink to this definition"></a></dt>
+<dd><p>Project root directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="bugfinder.settings.SUMMARY_FILE">
+<span class="sig-prename descclassname"><span class="pre">bugfinder.settings.</span></span><span class="sig-name descname"><span class="pre">SUMMARY_FILE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'summary.json'</span></em><a class="headerlink" href="#bugfinder.settings.SUMMARY_FILE" title="Permalink to this definition"></a></dt>
+<dd><p>Name of the file storing dataset processing history and statistics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.10)">str</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="bugfinder" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="models/index.html" class="btn btn-neutral float-right" title="bugfinder.models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
