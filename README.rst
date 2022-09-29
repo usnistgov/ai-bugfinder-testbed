@@ -145,4 +145,4 @@ been implemented. This repository offers two ways of creating pipelines:
 
 This README only brushes the surface of the abilities of this AI bugfinder. For
 more details on pipeline design and the availabe processing steps, please refer
-to `<https://samate.ipages.nist.gov/ai-bugfinder/>`_.
+to `<https://pages.nist.gov/ai-bugfinder-testbed/>`_.
