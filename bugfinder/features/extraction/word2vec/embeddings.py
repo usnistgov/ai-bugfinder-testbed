@@ -18,11 +18,6 @@ class Word2VecEmbeddings(AbstractProcessing):
         self.embedding_length = 300
         self.vector_length = 50
 
-    @abstractmethod
-    def init_model(self, name, **kwargs):
-        """Class initialization method"""
-        LOGGER.debug("Word2vec embeddings class")
-
     def execute(self, **kwargs):
         """Run the processing. Retrieves each tokenized file as a dictionary, loads
         the model, generates the embeddings for each token in the file,
@@ -39,7 +34,7 @@ class Word2VecEmbeddings(AbstractProcessing):
 
         embeddings = list()
 
-        model = Word2Vec.load(join(self.dataset.model_dir, kwargs["model"]))
+        model = Word2Vec.load(join(self.dataset.model_dir, kwargs["name"]))
 
         for item, token in enumerate(token_list):
             LOGGER.debug(

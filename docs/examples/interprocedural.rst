@@ -30,7 +30,7 @@ N.B.: Manifests are still being created and not available to the general public
 *data/graph.db*. A Neo4j DB then loads the data for further processing.
 
 Run the tool with
-``python ./run_joern.py ${DATASET} -v ${JOERN_VERSION}``. Use
+``python ./scripts/run_joern.py ${DATASET} -v ${JOERN_VERSION}``. Use
 ``--help`` to see which version are available.
 
 4.3. Sink tagging
@@ -42,11 +42,11 @@ tag the sinks, using the CSV obtain earlier. Sink tagging can be done using:
 .. code:: bash
 
     # Tag sinks with a maximum runtime of 15min
-    python run_sinktagging.py --log_failed /tmp/sink.failed.15m.log \
+    python ./scripts/run_sinktagging.py --log_failed /tmp/sink.failed.15m.log \
         --timeout 15m --sinks ${DATASET}/sinks.csv ${DATASET}
 
     # Retry tagging sinks for a longer period, using previous log files
-    python run_sinktagging.py --run_failed /tmp/sink.failed.15m.log \
+    python ./scripts/run_sinktagging.py --run_failed /tmp/sink.failed.15m.log \
         --log_failed /tmp/sink.failed.24h.log \
         --timeout 24h --sinks ${DATASET}/sinks.csv ${DATASET}
 
@@ -58,11 +58,11 @@ To link data and control flow, the following commands need to be run:
 .. code:: bash
 
     # Connect data and control flows at function calls
-    python run_interproc.py --log_failed /tmp/failed.15m.log \
+    python ./scripts/run_interproc.py --log_failed /tmp/failed.15m.log \
         --timeout 15m ${DATASET}
 
     # Retry linking flows for a longer period, using previous log files
-    python run_interproc.py --run_failed /tmp/failed.15m.log \
+    python ./scripts/run_interproc.py --run_failed /tmp/failed.15m.log \
         --timeout 24h --log_failed /tmp/failed.24h.log ${DATASET}
 
 4.5. AST Markup
@@ -74,7 +74,7 @@ with the additional markup:
 
 .. code:: bash
 
-   python ./run_ast_markup.py ${DATASET} \
+   python ./scripts/run_ast_markup.py ${DATASET} \
        -v ${AST_VERSION}  # AST markup version. See --help for details.
 
 4.6. Extract feature
@@ -86,12 +86,12 @@ task. The features need to be extracted with the following command:
 .. code:: bash
 
    # Create the feature maps
-   python ./run_feature_extraction.py ${DATASET} \
+   python ./scripts/run_feature_extraction.py ${DATASET} \
        -e ${FEATURE_EXTRACTOR} \  # Choose a feature extractor.
        -m  # To create the feature maps.
 
    # Run the extractor
-   python ./run_feature_extraction.py ${DATASET} \
+   python ./scripts/run_feature_extraction.py ${DATASET} \
        -e ${FEATURE_EXTRACTOR} \  # Choose a feature extractor
 
 4.7. Reduce feature dimension
@@ -103,7 +103,7 @@ command:
 .. code:: bash
 
    # Create the feature maps
-   python ./run_feature_selection.py ${DATASET} \
+   python ./scripts/run_feature_selection.py ${DATASET} \
        -s ${FEATURE_SELECTOR} \  # Choose a feature selector.
        ${FEATURES_SELECTOR_ARGS} \  # Parametrize the selector correctly
        -m  # To create the feature maps.
@@ -119,7 +119,7 @@ typing:
 
 .. code:: bash
 
-   python ./run_model_training.py ${DATASET} \
+   python ./scripts/run_model_training.py ${DATASET} \
        -m ${MODEL}  # Model to train. See help for details.
 
 

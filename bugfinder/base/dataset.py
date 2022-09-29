@@ -339,8 +339,14 @@ class CodeWeaknessClassificationDataset:
             self.summary[op_category][op_call["args"]["name"]]["sessions"].append(
                 processing_ops_summary
             )
-
         elif op_category != str(ProcessingCategory.__NONE__):
+            if op_category not in [member.value for member in ProcessingCategory]:
+                raise IndexError(f"Category {op_category} is not a valid category!")
+
+            # Initiate category if it does not exists
+            if op_category not in self.summary.keys():
+                self.summary[op_category] = []
+
             self.summary[op_category].append(processing_ops_summary)
 
         self.save_summary()
