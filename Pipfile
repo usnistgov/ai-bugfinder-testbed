@@ -4,8 +4,8 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-black = "==21.6b0"
-pylint = "~=2.10.0"
+black = "==22.8.0"
+pylint = "~=2.15.0"
 pytest = "*"
 sphinx = "*"
 "sphinxcontrib.napoleon" = "*"
