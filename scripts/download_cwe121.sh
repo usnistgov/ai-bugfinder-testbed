@@ -4,8 +4,8 @@
 # ==============================================================================
 # Script parameters
 SARD_WEBSITE="https://samate.nist.gov/SARD"
-JULIET_FILE="Juliet_Test_Suite_v1.3_for_C_Cpp.zip"
-JULIET_PATH="${SARD_WEBSITE}/testsuites/juliet/${JULIET_FILE}"
+JULIET_FILE="2017-10-01-juliet-test-suite-for-c-cplusplus-v1-3.zip"
+JULIET_PATH="${SARD_WEBSITE}/downloads/test-suites/${JULIET_FILE}"
 JULIET_EXTRACT_PATH="C/testcases/CWE121_Stack_Based_Buffer_Overflow"
 
 CURRENT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"

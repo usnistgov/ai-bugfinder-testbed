@@ -20,8 +20,8 @@ class InterprocLSTMTraining(SequentialModel):
     def init_model(self, layers, model_dir, **kwargs):
         return self.model_cls(layers=layers)
 
+    @staticmethod
     def process_features(features_file, feature_map_file, test_data_ratio=0.33):
-
         assert 0.0 <= test_data_ratio <= 1.0
 
         LOGGER.info("Loading feature map...")

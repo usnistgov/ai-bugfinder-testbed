@@ -8,10 +8,10 @@ import argparse
 from bugfinder.base.dataset import CodeWeaknessClassificationDataset as Dataset
 from bugfinder.processing.dataset.fix_rights import RightFixer
 from bugfinder.processing.joern.v031 import (
-    JoernDatasetProcessing as Joern031DatasetProcessing,
+    JoernProcessing as Joern031Processing,
 )
 from bugfinder.processing.joern.v040 import (
-    JoernDatasetProcessing as Joern040DatasetProcessing,
+    JoernProcessing as Joern040Processing,
 )
 from bugfinder.processing.neo4j.annot import Neo4JAnnotations
 from bugfinder.processing.neo4j.converter import Neo4J2Converter, Neo4J3Converter
@@ -21,14 +21,14 @@ from bugfinder.utils.processing import is_processing_stack_valid
 if __name__ == "__main__":
     options = {  # Dictionary linking input arguments to processing classes
         "0.3.1": [
-            Joern031DatasetProcessing,
+            Joern031Processing,
             Neo4J2Converter,
             {"class": RightFixer, "args": {"command_args": "neo4j_v3.db 101 101"}},
             Neo4J3Converter,
             Neo4JAnnotations,
         ],
         "0.4.0": [
-            Joern040DatasetProcessing,
+            Joern040Processing,
             Neo4J3Importer,
             {"class": RightFixer, "args": {"command_args": "neo4j_v3.db 101 101"}},
             Neo4JAnnotations,

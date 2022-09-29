@@ -1,9 +1,11 @@
+from glob import glob
 from os import makedirs, listdir
 from os.path import join, exists, splitext
 
 import networkx as nx
 import pandas as pd
 
+from bugfinder import settings
 from bugfinder.base.processing import AbstractProcessing
 from bugfinder.features.extraction.node2vec.implementation import Node2VecImplementation
 from bugfinder.settings import LOGGER
@@ -97,21 +99,20 @@ class Node2VecModel(AbstractProcessing):
         """
         edges_list = list()
 
-        file_processing_list = [
-            join(test_case, filepath)
-            for test_case in self.dataset.test_cases
-            for filepath in listdir(join(self.dataset.path, test_case))
-            if splitext(filepath)[1] in [".csv"]
-        ]
+        file_processing_list = glob(
+            join(
+                self.dataset.path,
+                f"{settings.DATASET_DIRS['joern']}/code",
+                "*/*/*/*.csv",
+            )
+        )
 
         while len(file_processing_list) != 0:
             filepath = file_processing_list.pop(0)
 
-            in_path = join(self.dataset.path, filepath)
-
-            if "edges" in in_path:
+            if "edges" in filepath:
                 csv_edge_file = pd.read_csv(
-                    in_path, sep="\t", usecols=["start", "end", "type"]
+                    filepath, sep="\t", usecols=["start", "end", "type"]
                 )
 
                 if not csv_edge_file.empty:

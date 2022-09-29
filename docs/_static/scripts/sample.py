@@ -1,23 +1,23 @@
 """ Example script for dataset processing.
 """
-from bugfinder.dataset import CodeWeaknessClassificationDataset as Dataset
-from bugfinder.dataset.processing.content_ops import (
+from bugfinder.base.dataset import CodeWeaknessClassificationDataset as Dataset
+from bugfinder.processing.cleaning.replace_litterals import (
     ReplaceLitterals,
 )
 from bugfinder.features.reduction.pca import FeatureSelector as PCA
-from bugfinder.dataset.processing.dataset_ops import RightFixer
-from bugfinder.dataset.processing.dataset_ops import ExtractSampleDataset
-from bugfinder.dataset.processing.file_ops import (
+from bugfinder.processing.dataset.fix_rights import RightFixer
+from bugfinder.processing.dataset.extract import ExtractSampleDataset
+from bugfinder.processing.cleaning.remove_cpp_files import (
     RemoveCppFiles,
 )
 from bugfinder.models.linear_classifier import LinearClassifierTraining
-from bugfinder.features.extraction.hops_n_flows import (
+from bugfinder.features.extraction.bag_of_words.hops_n_flows import (
     FeatureExtractor as HopsNFlowsExtractor,
 )
-from bugfinder.ast.v02 import Neo4JASTMarkup as Neo4JASTMarkupV02
-from bugfinder.neo4j.importer import Neo4J3Importer
-from bugfinder.neo4j.annot import Neo4JAnnotations
-from bugfinder.joern.v040 import JoernDatasetProcessing as Joern040DatasetProcessing
+from bugfinder.processing.ast.v02 import Neo4JASTMarkup as Neo4JASTMarkupV02
+from bugfinder.processing.neo4j.importer import Neo4J3Importer
+from bugfinder.processing.neo4j.annot import Neo4JAnnotations
+from bugfinder.processing.joern.v040 import JoernProcessing as Joern040DatasetProcessing
 
 input_dataset_path = "/path/to/dataset.in"
 output_dataset_path = "/path/to/dataset.out"
