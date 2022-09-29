@@ -42,7 +42,7 @@ class TestWord2VecEmbeddingExecute(TestCase):
         self.dataset.model_dir = "./tests/fixtures/dataset05/models"
         self.dataset.embeddings_dir = "./tests/fixtures/dataset05/mock_emb_dir"
 
-        self.model_kwargs = {"model": "word2vec_test.bin"}
+        self.model_kwargs = {"name": self.model_name}
 
     def tearDown(self) -> None:
         try:
