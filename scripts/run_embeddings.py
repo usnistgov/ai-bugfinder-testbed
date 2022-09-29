@@ -18,8 +18,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        "--name",
-        "-n",
+        "--model",
+        "-m",
         required=True,
         help="Which type of embeddings to generate (word2vec or node2vec)",
     )
@@ -30,8 +30,8 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
-        "--model",
-        "-m",
+        "--name",
+        "-n",
         required=True,
         help="Path to the word2vec model to be used to generated the embeddings",
     )
@@ -59,7 +59,6 @@ if __name__ == "__main__":
 
     op_args = {
         "name": args.name,
-        "model": args.model,
         "emb_length": args.emb_length,
         "vec_length": args.vec_length,
     }
@@ -67,7 +66,7 @@ if __name__ == "__main__":
     op_args.update(kwargs)
 
     operation = {
-        "class": options[args.name],
+        "class": options[args.model],
         "args": op_args,
     }
 

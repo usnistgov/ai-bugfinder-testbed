@@ -1,3 +1,4 @@
+from glob import glob
 from os import makedirs, listdir
 from os.path import join, exists, splitext, split, dirname, abspath
 
@@ -6,6 +7,7 @@ import numpy as np
 import pandas as pd
 from gensim.models import Word2Vec
 
+from bugfinder import settings
 from bugfinder.base.processing import AbstractProcessing
 from bugfinder.settings import LOGGER
 
@@ -37,7 +39,7 @@ class Node2VecEmbeddings(AbstractProcessing):
 
         LOGGER.info("Nodes retrieved. Loading the model...")
 
-        model = Word2Vec.load(join(self.dataset.model_dir, kwargs["model"]))
+        model = Word2Vec.load(join(self.dataset.model_dir, kwargs["name"]))
 
         for item, node in enumerate(nodes):
             LOGGER.debug(
@@ -81,12 +83,11 @@ class Node2VecEmbeddings(AbstractProcessing):
         """
         nodes_list = list()
 
-        file_processing_list = [
-            join(test_case, filepath)
-            for test_case in self.dataset.test_cases
-            for filepath in listdir(join(self.dataset.path, test_case))
-            if splitext(filepath)[1] in [".csv"]
-        ]
+        file_processing_list = glob(join(
+            self.dataset.path,
+            f"{settings.DATASET_DIRS['joern']}/code",
+            "*/*/*/*.csv"
+        ))
 
         # Reading the edges file to create a graph and retrieve the nodes from it
         # TODO: Refactor this code to a single function to be used across the classes
@@ -98,11 +99,9 @@ class Node2VecEmbeddings(AbstractProcessing):
             processed_nodes["path"] = splitext(filepath)[0]
             processed_nodes["path"] = split(filepath)[0]
 
-            in_path = join(self.dataset.path, filepath)
-
-            if "edges" in in_path:
+            if "edges" in filepath:
                 csv_edge_file = pd.read_csv(
-                    in_path, sep="\t", usecols=["start", "end", "type"]
+                    filepath, sep="\t", usecols=["start", "end", "type"]
                 )
 
                 if not csv_edge_file.empty:

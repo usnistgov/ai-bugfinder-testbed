@@ -5,7 +5,7 @@ In this document, are presented the various ways to interact with the dataset
 of code samples. Several scripts are available in the repository to manipulate
 datasets and train a machine learning model to identify bugs in source code.
 The scripts are written in python and, for every script, an help page is
-available by typing ``python ./script.py --help``.
+available by typing ``python ./scripts/example.py --help``.
 
 1. Dataset utilities
 --------------------
@@ -22,12 +22,12 @@ Examples:
 
 .. code:: bash
 
-   python ./copy_dataset.py \
+   python ./scripts/copy_dataset.py \
        -i /path/to/existing_dataset \  # Input argument
        -o /path/to/new_dataset \  # Output argument
        -f  # Override directory if it already exists
 
-   python ./extract_dataset.py \
+   python ./scripts/extract_dataset.py \
        -i /path/to/existing_dataset \  # Input argument
        -o /path/to/new_dataset \  # Output argument
        -n 200  # Extract 200 samples from original dataset
@@ -57,7 +57,7 @@ available and works as such:
 
    export DATASET=/path/to/dataset
 
-   python ./clean_dataset.py ${DATASET} \
+   python ./scripts/clean_dataset.py ${DATASET} \
        --no-cpp \  # Remove CPP test cases
        --no-interprocedural \  # Remove interprocedural test cases
        --no-litterals \  # Replace litterals from C code
