@@ -15,7 +15,9 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -115,9 +117,9 @@ $(document).ready(function() {
            <div itemprop="articleBody">
              
   <section id="designing-pipelines">
-<h1>Designing pipelines<a class="headerlink" href="#designing-pipelines" title="Permalink to this headline"></a></h1>
+<h1>Designing pipelines<a class="headerlink" href="#designing-pipelines" title="Permalink to this heading"></a></h1>
 <section id="design-overview">
-<h2>1. Design overview<a class="headerlink" href="#design-overview" title="Permalink to this headline"></a></h2>
+<h2>1. Design overview<a class="headerlink" href="#design-overview" title="Permalink to this heading"></a></h2>
 <p>All pipelines are designed with the same philosophy, illustrated by the following
 figure.</p>
 <img alt="_images/pipeline.png" class="align-center" src="_images/pipeline.png" />
@@ -167,7 +169,7 @@ has been learned.</p></li>
 </ul>
 </section>
 <section id="from-prototype-to-release">
-<h2>2. From prototype to release<a class="headerlink" href="#from-prototype-to-release" title="Permalink to this headline"></a></h2>
+<h2>2. From prototype to release<a class="headerlink" href="#from-prototype-to-release" title="Permalink to this heading"></a></h2>
 <p>To start designing a pipeline, it is advised to use Jupyter notebooks. Jupyter notebooks
 allow for fast prototyping by letting the user to inspect the variables created at each
 step and run these steps several time in a row. Some examples are available in the
@@ -182,13 +184,13 @@ take care of dependency management that might not be straightforward for all use
 to help you get started.</p>
 </section>
 <section id="available-processing">
-<h2>3. Available processing<a class="headerlink" href="#available-processing" title="Permalink to this headline"></a></h2>
+<h2>3. Available processing<a class="headerlink" href="#available-processing" title="Permalink to this heading"></a></h2>
 <p>Here are the processing already integrated to the codebase and available when
 designing new pipelines. If a processing needs to be fixed or added, please
 <a class="reference external" href="https://gitlab.nist.gov/gitlab/samate/ai-bugfinder/-/issues">create an issue</a>.
 To create new processing classes, see <a class="reference external" href="processing.html">Designing processing classes</a>.</p>
 <section id="dataset-utilities">
-<h3>3.1. Dataset utilities<a class="headerlink" href="#dataset-utilities" title="Permalink to this headline"></a></h3>
+<h3>3.1. Dataset utilities<a class="headerlink" href="#dataset-utilities" title="Permalink to this heading"></a></h3>
 <p>The dataset utility classes manipulate entire datasets for duplication or
 slicing:</p>
 <ul class="simple">
@@ -200,7 +202,7 @@ slicing:</p>
 <img alt="_images/dataset_utils.png" class="align-center" src="_images/dataset_utils.png" />
 </section>
 <section id="dataset-processing">
-<h3>3.2. Dataset processing<a class="headerlink" href="#dataset-processing" title="Permalink to this headline"></a></h3>
+<h3>3.2. Dataset processing<a class="headerlink" href="#dataset-processing" title="Permalink to this heading"></a></h3>
 <p>One of the first step to process the dataset is to perform cleaning task on the data.
 Generic utilities have been implemented for cleaning files:</p>
 <ul class="simple">
@@ -227,7 +229,7 @@ train. See <a class="reference internal" href="examples/index.html"><span class=
 </ul>
 </section>
 <section id="feature-extraction">
-<h3>3.3. Feature extraction<a class="headerlink" href="#feature-extraction" title="Permalink to this headline"></a></h3>
+<h3>3.3. Feature extraction<a class="headerlink" href="#feature-extraction" title="Permalink to this heading"></a></h3>
 <p>Once the dataset is prepared, feature extraction can happen. Since different models need
 different features, the bugfinder has several feature extraction method available:</p>
 <ul class="simple">
@@ -239,7 +241,7 @@ different features, the bugfinder has several feature extraction method availabl
 <img alt="_images/feature_extraction.png" class="align-center" src="_images/feature_extraction.png" />
 </section>
 <section id="feature-reduction">
-<h3>3.4. Feature reduction<a class="headerlink" href="#feature-reduction" title="Permalink to this headline"></a></h3>
+<h3>3.4. Feature reduction<a class="headerlink" href="#feature-reduction" title="Permalink to this heading"></a></h3>
 <p>Depending on the feature extractor chosen, it is possible to end up with many features,
 impacting training time and convergence of the model. To remediate, several feature
 reduction algorithms are packaged, all inheriting from
@@ -255,7 +257,7 @@ reduction algorithms are packaged, all inheriting from
 </ul>
 </section>
 <section id="models">
-<h3>3.5. Models<a class="headerlink" href="#models" title="Permalink to this headline"></a></h3>
+<h3>3.5. Models<a class="headerlink" href="#models" title="Permalink to this heading"></a></h3>
 <p>Once the feature extraction and reduction is done, the model can be trained. Several
 classifiers are available:</p>
 <ul class="simple">

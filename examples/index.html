@@ -15,7 +15,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -114,14 +116,14 @@ $(document).ready(function() {
            <div itemprop="articleBody">
              
   <section id="example-pipelines">
-<h1>Example pipelines<a class="headerlink" href="#example-pipelines" title="Permalink to this headline"></a></h1>
+<h1>Example pipelines<a class="headerlink" href="#example-pipelines" title="Permalink to this heading"></a></h1>
 <p>In this document, are presented the various ways to interact with the dataset
 of code samples. Several scripts are available in the repository to manipulate
 datasets and train a machine learning model to identify bugs in source code.
 The scripts are written in python and, for every script, an help page is
-available by typing <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">./script.py</span> <span class="pre">--help</span></code>.</p>
+available by typing <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">./scripts/example.py</span> <span class="pre">--help</span></code>.</p>
 <section id="dataset-utilities">
-<h2>1. Dataset utilities<a class="headerlink" href="#dataset-utilities" title="Permalink to this headline"></a></h2>
+<h2>1. Dataset utilities<a class="headerlink" href="#dataset-utilities" title="Permalink to this heading"></a></h2>
 <p>Utilities scripts operates on the dataset folder and do not modify the
 data that it contains. The two utilities available are:</p>
 <ul class="simple">
@@ -131,12 +133,12 @@ location.</p></li>
 samples from a dataset.</p></li>
 </ul>
 <p>Examples:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python ./copy_dataset.py <span class="se">\</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python ./scripts/copy_dataset.py <span class="se">\</span>
     -i /path/to/existing_dataset <span class="se">\ </span> <span class="c1"># Input argument</span>
     -o /path/to/new_dataset <span class="se">\ </span> <span class="c1"># Output argument</span>
     -f  <span class="c1"># Override directory if it already exists</span>
 
-python ./extract_dataset.py <span class="se">\</span>
+python ./scripts/extract_dataset.py <span class="se">\</span>
     -i /path/to/existing_dataset <span class="se">\ </span> <span class="c1"># Input argument</span>
     -o /path/to/new_dataset <span class="se">\ </span> <span class="c1"># Output argument</span>
     -n <span class="m">200</span>  <span class="c1"># Extract 200 samples from original dataset</span>
@@ -145,7 +147,7 @@ python ./extract_dataset.py <span class="se">\</span>
 </div>
 </section>
 <section id="prepare-the-dataset">
-<h2>2. Prepare the dataset<a class="headerlink" href="#prepare-the-dataset" title="Permalink to this headline"></a></h2>
+<h2>2. Prepare the dataset<a class="headerlink" href="#prepare-the-dataset" title="Permalink to this heading"></a></h2>
 <p>There are several issues with the default datasets:</p>
 <ul class="simple">
 <li><p>C++ cannot be parsed correctly by <em>Joern</em>, these samples need to be
@@ -164,7 +166,7 @@ test cases which need to be removed from the dataset.</p></li>
 available and works as such:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span> <span class="nv">DATASET</span><span class="o">=</span>/path/to/dataset
 
-python ./clean_dataset.py <span class="si">${</span><span class="nv">DATASET</span><span class="si">}</span> <span class="se">\</span>
+python ./scripts/clean_dataset.py <span class="si">${</span><span class="nv">DATASET</span><span class="si">}</span> <span class="se">\</span>
     --no-cpp <span class="se">\ </span> <span class="c1"># Remove CPP test cases</span>
     --no-interprocedural <span class="se">\ </span> <span class="c1"># Remove interprocedural test cases</span>
     --no-litterals <span class="se">\ </span> <span class="c1"># Replace litterals from C code</span>
@@ -176,7 +178,7 @@ test cases (do not use <cite>–no-interprocedural</cite>) and do not remove mai
 (do not use <cite>–no-main</cite>).</p>
 </section>
 <section id="pipelines">
-<h2>3. Pipelines<a class="headerlink" href="#pipelines" title="Permalink to this headline"></a></h2>
+<h2>3. Pipelines<a class="headerlink" href="#pipelines" title="Permalink to this heading"></a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="bags_of_words.html">1. Bag of words</a></li>

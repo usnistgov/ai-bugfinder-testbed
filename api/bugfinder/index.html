@@ -15,7 +15,9 @@
         <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
         <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -115,7 +117,7 @@ $(document).ready(function() {
            <div itemprop="articleBody">
              
   <section id="module-bugfinder">
-<span id="bugfinder"></span><h1>bugfinder<a class="headerlink" href="#module-bugfinder" title="Permalink to this headline"></a></h1>
+<span id="bugfinder"></span><h1>bugfinder<a class="headerlink" href="#module-bugfinder" title="Permalink to this heading"></a></h1>
 <p>Bugfinder package containing all dataset classes, data processing and utilities.</p>
 <p>To import the package in Python scripts, the path must be updated. Do it by either
 prepending the python command with <code class="docutils literal notranslate"><span class="pre">PYTHONPATH=/path/to/ai-bugfinder</span></code>, or adding
@@ -129,8 +131,21 @@ this snippet of code before any other <code class="docutils literal notranslate"
 </div>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="settings.html">bugfinder.settings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="settings.html">bugfinder.settings</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="settings.html#bugfinder.settings.DATASET_DIRS"><code class="docutils literal notranslate"><span class="pre">DATASET_DIRS</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings.html#bugfinder.settings.FEATURES_FILE"><code class="docutils literal notranslate"><span class="pre">FEATURES_FILE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings.html#bugfinder.settings.LOGGER"><code class="docutils literal notranslate"><span class="pre">LOGGER</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings.html#bugfinder.settings.LOGGER_CONFIG"><code class="docutils literal notranslate"><span class="pre">LOGGER_CONFIG</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings.html#bugfinder.settings.NEO4J_DEFAULT_TIMEOUT"><code class="docutils literal notranslate"><span class="pre">NEO4J_DEFAULT_TIMEOUT</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings.html#bugfinder.settings.NEO4J_V3_CORES"><code class="docutils literal notranslate"><span class="pre">NEO4J_V3_CORES</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings.html#bugfinder.settings.NEO4J_V3_MEMORY"><code class="docutils literal notranslate"><span class="pre">NEO4J_V3_MEMORY</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings.html#bugfinder.settings.POOL_SIZE"><code class="docutils literal notranslate"><span class="pre">POOL_SIZE</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings.html#bugfinder.settings.ROOT_DIR"><code class="docutils literal notranslate"><span class="pre">ROOT_DIR</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="settings.html#bugfinder.settings.SUMMARY_FILE"><code class="docutils literal notranslate"><span class="pre">SUMMARY_FILE</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="models/index.html">bugfinder.models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="models/index.html#bugfinder.models.ClassifierModel"><code class="docutils literal notranslate"><span class="pre">ClassifierModel</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="models/linear_classifier.html">bugfinder.models.linear_classifier</a></li>
 <li class="toctree-l2"><a class="reference internal" href="models/lstm_classifier.html">bugfinder.models.lstm_classifier</a></li>
 <li class="toctree-l2"><a class="reference internal" href="models/interproc_lstm.html">bugfinder.models.interproc_lstm</a></li>
@@ -160,6 +175,7 @@ this snippet of code before any other <code class="docutils literal notranslate"
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="processing/index.html">bugfinder.processing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="processing/index.html#bugfinder.processing.AbstractCppFileProcessing"><code class="docutils literal notranslate"><span class="pre">AbstractCppFileProcessing</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="processing/interproc.html">bugfinder.processing.interproc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="processing/sink_tagging.html">bugfinder.processing.sink_tagging</a></li>
 <li class="toctree-l2"><a class="reference internal" href="processing/tokenizers/index.html">bugfinder.processing.tokenizers</a></li>

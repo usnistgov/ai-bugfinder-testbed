@@ -15,7 +15,9 @@
         <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
         <script src="../../../../../_static/jquery.js"></script>
         <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
@@ -123,7 +125,7 @@ $(document).ready(function() {
            <div itemprop="articleBody">
              
   <section id="module-bugfinder.features.extraction.node2vec.implementation">
-<span id="bugfinder-features-extraction-node2vec-implementation"></span><h1>bugfinder.features.extraction.node2vec.implementation<a class="headerlink" href="#module-bugfinder.features.extraction.node2vec.implementation" title="Permalink to this headline"></a></h1>
+<span id="bugfinder-features-extraction-node2vec-implementation"></span><h1>bugfinder.features.extraction.node2vec.implementation<a class="headerlink" href="#module-bugfinder.features.extraction.node2vec.implementation" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bugfinder.features.extraction.node2vec.implementation.</span></span><span class="sig-name descname"><span class="pre">Node2VecImplementation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimensions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">walk_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">80</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_walks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'weight'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_strategy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation" title="Permalink to this definition"></a></dt>
@@ -171,7 +173,7 @@ $(document).ready(function() {
 
 <dl class="py method">
 <dt class="sig sig-object py" id="bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">skip_gram_params</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">gensim.models.word2vec.Word2Vec</span></span></span><a class="headerlink" href="#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation.fit" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">skip_gram_params</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Word2Vec</span></span></span><a class="headerlink" href="#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation.fit" title="Permalink to this definition"></a></dt>
 <dd><p>Creates the embeddings using the skip-gram algorithm. Accepts any input the
 Word2Vec model accepts in a dict format, so it`s possible to tune the algorithm
 if necessary.</p>

@@ -15,7 +15,9 @@
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
         <script src="../../../../_static/jquery.js"></script>
         <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
@@ -121,12 +123,12 @@ $(document).ready(function() {
            <div itemprop="articleBody">
              
   <section id="module-bugfinder.features.reduction">
-<span id="bugfinder-features-reduction"></span><h1>bugfinder.features.reduction<a class="headerlink" href="#module-bugfinder.features.reduction" title="Permalink to this headline"></a></h1>
+<span id="bugfinder-features-reduction"></span><h1>bugfinder.features.reduction<a class="headerlink" href="#module-bugfinder.features.reduction" title="Permalink to this heading"></a></h1>
 <p>Abstract classes for feature reduction.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="bugfinder.features.reduction.AbstractFeatureSelector">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bugfinder.features.reduction.</span></span><span class="sig-name descname"><span class="pre">AbstractFeatureSelector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bugfinder.features.reduction.AbstractFeatureSelector" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../base/processing/index.html#bugfinder.base.processing.AbstractProcessing" title="bugfinder.base.processing.AbstractProcessing"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.base.processing.AbstractProcessing</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="../../base/processing/index.html#bugfinder.base.processing.AbstractProcessing" title="bugfinder.base.processing.AbstractProcessing"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractProcessing</span></code></a></p>
 <p>Base class for feature selection.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="bugfinder.features.reduction.AbstractFeatureSelector.execute">
@@ -144,20 +146,63 @@ $(document).ready(function() {
 
 <dl class="py method">
 <dt class="sig sig-object py" id="bugfinder.features.reduction.AbstractFeatureSelector.select_feature">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">select_feature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.core.frame.DataFrame</span></span></span><a class="headerlink" href="#bugfinder.features.reduction.AbstractFeatureSelector.select_feature" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">select_feature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#bugfinder.features.reduction.AbstractFeatureSelector.select_feature" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="pca.html">bugfinder.features.reduction.pca</a></li>
-<li class="toctree-l1"><a class="reference internal" href="recursive_feature_elimination.html">bugfinder.features.reduction.recursive_feature_elimination</a></li>
-<li class="toctree-l1"><a class="reference internal" href="auto_encoder.html">bugfinder.features.reduction.auto_encoder</a></li>
-<li class="toctree-l1"><a class="reference internal" href="select_from_model.html">bugfinder.features.reduction.select_from_model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="univariate_select.html">bugfinder.features.reduction.univariate_select</a></li>
-<li class="toctree-l1"><a class="reference internal" href="variance_threshold.html">bugfinder.features.reduction.variance_threshold</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sequential_feature_selector.html">bugfinder.features.reduction.sequential_feature_selector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pca.html">bugfinder.features.reduction.pca</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pca.html#bugfinder.features.reduction.pca.FeatureSelector"><code class="docutils literal notranslate"><span class="pre">FeatureSelector</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pca.html#bugfinder.features.reduction.pca.FeatureSelector.select_feature"><code class="docutils literal notranslate"><span class="pre">FeatureSelector.select_feature()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="recursive_feature_elimination.html">bugfinder.features.reduction.recursive_feature_elimination</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="recursive_feature_elimination.html#bugfinder.features.reduction.recursive_feature_elimination.FeatureSelector"><code class="docutils literal notranslate"><span class="pre">FeatureSelector</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="recursive_feature_elimination.html#bugfinder.features.reduction.recursive_feature_elimination.FeatureSelector.select_feature"><code class="docutils literal notranslate"><span class="pre">FeatureSelector.select_feature()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="auto_encoder.html">bugfinder.features.reduction.auto_encoder</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="auto_encoder.html#bugfinder.features.reduction.auto_encoder.FeatureSelector"><code class="docutils literal notranslate"><span class="pre">FeatureSelector</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="auto_encoder.html#bugfinder.features.reduction.auto_encoder.FeatureSelector.select_feature"><code class="docutils literal notranslate"><span class="pre">FeatureSelector.select_feature()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_encoder.html#bugfinder.features.reduction.auto_encoder.FeatureSelector.train_encoder"><code class="docutils literal notranslate"><span class="pre">FeatureSelector.train_encoder()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="select_from_model.html">bugfinder.features.reduction.select_from_model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="select_from_model.html#bugfinder.features.reduction.select_from_model.FeatureSelector"><code class="docutils literal notranslate"><span class="pre">FeatureSelector</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="select_from_model.html#bugfinder.features.reduction.select_from_model.FeatureSelector.select_feature"><code class="docutils literal notranslate"><span class="pre">FeatureSelector.select_feature()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="univariate_select.html">bugfinder.features.reduction.univariate_select</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="univariate_select.html#bugfinder.features.reduction.univariate_select.FeatureSelector"><code class="docutils literal notranslate"><span class="pre">FeatureSelector</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="univariate_select.html#bugfinder.features.reduction.univariate_select.FeatureSelector.select_feature"><code class="docutils literal notranslate"><span class="pre">FeatureSelector.select_feature()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="variance_threshold.html">bugfinder.features.reduction.variance_threshold</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="variance_threshold.html#bugfinder.features.reduction.variance_threshold.FeatureSelector"><code class="docutils literal notranslate"><span class="pre">FeatureSelector</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="variance_threshold.html#bugfinder.features.reduction.variance_threshold.FeatureSelector.select_feature"><code class="docutils literal notranslate"><span class="pre">FeatureSelector.select_feature()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sequential_feature_selector.html">bugfinder.features.reduction.sequential_feature_selector</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sequential_feature_selector.html#bugfinder.features.reduction.sequential_feature_selector.FeatureSelector"><code class="docutils literal notranslate"><span class="pre">FeatureSelector</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="sequential_feature_selector.html#bugfinder.features.reduction.sequential_feature_selector.FeatureSelector.select_feature"><code class="docutils literal notranslate"><span class="pre">FeatureSelector.select_feature()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 </section>

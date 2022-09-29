@@ -15,7 +15,9 @@
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
         <script src="../../../../_static/jquery.js"></script>
         <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
@@ -84,6 +86,7 @@ $(document).ready(function() {
 <li class="toctree-l3"><a class="reference internal" href="../../base/index.html">bugfinder.base</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../features/index.html">bugfinder.features</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">bugfinder.processing</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../index.html#bugfinder.processing.AbstractCppFileProcessing"><code class="docutils literal notranslate"><span class="pre">AbstractCppFileProcessing</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../interproc.html">bugfinder.processing.interproc</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../sink_tagging.html">bugfinder.processing.sink_tagging</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tokenizers/index.html">bugfinder.processing.tokenizers</a></li>
@@ -127,12 +130,12 @@ $(document).ready(function() {
            <div itemprop="articleBody">
              
   <section id="module-bugfinder.processing.neo4j">
-<span id="bugfinder-processing-neo4j"></span><h1>bugfinder.processing.neo4j<a class="headerlink" href="#module-bugfinder.processing.neo4j" title="Permalink to this headline"></a></h1>
+<span id="bugfinder-processing-neo4j"></span><h1>bugfinder.processing.neo4j<a class="headerlink" href="#module-bugfinder.processing.neo4j" title="Permalink to this heading"></a></h1>
 <p>Module containing all Neo4J processing classes.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="bugfinder.processing.neo4j.Neo4J3Processing">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bugfinder.processing.neo4j.</span></span><span class="sig-name descname"><span class="pre">Neo4J3Processing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deprecation_warning</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bugfinder.processing.neo4j.Neo4J3Processing" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing" title="bugfinder.base.processing.containers.AbstractContainerProcessing"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.base.processing.containers.AbstractContainerProcessing</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="../../base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing" title="bugfinder.base.processing.containers.AbstractContainerProcessing"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractContainerProcessing</span></code></a></p>
 <p>Data processing calss for Neo4J v3.x</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="bugfinder.processing.neo4j.Neo4J3Processing.configure_container">
@@ -171,9 +174,39 @@ $(document).ready(function() {
 
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="annot.html">bugfinder.processing.neo4j.annot</a></li>
-<li class="toctree-l1"><a class="reference internal" href="importer.html">bugfinder.processing.neo4j.importer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="converter.html">bugfinder.processing.neo4j.converter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="annot.html">bugfinder.processing.neo4j.annot</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="annot.html#bugfinder.processing.neo4j.annot.Neo4JAnnotations"><code class="docutils literal notranslate"><span class="pre">Neo4JAnnotations</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="annot.html#bugfinder.processing.neo4j.annot.Neo4JAnnotations.COMMANDS"><code class="docutils literal notranslate"><span class="pre">Neo4JAnnotations.COMMANDS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="annot.html#bugfinder.processing.neo4j.annot.Neo4JAnnotations.configure_container"><code class="docutils literal notranslate"><span class="pre">Neo4JAnnotations.configure_container()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="annot.html#bugfinder.processing.neo4j.annot.Neo4JAnnotations.send_commands"><code class="docutils literal notranslate"><span class="pre">Neo4JAnnotations.send_commands()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="importer.html">bugfinder.processing.neo4j.importer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="importer.html#bugfinder.processing.neo4j.importer.Neo4J3Importer"><code class="docutils literal notranslate"><span class="pre">Neo4J3Importer</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="importer.html#bugfinder.processing.neo4j.importer.Neo4J3Importer.configure_container"><code class="docutils literal notranslate"><span class="pre">Neo4J3Importer.configure_container()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="importer.html#bugfinder.processing.neo4j.importer.Neo4J3Importer.db_name"><code class="docutils literal notranslate"><span class="pre">Neo4J3Importer.db_name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="importer.html#bugfinder.processing.neo4j.importer.Neo4J3Importer.import_dir"><code class="docutils literal notranslate"><span class="pre">Neo4J3Importer.import_dir</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="importer.html#bugfinder.processing.neo4j.importer.Neo4J3Importer.send_commands"><code class="docutils literal notranslate"><span class="pre">Neo4J3Importer.send_commands()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="converter.html">bugfinder.processing.neo4j.converter</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="converter.html#bugfinder.processing.neo4j.converter.Neo4J2Converter"><code class="docutils literal notranslate"><span class="pre">Neo4J2Converter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="converter.html#bugfinder.processing.neo4j.converter.Neo4J2Converter.START_STRING"><code class="docutils literal notranslate"><span class="pre">Neo4J2Converter.START_STRING</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="converter.html#bugfinder.processing.neo4j.converter.Neo4J2Converter.configure_container"><code class="docutils literal notranslate"><span class="pre">Neo4J2Converter.configure_container()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="converter.html#bugfinder.processing.neo4j.converter.Neo4J2Converter.send_commands"><code class="docutils literal notranslate"><span class="pre">Neo4J2Converter.send_commands()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="converter.html#bugfinder.processing.neo4j.converter.Neo4J3Converter"><code class="docutils literal notranslate"><span class="pre">Neo4J3Converter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="converter.html#bugfinder.processing.neo4j.converter.Neo4J3Converter.configure_container"><code class="docutils literal notranslate"><span class="pre">Neo4J3Converter.configure_container()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="converter.html#bugfinder.processing.neo4j.converter.Neo4J3Converter.send_commands"><code class="docutils literal notranslate"><span class="pre">Neo4J3Converter.send_commands()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 </section>

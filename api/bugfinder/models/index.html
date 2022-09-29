@@ -15,7 +15,9 @@
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -80,6 +82,7 @@ $(document).ready(function() {
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">bugfinder</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../settings.html">bugfinder.settings</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">bugfinder.models</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bugfinder.models.ClassifierModel"><code class="docutils literal notranslate"><span class="pre">ClassifierModel</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="linear_classifier.html">bugfinder.models.linear_classifier</a></li>
 <li class="toctree-l4"><a class="reference internal" href="lstm_classifier.html">bugfinder.models.lstm_classifier</a></li>
 <li class="toctree-l4"><a class="reference internal" href="interproc_lstm.html">bugfinder.models.interproc_lstm</a></li>
@@ -124,12 +127,12 @@ $(document).ready(function() {
            <div itemprop="articleBody">
              
   <section id="module-bugfinder.models">
-<span id="bugfinder-models"></span><h1>bugfinder.models<a class="headerlink" href="#module-bugfinder.models" title="Permalink to this headline"></a></h1>
+<span id="bugfinder-models"></span><h1>bugfinder.models<a class="headerlink" href="#module-bugfinder.models" title="Permalink to this heading"></a></h1>
 <p>Abstract classifier model for the dataset.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="bugfinder.models.ClassifierModel">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bugfinder.models.</span></span><span class="sig-name descname"><span class="pre">ClassifierModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bugfinder.models.ClassifierModel" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="../base/processing/index.html#bugfinder.base.processing.AbstractProcessing" title="bugfinder.base.processing.AbstractProcessing"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.base.processing.AbstractProcessing</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="../base/processing/index.html#bugfinder.base.processing.AbstractProcessing" title="bugfinder.base.processing.AbstractProcessing"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractProcessing</span></code></a></p>
 <p>Abstract class for classifier models</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="bugfinder.models.ClassifierModel.execute">
@@ -147,12 +150,59 @@ $(document).ready(function() {
 
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="linear_classifier.html">bugfinder.models.linear_classifier</a></li>
-<li class="toctree-l1"><a class="reference internal" href="lstm_classifier.html">bugfinder.models.lstm_classifier</a></li>
-<li class="toctree-l1"><a class="reference internal" href="interproc_lstm.html">bugfinder.models.interproc_lstm</a></li>
-<li class="toctree-l1"><a class="reference internal" href="blstm_classifier.html">bugfinder.models.blstm_classifier</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sequential.html">bugfinder.models.sequential</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dnn_classifier.html">bugfinder.models.dnn_classifier</a></li>
+<li class="toctree-l1"><a class="reference internal" href="linear_classifier.html">bugfinder.models.linear_classifier</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="linear_classifier.html#bugfinder.models.linear_classifier.LinearClassifierTraining"><code class="docutils literal notranslate"><span class="pre">LinearClassifierTraining</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="linear_classifier.html#bugfinder.models.linear_classifier.LinearClassifierTraining.init_model"><code class="docutils literal notranslate"><span class="pre">LinearClassifierTraining.init_model()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lstm_classifier.html">bugfinder.models.lstm_classifier</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lstm_classifier.html#bugfinder.models.lstm_classifier.LSTMClassifierTraining"><code class="docutils literal notranslate"><span class="pre">LSTMClassifierTraining</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lstm_classifier.html#bugfinder.models.lstm_classifier.LSTMClassifierTraining.build_model"><code class="docutils literal notranslate"><span class="pre">LSTMClassifierTraining.build_model()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="lstm_classifier.html#bugfinder.models.lstm_classifier.LSTMClassifierTraining.init_model"><code class="docutils literal notranslate"><span class="pre">LSTMClassifierTraining.init_model()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="interproc_lstm.html">bugfinder.models.interproc_lstm</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="interproc_lstm.html#bugfinder.models.interproc_lstm.InterprocLSTMTraining"><code class="docutils literal notranslate"><span class="pre">InterprocLSTMTraining</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="interproc_lstm.html#bugfinder.models.interproc_lstm.InterprocLSTMTraining.execute"><code class="docutils literal notranslate"><span class="pre">InterprocLSTMTraining.execute()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="interproc_lstm.html#bugfinder.models.interproc_lstm.InterprocLSTMTraining.init_model"><code class="docutils literal notranslate"><span class="pre">InterprocLSTMTraining.init_model()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="interproc_lstm.html#bugfinder.models.interproc_lstm.InterprocLSTMTraining.process_features"><code class="docutils literal notranslate"><span class="pre">InterprocLSTMTraining.process_features()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="blstm_classifier.html">bugfinder.models.blstm_classifier</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="blstm_classifier.html#bugfinder.models.blstm_classifier.BLSTMClassifierModel"><code class="docutils literal notranslate"><span class="pre">BLSTMClassifierModel</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="blstm_classifier.html#bugfinder.models.blstm_classifier.BLSTMClassifierModel.evaluate"><code class="docutils literal notranslate"><span class="pre">BLSTMClassifierModel.evaluate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blstm_classifier.html#bugfinder.models.blstm_classifier.BLSTMClassifierModel.execute"><code class="docutils literal notranslate"><span class="pre">BLSTMClassifierModel.execute()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="blstm_classifier.html#bugfinder.models.blstm_classifier.BLSTMClassifierModel.init_model"><code class="docutils literal notranslate"><span class="pre">BLSTMClassifierModel.init_model()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="blstm_classifier.html#bugfinder.models.blstm_classifier.BLSTMClassifierTraining"><code class="docutils literal notranslate"><span class="pre">BLSTMClassifierTraining</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="blstm_classifier.html#bugfinder.models.blstm_classifier.BLSTMClassifierTraining.init_model"><code class="docutils literal notranslate"><span class="pre">BLSTMClassifierTraining.init_model()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sequential.html">bugfinder.models.sequential</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sequential.html#bugfinder.models.sequential.SequenceGenerator"><code class="docutils literal notranslate"><span class="pre">SequenceGenerator</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="sequential.html#bugfinder.models.sequential.SequentialModel"><code class="docutils literal notranslate"><span class="pre">SequentialModel</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="sequential.html#bugfinder.models.sequential.SequentialModel.execute"><code class="docutils literal notranslate"><span class="pre">SequentialModel.execute()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="sequential.html#bugfinder.models.sequential.SequentialModel.init_model"><code class="docutils literal notranslate"><span class="pre">SequentialModel.init_model()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dnn_classifier.html">bugfinder.models.dnn_classifier</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dnn_classifier.html#bugfinder.models.dnn_classifier.DNNClassifierTraining"><code class="docutils literal notranslate"><span class="pre">DNNClassifierTraining</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dnn_classifier.html#bugfinder.models.dnn_classifier.DNNClassifierTraining.init_model"><code class="docutils literal notranslate"><span class="pre">DNNClassifierTraining.init_model()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 </section>

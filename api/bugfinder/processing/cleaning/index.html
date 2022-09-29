@@ -15,7 +15,9 @@
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
         <script src="../../../../_static/jquery.js"></script>
         <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
@@ -84,6 +86,7 @@ $(document).ready(function() {
 <li class="toctree-l3"><a class="reference internal" href="../../base/index.html">bugfinder.base</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../features/index.html">bugfinder.features</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">bugfinder.processing</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../index.html#bugfinder.processing.AbstractCppFileProcessing"><code class="docutils literal notranslate"><span class="pre">AbstractCppFileProcessing</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../interproc.html">bugfinder.processing.interproc</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../sink_tagging.html">bugfinder.processing.sink_tagging</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../tokenizers/index.html">bugfinder.processing.tokenizers</a></li>
@@ -127,11 +130,11 @@ $(document).ready(function() {
            <div itemprop="articleBody">
              
   <section id="module-bugfinder.processing.cleaning">
-<span id="bugfinder-processing-cleaning"></span><h1>bugfinder.processing.cleaning<a class="headerlink" href="#module-bugfinder.processing.cleaning" title="Permalink to this headline"></a></h1>
+<span id="bugfinder-processing-cleaning"></span><h1>bugfinder.processing.cleaning<a class="headerlink" href="#module-bugfinder.processing.cleaning" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="bugfinder.processing.cleaning.AbstractFileRemover">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bugfinder.processing.cleaning.</span></span><span class="sig-name descname"><span class="pre">AbstractFileRemover</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deprecation_warning</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bugfinder.processing.cleaning.AbstractFileRemover" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../base/processing/files.html#bugfinder.base.processing.files.AbstractFileProcessing" title="bugfinder.base.processing.files.AbstractFileProcessing"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.base.processing.files.AbstractFileProcessing</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="../../base/processing/files.html#bugfinder.base.processing.files.AbstractFileProcessing" title="bugfinder.base.processing.files.AbstractFileProcessing"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractFileProcessing</span></code></a></p>
 <p>Processing class to remove files based on specific conditions.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="bugfinder.processing.cleaning.AbstractFileRemover.match_file">
@@ -150,11 +153,49 @@ processing.</p>
 
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="replace_litterals.html">bugfinder.processing.cleaning.replace_litterals</a></li>
-<li class="toctree-l1"><a class="reference internal" href="remove_cpp_files.html">bugfinder.processing.cleaning.remove_cpp_files</a></li>
-<li class="toctree-l1"><a class="reference internal" href="remove_main_function.html">bugfinder.processing.cleaning.remove_main_function</a></li>
-<li class="toctree-l1"><a class="reference internal" href="remove_interproc_files.html">bugfinder.processing.cleaning.remove_interproc_files</a></li>
-<li class="toctree-l1"><a class="reference internal" href="remove_comments.html">bugfinder.processing.cleaning.remove_comments</a></li>
+<li class="toctree-l1"><a class="reference internal" href="replace_litterals.html">bugfinder.processing.cleaning.replace_litterals</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="replace_litterals.html#bugfinder.processing.cleaning.replace_litterals.ReplaceLitterals"><code class="docutils literal notranslate"><span class="pre">ReplaceLitterals</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="replace_litterals.html#bugfinder.processing.cleaning.replace_litterals.ReplaceLitterals.execute"><code class="docutils literal notranslate"><span class="pre">ReplaceLitterals.execute()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="replace_litterals.html#bugfinder.processing.cleaning.replace_litterals.ReplaceLitterals.process_file"><code class="docutils literal notranslate"><span class="pre">ReplaceLitterals.process_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="replace_litterals.html#bugfinder.processing.cleaning.replace_litterals.ReplaceLitterals.replacements"><code class="docutils literal notranslate"><span class="pre">ReplaceLitterals.replacements</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="remove_cpp_files.html">bugfinder.processing.cleaning.remove_cpp_files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="remove_cpp_files.html#bugfinder.processing.cleaning.remove_cpp_files.RemoveCppFiles"><code class="docutils literal notranslate"><span class="pre">RemoveCppFiles</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="remove_cpp_files.html#bugfinder.processing.cleaning.remove_cpp_files.RemoveCppFiles.execute"><code class="docutils literal notranslate"><span class="pre">RemoveCppFiles.execute()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="remove_cpp_files.html#bugfinder.processing.cleaning.remove_cpp_files.RemoveCppFiles.match_file"><code class="docutils literal notranslate"><span class="pre">RemoveCppFiles.match_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="remove_main_function.html">bugfinder.processing.cleaning.remove_main_function</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="remove_main_function.html#bugfinder.processing.cleaning.remove_main_function.RemoveMainFunction"><code class="docutils literal notranslate"><span class="pre">RemoveMainFunction</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="remove_main_function.html#bugfinder.processing.cleaning.remove_main_function.RemoveMainFunction.execute"><code class="docutils literal notranslate"><span class="pre">RemoveMainFunction.execute()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="remove_main_function.html#bugfinder.processing.cleaning.remove_main_function.RemoveMainFunction.main_fn_entry"><code class="docutils literal notranslate"><span class="pre">RemoveMainFunction.main_fn_entry</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="remove_main_function.html#bugfinder.processing.cleaning.remove_main_function.RemoveMainFunction.main_fn_exit"><code class="docutils literal notranslate"><span class="pre">RemoveMainFunction.main_fn_exit</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="remove_main_function.html#bugfinder.processing.cleaning.remove_main_function.RemoveMainFunction.process_file"><code class="docutils literal notranslate"><span class="pre">RemoveMainFunction.process_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="remove_interproc_files.html">bugfinder.processing.cleaning.remove_interproc_files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="remove_interproc_files.html#bugfinder.processing.cleaning.remove_interproc_files.RemoveInterprocFiles"><code class="docutils literal notranslate"><span class="pre">RemoveInterprocFiles</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="remove_interproc_files.html#bugfinder.processing.cleaning.remove_interproc_files.RemoveInterprocFiles.execute"><code class="docutils literal notranslate"><span class="pre">RemoveInterprocFiles.execute()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="remove_interproc_files.html#bugfinder.processing.cleaning.remove_interproc_files.RemoveInterprocFiles.match_file"><code class="docutils literal notranslate"><span class="pre">RemoveInterprocFiles.match_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="remove_comments.html">bugfinder.processing.cleaning.remove_comments</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="remove_comments.html#bugfinder.processing.cleaning.remove_comments.RemoveComments"><code class="docutils literal notranslate"><span class="pre">RemoveComments</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="remove_comments.html#bugfinder.processing.cleaning.remove_comments.RemoveComments.execute"><code class="docutils literal notranslate"><span class="pre">RemoveComments.execute()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="remove_comments.html#bugfinder.processing.cleaning.remove_comments.RemoveComments.process_file"><code class="docutils literal notranslate"><span class="pre">RemoveComments.process_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 </section>

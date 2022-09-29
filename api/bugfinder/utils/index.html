@@ -15,7 +15,9 @@
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -125,17 +127,73 @@ $(document).ready(function() {
            <div itemprop="articleBody">
              
   <section id="module-bugfinder.utils">
-<span id="bugfinder-utils"></span><h1>bugfinder.utils<a class="headerlink" href="#module-bugfinder.utils" title="Permalink to this headline"></a></h1>
+<span id="bugfinder-utils"></span><h1>bugfinder.utils<a class="headerlink" href="#module-bugfinder.utils" title="Permalink to this heading"></a></h1>
 <p>Utilities for bugfinder</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="dirs.html">bugfinder.utils.dirs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="feature_selection.html">bugfinder.utils.feature_selection</a></li>
-<li class="toctree-l1"><a class="reference internal" href="processing.html">bugfinder.utils.processing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rand.html">bugfinder.utils.rand</a></li>
-<li class="toctree-l1"><a class="reference internal" href="containers.html">bugfinder.utils.containers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="statistics.html">bugfinder.utils.statistics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="progressbar.html">bugfinder.utils.progressbar</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dirs.html">bugfinder.utils.dirs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dirs.html#bugfinder.utils.dirs.copy_dir"><code class="docutils literal notranslate"><span class="pre">copy_dir()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="feature_selection.html">bugfinder.utils.feature_selection</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="feature_selection.html#bugfinder.utils.feature_selection.retrieve_original_columns_name"><code class="docutils literal notranslate"><span class="pre">retrieve_original_columns_name()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="feature_selection.html#bugfinder.utils.feature_selection.selection_estimators"><code class="docutils literal notranslate"><span class="pre">selection_estimators()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="processing.html">bugfinder.utils.processing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="processing.html#bugfinder.utils.processing.is_operation_valid"><code class="docutils literal notranslate"><span class="pre">is_operation_valid()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="processing.html#bugfinder.utils.processing.is_processing_stack_valid"><code class="docutils literal notranslate"><span class="pre">is_processing_stack_valid()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rand.html">bugfinder.utils.rand</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rand.html#bugfinder.utils.rand.get_rand_string"><code class="docutils literal notranslate"><span class="pre">get_rand_string()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="containers.html">bugfinder.utils.containers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="containers.html#bugfinder.utils.containers.start_container"><code class="docutils literal notranslate"><span class="pre">start_container()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="containers.html#bugfinder.utils.containers.stop_container_by_name"><code class="docutils literal notranslate"><span class="pre">stop_container_by_name()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="containers.html#bugfinder.utils.containers.wait_log_display"><code class="docutils literal notranslate"><span class="pre">wait_log_display()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="statistics.html">bugfinder.utils.statistics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="statistics.html#bugfinder.utils.statistics.display_time"><code class="docutils literal notranslate"><span class="pre">display_time()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="statistics.html#bugfinder.utils.statistics.divide"><code class="docutils literal notranslate"><span class="pre">divide()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="statistics.html#bugfinder.utils.statistics.get_time"><code class="docutils literal notranslate"><span class="pre">get_time()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="statistics.html#bugfinder.utils.statistics.has_better_metrics"><code class="docutils literal notranslate"><span class="pre">has_better_metrics()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="progressbar.html">bugfinder.utils.progressbar</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="progressbar.html#bugfinder.utils.progressbar.BestBar"><code class="docutils literal notranslate"><span class="pre">BestBar</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="progressbar.html#bugfinder.utils.progressbar.BestBar.b_age"><code class="docutils literal notranslate"><span class="pre">BestBar.b_age</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="progressbar.html#bugfinder.utils.progressbar.BestBar.b_stats"><code class="docutils literal notranslate"><span class="pre">BestBar.b_stats</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="progressbar.html#bugfinder.utils.progressbar.BestBar.b_val"><code class="docutils literal notranslate"><span class="pre">BestBar.b_val</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="progressbar.html#bugfinder.utils.progressbar.BestBar.best_age"><code class="docutils literal notranslate"><span class="pre">BestBar.best_age</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="progressbar.html#bugfinder.utils.progressbar.BestBar.best_stats"><code class="docutils literal notranslate"><span class="pre">BestBar.best_stats</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="progressbar.html#bugfinder.utils.progressbar.BestBar.best_val"><code class="docutils literal notranslate"><span class="pre">BestBar.best_val</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="progressbar.html#bugfinder.utils.progressbar.BestBar.next"><code class="docutils literal notranslate"><span class="pre">BestBar.next()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="progressbar.html#bugfinder.utils.progressbar.BestBar.suffix"><code class="docutils literal notranslate"><span class="pre">BestBar.suffix</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="progressbar.html#bugfinder.utils.progressbar.MultiBar"><code class="docutils literal notranslate"><span class="pre">MultiBar</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="progressbar.html#bugfinder.utils.progressbar.MultiBar.done"><code class="docutils literal notranslate"><span class="pre">MultiBar.done</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="progressbar.html#bugfinder.utils.progressbar.MultiBar.jobs"><code class="docutils literal notranslate"><span class="pre">MultiBar.jobs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="progressbar.html#bugfinder.utils.progressbar.MultiBar.jobz"><code class="docutils literal notranslate"><span class="pre">MultiBar.jobz</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="progressbar.html#bugfinder.utils.progressbar.MultiBar.next"><code class="docutils literal notranslate"><span class="pre">MultiBar.next()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="progressbar.html#bugfinder.utils.progressbar.MultiBar.queue"><code class="docutils literal notranslate"><span class="pre">MultiBar.queue</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="progressbar.html#bugfinder.utils.progressbar.MultiBar.refresh"><code class="docutils literal notranslate"><span class="pre">MultiBar.refresh()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="progressbar.html#bugfinder.utils.progressbar.MultiBar.subscribe"><code class="docutils literal notranslate"><span class="pre">MultiBar.subscribe()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="progressbar.html#bugfinder.utils.progressbar.MultiBar.suffix"><code class="docutils literal notranslate"><span class="pre">MultiBar.suffix</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="progressbar.html#bugfinder.utils.progressbar.MultiBar.unsubscribe"><code class="docutils literal notranslate"><span class="pre">MultiBar.unsubscribe()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="progressbar.html#bugfinder.utils.progressbar.SlowBar"><code class="docutils literal notranslate"><span class="pre">SlowBar</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="progressbar.html#bugfinder.utils.progressbar.SlowBar.extend"><code class="docutils literal notranslate"><span class="pre">SlowBar.extend()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="progressbar.html#bugfinder.utils.progressbar.SlowBar.slow_eta"><code class="docutils literal notranslate"><span class="pre">SlowBar.slow_eta</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="progressbar.html#bugfinder.utils.progressbar.SlowBar.suffix"><code class="docutils literal notranslate"><span class="pre">SlowBar.suffix</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 </section>

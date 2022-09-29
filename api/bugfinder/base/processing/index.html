@@ -15,7 +15,9 @@
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
         <script src="../../../../_static/jquery.js"></script>
         <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
@@ -121,12 +123,12 @@ $(document).ready(function() {
            <div itemprop="articleBody">
              
   <section id="module-bugfinder.base.processing">
-<span id="bugfinder-base-processing"></span><h1>bugfinder.base.processing<a class="headerlink" href="#module-bugfinder.base.processing" title="Permalink to this headline"></a></h1>
+<span id="bugfinder-base-processing"></span><h1>bugfinder.base.processing<a class="headerlink" href="#module-bugfinder.base.processing" title="Permalink to this heading"></a></h1>
 <p>Abstract classes for creating processing steps.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="bugfinder.base.processing.AbstractProcessing">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bugfinder.base.processing.</span></span><span class="sig-name descname"><span class="pre">AbstractProcessing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deprecation_warning</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bugfinder.base.processing.AbstractProcessing" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></a></p>
 <p>Abstract class for all dataset processing.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="bugfinder.base.processing.AbstractProcessing.execute">
@@ -147,7 +149,7 @@ $(document).ready(function() {
 <dl class="py class">
 <dt class="sig sig-object py" id="bugfinder.base.processing.ProcessingCategory">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bugfinder.base.processing.</span></span><span class="sig-name descname"><span class="pre">ProcessingCategory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bugfinder.base.processing.ProcessingCategory" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/enum.html#enum.Enum" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></a></p>
 <p>Possible types of processing classes</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="bugfinder.base.processing.ProcessingCategory.EXTRACTION">
@@ -180,8 +182,37 @@ $(document).ready(function() {
 
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="files.html">bugfinder.base.processing.files</a></li>
-<li class="toctree-l1"><a class="reference internal" href="containers.html">bugfinder.base.processing.containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="files.html">bugfinder.base.processing.files</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="files.html#bugfinder.base.processing.files.AbstractFileProcessing"><code class="docutils literal notranslate"><span class="pre">AbstractFileProcessing</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="files.html#bugfinder.base.processing.files.AbstractFileProcessing.execute"><code class="docutils literal notranslate"><span class="pre">AbstractFileProcessing.execute()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="files.html#bugfinder.base.processing.files.AbstractFileProcessing.match_file"><code class="docutils literal notranslate"><span class="pre">AbstractFileProcessing.match_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="files.html#bugfinder.base.processing.files.AbstractFileProcessing.process_file"><code class="docutils literal notranslate"><span class="pre">AbstractFileProcessing.process_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="containers.html">bugfinder.base.processing.containers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.assign_ports"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.assign_ports()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.command"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.command</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.configure_command"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.configure_command()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.configure_container"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.configure_container()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.configure_container_with_dict"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.configure_container_with_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.container"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.container</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.container_name"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.container_name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.container_ports"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.container_ports</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.detach"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.detach</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.environment"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.environment</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.execute"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.execute()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.image_name"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.image_name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.machine_ports"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.machine_ports</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.send_commands"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.send_commands()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.start_retries"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.start_retries</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.volumes"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.volumes</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 </section>

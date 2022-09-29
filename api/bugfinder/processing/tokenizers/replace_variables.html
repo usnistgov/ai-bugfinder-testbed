@@ -15,7 +15,9 @@
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
         <script src="../../../../_static/jquery.js"></script>
         <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
@@ -84,6 +86,7 @@ $(document).ready(function() {
 <li class="toctree-l3"><a class="reference internal" href="../../base/index.html">bugfinder.base</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../features/index.html">bugfinder.features</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../index.html">bugfinder.processing</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../index.html#bugfinder.processing.AbstractCppFileProcessing"><code class="docutils literal notranslate"><span class="pre">AbstractCppFileProcessing</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="../interproc.html">bugfinder.processing.interproc</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../sink_tagging.html">bugfinder.processing.sink_tagging</a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="index.html">bugfinder.processing.tokenizers</a></li>
@@ -128,11 +131,11 @@ $(document).ready(function() {
            <div itemprop="articleBody">
              
   <section id="module-bugfinder.processing.tokenizers.replace_variables">
-<span id="bugfinder-processing-tokenizers-replace-variables"></span><h1>bugfinder.processing.tokenizers.replace_variables<a class="headerlink" href="#module-bugfinder.processing.tokenizers.replace_variables" title="Permalink to this headline"></a></h1>
+<span id="bugfinder-processing-tokenizers-replace-variables"></span><h1>bugfinder.processing.tokenizers.replace_variables<a class="headerlink" href="#module-bugfinder.processing.tokenizers.replace_variables" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="bugfinder.processing.tokenizers.replace_variables.ReplaceVariables">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bugfinder.processing.tokenizers.replace_variables.</span></span><span class="sig-name descname"><span class="pre">ReplaceVariables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deprecation_warning</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bugfinder.processing.tokenizers.replace_variables.ReplaceVariables" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="index.html#bugfinder.processing.tokenizers.AbstractTokenizer" title="bugfinder.processing.tokenizers.AbstractTokenizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.processing.tokenizers.AbstractTokenizer</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="index.html#bugfinder.processing.tokenizers.AbstractTokenizer" title="bugfinder.processing.tokenizers.AbstractTokenizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractTokenizer</span></code></a></p>
 <p>Processing to replace user-created functions from a dataset.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="bugfinder.processing.tokenizers.replace_variables.ReplaceVariables.execute">

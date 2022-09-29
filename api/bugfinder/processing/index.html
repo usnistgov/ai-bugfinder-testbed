@@ -15,7 +15,9 @@
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -84,6 +86,7 @@ $(document).ready(function() {
 <li class="toctree-l3"><a class="reference internal" href="../base/index.html">bugfinder.base</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../features/index.html">bugfinder.features</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">bugfinder.processing</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bugfinder.processing.AbstractCppFileProcessing"><code class="docutils literal notranslate"><span class="pre">AbstractCppFileProcessing</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="interproc.html">bugfinder.processing.interproc</a></li>
 <li class="toctree-l4"><a class="reference internal" href="sink_tagging.html">bugfinder.processing.sink_tagging</a></li>
 <li class="toctree-l4"><a class="reference internal" href="tokenizers/index.html">bugfinder.processing.tokenizers</a></li>
@@ -126,11 +129,11 @@ $(document).ready(function() {
            <div itemprop="articleBody">
              
   <section id="module-bugfinder.processing">
-<span id="bugfinder-processing"></span><h1>bugfinder.processing<a class="headerlink" href="#module-bugfinder.processing" title="Permalink to this headline"></a></h1>
+<span id="bugfinder-processing"></span><h1>bugfinder.processing<a class="headerlink" href="#module-bugfinder.processing" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="bugfinder.processing.AbstractCppFileProcessing">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bugfinder.processing.</span></span><span class="sig-name descname"><span class="pre">AbstractCppFileProcessing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deprecation_warning</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bugfinder.processing.AbstractCppFileProcessing" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="../base/processing/files.html#bugfinder.base.processing.files.AbstractFileProcessing" title="bugfinder.base.processing.files.AbstractFileProcessing"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.base.processing.files.AbstractFileProcessing</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="../base/processing/files.html#bugfinder.base.processing.files.AbstractFileProcessing" title="bugfinder.base.processing.files.AbstractFileProcessing"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractFileProcessing</span></code></a></p>
 <p>Abstract file processing matching C and C++ files only</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="bugfinder.processing.AbstractCppFileProcessing.match_file">
@@ -153,15 +156,26 @@ subclass.</p>
 
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="interproc.html">bugfinder.processing.interproc</a></li>
-<li class="toctree-l1"><a class="reference internal" href="sink_tagging.html">bugfinder.processing.sink_tagging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interproc.html">bugfinder.processing.interproc</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="interproc.html#bugfinder.processing.interproc.InterprocMerger"><code class="docutils literal notranslate"><span class="pre">InterprocMerger</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="interproc.html#bugfinder.processing.interproc.InterprocProcessing"><code class="docutils literal notranslate"><span class="pre">InterprocProcessing</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="interproc.html#bugfinder.processing.interproc.interproc_worker"><code class="docutils literal notranslate"><span class="pre">interproc_worker()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sink_tagging.html">bugfinder.processing.sink_tagging</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sink_tagging.html#bugfinder.processing.sink_tagging.SinkTaggingProcessing"><code class="docutils literal notranslate"><span class="pre">SinkTaggingProcessing</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="sink_tagging.html#bugfinder.processing.sink_tagging.sinktagging_worker"><code class="docutils literal notranslate"><span class="pre">sinktagging_worker()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="tokenizers/index.html">bugfinder.processing.tokenizers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tokenizers/index.html#bugfinder.processing.tokenizers.AbstractTokenizer"><code class="docutils literal notranslate"><span class="pre">AbstractTokenizer</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="tokenizers/replace_functions.html">bugfinder.processing.tokenizers.replace_functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tokenizers/replace_variables.html">bugfinder.processing.tokenizers.replace_variables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tokenizers/tokenize_code.html">bugfinder.processing.tokenizers.tokenize_code</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cleaning/index.html">bugfinder.processing.cleaning</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cleaning/index.html#bugfinder.processing.cleaning.AbstractFileRemover"><code class="docutils literal notranslate"><span class="pre">AbstractFileRemover</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="cleaning/replace_litterals.html">bugfinder.processing.cleaning.replace_litterals</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cleaning/remove_cpp_files.html">bugfinder.processing.cleaning.remove_cpp_files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cleaning/remove_main_function.html">bugfinder.processing.cleaning.remove_main_function</a></li>
@@ -170,6 +184,7 @@ subclass.</p>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="neo4j/index.html">bugfinder.processing.neo4j</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="neo4j/index.html#bugfinder.processing.neo4j.Neo4J3Processing"><code class="docutils literal notranslate"><span class="pre">Neo4J3Processing</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j/annot.html">bugfinder.processing.neo4j.annot</a></li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j/importer.html">bugfinder.processing.neo4j.importer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="neo4j/converter.html">bugfinder.processing.neo4j.converter</a></li>
@@ -183,11 +198,13 @@ subclass.</p>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="joern/index.html">bugfinder.processing.joern</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="joern/index.html#bugfinder.processing.joern.AbstractJoernProcessing"><code class="docutils literal notranslate"><span class="pre">AbstractJoernProcessing</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="joern/v031.html">bugfinder.processing.joern.v031</a></li>
 <li class="toctree-l2"><a class="reference internal" href="joern/v040.html">bugfinder.processing.joern.v040</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="ast/index.html">bugfinder.processing.ast</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ast/index.html#bugfinder.processing.ast.AbstractASTMarkup"><code class="docutils literal notranslate"><span class="pre">AbstractASTMarkup</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="ast/v03.html">bugfinder.processing.ast.v03</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ast/v02.html">bugfinder.processing.ast.v02</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ast/v01.html">bugfinder.processing.ast.v01</a></li>

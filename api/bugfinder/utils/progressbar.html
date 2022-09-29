@@ -15,7 +15,9 @@
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -126,11 +128,11 @@ $(document).ready(function() {
            <div itemprop="articleBody">
              
   <section id="module-bugfinder.utils.progressbar">
-<span id="bugfinder-utils-progressbar"></span><h1>bugfinder.utils.progressbar<a class="headerlink" href="#module-bugfinder.utils.progressbar" title="Permalink to this headline"></a></h1>
+<span id="bugfinder-utils-progressbar"></span><h1>bugfinder.utils.progressbar<a class="headerlink" href="#module-bugfinder.utils.progressbar" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="bugfinder.utils.progressbar.BestBar">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bugfinder.utils.progressbar.</span></span><span class="sig-name descname"><span class="pre">BestBar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bugfinder.utils.progressbar.BestBar" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#bugfinder.utils.progressbar.SlowBar" title="bugfinder.utils.progressbar.SlowBar"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.utils.progressbar.SlowBar</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#bugfinder.utils.progressbar.SlowBar" title="bugfinder.utils.progressbar.SlowBar"><code class="xref py py-class docutils literal notranslate"><span class="pre">SlowBar</span></code></a></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="bugfinder.utils.progressbar.BestBar.b_age">
 <span class="sig-name descname"><span class="pre">b_age</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#bugfinder.utils.progressbar.BestBar.b_age" title="Permalink to this definition"></a></dt>
@@ -176,7 +178,7 @@ $(document).ready(function() {
 <dl class="py class">
 <dt class="sig sig-object py" id="bugfinder.utils.progressbar.MultiBar">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bugfinder.utils.progressbar.</span></span><span class="sig-name descname"><span class="pre">MultiBar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bugfinder.utils.progressbar.MultiBar" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#bugfinder.utils.progressbar.SlowBar" title="bugfinder.utils.progressbar.SlowBar"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.utils.progressbar.SlowBar</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#bugfinder.utils.progressbar.SlowBar" title="bugfinder.utils.progressbar.SlowBar"><code class="xref py py-class docutils literal notranslate"><span class="pre">SlowBar</span></code></a></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="bugfinder.utils.progressbar.MultiBar.done">
 <span class="sig-name descname"><span class="pre">done</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#bugfinder.utils.progressbar.MultiBar.done" title="Permalink to this definition"></a></dt>
@@ -227,7 +229,7 @@ $(document).ready(function() {
 <dl class="py class">
 <dt class="sig sig-object py" id="bugfinder.utils.progressbar.SlowBar">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bugfinder.utils.progressbar.</span></span><span class="sig-name descname"><span class="pre">SlowBar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bugfinder.utils.progressbar.SlowBar" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">progress.bar.Bar</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Bar</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="bugfinder.utils.progressbar.SlowBar.extend">
 <span class="sig-name descname"><span class="pre">extend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bugfinder.utils.progressbar.SlowBar.extend" title="Permalink to this definition"></a></dt>

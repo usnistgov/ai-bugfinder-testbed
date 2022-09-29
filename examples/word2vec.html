@@ -15,7 +15,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -122,9 +124,9 @@ $(document).ready(function() {
            <div itemprop="articleBody">
              
   <section id="word2vec">
-<h1>2. Word2Vec<a class="headerlink" href="#word2vec" title="Permalink to this headline"></a></h1>
+<h1>2. Word2Vec<a class="headerlink" href="#word2vec" title="Permalink to this heading"></a></h1>
 <section id="additional-dataset-cleaning">
-<h2>2.1. Additional dataset cleaning<a class="headerlink" href="#additional-dataset-cleaning" title="Permalink to this headline"></a></h2>
+<h2>2.1. Additional dataset cleaning<a class="headerlink" href="#additional-dataset-cleaning" title="Permalink to this heading"></a></h2>
 <p>If you want to train a word2vec model in this dataset, there is no need to run
 Joern. After you finished preparing the dataset with the <code class="docutils literal notranslate"><span class="pre">clean_dataset.py</span></code>
 script, it is necessary to run an additional script to deal with:</p>
@@ -133,53 +135,51 @@ script, it is necessary to run an additional script to deal with:</p>
 <li><p>Replacement of variables names by similar tokens</p></li>
 <li><p>Replacement of function names by similar tokens</p></li>
 </ul>
-<p>To handle this additional cleanup, you need to use the
-<code class="docutils literal notranslate"><span class="pre">clean_dataset_for_word2vec.py</span></code> script:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python ./clean_dataset_for_word2vec.py <span class="si">${</span><span class="nv">DATASET</span><span class="si">}</span> <span class="se">\</span>
-    --no-comments <span class="se">\ </span> <span class="c1"># Remove comments</span>
-    --replace-funcs <span class="se">\ </span> <span class="c1"># Replace functions by a FUN token</span>
-    --replace-vars  <span class="c1"># Replace variables by a VAR token</span>
+<p>To handle this additional cleanup, you need to use the <code class="docutils literal notranslate"><span class="pre">clean_dataset.py</span></code> script:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python ./scripts/clean_dataset.py <span class="si">${</span><span class="nv">DATASET</span><span class="si">}</span> <span class="se">\</span>
+    --no-comments  <span class="c1"># Remove comments</span>
 </pre></div>
 </div>
 </section>
 <section id="tokenizing-the-dataset">
-<h2>2.2. Tokenizing the dataset<a class="headerlink" href="#tokenizing-the-dataset" title="Permalink to this headline"></a></h2>
-<p>After finishing the cleanup, it is necessary to separate the code in tokens
-to be used as input for the word2vec model. That can be done by an additional
-parameter in the <code class="docutils literal notranslate"><span class="pre">clean_dataset_for_word2vec.py</span></code>, so after finishing the
-previous command, run:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python ./clean_dataset_for_word2vec.py <span class="si">${</span><span class="nv">DATASET</span><span class="si">}</span> <span class="se">\</span>
+<h2>2.2. Tokenizing the dataset<a class="headerlink" href="#tokenizing-the-dataset" title="Permalink to this heading"></a></h2>
+<p>After finishing the cleanup, it is necessary to separate the code in tokens to be used
+as input for the word2vec model. That can be done by an additional parameter in the
+<code class="docutils literal notranslate"><span class="pre">run_tokenizer.py</span></code>, so after finishing the previous command, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python ./scripts/run_tokenizer.py <span class="si">${</span><span class="nv">DATASET</span><span class="si">}</span> <span class="se">\</span>
+    --replace-funcs <span class="se">\ </span> <span class="c1"># Replace functions by a FUN token</span>
+    --replace-vars  <span class="c1"># Replace variables by a VAR token</span>
     --tokenize
 </pre></div>
 </div>
 </section>
 <section id="training-the-word2vec-model">
-<h2>2.3. Training the word2vec model<a class="headerlink" href="#training-the-word2vec-model" title="Permalink to this headline"></a></h2>
-<p>After the tokenization process, you can train the word2vec model, using
-the <code class="docutils literal notranslate"><span class="pre">run_model_training.py</span></code> script with word2vec as the parameter.
-Run the command:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python ./run_model_training.py <span class="si">${</span><span class="nv">DATASET</span><span class="si">}</span> <span class="se">\</span>
+<h2>2.3. Training the word2vec model<a class="headerlink" href="#training-the-word2vec-model" title="Permalink to this heading"></a></h2>
+<p>After the tokenization process, you can train the word2vec model, using the
+<code class="docutils literal notranslate"><span class="pre">run_model_training.py</span></code> script with word2vec as the parameter. Run the command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python ./scripts/run_model_training.py <span class="si">${</span><span class="nv">DATASET</span><span class="si">}</span> <span class="se">\</span>
     -m word2vec <span class="se">\ </span> <span class="c1"># word2vec model</span>
     -n <span class="o">{</span>MODEL_NAME<span class="o">}</span> <span class="se">\ </span> <span class="c1"># path where the model will be saved</span>
 </pre></div>
 </div>
 </section>
 <section id="generate-the-embeddings-for-the-blstm-model">
-<h2>2.4. Generate the embeddings for the BLSTM model<a class="headerlink" href="#generate-the-embeddings-for-the-blstm-model" title="Permalink to this headline"></a></h2>
+<h2>2.4. Generate the embeddings for the BLSTM model<a class="headerlink" href="#generate-the-embeddings-for-the-blstm-model" title="Permalink to this heading"></a></h2>
 <p>After the model training is complete, it’s necessary to generate
 embeddings which will be used as input for the BLSTM model. These
 embeddings are saved in a folder with the dataset, in .CSV format.
 Execute the following script:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python ./run_embeddings.py <span class="si">${</span><span class="nv">DATASET</span><span class="si">}</span> <span class="se">\</span>
-    -m <span class="o">{</span>MODEL_DIR<span class="o">}</span>  <span class="c1"># Previous trained word2vec model</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python ./scripts/run_embeddings.py <span class="si">${</span><span class="nv">DATASET</span><span class="si">}</span> <span class="se">\</span>
+    -m word2vec <span class="se">\ </span> <span class="c1"># Type of the model</span>
+    -n <span class="o">{</span>MODEL_DIR<span class="o">}</span>  <span class="c1"># Previous trained word2vec model</span>
 </pre></div>
 </div>
 </section>
 <section id="train-the-blstm-model-with-the-word2vec-embeddings">
-<h2>2.5. Train the BLSTM model with the word2vec embeddings<a class="headerlink" href="#train-the-blstm-model-with-the-word2vec-embeddings" title="Permalink to this headline"></a></h2>
+<h2>2.5. Train the BLSTM model with the word2vec embeddings<a class="headerlink" href="#train-the-blstm-model-with-the-word2vec-embeddings" title="Permalink to this heading"></a></h2>
 <p>After generating the embeddings, the BLSTM model is ready to use.
 Execute the following script:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python ./run_model_training.py <span class="si">${</span><span class="nv">DATASET</span><span class="si">}</span> <span class="se">\</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python ./scripts/run_model_training.py <span class="si">${</span><span class="nv">DATASET</span><span class="si">}</span> <span class="se">\</span>
     -m bidirectional_lstm <span class="se">\ </span> <span class="c1"># BLSTM</span>
     -n <span class="o">{</span>MODEL_NAME<span class="o">}</span> <span class="se">\ </span><span class="c1"># path where the model will be saved</span>
     -e <span class="o">{</span>EPOCHS<span class="o">}</span> <span class="se">\ </span><span class="c1"># number of epochs</span>

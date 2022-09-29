@@ -15,7 +15,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -106,74 +108,453 @@ $(document).ready(function() {
            <div itemprop="articleBody">
              
   <section id="api-documentation">
-<h1>API documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline"></a></h1>
+<h1>API documentation<a class="headerlink" href="#api-documentation" title="Permalink to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="bugfinder/index.html">bugfinder</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="bugfinder/settings.html">bugfinder.settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bugfinder/settings.html">bugfinder.settings</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="bugfinder/settings.html#bugfinder.settings.DATASET_DIRS"><code class="docutils literal notranslate"><span class="pre">DATASET_DIRS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bugfinder/settings.html#bugfinder.settings.FEATURES_FILE"><code class="docutils literal notranslate"><span class="pre">FEATURES_FILE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bugfinder/settings.html#bugfinder.settings.LOGGER"><code class="docutils literal notranslate"><span class="pre">LOGGER</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bugfinder/settings.html#bugfinder.settings.LOGGER_CONFIG"><code class="docutils literal notranslate"><span class="pre">LOGGER_CONFIG</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bugfinder/settings.html#bugfinder.settings.NEO4J_DEFAULT_TIMEOUT"><code class="docutils literal notranslate"><span class="pre">NEO4J_DEFAULT_TIMEOUT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bugfinder/settings.html#bugfinder.settings.NEO4J_V3_CORES"><code class="docutils literal notranslate"><span class="pre">NEO4J_V3_CORES</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bugfinder/settings.html#bugfinder.settings.NEO4J_V3_MEMORY"><code class="docutils literal notranslate"><span class="pre">NEO4J_V3_MEMORY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bugfinder/settings.html#bugfinder.settings.POOL_SIZE"><code class="docutils literal notranslate"><span class="pre">POOL_SIZE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bugfinder/settings.html#bugfinder.settings.ROOT_DIR"><code class="docutils literal notranslate"><span class="pre">ROOT_DIR</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="bugfinder/settings.html#bugfinder.settings.SUMMARY_FILE"><code class="docutils literal notranslate"><span class="pre">SUMMARY_FILE</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="bugfinder/models/index.html">bugfinder.models</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="bugfinder/models/linear_classifier.html">bugfinder.models.linear_classifier</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bugfinder/models/lstm_classifier.html">bugfinder.models.lstm_classifier</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bugfinder/models/interproc_lstm.html">bugfinder.models.interproc_lstm</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bugfinder/models/blstm_classifier.html">bugfinder.models.blstm_classifier</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bugfinder/models/sequential.html">bugfinder.models.sequential</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bugfinder/models/dnn_classifier.html">bugfinder.models.dnn_classifier</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bugfinder/models/index.html#bugfinder.models.ClassifierModel"><code class="docutils literal notranslate"><span class="pre">ClassifierModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/models/index.html#bugfinder.models.ClassifierModel.execute"><code class="docutils literal notranslate"><span class="pre">ClassifierModel.execute()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/models/index.html#bugfinder.models.ClassifierModel.init_model"><code class="docutils literal notranslate"><span class="pre">ClassifierModel.init_model()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bugfinder/models/linear_classifier.html">bugfinder.models.linear_classifier</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/models/linear_classifier.html#bugfinder.models.linear_classifier.LinearClassifierTraining"><code class="docutils literal notranslate"><span class="pre">LinearClassifierTraining</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/models/linear_classifier.html#bugfinder.models.linear_classifier.LinearClassifierTraining.init_model"><code class="docutils literal notranslate"><span class="pre">LinearClassifierTraining.init_model()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bugfinder/models/lstm_classifier.html">bugfinder.models.lstm_classifier</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/models/lstm_classifier.html#bugfinder.models.lstm_classifier.LSTMClassifierTraining"><code class="docutils literal notranslate"><span class="pre">LSTMClassifierTraining</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/models/lstm_classifier.html#bugfinder.models.lstm_classifier.LSTMClassifierTraining.build_model"><code class="docutils literal notranslate"><span class="pre">LSTMClassifierTraining.build_model()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/models/lstm_classifier.html#bugfinder.models.lstm_classifier.LSTMClassifierTraining.init_model"><code class="docutils literal notranslate"><span class="pre">LSTMClassifierTraining.init_model()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bugfinder/models/interproc_lstm.html">bugfinder.models.interproc_lstm</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/models/interproc_lstm.html#bugfinder.models.interproc_lstm.InterprocLSTMTraining"><code class="docutils literal notranslate"><span class="pre">InterprocLSTMTraining</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/models/interproc_lstm.html#bugfinder.models.interproc_lstm.InterprocLSTMTraining.execute"><code class="docutils literal notranslate"><span class="pre">InterprocLSTMTraining.execute()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/models/interproc_lstm.html#bugfinder.models.interproc_lstm.InterprocLSTMTraining.init_model"><code class="docutils literal notranslate"><span class="pre">InterprocLSTMTraining.init_model()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/models/interproc_lstm.html#bugfinder.models.interproc_lstm.InterprocLSTMTraining.process_features"><code class="docutils literal notranslate"><span class="pre">InterprocLSTMTraining.process_features()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bugfinder/models/blstm_classifier.html">bugfinder.models.blstm_classifier</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/models/blstm_classifier.html#bugfinder.models.blstm_classifier.BLSTMClassifierModel"><code class="docutils literal notranslate"><span class="pre">BLSTMClassifierModel</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/models/blstm_classifier.html#bugfinder.models.blstm_classifier.BLSTMClassifierModel.evaluate"><code class="docutils literal notranslate"><span class="pre">BLSTMClassifierModel.evaluate()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/models/blstm_classifier.html#bugfinder.models.blstm_classifier.BLSTMClassifierModel.execute"><code class="docutils literal notranslate"><span class="pre">BLSTMClassifierModel.execute()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/models/blstm_classifier.html#bugfinder.models.blstm_classifier.BLSTMClassifierModel.init_model"><code class="docutils literal notranslate"><span class="pre">BLSTMClassifierModel.init_model()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/models/blstm_classifier.html#bugfinder.models.blstm_classifier.BLSTMClassifierTraining"><code class="docutils literal notranslate"><span class="pre">BLSTMClassifierTraining</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/models/blstm_classifier.html#bugfinder.models.blstm_classifier.BLSTMClassifierTraining.init_model"><code class="docutils literal notranslate"><span class="pre">BLSTMClassifierTraining.init_model()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bugfinder/models/sequential.html">bugfinder.models.sequential</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/models/sequential.html#bugfinder.models.sequential.SequenceGenerator"><code class="docutils literal notranslate"><span class="pre">SequenceGenerator</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/models/sequential.html#bugfinder.models.sequential.SequentialModel"><code class="docutils literal notranslate"><span class="pre">SequentialModel</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/models/sequential.html#bugfinder.models.sequential.SequentialModel.execute"><code class="docutils literal notranslate"><span class="pre">SequentialModel.execute()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/models/sequential.html#bugfinder.models.sequential.SequentialModel.init_model"><code class="docutils literal notranslate"><span class="pre">SequentialModel.init_model()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bugfinder/models/dnn_classifier.html">bugfinder.models.dnn_classifier</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/models/dnn_classifier.html#bugfinder.models.dnn_classifier.DNNClassifierTraining"><code class="docutils literal notranslate"><span class="pre">DNNClassifierTraining</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/models/dnn_classifier.html#bugfinder.models.dnn_classifier.DNNClassifierTraining.init_model"><code class="docutils literal notranslate"><span class="pre">DNNClassifierTraining.init_model()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="bugfinder/utils/index.html">bugfinder.utils</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="bugfinder/utils/dirs.html">bugfinder.utils.dirs</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bugfinder/utils/feature_selection.html">bugfinder.utils.feature_selection</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bugfinder/utils/processing.html">bugfinder.utils.processing</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bugfinder/utils/rand.html">bugfinder.utils.rand</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bugfinder/utils/containers.html">bugfinder.utils.containers</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bugfinder/utils/statistics.html">bugfinder.utils.statistics</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bugfinder/utils/progressbar.html">bugfinder.utils.progressbar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bugfinder/utils/dirs.html">bugfinder.utils.dirs</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/utils/dirs.html#bugfinder.utils.dirs.copy_dir"><code class="docutils literal notranslate"><span class="pre">copy_dir()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bugfinder/utils/feature_selection.html">bugfinder.utils.feature_selection</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/utils/feature_selection.html#bugfinder.utils.feature_selection.retrieve_original_columns_name"><code class="docutils literal notranslate"><span class="pre">retrieve_original_columns_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/utils/feature_selection.html#bugfinder.utils.feature_selection.selection_estimators"><code class="docutils literal notranslate"><span class="pre">selection_estimators()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bugfinder/utils/processing.html">bugfinder.utils.processing</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/utils/processing.html#bugfinder.utils.processing.is_operation_valid"><code class="docutils literal notranslate"><span class="pre">is_operation_valid()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/utils/processing.html#bugfinder.utils.processing.is_processing_stack_valid"><code class="docutils literal notranslate"><span class="pre">is_processing_stack_valid()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bugfinder/utils/rand.html">bugfinder.utils.rand</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/utils/rand.html#bugfinder.utils.rand.get_rand_string"><code class="docutils literal notranslate"><span class="pre">get_rand_string()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bugfinder/utils/containers.html">bugfinder.utils.containers</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/utils/containers.html#bugfinder.utils.containers.start_container"><code class="docutils literal notranslate"><span class="pre">start_container()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/utils/containers.html#bugfinder.utils.containers.stop_container_by_name"><code class="docutils literal notranslate"><span class="pre">stop_container_by_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/utils/containers.html#bugfinder.utils.containers.wait_log_display"><code class="docutils literal notranslate"><span class="pre">wait_log_display()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bugfinder/utils/statistics.html">bugfinder.utils.statistics</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/utils/statistics.html#bugfinder.utils.statistics.display_time"><code class="docutils literal notranslate"><span class="pre">display_time()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/utils/statistics.html#bugfinder.utils.statistics.divide"><code class="docutils literal notranslate"><span class="pre">divide()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/utils/statistics.html#bugfinder.utils.statistics.get_time"><code class="docutils literal notranslate"><span class="pre">get_time()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/utils/statistics.html#bugfinder.utils.statistics.has_better_metrics"><code class="docutils literal notranslate"><span class="pre">has_better_metrics()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bugfinder/utils/progressbar.html">bugfinder.utils.progressbar</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.BestBar"><code class="docutils literal notranslate"><span class="pre">BestBar</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.BestBar.b_age"><code class="docutils literal notranslate"><span class="pre">BestBar.b_age</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.BestBar.b_stats"><code class="docutils literal notranslate"><span class="pre">BestBar.b_stats</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.BestBar.b_val"><code class="docutils literal notranslate"><span class="pre">BestBar.b_val</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.BestBar.best_age"><code class="docutils literal notranslate"><span class="pre">BestBar.best_age</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.BestBar.best_stats"><code class="docutils literal notranslate"><span class="pre">BestBar.best_stats</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.BestBar.best_val"><code class="docutils literal notranslate"><span class="pre">BestBar.best_val</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.BestBar.next"><code class="docutils literal notranslate"><span class="pre">BestBar.next()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.BestBar.suffix"><code class="docutils literal notranslate"><span class="pre">BestBar.suffix</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.MultiBar"><code class="docutils literal notranslate"><span class="pre">MultiBar</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.MultiBar.done"><code class="docutils literal notranslate"><span class="pre">MultiBar.done</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.MultiBar.jobs"><code class="docutils literal notranslate"><span class="pre">MultiBar.jobs</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.MultiBar.jobz"><code class="docutils literal notranslate"><span class="pre">MultiBar.jobz</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.MultiBar.next"><code class="docutils literal notranslate"><span class="pre">MultiBar.next()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.MultiBar.queue"><code class="docutils literal notranslate"><span class="pre">MultiBar.queue</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.MultiBar.refresh"><code class="docutils literal notranslate"><span class="pre">MultiBar.refresh()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.MultiBar.subscribe"><code class="docutils literal notranslate"><span class="pre">MultiBar.subscribe()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.MultiBar.suffix"><code class="docutils literal notranslate"><span class="pre">MultiBar.suffix</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.MultiBar.unsubscribe"><code class="docutils literal notranslate"><span class="pre">MultiBar.unsubscribe()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.SlowBar"><code class="docutils literal notranslate"><span class="pre">SlowBar</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.SlowBar.extend"><code class="docutils literal notranslate"><span class="pre">SlowBar.extend()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.SlowBar.slow_eta"><code class="docutils literal notranslate"><span class="pre">SlowBar.slow_eta</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/utils/progressbar.html#bugfinder.utils.progressbar.SlowBar.suffix"><code class="docutils literal notranslate"><span class="pre">SlowBar.suffix</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="bugfinder/base/index.html">bugfinder.base</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="bugfinder/base/dataset.html">bugfinder.base.dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bugfinder/base/dataset.html">bugfinder.base.dataset</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/base/dataset.html#bugfinder.base.dataset.CodeWeaknessClassificationDataset"><code class="docutils literal notranslate"><span class="pre">CodeWeaknessClassificationDataset</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/base/dataset.html#bugfinder.base.dataset.CodeWeaknessClassificationDataset.append_summary"><code class="docutils literal notranslate"><span class="pre">CodeWeaknessClassificationDataset.append_summary()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/base/dataset.html#bugfinder.base.dataset.CodeWeaknessClassificationDataset.clear_queue"><code class="docutils literal notranslate"><span class="pre">CodeWeaknessClassificationDataset.clear_queue()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/base/dataset.html#bugfinder.base.dataset.CodeWeaknessClassificationDataset.get_classes"><code class="docutils literal notranslate"><span class="pre">CodeWeaknessClassificationDataset.get_classes()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/base/dataset.html#bugfinder.base.dataset.CodeWeaknessClassificationDataset.get_features_info"><code class="docutils literal notranslate"><span class="pre">CodeWeaknessClassificationDataset.get_features_info()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/base/dataset.html#bugfinder.base.dataset.CodeWeaknessClassificationDataset.ignored_dirs"><code class="docutils literal notranslate"><span class="pre">CodeWeaknessClassificationDataset.ignored_dirs</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/base/dataset.html#bugfinder.base.dataset.CodeWeaknessClassificationDataset.load_summary"><code class="docutils literal notranslate"><span class="pre">CodeWeaknessClassificationDataset.load_summary()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/base/dataset.html#bugfinder.base.dataset.CodeWeaknessClassificationDataset.process"><code class="docutils literal notranslate"><span class="pre">CodeWeaknessClassificationDataset.process()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/base/dataset.html#bugfinder.base.dataset.CodeWeaknessClassificationDataset.queue_operation"><code class="docutils literal notranslate"><span class="pre">CodeWeaknessClassificationDataset.queue_operation()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/base/dataset.html#bugfinder.base.dataset.CodeWeaknessClassificationDataset.rebuild_index"><code class="docutils literal notranslate"><span class="pre">CodeWeaknessClassificationDataset.rebuild_index()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/base/dataset.html#bugfinder.base.dataset.CodeWeaknessClassificationDataset.reset_summary"><code class="docutils literal notranslate"><span class="pre">CodeWeaknessClassificationDataset.reset_summary()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/base/dataset.html#bugfinder.base.dataset.CodeWeaknessClassificationDataset.save_summary"><code class="docutils literal notranslate"><span class="pre">CodeWeaknessClassificationDataset.save_summary()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/base/dataset.html#bugfinder.base.dataset.DatasetQueueRetCode"><code class="docutils literal notranslate"><span class="pre">DatasetQueueRetCode</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/base/dataset.html#bugfinder.base.dataset.DatasetQueueRetCode.EMPTY_QUEUE"><code class="docutils literal notranslate"><span class="pre">DatasetQueueRetCode.EMPTY_QUEUE</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/base/dataset.html#bugfinder.base.dataset.DatasetQueueRetCode.INVALID_QUEUE"><code class="docutils literal notranslate"><span class="pre">DatasetQueueRetCode.INVALID_QUEUE</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/base/dataset.html#bugfinder.base.dataset.DatasetQueueRetCode.OK"><code class="docutils literal notranslate"><span class="pre">DatasetQueueRetCode.OK</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/base/dataset.html#bugfinder.base.dataset.DatasetQueueRetCode.OPERATION_FAIL"><code class="docutils literal notranslate"><span class="pre">DatasetQueueRetCode.OPERATION_FAIL</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="bugfinder/base/processing/index.html">bugfinder.base.processing</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="bugfinder/base/processing/files.html">bugfinder.base.processing.files</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bugfinder/base/processing/containers.html">bugfinder.base.processing.containers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/base/processing/index.html#bugfinder.base.processing.AbstractProcessing"><code class="docutils literal notranslate"><span class="pre">AbstractProcessing</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/base/processing/index.html#bugfinder.base.processing.AbstractProcessing.execute"><code class="docutils literal notranslate"><span class="pre">AbstractProcessing.execute()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/base/processing/index.html#bugfinder.base.processing.ProcessingCategory"><code class="docutils literal notranslate"><span class="pre">ProcessingCategory</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/base/processing/index.html#bugfinder.base.processing.ProcessingCategory.EXTRACTION"><code class="docutils literal notranslate"><span class="pre">ProcessingCategory.EXTRACTION</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/base/processing/index.html#bugfinder.base.processing.ProcessingCategory.PROCESSING"><code class="docutils literal notranslate"><span class="pre">ProcessingCategory.PROCESSING</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/base/processing/index.html#bugfinder.base.processing.ProcessingCategory.REDUCTION"><code class="docutils literal notranslate"><span class="pre">ProcessingCategory.REDUCTION</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/base/processing/index.html#bugfinder.base.processing.ProcessingCategory.TRAINING"><code class="docutils literal notranslate"><span class="pre">ProcessingCategory.TRAINING</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/base/processing/index.html#bugfinder.base.processing.ProcessingDeprecation"><code class="docutils literal notranslate"><span class="pre">ProcessingDeprecation</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/base/processing/files.html">bugfinder.base.processing.files</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/base/processing/files.html#bugfinder.base.processing.files.AbstractFileProcessing"><code class="docutils literal notranslate"><span class="pre">AbstractFileProcessing</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/base/processing/files.html#bugfinder.base.processing.files.AbstractFileProcessing.execute"><code class="docutils literal notranslate"><span class="pre">AbstractFileProcessing.execute()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/base/processing/files.html#bugfinder.base.processing.files.AbstractFileProcessing.match_file"><code class="docutils literal notranslate"><span class="pre">AbstractFileProcessing.match_file()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/base/processing/files.html#bugfinder.base.processing.files.AbstractFileProcessing.process_file"><code class="docutils literal notranslate"><span class="pre">AbstractFileProcessing.process_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/base/processing/containers.html">bugfinder.base.processing.containers</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.assign_ports"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.assign_ports()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.command"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.command</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.configure_command"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.configure_command()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.configure_container"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.configure_container()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.configure_container_with_dict"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.configure_container_with_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.container"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.container</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.container_name"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.container_name</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.container_ports"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.container_ports</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.detach"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.detach</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.environment"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.environment</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.execute"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.execute()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.image_name"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.image_name</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.machine_ports"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.machine_ports</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.send_commands"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.send_commands()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.start_retries"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.start_retries</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/base/processing/containers.html#bugfinder.base.processing.containers.AbstractContainerProcessing.volumes"><code class="docutils literal notranslate"><span class="pre">AbstractContainerProcessing.volumes</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="bugfinder/features/index.html">bugfinder.features</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="bugfinder/features/reduction/index.html">bugfinder.features.reduction</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="bugfinder/features/reduction/pca.html">bugfinder.features.reduction.pca</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bugfinder/features/reduction/recursive_feature_elimination.html">bugfinder.features.reduction.recursive_feature_elimination</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bugfinder/features/reduction/auto_encoder.html">bugfinder.features.reduction.auto_encoder</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bugfinder/features/reduction/select_from_model.html">bugfinder.features.reduction.select_from_model</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bugfinder/features/reduction/univariate_select.html">bugfinder.features.reduction.univariate_select</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bugfinder/features/reduction/variance_threshold.html">bugfinder.features.reduction.variance_threshold</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bugfinder/features/reduction/sequential_feature_selector.html">bugfinder.features.reduction.sequential_feature_selector</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/features/reduction/index.html#bugfinder.features.reduction.AbstractFeatureSelector"><code class="docutils literal notranslate"><span class="pre">AbstractFeatureSelector</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/reduction/index.html#bugfinder.features.reduction.AbstractFeatureSelector.execute"><code class="docutils literal notranslate"><span class="pre">AbstractFeatureSelector.execute()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/reduction/index.html#bugfinder.features.reduction.AbstractFeatureSelector.select_feature"><code class="docutils literal notranslate"><span class="pre">AbstractFeatureSelector.select_feature()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/features/reduction/pca.html">bugfinder.features.reduction.pca</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/reduction/pca.html#bugfinder.features.reduction.pca.FeatureSelector"><code class="docutils literal notranslate"><span class="pre">FeatureSelector</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/reduction/pca.html#bugfinder.features.reduction.pca.FeatureSelector.select_feature"><code class="docutils literal notranslate"><span class="pre">FeatureSelector.select_feature()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/features/reduction/recursive_feature_elimination.html">bugfinder.features.reduction.recursive_feature_elimination</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/reduction/recursive_feature_elimination.html#bugfinder.features.reduction.recursive_feature_elimination.FeatureSelector"><code class="docutils literal notranslate"><span class="pre">FeatureSelector</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/reduction/recursive_feature_elimination.html#bugfinder.features.reduction.recursive_feature_elimination.FeatureSelector.select_feature"><code class="docutils literal notranslate"><span class="pre">FeatureSelector.select_feature()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/features/reduction/auto_encoder.html">bugfinder.features.reduction.auto_encoder</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/reduction/auto_encoder.html#bugfinder.features.reduction.auto_encoder.FeatureSelector"><code class="docutils literal notranslate"><span class="pre">FeatureSelector</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/reduction/auto_encoder.html#bugfinder.features.reduction.auto_encoder.FeatureSelector.select_feature"><code class="docutils literal notranslate"><span class="pre">FeatureSelector.select_feature()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/reduction/auto_encoder.html#bugfinder.features.reduction.auto_encoder.FeatureSelector.train_encoder"><code class="docutils literal notranslate"><span class="pre">FeatureSelector.train_encoder()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/features/reduction/select_from_model.html">bugfinder.features.reduction.select_from_model</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/reduction/select_from_model.html#bugfinder.features.reduction.select_from_model.FeatureSelector"><code class="docutils literal notranslate"><span class="pre">FeatureSelector</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/reduction/select_from_model.html#bugfinder.features.reduction.select_from_model.FeatureSelector.select_feature"><code class="docutils literal notranslate"><span class="pre">FeatureSelector.select_feature()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/features/reduction/univariate_select.html">bugfinder.features.reduction.univariate_select</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/reduction/univariate_select.html#bugfinder.features.reduction.univariate_select.FeatureSelector"><code class="docutils literal notranslate"><span class="pre">FeatureSelector</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/reduction/univariate_select.html#bugfinder.features.reduction.univariate_select.FeatureSelector.select_feature"><code class="docutils literal notranslate"><span class="pre">FeatureSelector.select_feature()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/features/reduction/variance_threshold.html">bugfinder.features.reduction.variance_threshold</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/reduction/variance_threshold.html#bugfinder.features.reduction.variance_threshold.FeatureSelector"><code class="docutils literal notranslate"><span class="pre">FeatureSelector</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/reduction/variance_threshold.html#bugfinder.features.reduction.variance_threshold.FeatureSelector.select_feature"><code class="docutils literal notranslate"><span class="pre">FeatureSelector.select_feature()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/features/reduction/sequential_feature_selector.html">bugfinder.features.reduction.sequential_feature_selector</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/reduction/sequential_feature_selector.html#bugfinder.features.reduction.sequential_feature_selector.FeatureSelector"><code class="docutils literal notranslate"><span class="pre">FeatureSelector</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/reduction/sequential_feature_selector.html#bugfinder.features.reduction.sequential_feature_selector.FeatureSelector.select_feature"><code class="docutils literal notranslate"><span class="pre">FeatureSelector.select_feature()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="bugfinder/features/extraction/index.html">bugfinder.features.extraction</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="bugfinder/features/extraction/interproc.html">bugfinder.features.extraction.interproc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/features/extraction/index.html#bugfinder.features.extraction.FlowGraphFeatureExtractor"><code class="docutils literal notranslate"><span class="pre">FlowGraphFeatureExtractor</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/index.html#bugfinder.features.extraction.FlowGraphFeatureExtractor.extract_features"><code class="docutils literal notranslate"><span class="pre">FlowGraphFeatureExtractor.extract_features()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/index.html#bugfinder.features.extraction.FlowGraphFeatureExtractor.extract_features_worker"><code class="docutils literal notranslate"><span class="pre">FlowGraphFeatureExtractor.extract_features_worker()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/index.html#bugfinder.features.extraction.FlowGraphFeatureExtractor.finalize_features"><code class="docutils literal notranslate"><span class="pre">FlowGraphFeatureExtractor.finalize_features()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/index.html#bugfinder.features.extraction.FlowGraphFeatureExtractor.get_flowgraph_count"><code class="docutils literal notranslate"><span class="pre">FlowGraphFeatureExtractor.get_flowgraph_count()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/index.html#bugfinder.features.extraction.FlowGraphFeatureExtractor.get_flowgraph_list_for_entrypoint"><code class="docutils literal notranslate"><span class="pre">FlowGraphFeatureExtractor.get_flowgraph_list_for_entrypoint()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/index.html#bugfinder.features.extraction.FlowGraphFeatureExtractor.get_label_from_flowgraph"><code class="docutils literal notranslate"><span class="pre">FlowGraphFeatureExtractor.get_label_from_flowgraph()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/index.html#bugfinder.features.extraction.FlowGraphFeatureExtractor.initialize_features"><code class="docutils literal notranslate"><span class="pre">FlowGraphFeatureExtractor.initialize_features()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/index.html#bugfinder.features.extraction.FlowGraphFeatureExtractor.map_features"><code class="docutils literal notranslate"><span class="pre">FlowGraphFeatureExtractor.map_features()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/index.html#bugfinder.features.extraction.FlowGraphFeatureExtractor.map_features_worker"><code class="docutils literal notranslate"><span class="pre">FlowGraphFeatureExtractor.map_features_worker()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/features/extraction/index.html#bugfinder.features.extraction.GraphFeatureExtractor"><code class="docutils literal notranslate"><span class="pre">GraphFeatureExtractor</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/index.html#bugfinder.features.extraction.GraphFeatureExtractor.check_extraction_inputs"><code class="docutils literal notranslate"><span class="pre">GraphFeatureExtractor.check_extraction_inputs()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/index.html#bugfinder.features.extraction.GraphFeatureExtractor.configure_container"><code class="docutils literal notranslate"><span class="pre">GraphFeatureExtractor.configure_container()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/index.html#bugfinder.features.extraction.GraphFeatureExtractor.execute"><code class="docutils literal notranslate"><span class="pre">GraphFeatureExtractor.execute()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/index.html#bugfinder.features.extraction.GraphFeatureExtractor.extract_features"><code class="docutils literal notranslate"><span class="pre">GraphFeatureExtractor.extract_features()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/index.html#bugfinder.features.extraction.GraphFeatureExtractor.feature_map_filepath"><code class="docutils literal notranslate"><span class="pre">GraphFeatureExtractor.feature_map_filepath</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/index.html#bugfinder.features.extraction.GraphFeatureExtractor.get_labels_from_feature_map"><code class="docutils literal notranslate"><span class="pre">GraphFeatureExtractor.get_labels_from_feature_map()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/index.html#bugfinder.features.extraction.GraphFeatureExtractor.map_features"><code class="docutils literal notranslate"><span class="pre">GraphFeatureExtractor.map_features()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/index.html#bugfinder.features.extraction.GraphFeatureExtractor.need_map_features"><code class="docutils literal notranslate"><span class="pre">GraphFeatureExtractor.need_map_features</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/index.html#bugfinder.features.extraction.GraphFeatureExtractor.save_labels_to_feature_map"><code class="docutils literal notranslate"><span class="pre">GraphFeatureExtractor.save_labels_to_feature_map()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/index.html#bugfinder.features.extraction.GraphFeatureExtractor.send_commands"><code class="docutils literal notranslate"><span class="pre">GraphFeatureExtractor.send_commands()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/index.html#bugfinder.features.extraction.GraphFeatureExtractor.write_extraction_outputs"><code class="docutils literal notranslate"><span class="pre">GraphFeatureExtractor.write_extraction_outputs()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/features/extraction/interproc.html">bugfinder.features.extraction.interproc</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/extraction/interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.catlock"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.catlock</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/extraction/interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.cats"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.cats</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/extraction/interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.check_extraction_inputs"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.check_extraction_inputs()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/extraction/interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.configure_container"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.configure_container()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/extraction/interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.configure_container_with_dict"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.configure_container_with_dict()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/extraction/interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.extract_features"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.extract_features()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/extraction/interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.extract_features_worker"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.extract_features_worker()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/extraction/interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.get_flowgraph_list_for_entrypoint"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_flowgraph_list_for_entrypoint()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/extraction/interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.send_commands"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.send_commands()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/extraction/interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.timeout"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.timeout</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/extraction/interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.write_extraction_outputs"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.write_extraction_outputs()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l4"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/index.html">bugfinder.features.extraction.bag_of_words</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/hops_n_flows.html">bugfinder.features.extraction.bag_of_words.hops_n_flows</a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/hops_n_flows.html">bugfinder.features.extraction.bag_of_words.hops_n_flows</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor</span></code></a><ul>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.configure_container"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.configure_container()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.execute"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.execute()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.finalize_features"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.finalize_features()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.flows"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.flows</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.get_flowgraph_count"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_flowgraph_count()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.get_flowgraph_list_for_entrypoint"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_flowgraph_list_for_entrypoint()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.get_label_from_flowgraph"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_label_from_flowgraph()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.max_hops"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.max_hops</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.min_hops"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.min_hops</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/single_hop/index.html">bugfinder.features.extraction.bag_of_words.single_hop</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/single_hop/raw.html">bugfinder.features.extraction.bag_of_words.single_hop.raw</a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/single_hop/raw.html">bugfinder.features.extraction.bag_of_words.single_hop.raw</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/single_hop/raw.html#bugfinder.features.extraction.bag_of_words.single_hop.raw.FeatureExtractor"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor</span></code></a><ul>
+<li class="toctree-l8"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/single_hop/raw.html#bugfinder.features.extraction.bag_of_words.single_hop.raw.FeatureExtractor.configure_container"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.configure_container()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/single_hop/raw.html#bugfinder.features.extraction.bag_of_words.single_hop.raw.FeatureExtractor.get_flowgraph_count"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_flowgraph_count()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/single_hop/raw.html#bugfinder.features.extraction.bag_of_words.single_hop.raw.FeatureExtractor.get_flowgraph_list_for_entrypoint"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_flowgraph_list_for_entrypoint()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/single_hop/raw.html#bugfinder.features.extraction.bag_of_words.single_hop.raw.FeatureExtractor.get_label_from_flowgraph"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_label_from_flowgraph()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/any_hop/index.html">bugfinder.features.extraction.bag_of_words.any_hop</a><ul>
-<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/any_hop/all_flows.html">bugfinder.features.extraction.bag_of_words.any_hop.all_flows</a></li>
-<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/any_hop/single_flow.html">bugfinder.features.extraction.bag_of_words.any_hop.single_flow</a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/any_hop/all_flows.html">bugfinder.features.extraction.bag_of_words.any_hop.all_flows</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/any_hop/all_flows.html#bugfinder.features.extraction.bag_of_words.any_hop.all_flows.FeatureExtractor"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor</span></code></a><ul>
+<li class="toctree-l8"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/any_hop/all_flows.html#bugfinder.features.extraction.bag_of_words.any_hop.all_flows.FeatureExtractor.configure_container"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.configure_container()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/any_hop/all_flows.html#bugfinder.features.extraction.bag_of_words.any_hop.all_flows.FeatureExtractor.get_flowgraph_count"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_flowgraph_count()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/any_hop/all_flows.html#bugfinder.features.extraction.bag_of_words.any_hop.all_flows.FeatureExtractor.get_flowgraph_list_for_entrypoint"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_flowgraph_list_for_entrypoint()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/any_hop/all_flows.html#bugfinder.features.extraction.bag_of_words.any_hop.all_flows.FeatureExtractor.get_label_from_flowgraph"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_label_from_flowgraph()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/any_hop/single_flow.html">bugfinder.features.extraction.bag_of_words.any_hop.single_flow</a><ul>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/any_hop/single_flow.html#bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor</span></code></a><ul>
+<li class="toctree-l8"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/any_hop/single_flow.html#bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor.FLOWS"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.FLOWS</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/any_hop/single_flow.html#bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor.configure_container"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.configure_container()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/any_hop/single_flow.html#bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor.finalize_features"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.finalize_features()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/any_hop/single_flow.html#bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor.get_flowgraph_count"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_flowgraph_count()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/any_hop/single_flow.html#bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor.get_flowgraph_list_for_entrypoint"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_flowgraph_list_for_entrypoint()</span></code></a></li>
+<li class="toctree-l8"><a class="reference internal" href="bugfinder/features/extraction/bag_of_words/any_hop/single_flow.html#bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor.get_label_from_flowgraph"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_label_from_flowgraph()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l4"><a class="reference internal" href="bugfinder/features/extraction/word2vec/index.html">bugfinder.features.extraction.word2vec</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/word2vec/embeddings.html">bugfinder.features.extraction.word2vec.embeddings</a></li>
-<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/word2vec/model.html">bugfinder.features.extraction.word2vec.model</a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/word2vec/embeddings.html">bugfinder.features.extraction.word2vec.embeddings</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/extraction/word2vec/embeddings.html#bugfinder.features.extraction.word2vec.embeddings.Word2VecEmbeddings"><code class="docutils literal notranslate"><span class="pre">Word2VecEmbeddings</span></code></a><ul>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/word2vec/embeddings.html#bugfinder.features.extraction.word2vec.embeddings.Word2VecEmbeddings.execute"><code class="docutils literal notranslate"><span class="pre">Word2VecEmbeddings.execute()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/word2vec/embeddings.html#bugfinder.features.extraction.word2vec.embeddings.Word2VecEmbeddings.get_token_list"><code class="docutils literal notranslate"><span class="pre">Word2VecEmbeddings.get_token_list()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/word2vec/embeddings.html#bugfinder.features.extraction.word2vec.embeddings.Word2VecEmbeddings.save_dataframe"><code class="docutils literal notranslate"><span class="pre">Word2VecEmbeddings.save_dataframe()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/word2vec/embeddings.html#bugfinder.features.extraction.word2vec.embeddings.Word2VecEmbeddings.vectorize"><code class="docutils literal notranslate"><span class="pre">Word2VecEmbeddings.vectorize()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/word2vec/model.html">bugfinder.features.extraction.word2vec.model</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/extraction/word2vec/model.html#bugfinder.features.extraction.word2vec.model.Word2VecModel"><code class="docutils literal notranslate"><span class="pre">Word2VecModel</span></code></a><ul>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/word2vec/model.html#bugfinder.features.extraction.word2vec.model.Word2VecModel.algorithm"><code class="docutils literal notranslate"><span class="pre">Word2VecModel.algorithm</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/word2vec/model.html#bugfinder.features.extraction.word2vec.model.Word2VecModel.execute"><code class="docutils literal notranslate"><span class="pre">Word2VecModel.execute()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/word2vec/model.html#bugfinder.features.extraction.word2vec.model.Word2VecModel.get_token_list"><code class="docutils literal notranslate"><span class="pre">Word2VecModel.get_token_list()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/word2vec/model.html#bugfinder.features.extraction.word2vec.model.Word2VecModel.min_count"><code class="docutils literal notranslate"><span class="pre">Word2VecModel.min_count</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/word2vec/model.html#bugfinder.features.extraction.word2vec.model.Word2VecModel.seed"><code class="docutils literal notranslate"><span class="pre">Word2VecModel.seed</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/word2vec/model.html#bugfinder.features.extraction.word2vec.model.Word2VecModel.tokens"><code class="docutils literal notranslate"><span class="pre">Word2VecModel.tokens</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/word2vec/model.html#bugfinder.features.extraction.word2vec.model.Word2VecModel.window_dim"><code class="docutils literal notranslate"><span class="pre">Word2VecModel.window_dim</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/word2vec/model.html#bugfinder.features.extraction.word2vec.model.Word2VecModel.word_dim"><code class="docutils literal notranslate"><span class="pre">Word2VecModel.word_dim</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/word2vec/model.html#bugfinder.features.extraction.word2vec.model.Word2VecModel.workers"><code class="docutils literal notranslate"><span class="pre">Word2VecModel.workers</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l4"><a class="reference internal" href="bugfinder/features/extraction/node2vec/index.html">bugfinder.features.extraction.node2vec</a><ul>
-<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/node2vec/embeddings.html">bugfinder.features.extraction.node2vec.embeddings</a></li>
-<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/node2vec/model.html">bugfinder.features.extraction.node2vec.model</a></li>
-<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/node2vec/implementation.html">bugfinder.features.extraction.node2vec.implementation</a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/node2vec/embeddings.html">bugfinder.features.extraction.node2vec.embeddings</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/extraction/node2vec/embeddings.html#bugfinder.features.extraction.node2vec.embeddings.Node2VecEmbeddings"><code class="docutils literal notranslate"><span class="pre">Node2VecEmbeddings</span></code></a><ul>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/node2vec/embeddings.html#bugfinder.features.extraction.node2vec.embeddings.Node2VecEmbeddings.embedding_length"><code class="docutils literal notranslate"><span class="pre">Node2VecEmbeddings.embedding_length</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/node2vec/embeddings.html#bugfinder.features.extraction.node2vec.embeddings.Node2VecEmbeddings.execute"><code class="docutils literal notranslate"><span class="pre">Node2VecEmbeddings.execute()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/node2vec/embeddings.html#bugfinder.features.extraction.node2vec.embeddings.Node2VecEmbeddings.vector_length"><code class="docutils literal notranslate"><span class="pre">Node2VecEmbeddings.vector_length</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/node2vec/model.html">bugfinder.features.extraction.node2vec.model</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/extraction/node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel"><code class="docutils literal notranslate"><span class="pre">Node2VecModel</span></code></a><ul>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.algorithm"><code class="docutils literal notranslate"><span class="pre">Node2VecModel.algorithm</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.execute"><code class="docutils literal notranslate"><span class="pre">Node2VecModel.execute()</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.min_count"><code class="docutils literal notranslate"><span class="pre">Node2VecModel.min_count</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.num_walks"><code class="docutils literal notranslate"><span class="pre">Node2VecModel.num_walks</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.p"><code class="docutils literal notranslate"><span class="pre">Node2VecModel.p</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.q"><code class="docutils literal notranslate"><span class="pre">Node2VecModel.q</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.seed"><code class="docutils literal notranslate"><span class="pre">Node2VecModel.seed</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.tokens"><code class="docutils literal notranslate"><span class="pre">Node2VecModel.tokens</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.vector_length"><code class="docutils literal notranslate"><span class="pre">Node2VecModel.vector_length</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.walk_length"><code class="docutils literal notranslate"><span class="pre">Node2VecModel.walk_length</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.window_dim"><code class="docutils literal notranslate"><span class="pre">Node2VecModel.window_dim</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.workers"><code class="docutils literal notranslate"><span class="pre">Node2VecModel.workers</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/features/extraction/node2vec/implementation.html">bugfinder.features.extraction.node2vec.implementation</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/features/extraction/node2vec/implementation.html#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation"><code class="docutils literal notranslate"><span class="pre">Node2VecImplementation</span></code></a><ul>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/node2vec/implementation.html#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation.FIRST_TRAVEL_KEY"><code class="docutils literal notranslate"><span class="pre">Node2VecImplementation.FIRST_TRAVEL_KEY</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/node2vec/implementation.html#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation.NEIGHBORS_KEY"><code class="docutils literal notranslate"><span class="pre">Node2VecImplementation.NEIGHBORS_KEY</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/node2vec/implementation.html#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation.NUM_WALKS_KEY"><code class="docutils literal notranslate"><span class="pre">Node2VecImplementation.NUM_WALKS_KEY</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/node2vec/implementation.html#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation.PROBABILITIES_KEY"><code class="docutils literal notranslate"><span class="pre">Node2VecImplementation.PROBABILITIES_KEY</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/node2vec/implementation.html#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation.P_KEY"><code class="docutils literal notranslate"><span class="pre">Node2VecImplementation.P_KEY</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/node2vec/implementation.html#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation.Q_KEY"><code class="docutils literal notranslate"><span class="pre">Node2VecImplementation.Q_KEY</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/node2vec/implementation.html#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation.WALK_LENGTH_KEY"><code class="docutils literal notranslate"><span class="pre">Node2VecImplementation.WALK_LENGTH_KEY</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/node2vec/implementation.html#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation.WEIGHT_KEY"><code class="docutils literal notranslate"><span class="pre">Node2VecImplementation.WEIGHT_KEY</span></code></a></li>
+<li class="toctree-l7"><a class="reference internal" href="bugfinder/features/extraction/node2vec/implementation.html#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation.fit"><code class="docutils literal notranslate"><span class="pre">Node2VecImplementation.fit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -181,44 +562,269 @@ $(document).ready(function() {
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="bugfinder/processing/index.html">bugfinder.processing</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="bugfinder/processing/interproc.html">bugfinder.processing.interproc</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bugfinder/processing/sink_tagging.html">bugfinder.processing.sink_tagging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bugfinder/processing/index.html#bugfinder.processing.AbstractCppFileProcessing"><code class="docutils literal notranslate"><span class="pre">AbstractCppFileProcessing</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/index.html#bugfinder.processing.AbstractCppFileProcessing.match_file"><code class="docutils literal notranslate"><span class="pre">AbstractCppFileProcessing.match_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/index.html#bugfinder.processing.AbstractCppFileProcessing.process_file"><code class="docutils literal notranslate"><span class="pre">AbstractCppFileProcessing.process_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bugfinder/processing/interproc.html">bugfinder.processing.interproc</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/interproc.html#bugfinder.processing.interproc.InterprocMerger"><code class="docutils literal notranslate"><span class="pre">InterprocMerger</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/interproc.html#bugfinder.processing.interproc.InterprocMerger.interproc_cmds_post"><code class="docutils literal notranslate"><span class="pre">InterprocMerger.interproc_cmds_post</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/interproc.html#bugfinder.processing.interproc.InterprocMerger.interproc_cmds_pre"><code class="docutils literal notranslate"><span class="pre">InterprocMerger.interproc_cmds_pre</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/interproc.html#bugfinder.processing.interproc.InterprocMerger.interproc_cmds_tc"><code class="docutils literal notranslate"><span class="pre">InterprocMerger.interproc_cmds_tc</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/interproc.html#bugfinder.processing.interproc.InterprocProcessing"><code class="docutils literal notranslate"><span class="pre">InterprocProcessing</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/interproc.html#bugfinder.processing.interproc.InterprocProcessing.assign_ports"><code class="docutils literal notranslate"><span class="pre">InterprocProcessing.assign_ports()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/interproc.html#bugfinder.processing.interproc.InterprocProcessing.configure_command"><code class="docutils literal notranslate"><span class="pre">InterprocProcessing.configure_command()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/interproc.html#bugfinder.processing.interproc.InterprocProcessing.configure_container"><code class="docutils literal notranslate"><span class="pre">InterprocProcessing.configure_container()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/interproc.html#bugfinder.processing.interproc.InterprocProcessing.configure_container_with_dict"><code class="docutils literal notranslate"><span class="pre">InterprocProcessing.configure_container_with_dict()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/interproc.html#bugfinder.processing.interproc.InterprocProcessing.interproc_cmds_post"><code class="docutils literal notranslate"><span class="pre">InterprocProcessing.interproc_cmds_post</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/interproc.html#bugfinder.processing.interproc.InterprocProcessing.interproc_cmds_pre"><code class="docutils literal notranslate"><span class="pre">InterprocProcessing.interproc_cmds_pre</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/interproc.html#bugfinder.processing.interproc.InterprocProcessing.interproc_cmds_tc"><code class="docutils literal notranslate"><span class="pre">InterprocProcessing.interproc_cmds_tc</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/interproc.html#bugfinder.processing.interproc.InterprocProcessing.log_input"><code class="docutils literal notranslate"><span class="pre">InterprocProcessing.log_input</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/interproc.html#bugfinder.processing.interproc.InterprocProcessing.log_output"><code class="docutils literal notranslate"><span class="pre">InterprocProcessing.log_output</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/interproc.html#bugfinder.processing.interproc.InterprocProcessing.send_commands"><code class="docutils literal notranslate"><span class="pre">InterprocProcessing.send_commands()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/interproc.html#bugfinder.processing.interproc.interproc_worker"><code class="docutils literal notranslate"><span class="pre">interproc_worker()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bugfinder/processing/sink_tagging.html">bugfinder.processing.sink_tagging</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/sink_tagging.html#bugfinder.processing.sink_tagging.SinkTaggingProcessing"><code class="docutils literal notranslate"><span class="pre">SinkTaggingProcessing</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/sink_tagging.html#bugfinder.processing.sink_tagging.SinkTaggingProcessing.assign_ports"><code class="docutils literal notranslate"><span class="pre">SinkTaggingProcessing.assign_ports()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/sink_tagging.html#bugfinder.processing.sink_tagging.SinkTaggingProcessing.configure_command"><code class="docutils literal notranslate"><span class="pre">SinkTaggingProcessing.configure_command()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/sink_tagging.html#bugfinder.processing.sink_tagging.SinkTaggingProcessing.configure_container"><code class="docutils literal notranslate"><span class="pre">SinkTaggingProcessing.configure_container()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/sink_tagging.html#bugfinder.processing.sink_tagging.SinkTaggingProcessing.configure_container_with_dict"><code class="docutils literal notranslate"><span class="pre">SinkTaggingProcessing.configure_container_with_dict()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/sink_tagging.html#bugfinder.processing.sink_tagging.SinkTaggingProcessing.log_input"><code class="docutils literal notranslate"><span class="pre">SinkTaggingProcessing.log_input</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/sink_tagging.html#bugfinder.processing.sink_tagging.SinkTaggingProcessing.log_output"><code class="docutils literal notranslate"><span class="pre">SinkTaggingProcessing.log_output</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/sink_tagging.html#bugfinder.processing.sink_tagging.SinkTaggingProcessing.send_commands"><code class="docutils literal notranslate"><span class="pre">SinkTaggingProcessing.send_commands()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/sink_tagging.html#bugfinder.processing.sink_tagging.SinkTaggingProcessing.sinksfile"><code class="docutils literal notranslate"><span class="pre">SinkTaggingProcessing.sinksfile</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/sink_tagging.html#bugfinder.processing.sink_tagging.sinktagging_worker"><code class="docutils literal notranslate"><span class="pre">sinktagging_worker()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="bugfinder/processing/tokenizers/index.html">bugfinder.processing.tokenizers</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/tokenizers/replace_functions.html">bugfinder.processing.tokenizers.replace_functions</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/tokenizers/replace_variables.html">bugfinder.processing.tokenizers.replace_variables</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/tokenizers/tokenize_code.html">bugfinder.processing.tokenizers.tokenize_code</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/tokenizers/index.html#bugfinder.processing.tokenizers.AbstractTokenizer"><code class="docutils literal notranslate"><span class="pre">AbstractTokenizer</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/tokenizers/index.html#bugfinder.processing.tokenizers.AbstractTokenizer.execute"><code class="docutils literal notranslate"><span class="pre">AbstractTokenizer.execute()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/tokenizers/replace_functions.html">bugfinder.processing.tokenizers.replace_functions</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/tokenizers/replace_functions.html#bugfinder.processing.tokenizers.replace_functions.ReplaceFunctions"><code class="docutils literal notranslate"><span class="pre">ReplaceFunctions</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/tokenizers/replace_functions.html#bugfinder.processing.tokenizers.replace_functions.ReplaceFunctions.execute"><code class="docutils literal notranslate"><span class="pre">ReplaceFunctions.execute()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/tokenizers/replace_functions.html#bugfinder.processing.tokenizers.replace_functions.ReplaceFunctions.process_file"><code class="docutils literal notranslate"><span class="pre">ReplaceFunctions.process_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/tokenizers/replace_variables.html">bugfinder.processing.tokenizers.replace_variables</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/tokenizers/replace_variables.html#bugfinder.processing.tokenizers.replace_variables.ReplaceVariables"><code class="docutils literal notranslate"><span class="pre">ReplaceVariables</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/tokenizers/replace_variables.html#bugfinder.processing.tokenizers.replace_variables.ReplaceVariables.execute"><code class="docutils literal notranslate"><span class="pre">ReplaceVariables.execute()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/tokenizers/replace_variables.html#bugfinder.processing.tokenizers.replace_variables.ReplaceVariables.process_file"><code class="docutils literal notranslate"><span class="pre">ReplaceVariables.process_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/tokenizers/tokenize_code.html">bugfinder.processing.tokenizers.tokenize_code</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/tokenizers/tokenize_code.html#bugfinder.processing.tokenizers.tokenize_code.TokenizeCode"><code class="docutils literal notranslate"><span class="pre">TokenizeCode</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/tokenizers/tokenize_code.html#bugfinder.processing.tokenizers.tokenize_code.TokenizeCode.execute"><code class="docutils literal notranslate"><span class="pre">TokenizeCode.execute()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/tokenizers/tokenize_code.html#bugfinder.processing.tokenizers.tokenize_code.TokenizeCode.process_file"><code class="docutils literal notranslate"><span class="pre">TokenizeCode.process_file()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/tokenizers/tokenize_code.html#bugfinder.processing.tokenizers.tokenize_code.TokenizeCode.to_regex"><code class="docutils literal notranslate"><span class="pre">TokenizeCode.to_regex()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="bugfinder/processing/cleaning/index.html">bugfinder.processing.cleaning</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/cleaning/replace_litterals.html">bugfinder.processing.cleaning.replace_litterals</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/cleaning/remove_cpp_files.html">bugfinder.processing.cleaning.remove_cpp_files</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/cleaning/remove_main_function.html">bugfinder.processing.cleaning.remove_main_function</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/cleaning/remove_interproc_files.html">bugfinder.processing.cleaning.remove_interproc_files</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/cleaning/remove_comments.html">bugfinder.processing.cleaning.remove_comments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/cleaning/index.html#bugfinder.processing.cleaning.AbstractFileRemover"><code class="docutils literal notranslate"><span class="pre">AbstractFileRemover</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/cleaning/index.html#bugfinder.processing.cleaning.AbstractFileRemover.match_file"><code class="docutils literal notranslate"><span class="pre">AbstractFileRemover.match_file()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/cleaning/index.html#bugfinder.processing.cleaning.AbstractFileRemover.process_file"><code class="docutils literal notranslate"><span class="pre">AbstractFileRemover.process_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/cleaning/replace_litterals.html">bugfinder.processing.cleaning.replace_litterals</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/cleaning/replace_litterals.html#bugfinder.processing.cleaning.replace_litterals.ReplaceLitterals"><code class="docutils literal notranslate"><span class="pre">ReplaceLitterals</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/cleaning/replace_litterals.html#bugfinder.processing.cleaning.replace_litterals.ReplaceLitterals.execute"><code class="docutils literal notranslate"><span class="pre">ReplaceLitterals.execute()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/cleaning/replace_litterals.html#bugfinder.processing.cleaning.replace_litterals.ReplaceLitterals.process_file"><code class="docutils literal notranslate"><span class="pre">ReplaceLitterals.process_file()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/cleaning/replace_litterals.html#bugfinder.processing.cleaning.replace_litterals.ReplaceLitterals.replacements"><code class="docutils literal notranslate"><span class="pre">ReplaceLitterals.replacements</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/cleaning/remove_cpp_files.html">bugfinder.processing.cleaning.remove_cpp_files</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/cleaning/remove_cpp_files.html#bugfinder.processing.cleaning.remove_cpp_files.RemoveCppFiles"><code class="docutils literal notranslate"><span class="pre">RemoveCppFiles</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/cleaning/remove_cpp_files.html#bugfinder.processing.cleaning.remove_cpp_files.RemoveCppFiles.execute"><code class="docutils literal notranslate"><span class="pre">RemoveCppFiles.execute()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/cleaning/remove_cpp_files.html#bugfinder.processing.cleaning.remove_cpp_files.RemoveCppFiles.match_file"><code class="docutils literal notranslate"><span class="pre">RemoveCppFiles.match_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/cleaning/remove_main_function.html">bugfinder.processing.cleaning.remove_main_function</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/cleaning/remove_main_function.html#bugfinder.processing.cleaning.remove_main_function.RemoveMainFunction"><code class="docutils literal notranslate"><span class="pre">RemoveMainFunction</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/cleaning/remove_main_function.html#bugfinder.processing.cleaning.remove_main_function.RemoveMainFunction.execute"><code class="docutils literal notranslate"><span class="pre">RemoveMainFunction.execute()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/cleaning/remove_main_function.html#bugfinder.processing.cleaning.remove_main_function.RemoveMainFunction.main_fn_entry"><code class="docutils literal notranslate"><span class="pre">RemoveMainFunction.main_fn_entry</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/cleaning/remove_main_function.html#bugfinder.processing.cleaning.remove_main_function.RemoveMainFunction.main_fn_exit"><code class="docutils literal notranslate"><span class="pre">RemoveMainFunction.main_fn_exit</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/cleaning/remove_main_function.html#bugfinder.processing.cleaning.remove_main_function.RemoveMainFunction.process_file"><code class="docutils literal notranslate"><span class="pre">RemoveMainFunction.process_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/cleaning/remove_interproc_files.html">bugfinder.processing.cleaning.remove_interproc_files</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/cleaning/remove_interproc_files.html#bugfinder.processing.cleaning.remove_interproc_files.RemoveInterprocFiles"><code class="docutils literal notranslate"><span class="pre">RemoveInterprocFiles</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/cleaning/remove_interproc_files.html#bugfinder.processing.cleaning.remove_interproc_files.RemoveInterprocFiles.execute"><code class="docutils literal notranslate"><span class="pre">RemoveInterprocFiles.execute()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/cleaning/remove_interproc_files.html#bugfinder.processing.cleaning.remove_interproc_files.RemoveInterprocFiles.match_file"><code class="docutils literal notranslate"><span class="pre">RemoveInterprocFiles.match_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/cleaning/remove_comments.html">bugfinder.processing.cleaning.remove_comments</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/cleaning/remove_comments.html#bugfinder.processing.cleaning.remove_comments.RemoveComments"><code class="docutils literal notranslate"><span class="pre">RemoveComments</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/cleaning/remove_comments.html#bugfinder.processing.cleaning.remove_comments.RemoveComments.execute"><code class="docutils literal notranslate"><span class="pre">RemoveComments.execute()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/cleaning/remove_comments.html#bugfinder.processing.cleaning.remove_comments.RemoveComments.process_file"><code class="docutils literal notranslate"><span class="pre">RemoveComments.process_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="bugfinder/processing/neo4j/index.html">bugfinder.processing.neo4j</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/neo4j/annot.html">bugfinder.processing.neo4j.annot</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/neo4j/importer.html">bugfinder.processing.neo4j.importer</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/neo4j/converter.html">bugfinder.processing.neo4j.converter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/neo4j/index.html#bugfinder.processing.neo4j.Neo4J3Processing"><code class="docutils literal notranslate"><span class="pre">Neo4J3Processing</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/neo4j/index.html#bugfinder.processing.neo4j.Neo4J3Processing.configure_container"><code class="docutils literal notranslate"><span class="pre">Neo4J3Processing.configure_container()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/neo4j/index.html#bugfinder.processing.neo4j.Neo4J3Processing.environment"><code class="docutils literal notranslate"><span class="pre">Neo4J3Processing.environment</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/neo4j/index.html#bugfinder.processing.neo4j.Neo4J3Processing.fix_data_folder_rights"><code class="docutils literal notranslate"><span class="pre">Neo4J3Processing.fix_data_folder_rights()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/neo4j/index.html#bugfinder.processing.neo4j.Neo4J3Processing.neo4j_db"><code class="docutils literal notranslate"><span class="pre">Neo4J3Processing.neo4j_db</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/neo4j/index.html#bugfinder.processing.neo4j.Neo4J3Processing.send_commands"><code class="docutils literal notranslate"><span class="pre">Neo4J3Processing.send_commands()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/neo4j/index.html#bugfinder.processing.neo4j.Neo4J3Processing.start_string"><code class="docutils literal notranslate"><span class="pre">Neo4J3Processing.start_string</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/neo4j/annot.html">bugfinder.processing.neo4j.annot</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/neo4j/annot.html#bugfinder.processing.neo4j.annot.Neo4JAnnotations"><code class="docutils literal notranslate"><span class="pre">Neo4JAnnotations</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/neo4j/annot.html#bugfinder.processing.neo4j.annot.Neo4JAnnotations.COMMANDS"><code class="docutils literal notranslate"><span class="pre">Neo4JAnnotations.COMMANDS</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/neo4j/annot.html#bugfinder.processing.neo4j.annot.Neo4JAnnotations.configure_container"><code class="docutils literal notranslate"><span class="pre">Neo4JAnnotations.configure_container()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/neo4j/annot.html#bugfinder.processing.neo4j.annot.Neo4JAnnotations.send_commands"><code class="docutils literal notranslate"><span class="pre">Neo4JAnnotations.send_commands()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/neo4j/importer.html">bugfinder.processing.neo4j.importer</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/neo4j/importer.html#bugfinder.processing.neo4j.importer.Neo4J3Importer"><code class="docutils literal notranslate"><span class="pre">Neo4J3Importer</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/neo4j/importer.html#bugfinder.processing.neo4j.importer.Neo4J3Importer.configure_container"><code class="docutils literal notranslate"><span class="pre">Neo4J3Importer.configure_container()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/neo4j/importer.html#bugfinder.processing.neo4j.importer.Neo4J3Importer.db_name"><code class="docutils literal notranslate"><span class="pre">Neo4J3Importer.db_name</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/neo4j/importer.html#bugfinder.processing.neo4j.importer.Neo4J3Importer.import_dir"><code class="docutils literal notranslate"><span class="pre">Neo4J3Importer.import_dir</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/neo4j/importer.html#bugfinder.processing.neo4j.importer.Neo4J3Importer.send_commands"><code class="docutils literal notranslate"><span class="pre">Neo4J3Importer.send_commands()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/neo4j/converter.html">bugfinder.processing.neo4j.converter</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/neo4j/converter.html#bugfinder.processing.neo4j.converter.Neo4J2Converter"><code class="docutils literal notranslate"><span class="pre">Neo4J2Converter</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/neo4j/converter.html#bugfinder.processing.neo4j.converter.Neo4J2Converter.START_STRING"><code class="docutils literal notranslate"><span class="pre">Neo4J2Converter.START_STRING</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/neo4j/converter.html#bugfinder.processing.neo4j.converter.Neo4J2Converter.configure_container"><code class="docutils literal notranslate"><span class="pre">Neo4J2Converter.configure_container()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/neo4j/converter.html#bugfinder.processing.neo4j.converter.Neo4J2Converter.send_commands"><code class="docutils literal notranslate"><span class="pre">Neo4J2Converter.send_commands()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/neo4j/converter.html#bugfinder.processing.neo4j.converter.Neo4J3Converter"><code class="docutils literal notranslate"><span class="pre">Neo4J3Converter</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/neo4j/converter.html#bugfinder.processing.neo4j.converter.Neo4J3Converter.configure_container"><code class="docutils literal notranslate"><span class="pre">Neo4J3Converter.configure_container()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/neo4j/converter.html#bugfinder.processing.neo4j.converter.Neo4J3Converter.send_commands"><code class="docutils literal notranslate"><span class="pre">Neo4J3Converter.send_commands()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="bugfinder/processing/dataset/index.html">bugfinder.processing.dataset</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/dataset/inverse.html">bugfinder.processing.dataset.inverse</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/dataset/copy.html">bugfinder.processing.dataset.copy</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/dataset/fix_rights.html">bugfinder.processing.dataset.fix_rights</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/dataset/extract.html">bugfinder.processing.dataset.extract</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/dataset/inverse.html">bugfinder.processing.dataset.inverse</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/dataset/inverse.html#bugfinder.processing.dataset.inverse.InverseDataset"><code class="docutils literal notranslate"><span class="pre">InverseDataset</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/dataset/inverse.html#bugfinder.processing.dataset.inverse.InverseDataset.execute"><code class="docutils literal notranslate"><span class="pre">InverseDataset.execute()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/dataset/copy.html">bugfinder.processing.dataset.copy</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/dataset/copy.html#bugfinder.processing.dataset.copy.CopyDataset"><code class="docutils literal notranslate"><span class="pre">CopyDataset</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/dataset/copy.html#bugfinder.processing.dataset.copy.CopyDataset.execute"><code class="docutils literal notranslate"><span class="pre">CopyDataset.execute()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/dataset/fix_rights.html">bugfinder.processing.dataset.fix_rights</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/dataset/fix_rights.html#bugfinder.processing.dataset.fix_rights.RightFixer"><code class="docutils literal notranslate"><span class="pre">RightFixer</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/dataset/fix_rights.html#bugfinder.processing.dataset.fix_rights.RightFixer.configure_command"><code class="docutils literal notranslate"><span class="pre">RightFixer.configure_command()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/dataset/fix_rights.html#bugfinder.processing.dataset.fix_rights.RightFixer.configure_container"><code class="docutils literal notranslate"><span class="pre">RightFixer.configure_container()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/dataset/fix_rights.html#bugfinder.processing.dataset.fix_rights.RightFixer.send_commands"><code class="docutils literal notranslate"><span class="pre">RightFixer.send_commands()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/dataset/extract.html">bugfinder.processing.dataset.extract</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/dataset/extract.html#bugfinder.processing.dataset.extract.ExtractSampleDataset"><code class="docutils literal notranslate"><span class="pre">ExtractSampleDataset</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/dataset/extract.html#bugfinder.processing.dataset.extract.ExtractSampleDataset.execute"><code class="docutils literal notranslate"><span class="pre">ExtractSampleDataset.execute()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="bugfinder/processing/joern/index.html">bugfinder.processing.joern</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/joern/v031.html">bugfinder.processing.joern.v031</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/joern/v040.html">bugfinder.processing.joern.v040</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/joern/index.html#bugfinder.processing.joern.AbstractJoernProcessing"><code class="docutils literal notranslate"><span class="pre">AbstractJoernProcessing</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/joern/index.html#bugfinder.processing.joern.AbstractJoernProcessing.configure_container"><code class="docutils literal notranslate"><span class="pre">AbstractJoernProcessing.configure_container()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/joern/index.html#bugfinder.processing.joern.AbstractJoernProcessing.send_commands"><code class="docutils literal notranslate"><span class="pre">AbstractJoernProcessing.send_commands()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/joern/v031.html">bugfinder.processing.joern.v031</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/joern/v031.html#bugfinder.processing.joern.v031.JoernProcessing"><code class="docutils literal notranslate"><span class="pre">JoernProcessing</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/joern/v031.html#bugfinder.processing.joern.v031.JoernProcessing.configure_container"><code class="docutils literal notranslate"><span class="pre">JoernProcessing.configure_container()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/joern/v031.html#bugfinder.processing.joern.v031.JoernProcessing.send_commands"><code class="docutils literal notranslate"><span class="pre">JoernProcessing.send_commands()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/joern/v040.html">bugfinder.processing.joern.v040</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/joern/v040.html#bugfinder.processing.joern.v040.JoernProcessing"><code class="docutils literal notranslate"><span class="pre">JoernProcessing</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/joern/v040.html#bugfinder.processing.joern.v040.JoernProcessing.configure_container"><code class="docutils literal notranslate"><span class="pre">JoernProcessing.configure_container()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/joern/v040.html#bugfinder.processing.joern.v040.JoernProcessing.send_commands"><code class="docutils literal notranslate"><span class="pre">JoernProcessing.send_commands()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="bugfinder/processing/ast/index.html">bugfinder.processing.ast</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/ast/v03.html">bugfinder.processing.ast.v03</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/ast/v02.html">bugfinder.processing.ast.v02</a></li>
-<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/ast/v01.html">bugfinder.processing.ast.v01</a></li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/ast/index.html#bugfinder.processing.ast.AbstractASTMarkup"><code class="docutils literal notranslate"><span class="pre">AbstractASTMarkup</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/ast/index.html#bugfinder.processing.ast.AbstractASTMarkup.SET_AST_MARKUP_CMD"><code class="docutils literal notranslate"><span class="pre">AbstractASTMarkup.SET_AST_MARKUP_CMD</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/ast/index.html#bugfinder.processing.ast.AbstractASTMarkup.build_ast_markup"><code class="docutils literal notranslate"><span class="pre">AbstractASTMarkup.build_ast_markup()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/ast/index.html#bugfinder.processing.ast.AbstractASTMarkup.get_ast_information"><code class="docutils literal notranslate"><span class="pre">AbstractASTMarkup.get_ast_information()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/ast/index.html#bugfinder.processing.ast.AbstractASTMarkup.send_commands"><code class="docutils literal notranslate"><span class="pre">AbstractASTMarkup.send_commands()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/ast/v03.html">bugfinder.processing.ast.v03</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/ast/v03.html#bugfinder.processing.ast.v03.Neo4JASTMarkup"><code class="docutils literal notranslate"><span class="pre">Neo4JASTMarkup</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/ast/v03.html#bugfinder.processing.ast.v03.Neo4JASTMarkup.build_ast_markup"><code class="docutils literal notranslate"><span class="pre">Neo4JASTMarkup.build_ast_markup()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/ast/v03.html#bugfinder.processing.ast.v03.Neo4JASTMarkup.configure_container"><code class="docutils literal notranslate"><span class="pre">Neo4JASTMarkup.configure_container()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/ast/v03.html#bugfinder.processing.ast.v03.Neo4JASTMarkup.get_ast_information"><code class="docutils literal notranslate"><span class="pre">Neo4JASTMarkup.get_ast_information()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/ast/v02.html">bugfinder.processing.ast.v02</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/ast/v02.html#bugfinder.processing.ast.v02.Neo4JASTMarkup"><code class="docutils literal notranslate"><span class="pre">Neo4JASTMarkup</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/ast/v02.html#bugfinder.processing.ast.v02.Neo4JASTMarkup.build_ast_markup"><code class="docutils literal notranslate"><span class="pre">Neo4JASTMarkup.build_ast_markup()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/ast/v02.html#bugfinder.processing.ast.v02.Neo4JASTMarkup.configure_container"><code class="docutils literal notranslate"><span class="pre">Neo4JASTMarkup.configure_container()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/ast/v02.html#bugfinder.processing.ast.v02.Neo4JASTMarkup.get_ast_information"><code class="docutils literal notranslate"><span class="pre">Neo4JASTMarkup.get_ast_information()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="bugfinder/processing/ast/v01.html">bugfinder.processing.ast.v01</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bugfinder/processing/ast/v01.html#bugfinder.processing.ast.v01.Neo4JASTMarkup"><code class="docutils literal notranslate"><span class="pre">Neo4JASTMarkup</span></code></a><ul>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/ast/v01.html#bugfinder.processing.ast.v01.Neo4JASTMarkup.build_ast_markup"><code class="docutils literal notranslate"><span class="pre">Neo4JASTMarkup.build_ast_markup()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/ast/v01.html#bugfinder.processing.ast.v01.Neo4JASTMarkup.configure_container"><code class="docutils literal notranslate"><span class="pre">Neo4JASTMarkup.configure_container()</span></code></a></li>
+<li class="toctree-l6"><a class="reference internal" href="bugfinder/processing/ast/v01.html#bugfinder.processing.ast.v01.Neo4JASTMarkup.get_ast_information"><code class="docutils literal notranslate"><span class="pre">Neo4JASTMarkup.get_ast_information()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

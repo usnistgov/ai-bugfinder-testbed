@@ -15,7 +15,9 @@
         <script data-url_root="../../../../../" id="documentation_options" src="../../../../../_static/documentation_options.js"></script>
         <script src="../../../../../_static/jquery.js"></script>
         <script src="../../../../../_static/underscore.js"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../../../_static/doctools.js"></script>
+        <script src="../../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../../search.html" />
@@ -122,17 +124,60 @@ $(document).ready(function() {
            <div itemprop="articleBody">
              
   <section id="module-bugfinder.features.extraction.bag_of_words">
-<span id="bugfinder-features-extraction-bag-of-words"></span><h1>bugfinder.features.extraction.bag_of_words<a class="headerlink" href="#module-bugfinder.features.extraction.bag_of_words" title="Permalink to this headline"></a></h1>
+<span id="bugfinder-features-extraction-bag-of-words"></span><h1>bugfinder.features.extraction.bag_of_words<a class="headerlink" href="#module-bugfinder.features.extraction.bag_of_words" title="Permalink to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="hops_n_flows.html">bugfinder.features.extraction.bag_of_words.hops_n_flows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hops_n_flows.html">bugfinder.features.extraction.bag_of_words.hops_n_flows</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.configure_container"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.configure_container()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.execute"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.execute()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.finalize_features"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.finalize_features()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.flows"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.flows</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.get_flowgraph_count"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_flowgraph_count()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.get_flowgraph_list_for_entrypoint"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_flowgraph_list_for_entrypoint()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.get_label_from_flowgraph"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_label_from_flowgraph()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.max_hops"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.max_hops</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.min_hops"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.min_hops</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="single_hop/index.html">bugfinder.features.extraction.bag_of_words.single_hop</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="single_hop/raw.html">bugfinder.features.extraction.bag_of_words.single_hop.raw</a></li>
+<li class="toctree-l2"><a class="reference internal" href="single_hop/raw.html">bugfinder.features.extraction.bag_of_words.single_hop.raw</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="single_hop/raw.html#bugfinder.features.extraction.bag_of_words.single_hop.raw.FeatureExtractor"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="single_hop/raw.html#bugfinder.features.extraction.bag_of_words.single_hop.raw.FeatureExtractor.configure_container"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.configure_container()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="single_hop/raw.html#bugfinder.features.extraction.bag_of_words.single_hop.raw.FeatureExtractor.get_flowgraph_count"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_flowgraph_count()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="single_hop/raw.html#bugfinder.features.extraction.bag_of_words.single_hop.raw.FeatureExtractor.get_flowgraph_list_for_entrypoint"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_flowgraph_list_for_entrypoint()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="single_hop/raw.html#bugfinder.features.extraction.bag_of_words.single_hop.raw.FeatureExtractor.get_label_from_flowgraph"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_label_from_flowgraph()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="any_hop/index.html">bugfinder.features.extraction.bag_of_words.any_hop</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="any_hop/all_flows.html">bugfinder.features.extraction.bag_of_words.any_hop.all_flows</a></li>
-<li class="toctree-l2"><a class="reference internal" href="any_hop/single_flow.html">bugfinder.features.extraction.bag_of_words.any_hop.single_flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="any_hop/all_flows.html">bugfinder.features.extraction.bag_of_words.any_hop.all_flows</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="any_hop/all_flows.html#bugfinder.features.extraction.bag_of_words.any_hop.all_flows.FeatureExtractor"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="any_hop/all_flows.html#bugfinder.features.extraction.bag_of_words.any_hop.all_flows.FeatureExtractor.configure_container"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.configure_container()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="any_hop/all_flows.html#bugfinder.features.extraction.bag_of_words.any_hop.all_flows.FeatureExtractor.get_flowgraph_count"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_flowgraph_count()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="any_hop/all_flows.html#bugfinder.features.extraction.bag_of_words.any_hop.all_flows.FeatureExtractor.get_flowgraph_list_for_entrypoint"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_flowgraph_list_for_entrypoint()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="any_hop/all_flows.html#bugfinder.features.extraction.bag_of_words.any_hop.all_flows.FeatureExtractor.get_label_from_flowgraph"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_label_from_flowgraph()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="any_hop/single_flow.html">bugfinder.features.extraction.bag_of_words.any_hop.single_flow</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="any_hop/single_flow.html#bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="any_hop/single_flow.html#bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor.FLOWS"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.FLOWS</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="any_hop/single_flow.html#bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor.configure_container"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.configure_container()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="any_hop/single_flow.html#bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor.finalize_features"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.finalize_features()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="any_hop/single_flow.html#bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor.get_flowgraph_count"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_flowgraph_count()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="any_hop/single_flow.html#bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor.get_flowgraph_list_for_entrypoint"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_flowgraph_list_for_entrypoint()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="any_hop/single_flow.html#bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor.get_label_from_flowgraph"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_label_from_flowgraph()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

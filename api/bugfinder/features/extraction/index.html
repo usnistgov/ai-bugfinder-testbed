@@ -15,7 +15,9 @@
         <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
         <script src="../../../../_static/jquery.js"></script>
         <script src="../../../../_static/underscore.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
     <script src="../../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
@@ -121,12 +123,12 @@ $(document).ready(function() {
            <div itemprop="articleBody">
              
   <section id="module-bugfinder.features.extraction">
-<span id="bugfinder-features-extraction"></span><h1>bugfinder.features.extraction<a class="headerlink" href="#module-bugfinder.features.extraction" title="Permalink to this headline"></a></h1>
+<span id="bugfinder-features-extraction"></span><h1>bugfinder.features.extraction<a class="headerlink" href="#module-bugfinder.features.extraction" title="Permalink to this heading"></a></h1>
 <p>Base classes for feature extraction</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="bugfinder.features.extraction.FlowGraphFeatureExtractor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bugfinder.features.extraction.</span></span><span class="sig-name descname"><span class="pre">FlowGraphFeatureExtractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deprecation_warning</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bugfinder.features.extraction.FlowGraphFeatureExtractor" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="#bugfinder.features.extraction.GraphFeatureExtractor" title="bugfinder.features.extraction.GraphFeatureExtractor"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.features.extraction.GraphFeatureExtractor</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#bugfinder.features.extraction.GraphFeatureExtractor" title="bugfinder.features.extraction.GraphFeatureExtractor"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphFeatureExtractor</span></code></a></p>
 <p>Base extractor to retrieve control or data flow features from a Joern
 database.</p>
 <dl class="py method">
@@ -204,7 +206,7 @@ by the subclasses.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="bugfinder.features.extraction.GraphFeatureExtractor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">bugfinder.features.extraction.</span></span><span class="sig-name descname"><span class="pre">GraphFeatureExtractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deprecation_warning</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#bugfinder.features.extraction.GraphFeatureExtractor" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="../../processing/neo4j/index.html#bugfinder.processing.neo4j.Neo4J3Processing" title="bugfinder.processing.neo4j.Neo4J3Processing"><code class="xref py py-class docutils literal notranslate"><span class="pre">bugfinder.processing.neo4j.Neo4J3Processing</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="../../processing/neo4j/index.html#bugfinder.processing.neo4j.Neo4J3Processing" title="bugfinder.processing.neo4j.Neo4J3Processing"><code class="xref py py-class docutils literal notranslate"><span class="pre">Neo4J3Processing</span></code></a></p>
 <p>Feature extractor for Joern databases</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="bugfinder.features.extraction.GraphFeatureExtractor.check_extraction_inputs">
@@ -274,29 +276,150 @@ by the subclasses.</p>
 
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="interproc.html">bugfinder.features.extraction.interproc</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interproc.html">bugfinder.features.extraction.interproc</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.catlock"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.catlock</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.cats"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.cats</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.check_extraction_inputs"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.check_extraction_inputs()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.configure_container"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.configure_container()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.configure_container_with_dict"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.configure_container_with_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.extract_features"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.extract_features()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.extract_features_worker"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.extract_features_worker()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.get_flowgraph_list_for_entrypoint"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_flowgraph_list_for_entrypoint()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.send_commands"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.send_commands()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.timeout"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.timeout</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="interproc.html#bugfinder.features.extraction.interproc.FeatureExtractor.write_extraction_outputs"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.write_extraction_outputs()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="bag_of_words/index.html">bugfinder.features.extraction.bag_of_words</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="bag_of_words/hops_n_flows.html">bugfinder.features.extraction.bag_of_words.hops_n_flows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bag_of_words/hops_n_flows.html">bugfinder.features.extraction.bag_of_words.hops_n_flows</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="bag_of_words/hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bag_of_words/hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.configure_container"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.configure_container()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bag_of_words/hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.execute"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.execute()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bag_of_words/hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.finalize_features"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.finalize_features()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bag_of_words/hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.flows"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.flows</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bag_of_words/hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.get_flowgraph_count"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_flowgraph_count()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bag_of_words/hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.get_flowgraph_list_for_entrypoint"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_flowgraph_list_for_entrypoint()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bag_of_words/hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.get_label_from_flowgraph"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_label_from_flowgraph()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bag_of_words/hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.max_hops"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.max_hops</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="bag_of_words/hops_n_flows.html#bugfinder.features.extraction.bag_of_words.hops_n_flows.FeatureExtractor.min_hops"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.min_hops</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="bag_of_words/single_hop/index.html">bugfinder.features.extraction.bag_of_words.single_hop</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="bag_of_words/single_hop/raw.html">bugfinder.features.extraction.bag_of_words.single_hop.raw</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bag_of_words/single_hop/raw.html">bugfinder.features.extraction.bag_of_words.single_hop.raw</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bag_of_words/single_hop/raw.html#bugfinder.features.extraction.bag_of_words.single_hop.raw.FeatureExtractor"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bag_of_words/single_hop/raw.html#bugfinder.features.extraction.bag_of_words.single_hop.raw.FeatureExtractor.configure_container"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.configure_container()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bag_of_words/single_hop/raw.html#bugfinder.features.extraction.bag_of_words.single_hop.raw.FeatureExtractor.get_flowgraph_count"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_flowgraph_count()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bag_of_words/single_hop/raw.html#bugfinder.features.extraction.bag_of_words.single_hop.raw.FeatureExtractor.get_flowgraph_list_for_entrypoint"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_flowgraph_list_for_entrypoint()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bag_of_words/single_hop/raw.html#bugfinder.features.extraction.bag_of_words.single_hop.raw.FeatureExtractor.get_label_from_flowgraph"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_label_from_flowgraph()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="bag_of_words/any_hop/index.html">bugfinder.features.extraction.bag_of_words.any_hop</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="bag_of_words/any_hop/all_flows.html">bugfinder.features.extraction.bag_of_words.any_hop.all_flows</a></li>
-<li class="toctree-l3"><a class="reference internal" href="bag_of_words/any_hop/single_flow.html">bugfinder.features.extraction.bag_of_words.any_hop.single_flow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bag_of_words/any_hop/all_flows.html">bugfinder.features.extraction.bag_of_words.any_hop.all_flows</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bag_of_words/any_hop/all_flows.html#bugfinder.features.extraction.bag_of_words.any_hop.all_flows.FeatureExtractor"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bag_of_words/any_hop/all_flows.html#bugfinder.features.extraction.bag_of_words.any_hop.all_flows.FeatureExtractor.configure_container"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.configure_container()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bag_of_words/any_hop/all_flows.html#bugfinder.features.extraction.bag_of_words.any_hop.all_flows.FeatureExtractor.get_flowgraph_count"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_flowgraph_count()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bag_of_words/any_hop/all_flows.html#bugfinder.features.extraction.bag_of_words.any_hop.all_flows.FeatureExtractor.get_flowgraph_list_for_entrypoint"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_flowgraph_list_for_entrypoint()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bag_of_words/any_hop/all_flows.html#bugfinder.features.extraction.bag_of_words.any_hop.all_flows.FeatureExtractor.get_label_from_flowgraph"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_label_from_flowgraph()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="bag_of_words/any_hop/single_flow.html">bugfinder.features.extraction.bag_of_words.any_hop.single_flow</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="bag_of_words/any_hop/single_flow.html#bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor</span></code></a><ul>
+<li class="toctree-l5"><a class="reference internal" href="bag_of_words/any_hop/single_flow.html#bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor.FLOWS"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.FLOWS</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bag_of_words/any_hop/single_flow.html#bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor.configure_container"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.configure_container()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bag_of_words/any_hop/single_flow.html#bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor.finalize_features"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.finalize_features()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bag_of_words/any_hop/single_flow.html#bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor.get_flowgraph_count"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_flowgraph_count()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bag_of_words/any_hop/single_flow.html#bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor.get_flowgraph_list_for_entrypoint"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_flowgraph_list_for_entrypoint()</span></code></a></li>
+<li class="toctree-l5"><a class="reference internal" href="bag_of_words/any_hop/single_flow.html#bugfinder.features.extraction.bag_of_words.any_hop.single_flow.FeatureExtractor.get_label_from_flowgraph"><code class="docutils literal notranslate"><span class="pre">FeatureExtractor.get_label_from_flowgraph()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="word2vec/index.html">bugfinder.features.extraction.word2vec</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="word2vec/embeddings.html">bugfinder.features.extraction.word2vec.embeddings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="word2vec/model.html">bugfinder.features.extraction.word2vec.model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="word2vec/embeddings.html">bugfinder.features.extraction.word2vec.embeddings</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="word2vec/embeddings.html#bugfinder.features.extraction.word2vec.embeddings.Word2VecEmbeddings"><code class="docutils literal notranslate"><span class="pre">Word2VecEmbeddings</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="word2vec/embeddings.html#bugfinder.features.extraction.word2vec.embeddings.Word2VecEmbeddings.execute"><code class="docutils literal notranslate"><span class="pre">Word2VecEmbeddings.execute()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="word2vec/embeddings.html#bugfinder.features.extraction.word2vec.embeddings.Word2VecEmbeddings.get_token_list"><code class="docutils literal notranslate"><span class="pre">Word2VecEmbeddings.get_token_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="word2vec/embeddings.html#bugfinder.features.extraction.word2vec.embeddings.Word2VecEmbeddings.save_dataframe"><code class="docutils literal notranslate"><span class="pre">Word2VecEmbeddings.save_dataframe()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="word2vec/embeddings.html#bugfinder.features.extraction.word2vec.embeddings.Word2VecEmbeddings.vectorize"><code class="docutils literal notranslate"><span class="pre">Word2VecEmbeddings.vectorize()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="word2vec/model.html">bugfinder.features.extraction.word2vec.model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="word2vec/model.html#bugfinder.features.extraction.word2vec.model.Word2VecModel"><code class="docutils literal notranslate"><span class="pre">Word2VecModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="word2vec/model.html#bugfinder.features.extraction.word2vec.model.Word2VecModel.algorithm"><code class="docutils literal notranslate"><span class="pre">Word2VecModel.algorithm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="word2vec/model.html#bugfinder.features.extraction.word2vec.model.Word2VecModel.execute"><code class="docutils literal notranslate"><span class="pre">Word2VecModel.execute()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="word2vec/model.html#bugfinder.features.extraction.word2vec.model.Word2VecModel.get_token_list"><code class="docutils literal notranslate"><span class="pre">Word2VecModel.get_token_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="word2vec/model.html#bugfinder.features.extraction.word2vec.model.Word2VecModel.min_count"><code class="docutils literal notranslate"><span class="pre">Word2VecModel.min_count</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="word2vec/model.html#bugfinder.features.extraction.word2vec.model.Word2VecModel.seed"><code class="docutils literal notranslate"><span class="pre">Word2VecModel.seed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="word2vec/model.html#bugfinder.features.extraction.word2vec.model.Word2VecModel.tokens"><code class="docutils literal notranslate"><span class="pre">Word2VecModel.tokens</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="word2vec/model.html#bugfinder.features.extraction.word2vec.model.Word2VecModel.window_dim"><code class="docutils literal notranslate"><span class="pre">Word2VecModel.window_dim</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="word2vec/model.html#bugfinder.features.extraction.word2vec.model.Word2VecModel.word_dim"><code class="docutils literal notranslate"><span class="pre">Word2VecModel.word_dim</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="word2vec/model.html#bugfinder.features.extraction.word2vec.model.Word2VecModel.workers"><code class="docutils literal notranslate"><span class="pre">Word2VecModel.workers</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="node2vec/index.html">bugfinder.features.extraction.node2vec</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="node2vec/embeddings.html">bugfinder.features.extraction.node2vec.embeddings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="node2vec/model.html">bugfinder.features.extraction.node2vec.model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="node2vec/implementation.html">bugfinder.features.extraction.node2vec.implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="node2vec/embeddings.html">bugfinder.features.extraction.node2vec.embeddings</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="node2vec/embeddings.html#bugfinder.features.extraction.node2vec.embeddings.Node2VecEmbeddings"><code class="docutils literal notranslate"><span class="pre">Node2VecEmbeddings</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="node2vec/embeddings.html#bugfinder.features.extraction.node2vec.embeddings.Node2VecEmbeddings.embedding_length"><code class="docutils literal notranslate"><span class="pre">Node2VecEmbeddings.embedding_length</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="node2vec/embeddings.html#bugfinder.features.extraction.node2vec.embeddings.Node2VecEmbeddings.execute"><code class="docutils literal notranslate"><span class="pre">Node2VecEmbeddings.execute()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="node2vec/embeddings.html#bugfinder.features.extraction.node2vec.embeddings.Node2VecEmbeddings.vector_length"><code class="docutils literal notranslate"><span class="pre">Node2VecEmbeddings.vector_length</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="node2vec/model.html">bugfinder.features.extraction.node2vec.model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel"><code class="docutils literal notranslate"><span class="pre">Node2VecModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.algorithm"><code class="docutils literal notranslate"><span class="pre">Node2VecModel.algorithm</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.execute"><code class="docutils literal notranslate"><span class="pre">Node2VecModel.execute()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.min_count"><code class="docutils literal notranslate"><span class="pre">Node2VecModel.min_count</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.num_walks"><code class="docutils literal notranslate"><span class="pre">Node2VecModel.num_walks</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.p"><code class="docutils literal notranslate"><span class="pre">Node2VecModel.p</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.q"><code class="docutils literal notranslate"><span class="pre">Node2VecModel.q</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.seed"><code class="docutils literal notranslate"><span class="pre">Node2VecModel.seed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.tokens"><code class="docutils literal notranslate"><span class="pre">Node2VecModel.tokens</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.vector_length"><code class="docutils literal notranslate"><span class="pre">Node2VecModel.vector_length</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.walk_length"><code class="docutils literal notranslate"><span class="pre">Node2VecModel.walk_length</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.window_dim"><code class="docutils literal notranslate"><span class="pre">Node2VecModel.window_dim</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="node2vec/model.html#bugfinder.features.extraction.node2vec.model.Node2VecModel.workers"><code class="docutils literal notranslate"><span class="pre">Node2VecModel.workers</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="node2vec/implementation.html">bugfinder.features.extraction.node2vec.implementation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="node2vec/implementation.html#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation"><code class="docutils literal notranslate"><span class="pre">Node2VecImplementation</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="node2vec/implementation.html#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation.FIRST_TRAVEL_KEY"><code class="docutils literal notranslate"><span class="pre">Node2VecImplementation.FIRST_TRAVEL_KEY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="node2vec/implementation.html#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation.NEIGHBORS_KEY"><code class="docutils literal notranslate"><span class="pre">Node2VecImplementation.NEIGHBORS_KEY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="node2vec/implementation.html#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation.NUM_WALKS_KEY"><code class="docutils literal notranslate"><span class="pre">Node2VecImplementation.NUM_WALKS_KEY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="node2vec/implementation.html#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation.PROBABILITIES_KEY"><code class="docutils literal notranslate"><span class="pre">Node2VecImplementation.PROBABILITIES_KEY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="node2vec/implementation.html#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation.P_KEY"><code class="docutils literal notranslate"><span class="pre">Node2VecImplementation.P_KEY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="node2vec/implementation.html#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation.Q_KEY"><code class="docutils literal notranslate"><span class="pre">Node2VecImplementation.Q_KEY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="node2vec/implementation.html#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation.WALK_LENGTH_KEY"><code class="docutils literal notranslate"><span class="pre">Node2VecImplementation.WALK_LENGTH_KEY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="node2vec/implementation.html#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation.WEIGHT_KEY"><code class="docutils literal notranslate"><span class="pre">Node2VecImplementation.WEIGHT_KEY</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="node2vec/implementation.html#bugfinder.features.extraction.node2vec.implementation.Node2VecImplementation.fit"><code class="docutils literal notranslate"><span class="pre">Node2VecImplementation.fit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
