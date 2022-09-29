@@ -83,11 +83,13 @@ class Node2VecEmbeddings(AbstractProcessing):
         """
         nodes_list = list()
 
-        file_processing_list = glob(join(
-            self.dataset.path,
-            f"{settings.DATASET_DIRS['joern']}/code",
-            "*/*/*/*.csv"
-        ))
+        file_processing_list = glob(
+            join(
+                self.dataset.path,
+                f"{settings.DATASET_DIRS['joern']}/code",
+                "*/*/*/*.csv",
+            )
+        )
 
         # Reading the edges file to create a graph and retrieve the nodes from it
         # TODO: Refactor this code to a single function to be used across the classes

@@ -99,11 +99,13 @@ class Node2VecModel(AbstractProcessing):
         """
         edges_list = list()
 
-        file_processing_list = glob(join(
-            self.dataset.path,
-            f"{settings.DATASET_DIRS['joern']}/code",
-            "*/*/*/*.csv"
-        ))
+        file_processing_list = glob(
+            join(
+                self.dataset.path,
+                f"{settings.DATASET_DIRS['joern']}/code",
+                "*/*/*/*.csv",
+            )
+        )
 
         while len(file_processing_list) != 0:
             filepath = file_processing_list.pop(0)
