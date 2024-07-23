@@ -9,20 +9,17 @@ from bugfinder.base.dataset import CodeWeaknessClassificationDataset as Dataset
 
 from bugfinder.features.extraction.word2vec.embeddings import Word2VecEmbeddings
 from bugfinder.features.extraction.node2vec.embeddings import Node2VecEmbeddings
+from bugfinder.features.extraction.transformers.embeddings import TransformerEmbeddings
+
 
 from bugfinder.utils.processing import is_operation_valid
 
 if __name__ == "__main__":
-    options = {"word2vec": Word2VecEmbeddings, "node2vec": Node2VecEmbeddings}
+    options = {"word2vec": Word2VecEmbeddings,
+                "node2vec": Node2VecEmbeddings,
+                "transformer": TransformerEmbeddings}
 
     parser = argparse.ArgumentParser()
-
-    parser.add_argument(
-        "--model",
-        "-m",
-        required=True,
-        help="Which type of embeddings to generate (word2vec or node2vec)",
-    )
 
     parser.add_argument(
         "dataset_path",
@@ -30,9 +27,16 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
+        "--model",
+        "-m",
+        required=True,
+        help="Which type of embeddings to generate (word2vec/node2vec/transformer)",
+    )
+
+    parser.add_argument(
         "--name",
         "-n",
-        required=True,
+        required=False,
         help="Path to the word2vec model to be used to generated the embeddings",
     )
     parser.add_argument(
@@ -57,11 +61,19 @@ if __name__ == "__main__":
 
     dataset = Dataset(args.dataset_path)
 
-    op_args = {
-        "name": args.name,
-        "emb_length": args.emb_length,
-        "vec_length": args.vec_length,
-    }
+    keys = options.keys()
+
+    if args.model == 'transformer':
+        op_args = {
+            "emb_length": args.emb_length,
+        }
+
+    else:
+        op_args = {
+            "name": args.name,
+            "emb_length": args.emb_length,
+            "vec_length": args.vec_length,
+        }
 
     op_args.update(kwargs)
 

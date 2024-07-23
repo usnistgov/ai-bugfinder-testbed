@@ -16,6 +16,8 @@ from bugfinder.processing.cleaning.remove_main_function import RemoveMainFunctio
 from bugfinder.processing.cleaning.replace_litterals import ReplaceLitterals
 from bugfinder.processing.cleaning.remove_comments import RemoveComments
 
+from bugfinder.processing.tokenizers.normalize_cpgs import NormalizeCodePropertyGraph
+from bugfinder.processing.tokenizers.combine_cpgs import CombineDotFiles
 
 if __name__ == "__main__":
     options = {  # Dictionary linking input arguments to processing classes
@@ -24,6 +26,8 @@ if __name__ == "__main__":
         "no_litterals": ReplaceLitterals,
         "no_main": RemoveMainFunction,
         "no_comments": RemoveComments,
+        "normalize_cpg": NormalizeCodePropertyGraph,
+        "combine_cpg": CombineDotFiles,
     }
 
     # Setup the argument parser

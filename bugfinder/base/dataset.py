@@ -98,6 +98,7 @@ class CodeWeaknessClassificationDataset:
         self.neo4j_dir = join(self.path, settings.DATASET_DIRS["neo4j"])
         self.feats_dir = join(self.path, settings.DATASET_DIRS["feats"])
         self.model_dir = join(self.path, settings.DATASET_DIRS["models"])
+        self.cpgs_dir  = join(self.path, settings.DATASET_DIRS["cpgs"])
         self.embeddings_dir = join(self.path, settings.DATASET_DIRS["embeddings"])
         self.summary_filepath = join(self.path, settings.SUMMARY_FILE)
 
@@ -131,13 +132,14 @@ class CodeWeaknessClassificationDataset:
             self.stats = [st / len(self.test_cases) for st in self.stats]
 
         LOGGER.debug(
-            "Dataset index build in %s. %d test_cases, %d classes, "
-            "%d features (v%d).",
+            #"Dataset index build in %s. %d test_cases, %d classes, "
+            #"%d features (v%d).",
+            "Dataset index build in %s. %d test_cases, %d classes.",
             display_time(get_time() - _time),
             len(self.test_cases),
             len(self.classes),
-            self.features.shape[1] - 2,
-            self.feats_version,
+            # self.features.shape[1] - 2,
+            # self.feats_version,
         )
 
         self.load_summary()

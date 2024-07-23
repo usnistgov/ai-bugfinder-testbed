@@ -1,0 +1,244 @@
+""" Processing module for Joern v2.0.107
+"""
+from os import makedirs, walk, listdir, system, environ, chdir
+from os.path import join, exists, splitext, dirname, abspath, basename
+
+import os
+import subprocess
+
+import shlex
+
+from bugfinder.base.processing import AbstractProcessing
+from bugfinder.settings import LOGGER, JOERN_PATH, SCRIPT_PATH, JAVA_HOME
+
+
+class JoernProcessing(AbstractProcessing):
+    def __init__(self, dataset):
+        """Class initialization method."""
+        super().__init__(dataset)
+
+    def execute(self, language, repr_type, output_format):
+        valid_repr_types = ['all', 'ast', 'cdg', 'cfg', 'cpg','cpg14', 'ddg', 'pdg']
+        valid_output_formats = ['dot', 'graphml', 'graphson', 'neo4jcsv']
+        
+        os.environ["JAVA_HOME"] = JAVA_HOME
+
+        file_processing_list = [
+            join(test_case, filepath)
+            for test_case in self.dataset.test_cases
+            for filepath in listdir(join(self.dataset.path, test_case))
+            if splitext(filepath)[1] in [".c", ".h"]
+        ]
+
+        LOGGER.debug("Starting parsing of the Code Property Graphs. %d files to be " + 
+                    "parsed.", len(file_processing_list))
+        
+        cpg_processing_list = []
+
+        while len(file_processing_list) != 0:
+            filepath = file_processing_list.pop(0)
+            LOGGER.info(
+                "Parsing %s (%d items left)...",
+                filepath,
+                len(file_processing_list),
+            )
+
+            # joern-parse
+            cpg_binary_path = self.generate_cpg_with_joern(
+                join(self.dataset.path, filepath), language
+            )
+
+            # TODO: Find a better way to check if the string is empty
+            if cpg_binary_path is not None:
+                cpg_processing_list.append(cpg_binary_path)
+
+        if repr_type not in valid_repr_types:
+            LOGGER.error('Invalid representation type! Falling back to default (cpg14)')
+            repr_type = 'cpg14'
+
+        if output_format not in valid_output_formats:
+            LOGGER.error('Invalid output format! Falling back to default (dot)')
+            output_format = 'dot' 
+
+        # joern-export
+        LOGGER.info("Extracting graphs from CPGs. Output format: %s", output_format)
+
+        while len(cpg_processing_list) != 0:
+            cpg_binary_path = cpg_processing_list.pop(0)
+
+            LOGGER.info(
+                "Extracting %s (%d items left)...",
+                filepath,
+                len(cpg_processing_list),
+            )
+
+            self.export_cpg_from_joern(
+                cpg_binary_path, repr_type, output_format, self.dataset
+            )
+
+            '''
+            LOGGER.info("Invoking external script to export CPG data in JSON format")
+            LOGGER.info ('Script location: %s', SCRIPT_PATH)
+
+            self._export_cpg_as_json_via_external_script(
+                graph_path, repr_type, self.dataset.cpgs_dir
+            )
+            '''
+
+
+    @staticmethod
+    def generate_cpg_with_joern(filepath, language):
+        """This function generates the Code Property Graph using the joern-parse script
+        called as a sub-process. The CPG is saved alongside the processed file in a
+        binary format, which is used by the extraction function later.
+
+        Args:
+            filepath (str): path of the file to be processed
+            language (str): code's language of the file to be processed
+
+        Returns:
+            output_file (str): CPG's binary filepath if the parsing was succesful
+        """
+        LOGGER.debug("Generating the Code Property Graphs for %s", basename(filepath))
+
+        joern_parse_executable = JOERN_PATH + "/" + "joern-parse"
+        output_file = splitext(filepath)[0] + ".bin"
+        timeout_limit = 60
+
+        # input_list = subprocess.list2cmdline([joern_parse_executable, filepath, '--language', language,'-o', output_file])
+        # proc = subprocess.Popen([joern_parse_executable, filepath, '-o', out_file], stdout=subprocess.PIPE, shell=True)
+        # (out, err) = proc.communicate()
+        # system("sh joern-parse $input --language c -o $output")
+
+        # res = subprocess.run([joern_parse_executable, '--help'], stdout=subprocess.DEVNULL)
+
+        try:
+            res = subprocess.run(
+                [
+                    joern_parse_executable,
+                    filepath,
+                    "--language",
+                    language,
+                    "-o",
+                    output_file,
+                ],
+                stdout = subprocess.DEVNULL,
+                timeout = timeout_limit
+            )
+        except subprocess.TimeoutExpired as e:
+            LOGGER.error('Sub-process timed-out: Limit was %d seconds.', timeout_limit)
+
+        if res.returncode != 0:
+            LOGGER.error("An error occurred when parsing the %s file", filepath)
+            return
+
+        return output_file
+
+    ######################################################
+
+    @staticmethod
+    def export_cpg_from_joern(filepath, repr_type, output_format, dataset):
+        """Exports the generated Code Property Graph in a readable format, using the
+        joern-export script executed as a sub-process
+
+        Args:
+            filepath (str): path of the file to be processed
+            repr_type (str): which representation the graph will be exported
+            output_format (str): CPG's output format
+            dataset (_type_): dataset object
+        """
+        LOGGER.debug("Processing: %s", basename(filepath))
+
+        joern_export_executable = JOERN_PATH + "/" + "joern-export"
+        timeout_limit = 60
+
+        output_folder = dataset.cpgs_dir
+        classes = dataset.classes
+
+        for cls in classes:
+            out = join(output_folder, cls)
+
+            if not exists(out):
+                makedirs(out)
+
+        # This function returns the relative path compared to the given one
+        # Necessary to construct the directory string with the correct class
+        relative_path = os.path.relpath(dirname(filepath), start=dataset.path)
+        output_path = join(output_folder, relative_path)
+
+        if exists(output_path):
+            LOGGER.error(
+                "Directory already exists: Joern won't be able to generate the " +
+                "graph representation"
+            )
+            return
+
+        try:
+            res = subprocess.run(
+                [
+                    joern_export_executable,
+                    filepath,
+                    "--repr",
+                    repr_type,
+                    "--format",
+                    output_format,
+                    "--out",
+                    output_path,
+                ],
+                stdout = subprocess.DEVNULL,
+                timeout = timeout_limit
+            )
+        except subprocess.TimeoutExpired as e:
+            LOGGER.error('Sub-process timed-out: Limit was %d seconds.', timeout_limit)
+
+        if res.returncode != 0:
+            LOGGER.error("An error occurred when exporting the graph from %s", filepath)
+            return
+
+        try:
+            repr_list = listdir(output_path)
+
+            for f in repr_list:
+                if f.startswith("0-pdg"):
+                    LOGGER.debug("Saving only the first PDG so far")
+                    break
+        except:
+            pass
+
+    @staticmethod
+    def _export_cpg_as_json_via_external_script(filepath,
+                                                repr_type,
+                                                output_folder):
+        """Exports the Code Property Graph in JSON, using an external script
+
+        Args:
+            filepath (str): path of the file to be processed
+            repr_type (str): which representation the graph will be exported
+            output_format (str): CPG's output format
+        """
+        LOGGER.debug("Processing: %s", basename(filepath))
+
+        joern_executable = JOERN_PATH + "/" + "joern"
+        script_path = SCRIPT_PATH
+        timeout_limit = 60
+
+        output_path  = join(output_folder, (basename(dirname(filepath))), 'export.json')
+        #output_path = join(output_folder, (splitext(basename(filepath))[0]))
+
+        cmd_run_str = joern_executable + ' --script=' + script_path + \
+                    ' --param sourceCode=' + filepath + \
+                    ' --param outFile=' + output_path
+
+        try:
+            res = subprocess.run(
+                shlex.split(cmd_run_str),
+                stdout = subprocess.DEVNULL,
+                stderr = subprocess.DEVNULL,
+            )
+        except subprocess.TimeoutExpired as e:
+            LOGGER.error('graph-for-funcs.sc: Sub-process timed-out.')
+        except subprocess.CalledProcessError as e:
+            LOGGER.error("graph-for-funcs.sc: An error occurred when exporting the graph from %s", filepath)
+            LOGGER.error('graph-for-funcs.sc: Return code: %d', e.returncode)
+            return
+
