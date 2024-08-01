@@ -15,9 +15,11 @@ from bugfinder.features.extraction.transformers.embeddings import TransformerEmb
 from bugfinder.utils.processing import is_operation_valid
 
 if __name__ == "__main__":
-    options = {"word2vec": Word2VecEmbeddings,
-                "node2vec": Node2VecEmbeddings,
-                "transformer": TransformerEmbeddings}
+    options = {
+        "word2vec": Word2VecEmbeddings,
+        "node2vec": Node2VecEmbeddings,
+        "transformer": TransformerEmbeddings,
+    }
 
     parser = argparse.ArgumentParser()
 
@@ -63,7 +65,7 @@ if __name__ == "__main__":
 
     keys = options.keys()
 
-    if args.model == 'transformer':
+    if args.model == "transformer":
         op_args = {
             "emb_length": args.emb_length,
         }

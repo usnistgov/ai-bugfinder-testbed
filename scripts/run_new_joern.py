@@ -13,20 +13,19 @@ from bugfinder.processing.joern.v2010 import JoernProcessing
 from bugfinder.base.dataset import CodeWeaknessClassificationDataset as Dataset
 
 if __name__ == "__main__":
-    export_repr_choices = ['all', 'ast', 'cdg', 'cfg', 'cpg', 'cpg14', 'ddg', 'pdg']
-    export_format_choices = ['dot', 'graphml', 'graphson', 'neo4jcsv']
+    export_repr_choices = ["all", "ast", "cdg", "cfg", "cpg", "cpg14", "ddg", "pdg"]
+    export_format_choices = ["dot", "graphml", "graphson", "neo4jcsv"]
 
-    parser = argparse.ArgumentParser(description='Script to execute joern')
+    parser = argparse.ArgumentParser(description="Script to execute joern")
 
     parser.add_argument("dataset_path", help="path to the dataset", type=str)
 
     subparsers = parser.add_subparsers(
-                                    title='operation type for joern',
-                                    dest='operation_type'
-                                    )
+        title="operation type for joern", dest="operation_type"
+    )
 
-    cpg_parser = subparsers.add_parser('cpg', help='operation to generate the cpgs')
-    export_parser = subparsers.add_parser('export', help='operation to export the cpgs')
+    cpg_parser = subparsers.add_parser("cpg", help="operation to generate the cpgs")
+    export_parser = subparsers.add_parser("export", help="operation to export the cpgs")
 
     ###
 
@@ -34,7 +33,7 @@ if __name__ == "__main__":
         "--language",
         help="Language of the files to be processed",
         type=str,
-        default='newc',
+        default="newc",
     )
 
     ###
@@ -46,7 +45,7 @@ if __name__ == "__main__":
         "all|ast|cdg|cfg|cpg|cpg14|ddg|pdg",
         type=str,
         choices=export_repr_choices,
-        default='cpg14',
+        default="cpg14",
     )
 
     export_parser.add_argument(
@@ -56,7 +55,7 @@ if __name__ == "__main__":
         "dot|graphml|graphson|neo4jcsv",
         type=str,
         choices=export_format_choices,
-        default='dot',
+        default="dot",
     )
 
     ###
@@ -66,5 +65,5 @@ if __name__ == "__main__":
     dataset = Dataset(args.dataset_path)
 
     dataset.queue_operation(JoernProcessing, vars(args))
-    
+
     dataset.process()

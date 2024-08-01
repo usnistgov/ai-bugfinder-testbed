@@ -10,9 +10,9 @@ ROOT_DIR = f"{dirname(abspath(__file__))}/.."
 """ str: Project root directory.
 """
 
-JOERN_PATH = '/opt/joern/20107/joern-cli'
-JAVA_HOME = '/opt/jdk-17/'
-SCRIPT_PATH = JOERN_PATH + '/scripts/graph-for-funcs.scala'
+JOERN_PATH = "/opt/joern/20107/joern-cli"
+JAVA_HOME = "/opt/jdk-17/"
+SCRIPT_PATH = JOERN_PATH + "/scripts/graph-for-funcs.scala"
 
 POOL_SIZE = int(os.getenv("POOL_SIZE", multiprocessing.cpu_count()))
 """ int: Number of CPU cores that can be used for multiprocessing tasks.

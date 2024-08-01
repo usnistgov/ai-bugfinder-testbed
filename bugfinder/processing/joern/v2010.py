@@ -1,7 +1,7 @@
 """ Processing module for Joern v2.0.107
 """
-from os import makedirs, walk, listdir, system, environ, chdir
-from os.path import join, exists, splitext, dirname, abspath, basename
+from os import makedirs, listdir
+from os.path import join, exists, splitext, dirname, basename
 
 import os
 import subprocess
@@ -13,35 +13,44 @@ from bugfinder.settings import LOGGER, JOERN_PATH, SCRIPT_PATH, JAVA_HOME
 
 
 class JoernProcessing(AbstractProcessing):
+    """Class for Joern processing
+
+    Args:
+        AbstractProcessing (_type_): _description_
+    """
+
     def __init__(self, dataset):
         """Class initialization method."""
         super().__init__(dataset)
 
     def execute(self, **kwargs):
-        """ Function which will execute the appropriate operation selected on the
+        """Function which will execute the appropriate operation selected on the
         input script
         """
         os.environ["JAVA_HOME"] = JAVA_HOME
-        valid_ops = ['cpg', 'export', 'slice', 'script']
+        valid_ops = ["cpg", "export", "slice", "script"]
 
         try:
-            op_type = kwargs['operation_type']
-            LOGGER.debug('Operation type: %s', op_type)
+            op_type = kwargs["operation_type"]
+            LOGGER.debug("Operation type: %s", op_type)
         except KeyError:
-            LOGGER.error('Operation type was not found!')
+            LOGGER.error("Operation type was not found!")
             return
 
         if op_type is None or op_type not in valid_ops:
-            LOGGER.error('Operation type invalid or not found! Exiting...')
+            LOGGER.error("Operation type invalid or not found! Exiting...")
             return
-        
-        if op_type == 'cpg':
-            language = kwargs['language']
 
-            file_processing_list = self._build_file_list(self.dataset, ['.c', '.h'])
+        if op_type == "cpg":
+            language = kwargs["language"]
 
-            LOGGER.debug("Starting parsing of the Code Property Graphs. %d files " +
-                        "to be parsed.", len(file_processing_list))
+            file_processing_list = self._build_file_list(self.dataset, [".c", ".h"])
+
+            LOGGER.debug(
+                "Starting parsing of the Code Property Graphs. %d files "
+                + "to be parsed.",
+                len(file_processing_list),
+            )
 
             cpg_processing_list = []
 
@@ -59,11 +68,11 @@ class JoernProcessing(AbstractProcessing):
                 )
 
         # joern-export
-        if op_type == 'export':
-            repr_type = kwargs['repr']
-            output_format = kwargs['format']
+        if op_type == "export":
+            repr_type = kwargs["repr"]
+            output_format = kwargs["format"]
 
-            cpg_processing_list = self._build_file_list(self.dataset, ['.bin'])
+            cpg_processing_list = self._build_file_list(self.dataset, [".bin"])
 
             LOGGER.info("Extracting graphs from CPGs. Output format: %s", output_format)
 
@@ -80,17 +89,17 @@ class JoernProcessing(AbstractProcessing):
                     join(self.dataset.path, filepath),
                     repr_type,
                     output_format,
-                    self.dataset
+                    self.dataset,
                 )
 
-                '''
+                """
                 LOGGER.info("Invoking external script to export CPG data in JSON format")
                 LOGGER.info ('Script location: %s', SCRIPT_PATH)
 
                 self._export_cpg_as_json_via_external_script(
                     graph_path, repr_type, self.dataset.cpgs_dir
                 )
-                '''
+                """
 
     @staticmethod
     def _build_file_list(dataset, ext_type) -> list:
@@ -106,11 +115,11 @@ class JoernProcessing(AbstractProcessing):
             file_list: list of files to be processed
         """
         file_list = [
-                join(test_case, filepath)
-                for test_case in dataset.test_cases
-                for filepath in listdir(join(dataset.path, test_case))
-                if splitext(filepath)[1] in ext_type
-            ]
+            join(test_case, filepath)
+            for test_case in dataset.test_cases
+            for filepath in listdir(join(dataset.path, test_case))
+            if splitext(filepath)[1] in ext_type
+        ]
 
         return file_list
 
@@ -133,12 +142,15 @@ class JoernProcessing(AbstractProcessing):
         output_file = splitext(filepath)[0] + ".bin"
         timeout_limit = 60
 
-        # input_list = subprocess.list2cmdline([joern_parse_executable, filepath, '--language', language,'-o', output_file])
-        # proc = subprocess.Popen([joern_parse_executable, filepath, '-o', out_file], stdout=subprocess.PIPE, shell=True)
+        # input_list = subprocess.list2cmdline([joern_parse_executable, filepath,
+        # '--language', language,'-o', output_file])
+        # proc = subprocess.Popen([joern_parse_executable, filepath, '-o', out_file],
+        # stdout=subprocess.PIPE, shell=True)
         # (out, err) = proc.communicate()
         # system("sh joern-parse $input --language c -o $output")
 
-        # res = subprocess.run([joern_parse_executable, '--help'], stdout=subprocess.DEVNULL)
+        # res = subprocess.run([joern_parse_executable, '--help'],
+        # stdout=subprocess.DEVNULL)
 
         try:
             res = subprocess.run(
@@ -150,11 +162,11 @@ class JoernProcessing(AbstractProcessing):
                     "-o",
                     output_file,
                 ],
-                stdout = subprocess.DEVNULL,
-                timeout = timeout_limit
+                stdout=subprocess.DEVNULL,
+                timeout=timeout_limit,
             )
-        except subprocess.TimeoutExpired as e:
-            LOGGER.error('Sub-process timed-out: Limit was %d seconds.', timeout_limit)
+        except subprocess.TimeoutExpired:
+            LOGGER.error("Sub-process timed-out: Limit was %d seconds.", timeout_limit)
 
         if res.returncode != 0:
             LOGGER.error("An error occurred when parsing the %s file", filepath)
@@ -163,10 +175,9 @@ class JoernProcessing(AbstractProcessing):
     ######################################################
 
     @staticmethod
-    def export_cpg_from_joern(filepath: str,
-                            repr_type: str,
-                            output_format: str,
-                            dataset):
+    def export_cpg_from_joern(
+        filepath: str, repr_type: str, output_format: str, dataset
+    ):
         """Exports the generated Code Property Graph in a readable format, using the
         joern-export script executed as a sub-process
 
@@ -197,8 +208,8 @@ class JoernProcessing(AbstractProcessing):
 
         if exists(output_path):
             LOGGER.error(
-                "Directory already exists: Joern won't be able to generate the " +
-                "graph representation"
+                "Directory already exists: Joern won't be able to generate the "
+                + "graph representation"
             )
             return
 
@@ -214,11 +225,11 @@ class JoernProcessing(AbstractProcessing):
                     "--out",
                     output_path,
                 ],
-                stdout = subprocess.DEVNULL,
-                timeout = timeout_limit
+                stdout=subprocess.DEVNULL,
+                timeout=timeout_limit,
             )
-        except subprocess.TimeoutExpired as e:
-            LOGGER.error('Sub-process timed-out: Limit was %d seconds.', timeout_limit)
+        except subprocess.TimeoutExpired:
+            LOGGER.error("Sub-process timed-out: Limit was %d seconds.", timeout_limit)
 
         if res.returncode != 0:
             LOGGER.error("An error occurred when exporting the graph from %s", filepath)
@@ -235,9 +246,7 @@ class JoernProcessing(AbstractProcessing):
             pass
 
     @staticmethod
-    def _export_cpg_as_json_via_external_script(filepath,
-                                                repr_type,
-                                                output_folder):
+    def _export_cpg_as_json_via_external_script(filepath, repr_type, output_folder):
         """Exports the Code Property Graph in JSON, using an external script
 
         Args:
@@ -251,23 +260,32 @@ class JoernProcessing(AbstractProcessing):
         script_path = SCRIPT_PATH
         timeout_limit = 60
 
-        output_path  = join(output_folder, (basename(dirname(filepath))), 'export.json')
-        #output_path = join(output_folder, (splitext(basename(filepath))[0]))
+        output_path = join(output_folder, (basename(dirname(filepath))), "export.json")
+        # output_path = join(output_folder, (splitext(basename(filepath))[0]))
 
-        cmd_run_str = joern_executable + ' --script=' + script_path + \
-                    ' --param sourceCode=' + filepath + \
-                    ' --param outFile=' + output_path
+        cmd_run_str = (
+            joern_executable
+            + " --script="
+            + script_path
+            + " --param sourceCode="
+            + filepath
+            + " --param outFile="
+            + output_path
+        )
 
         try:
             res = subprocess.run(
                 shlex.split(cmd_run_str),
-                stdout = subprocess.DEVNULL,
-                stderr = subprocess.DEVNULL,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
             )
-        except subprocess.TimeoutExpired as e:
-            LOGGER.error('graph-for-funcs.sc: Sub-process timed-out.')
-        except subprocess.CalledProcessError as e:
-            LOGGER.error("graph-for-funcs.sc: An error occurred when exporting the graph from %s", filepath)
-            LOGGER.error('graph-for-funcs.sc: Return code: %d', e.returncode)
+        except subprocess.TimeoutExpired:
+            LOGGER.error("graph-for-funcs.sc: Sub-process timed-out.")
+        except subprocess.CalledProcessError:
+            LOGGER.error(
+                "graph-for-funcs.sc: An error occurred while exporting the graph "
+                + "from %s",
+                filepath,
+            )
+            LOGGER.error("graph-for-funcs.sc: Return code: %d", res.returncode)
             return
-
