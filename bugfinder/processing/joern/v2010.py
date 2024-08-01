@@ -17,77 +17,105 @@ class JoernProcessing(AbstractProcessing):
         """Class initialization method."""
         super().__init__(dataset)
 
-    def execute(self, language, repr_type, output_format):
-        valid_repr_types = ['all', 'ast', 'cdg', 'cfg', 'cpg','cpg14', 'ddg', 'pdg']
-        valid_output_formats = ['dot', 'graphml', 'graphson', 'neo4jcsv']
-        
+    def execute(self, **kwargs):
+        """ Function which will execute the appropriate operation selected on the
+        input script
+        """
         os.environ["JAVA_HOME"] = JAVA_HOME
+        valid_ops = ['cpg', 'export', 'slice', 'script']
 
-        file_processing_list = [
-            join(test_case, filepath)
-            for test_case in self.dataset.test_cases
-            for filepath in listdir(join(self.dataset.path, test_case))
-            if splitext(filepath)[1] in [".c", ".h"]
-        ]
+        try:
+            op_type = kwargs['operation_type']
+            LOGGER.debug('Operation type: %s', op_type)
+        except KeyError:
+            LOGGER.error('Operation type was not found!')
+            return
 
-        LOGGER.debug("Starting parsing of the Code Property Graphs. %d files to be " + 
-                    "parsed.", len(file_processing_list))
+        if op_type is None or op_type not in valid_ops:
+            LOGGER.error('Operation type invalid or not found! Exiting...')
+            return
         
-        cpg_processing_list = []
+        if op_type == 'cpg':
+            language = kwargs['language']
 
-        while len(file_processing_list) != 0:
-            filepath = file_processing_list.pop(0)
-            LOGGER.info(
-                "Parsing %s (%d items left)...",
-                filepath,
-                len(file_processing_list),
-            )
+            file_processing_list = self._build_file_list(self.dataset, ['.c', '.h'])
 
-            # joern-parse
-            cpg_binary_path = self.generate_cpg_with_joern(
-                join(self.dataset.path, filepath), language
-            )
+            LOGGER.debug("Starting parsing of the Code Property Graphs. %d files " +
+                        "to be parsed.", len(file_processing_list))
 
-            # TODO: Find a better way to check if the string is empty
-            if cpg_binary_path is not None:
-                cpg_processing_list.append(cpg_binary_path)
+            cpg_processing_list = []
 
-        if repr_type not in valid_repr_types:
-            LOGGER.error('Invalid representation type! Falling back to default (cpg14)')
-            repr_type = 'cpg14'
+            while len(file_processing_list) != 0:
+                filepath = file_processing_list.pop(0)
+                LOGGER.info(
+                    "Parsing %s (%d items left)...",
+                    filepath,
+                    len(file_processing_list),
+                )
 
-        if output_format not in valid_output_formats:
-            LOGGER.error('Invalid output format! Falling back to default (dot)')
-            output_format = 'dot' 
+                # joern-parse
+                cpg_binary_path = self.generate_cpg_with_joern(
+                    join(self.dataset.path, filepath), language
+                )
 
         # joern-export
-        LOGGER.info("Extracting graphs from CPGs. Output format: %s", output_format)
+        if op_type == 'export':
+            repr_type = kwargs['repr']
+            output_format = kwargs['format']
 
-        while len(cpg_processing_list) != 0:
-            cpg_binary_path = cpg_processing_list.pop(0)
+            cpg_processing_list = self._build_file_list(self.dataset, ['.bin'])
 
-            LOGGER.info(
-                "Extracting %s (%d items left)...",
-                filepath,
-                len(cpg_processing_list),
-            )
+            LOGGER.info("Extracting graphs from CPGs. Output format: %s", output_format)
 
-            self.export_cpg_from_joern(
-                cpg_binary_path, repr_type, output_format, self.dataset
-            )
+            while len(cpg_processing_list) != 0:
+                filepath = cpg_processing_list.pop(0)
 
-            '''
-            LOGGER.info("Invoking external script to export CPG data in JSON format")
-            LOGGER.info ('Script location: %s', SCRIPT_PATH)
+                LOGGER.info(
+                    "Extracting %s (%d items left)...",
+                    filepath,
+                    len(cpg_processing_list),
+                )
 
-            self._export_cpg_as_json_via_external_script(
-                graph_path, repr_type, self.dataset.cpgs_dir
-            )
-            '''
+                self.export_cpg_from_joern(
+                    join(self.dataset.path, filepath),
+                    repr_type,
+                    output_format,
+                    self.dataset
+                )
 
+                '''
+                LOGGER.info("Invoking external script to export CPG data in JSON format")
+                LOGGER.info ('Script location: %s', SCRIPT_PATH)
+
+                self._export_cpg_as_json_via_external_script(
+                    graph_path, repr_type, self.dataset.cpgs_dir
+                )
+                '''
 
     @staticmethod
-    def generate_cpg_with_joern(filepath, language):
+    def _build_file_list(dataset, ext_type) -> list:
+        """This function builds a list of files based in the list of extensions passed
+        as input. The file list generated by this function still needs to be joined
+        with the dataset path parameter.
+
+        Args:
+            dataset (_type_): dataset object
+            ext_type (_type_): list containing the extensions to be processed
+
+        Returns:
+            file_list: list of files to be processed
+        """
+        file_list = [
+                join(test_case, filepath)
+                for test_case in dataset.test_cases
+                for filepath in listdir(join(dataset.path, test_case))
+                if splitext(filepath)[1] in ext_type
+            ]
+
+        return file_list
+
+    @staticmethod
+    def generate_cpg_with_joern(filepath: str, language: str):
         """This function generates the Code Property Graph using the joern-parse script
         called as a sub-process. The CPG is saved alongside the processed file in a
         binary format, which is used by the extraction function later.
@@ -132,12 +160,13 @@ class JoernProcessing(AbstractProcessing):
             LOGGER.error("An error occurred when parsing the %s file", filepath)
             return
 
-        return output_file
-
     ######################################################
 
     @staticmethod
-    def export_cpg_from_joern(filepath, repr_type, output_format, dataset):
+    def export_cpg_from_joern(filepath: str,
+                            repr_type: str,
+                            output_format: str,
+                            dataset):
         """Exports the generated Code Property Graph in a readable format, using the
         joern-export script executed as a sub-process
 

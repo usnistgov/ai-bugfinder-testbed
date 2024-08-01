@@ -78,3 +78,5 @@ test cases (do not use `--no-interprocedural`) and do not remove main functions
     word2vec
     node2vec
     interprocedural
+    interprocedural_joern
+    gnn

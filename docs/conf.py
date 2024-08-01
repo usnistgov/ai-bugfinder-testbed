@@ -36,7 +36,7 @@ extensions = [
     "sphinx.ext.todo",
     "sphinx.ext.coverage",
     "sphinx.ext.githubpages",
-    "sphinxcontrib.napoleon",
+    "sphinx.ext.napoleon",
     "sphinx_rtd_theme",
 ]
 
@@ -337,7 +337,7 @@ htmlhelp_basename = "ai-bugfinderdoc"
 # # texinfo_no_detailmenu = False
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {"https://docs.python.org/3/": None}
+intersphinx_mapping = {'python': ('https://docs.python.org/3', None)}
 
 # Napoleon settings
 napoleon_google_docstring = True

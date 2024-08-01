@@ -89,7 +89,47 @@ Four images should be built:
 - *neo4j-ai:latest*: Neo4J v3 image package with additional shell tools.
 - *right-fixer:latest*: Tool to modify rights of a given folder.
 
-2.3. Run the tests (optional)
+2.3. Install the updated version of Joern
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Joern received a massive upgrade on version 1.0, being rewritten in Scala
+and adding several more features. The old versions were kept in this tool
+for backwards compatibility, but new pipelines should be designed using this
+new version. Some of the new capabilities added by this upgrade are:
+
+- Support to C++ and several other languages (Java, Python, Javascript)
+- Inter-procedural analysis capabilities
+- Creation of new queries to traverse the Code Property Graph
+
+Among others. The version tested in this tool was version 2.0.147, which
+includes an upgrade from Scala2 to Scala3. To use this version, it's
+necessary to just download the CLI and save it in a chosen directory. Run:
+
+.. code-block:: bash
+
+    wget https://github.com/joernio/joern/releases/download/v2.0.107/joern-cli.zip
+    unzip joern-cli.zip
+    sudo mv joern-cli $PATH_TO_JOERN_CLI
+
+Joern is a tool written in Scala, which means it needs a Java environment to
+be executed properly. This pipleline was tested with the OpenJDK version 17, so
+if you want to replicate the same environment, run the following steps:
+
+.. code-block:: bash
+
+    wget https://download.java.net/java/GA/jdk17.0.2/dfd4a8d0985749f896bed50d7138ee7f/8/GPL/openjdk-17.0.2_linux-x64_bin.tar.gz
+    tar xvf openjdk-17.0.2_linux-x64_bin.tar.gz
+    sudo mv jdk-17.0.2 $PATH_TO_JDK
+
+After downloading Joern and the necessary JDK, it's necessary to update the
+tool's ``settings.py`` file with the appropriate paths:
+
+.. code-block:: bash
+
+    JOERN_PATH = $PATH_TO_JOERN_CLI
+    JAVA_HOME = $PATH_TO_JDK
+
+
+2.4. Run the tests (optional)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Substantial tests have been developed to ensure the code is working properly.
